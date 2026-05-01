@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lead Flow — HPFHQ</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #08090B; color: #E6EDF3; font-family: 'Inter', system-ui, sans-serif; padding: 32px; }
+  h1 { font-size: 22px; font-weight: 700; margin-bottom: 8px; font-family: 'Space Grotesk', sans-serif; }
+  h2 { font-size: 16px; font-weight: 600; color: #9DA7B3; margin: 32px 0 16px; border-bottom: 1px solid #30363D; padding-bottom: 8px; }
+  .subtitle { font-size: 13px; color: #8B949E; margin-bottom: 32px; }
+  .flow { display: flex; flex-direction: column; gap: 0; max-width: 900px; }
+  .step { display: flex; gap: 16px; position: relative; }
+  .step::before { content: ''; position: absolute; left: 19px; top: 40px; bottom: -1px; width: 2px; background: #30363D; }
+  .step:last-child::before { display: none; }
+  .num { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; z-index: 1; }
+  .body { flex: 1; padding-bottom: 24px; }
+  .title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .desc { font-size: 12px; color: #9DA7B3; line-height: 1.6; }
+  .systems { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; align-items: center; }
+  .sys { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+  .sys-tf { background: rgba(66,165,245,0.15); color: #42A5F5; }
+  .sys-ghl { background: rgba(255,167,38,0.15); color: #FFA726; }
+  .sys-hpf { background: rgba(76,175,80,0.15); color: #4CAF50; }
+  .sys-slack { background: rgba(171,71,188,0.15); color: #AB47BC; }
+  .sys-meta { background: rgba(66,165,245,0.12); color: #64B5F6; }
+  .sys-stripe { background: rgba(239,83,80,0.12); color: #EF5350; }
+  .sys-fathom { background: rgba(38,166,154,0.12); color: #26A69A; }
+  .arrow { font-size: 11px; color: #6E7681; margin: 0 2px; }
+  .insight { background: #15181D; border: 1px solid #30363D; border-left: 3px solid #FFC107; border-radius: 8px; padding: 12px 16px; margin-top: 32px; font-size: 12px; line-height: 1.6; }
+  .insight strong { color: #FFC107; }
+  .table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 12px; }
+  .table th { text-align: left; padding: 8px 12px; background: #15181D; color: #9DA7B3; font-weight: 500; border-bottom: 1px solid #30363D; }
+  .table td { padding: 8px 12px; border-bottom: 1px solid #1C2128; color: #E6EDF3; }
+  .table td:first-child { color: #AB47BC; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<h1>HPF Lead Flow — Full System Map</h1>
+<p class="subtitle">Every system hop from first touch to close. HPFHQ is source of truth. GHL is a mirror.</p>
+
+<div class="flow">
+
+<div class="step">
+  <div class="num" style="background:rgba(66,165,245,0.2); color:#42A5F5;">1</div>
+  <div class="body">
+    <div class="title">Typeform Submission</div>
+    <div class="desc">Lead fills out application. Webhook fires. HPFHQ creates/updates lead, assigns hpf_id, computes qualification tier. Parallel: Slack alert, Meta CAPI conversion, GHL contact enrichment (async).</div>
+    <div class="systems">
+      <span class="sys sys-tf">Typeform</span><span class="arrow">→</span>
+      <span class="sys sys-hpf">HPFHQ leads</span><span class="arrow">→</span>
+      <span class="sys sys-slack">Slack</span>
+      <span class="sys sys-meta">Meta CAPI</span>
+      <span class="sys sys-ghl">GHL mirror</span>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="num" style="background:rgba(255,167,38,0.2); color:#FFA726;">2</div>
+  <div class="body">
+    <div class="title">GHL Booking Webhook</div>
+    <div class="desc">Lead books call → GHL fires webhook → HPFHQ marks booked, maps ghl_contact_id. If no lead exists (ManyChat/direct), creates from GHL contact. Slack alert to #sales-calls-booked.</div>
+    <div class="systems">
+      <span class="sys sys-ghl">GHL Booking</span><span class="arrow">→</span>
+      <span class="sys sys-hpf">leads.booked=true</span><span class="arrow">→</span>
+      <span class="sys sys-slack">Slack</span>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="num" style="background:rgba(233,30,99,0.2); color:#EC407A;">2b</div>
+  <div class="body">
+    <div class="title">ManyChat (IG Organic)</div>
+    <div class="desc">Organic IG DM → ManyChat qual flow → webhook → HPFHQ creates lead (source=instagram, is_paid=false). Slack alert suppressed (fires before qual data captured).</div>
+    <div class="systems">
+      <span class="sys" style="background:rgba(233,30,99,0.15); color:#EC407A;">ManyChat</span><span class="arrow">→</span>
+      <span class="sys sys-hpf">HPFHQ leads</span>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="num" style="background:rgba(38,166,154,0.2); color:#26A69A;">3</div>
+  <div class="body">
+    <div class="title">Setter Triage</div>
+    <div class="desc">Setter reviews leads in HPFHQ portal. Fixes attribution, links setter_leads. GHL is read-only context — setter never edits GHL directly.</div>
+    <div class="systems">
+      <span class="sys sys-hpf">Setter Portal</span><span class="arrow">→</span>
+      <span class="sys sys-hpf">leads + setter_leads</span>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="num" style="background:rgba(239,83,80,0.2); color:#EF5350;">4</div>
+  <div class="body">
+    <div class="title">Closer Workstation — Today</div>
+    <div class="desc">Reads GHL appointments + Fathom recordings + HPFHQ lead data. Identity resolution: contactId → hpf_id → lead. Cards show name, qual, phone, setter, Fathom link.</div>
+    <div class="systems">
+      <span class="sys sys-ghl">GHL Calendar</span><span class="arrow">+</span>
+      <span class="sys sys-fathom">Fathom</span><span class="arrow">+</span>
+      <span class="sys sys-hpf">leads</span><span class="arrow">→</span>
+      <span class="sys sys-hpf">Closer Cards</span>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="num" style="background:rgba(76,175,80,0.2); color:#4CAF50;">5</div>
+  <div class="body">
+    <div class="title">Closer EOD Submit</div>
+    <div class="desc">Outcome per call + reflection → submitted_at set → Slack digest to #sales-closer-eod. Follow-up leads enter pipeline table. GHL reflection fires stage changes (flag-gated).</div>
+    <div class="systems">
+      <span class="sys sys-hpf">EOD entries</span><span class="arrow">→</span>
+      <span class="sys sys-slack">Slack EOD</span><span class="arrow">→</span>
+      <span class="sys sys-hpf">FU pipeline</span><span class="arrow">→</span>
+      <span class="sys sys-ghl">GHL stages</span>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="num" style="background:rgba(255,193,7,0.2); color:#FFC107;">6</div>
+  <div class="body">
+    <div class="title">Closer Pipeline — Kanban</div>
+    <div class="desc">Hot | Nurture columns. Drag-and-drop, inline FU date editing, activity badges, objection filter. Moves update sales_followup_pipeline. <strong>GHL needed here for SMS/WhatsApp follow-up — closer opens GHL to message the lead.</strong></div>
+    <div class="systems">
+      <span class="sys sys-hpf">Kanban</span><span class="arrow">↔</span>
+      <span class="sys sys-ghl">GHL SMS/WhatsApp</span>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="num" style="background:rgba(76,175,80,0.3); color:#4CAF50;">7</div>
+  <div class="body">
+    <div class="title">Payment → Close</div>
+    <div class="desc">Fanbasis or Stripe webhook → match by email → hpf_id → lead marked closed. Slack win to #sales-calls-closed. Meta CAPI Purchase. GHL → WON.</div>
+    <div class="systems">
+      <span class="sys sys-stripe">Fanbasis/Stripe</span><span class="arrow">→</span>
+      <span class="sys sys-hpf">leads.closed</span><span class="arrow">→</span>
+      <span class="sys sys-slack">Slack</span>
+      <span class="sys sys-meta">CAPI</span>
+      <span class="sys sys-ghl">GHL WON</span>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<h2>Where GHL is Actually Needed vs. Mirror</h2>
+
+<table class="table">
+<tr><th>Function</th><th>Currently</th><th>GHL Required?</th></tr>
+<tr><td>Booking calendar</td><td>GHL calendar</td><td><strong>Yes</strong> — no replacement without custom booking UI</td></tr>
+<tr><td>SMS / WhatsApp / Email</td><td>Closers send via GHL</td><td><strong>Yes</strong> — only outbound comms channel to prospects</td></tr>
+<tr><td>Workflow automations</td><td>Booking confirmations, reminders</td><td><strong>Yes</strong> — HPFHQ doesn't message prospects</td></tr>
+<tr><td>Activity history</td><td>GHL tracks all touchpoints</td><td><strong>Yes for now</strong> — only source of text/email timestamps</td></tr>
+<tr><td>Pipeline view</td><td>Mirrored from HPFHQ</td><td>No — HPFHQ kanban replaces this</td></tr>
+<tr><td>Contact database</td><td>GHL contacts</td><td>No — HPFHQ leads table is source of truth</td></tr>
+<tr><td>Reporting</td><td>HPFHQ dashboards</td><td>No — GHL just mirrors</td></tr>
+</table>
+
+<div class="insight">
+  <strong>Bottom line:</strong> GHL is irreplaceable for <strong>outbound communication</strong> (SMS, WhatsApp, email to prospects) and <strong>calendar booking</strong>. Everything else is already in HPFHQ. The GHL write-through (Phase 3.3.b, lib/ghl/reflection.ts) keeps GHL in sync as a read-only mirror. Replacing GHL's comms would require Sendinblue/Twilio for email+SMS + a custom booking UI — that's a platform-level lift, not a closer workstation feature. For now, the kanban links out to GHL when the closer needs to message someone.
+</div>
+
+</body>
+</html>
