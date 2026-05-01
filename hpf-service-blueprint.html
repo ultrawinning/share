@@ -289,85 +289,151 @@
   <span style="color: #9DA7B3;">Service design methodology. Customer-facing flow (golden path) with supporting systems as parallel swim lanes. Use <code style="color: #E6EDF3; background: #1C2128; padding: 1px 4px; border-radius: 3px;">/service-blueprint</code> to regenerate from current codebase state. Essential GHL connections (solid borders) are the minimum viable integration — everything else can be migrated away.</span>
 </div>
 
-<!-- Annotation layer -->
-<div id="annotation-panel" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:100; background:#15181D; border:1px solid #30363D; border-radius:12px; padding:20px; width:400px; box-shadow:0 8px 32px rgba(0,0,0,0.6);">
+<!-- Author name prompt -->
+<div id="author-bar" style="position:fixed; top:0; left:0; right:0; z-index:50; background:#15181D; border-bottom:1px solid #30363D; padding:8px 20px; display:flex; align-items:center; gap:12px; font-size:12px;">
+  <span style="color:#8B949E;">Annotating as:</span>
+  <input id="author-name" type="text" placeholder="Your name" value=""
+    style="background:#08090B; border:1px solid #30363D; border-radius:6px; color:#E6EDF3; padding:4px 10px; font-size:12px; width:150px; outline:none;">
+  <span style="color:#6E7681; margin-left:auto;" id="ann-count"></span>
+  <span style="color:#6E7681;">Click any box to annotate</span>
+</div>
+
+<!-- Annotation panel -->
+<div id="annotation-panel" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:100; background:#15181D; border:1px solid #30363D; border-radius:12px; padding:20px; width:440px; box-shadow:0 8px 32px rgba(0,0,0,0.6);">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
     <span id="ann-title" style="font-size:13px; font-weight:600; color:#E6EDF3;"></span>
-    <button onclick="closeAnnotation()" style="background:none; border:none; color:#6E7681; cursor:pointer; font-size:16px;">✕</button>
+    <button onclick="closePanel()" style="background:none; border:none; color:#6E7681; cursor:pointer; font-size:16px;">✕</button>
   </div>
-  <textarea id="ann-text" rows="4" placeholder="Add a note or decision..."
+  <div id="ann-existing" style="max-height:200px; overflow-y:auto; margin-bottom:12px;"></div>
+  <textarea id="ann-text" rows="3" placeholder="Add a comment..."
     style="width:100%; background:#08090B; border:1px solid #30363D; border-radius:8px; color:#E6EDF3; font-size:12px; padding:10px; resize:vertical; outline:none; font-family:Inter,system-ui;"></textarea>
   <div style="display:flex; gap:8px; margin-top:10px;">
-    <button onclick="saveAnnotation()" style="flex:1; padding:8px; border-radius:8px; border:none; background:#4CAF50; color:#fff; font-size:12px; font-weight:600; cursor:pointer;">Save</button>
-    <button onclick="deleteAnnotation()" id="ann-delete" style="padding:8px 16px; border-radius:8px; border:1px solid #30363D; background:transparent; color:#EF5350; font-size:12px; cursor:pointer;">Delete</button>
+    <button onclick="postAnnotation()" style="flex:1; padding:8px; border-radius:8px; border:none; background:#4CAF50; color:#fff; font-size:12px; font-weight:600; cursor:pointer;">Post Comment</button>
   </div>
 </div>
-<div id="ann-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:99;" onclick="closeAnnotation()"></div>
+<div id="ann-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:99;" onclick="closePanel()"></div>
 
 <script>
-const STORAGE_KEY = 'hpf-blueprint-annotations';
+const API = 'https://hpfhq.com/api/annotations';
+const PAGE_ID = 'hpf-service-blueprint';
 let currentNodeId = null;
+let currentNodeLabel = null;
+let allAnnotations = [];
 
-function getAnnotations() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch { return {}; }
+function getAuthor() {
+  const v = document.getElementById('author-name').value.trim();
+  if (v) localStorage.setItem('blueprint-author', v);
+  return v || 'anonymous';
+}
+
+async function loadAnnotations() {
+  try {
+    const r = await fetch(`${API}?page=${PAGE_ID}&status=open`);
+    const d = await r.json();
+    allAnnotations = d.annotations || [];
+    renderDots();
+    document.getElementById('ann-count').textContent = `${allAnnotations.length} open comments`;
+  } catch { allAnnotations = []; }
 }
 
 function renderDots() {
   document.querySelectorAll('.ann-dot').forEach(d => d.remove());
-  const anns = getAnnotations();
-  for (const [id, text] of Object.entries(anns)) {
-    const el = document.querySelector(`[data-ann-id="${id}"]`);
-    if (!el || !text) continue;
+  const byNode = {};
+  for (const a of allAnnotations) {
+    if (!byNode[a.node_id]) byNode[a.node_id] = [];
+    byNode[a.node_id].push(a);
+  }
+  for (const [nodeId, anns] of Object.entries(byNode)) {
+    const el = document.querySelector(`[data-ann-id="${nodeId}"]`);
+    if (!el) continue;
     const dot = document.createElement('div');
     dot.className = 'ann-dot';
-    dot.title = text;
+    dot.title = anns.length + ' comment' + (anns.length > 1 ? 's' : '');
     Object.assign(dot.style, {
-      position:'absolute', top:'4px', right:'4px', width:'8px', height:'8px',
-      borderRadius:'50%', background:'#FFC107', cursor:'pointer', zIndex:'10'
+      position:'absolute', top:'4px', right:'4px',
+      minWidth:'16px', height:'16px', borderRadius:'99px',
+      background:'#FFC107', color:'#08090B', fontSize:'9px', fontWeight:'700',
+      display:'flex', alignItems:'center', justifyContent:'center',
+      padding:'0 4px', cursor:'pointer', zIndex:'10'
     });
+    dot.textContent = anns.length;
     el.style.position = 'relative';
     el.appendChild(dot);
   }
 }
 
-function openAnnotation(id, title) {
-  currentNodeId = id;
-  const anns = getAnnotations();
-  document.getElementById('ann-title').textContent = title;
-  document.getElementById('ann-text').value = anns[id] || '';
-  document.getElementById('ann-delete').style.display = anns[id] ? 'block' : 'none';
+function openPanel(nodeId, label) {
+  currentNodeId = nodeId;
+  currentNodeLabel = label;
+  document.getElementById('ann-title').textContent = label;
+  document.getElementById('ann-text').value = '';
+
+  const existing = allAnnotations.filter(a => a.node_id === nodeId);
+  const container = document.getElementById('ann-existing');
+  if (existing.length === 0) {
+    container.innerHTML = '<p style="font-size:11px; color:#6E7681; margin:0;">No comments yet.</p>';
+  } else {
+    container.innerHTML = existing.map(a => `
+      <div style="padding:8px 10px; margin-bottom:6px; background:#08090B; border-radius:8px; border:1px solid #1C2128;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+          <span style="font-size:10px; font-weight:600; color:#42A5F5;">${a.author}</span>
+          <div style="display:flex; gap:6px; align-items:center;">
+            <span style="font-size:9px; color:#6E7681;">${new Date(a.created_at).toLocaleDateString('en-US', {month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})}</span>
+            <button onclick="resolveAnnotation('${a.id}')" style="font-size:9px; color:#4CAF50; background:none; border:none; cursor:pointer;">✓ resolve</button>
+          </div>
+        </div>
+        <div style="font-size:11px; color:#9DA7B3; line-height:1.5;">${a.body}</div>
+      </div>
+    `).join('');
+  }
+
   document.getElementById('annotation-panel').style.display = 'block';
   document.getElementById('ann-overlay').style.display = 'block';
   document.getElementById('ann-text').focus();
 }
 
-function closeAnnotation() {
+function closePanel() {
   document.getElementById('annotation-panel').style.display = 'none';
   document.getElementById('ann-overlay').style.display = 'none';
   currentNodeId = null;
 }
 
-function saveAnnotation() {
-  if (!currentNodeId) return;
-  const anns = getAnnotations();
+async function postAnnotation() {
   const text = document.getElementById('ann-text').value.trim();
-  if (text) anns[currentNodeId] = text; else delete anns[currentNodeId];
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(anns));
-  renderDots();
-  closeAnnotation();
+  if (!text || !currentNodeId) return;
+  try {
+    await fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        page_id: PAGE_ID,
+        node_id: currentNodeId,
+        node_label: currentNodeLabel,
+        author: getAuthor(),
+        body: text,
+      }),
+    });
+    closePanel();
+    await loadAnnotations();
+  } catch (e) { alert('Failed to save: ' + e.message); }
 }
 
-function deleteAnnotation() {
-  if (!currentNodeId) return;
-  const anns = getAnnotations();
-  delete anns[currentNodeId];
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(anns));
-  renderDots();
-  closeAnnotation();
+async function resolveAnnotation(id) {
+  try {
+    await fetch(API, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, status: 'resolved' }),
+    });
+    await loadAnnotations();
+    if (currentNodeId) openPanel(currentNodeId, currentNodeLabel);
+  } catch { }
 }
 
-// Make all nodes annotatable
 document.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('blueprint-author');
+  if (saved) document.getElementById('author-name').value = saved;
+
   let i = 0;
   document.querySelectorAll('.node, .entry, .converge').forEach(el => {
     const id = 'node-' + (i++);
@@ -375,13 +441,15 @@ document.addEventListener('DOMContentLoaded', () => {
     el.style.cursor = 'pointer';
     el.addEventListener('click', (e) => {
       e.stopPropagation();
-      const title = el.querySelector('.node-title')?.textContent
+      const label = el.querySelector('.node-title')?.textContent
         || el.querySelector('.entry-sub')?.textContent
         || el.textContent.trim().slice(0, 40);
-      openAnnotation(id, title);
+      openPanel(id, label);
     });
   });
-  renderDots();
+
+  document.body.style.paddingTop = '56px';
+  loadAnnotations();
 });
 </script>
 
