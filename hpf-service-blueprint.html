@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HPF Service Blueprint</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #08090B; color: #E6EDF3; font-family: 'Inter', system-ui, sans-serif; padding: 40px; overflow-x: auto; }
+  h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; font-family: 'Space Grotesk', sans-serif; }
+  .sub { font-size: 12px; color: #8B949E; margin-bottom: 32px; }
+
+  .blueprint { display: grid; grid-template-columns: 200px 1fr 200px; gap: 0; min-width: 1000px; }
+
+  /* Lane headers */
+  .lane-header { padding: 12px 16px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid; }
+  .lh-ghl { color: #FFA726; border-color: #FFA726; background: rgba(255,167,38,0.06); }
+  .lh-gold { color: #4CAF50; border-color: #4CAF50; background: rgba(76,175,80,0.06); }
+  .lh-slack { color: #AB47BC; border-color: #AB47BC; background: rgba(171,71,188,0.06); }
+
+  /* Lane columns */
+  .lane { padding: 16px; position: relative; }
+  .lane-ghl { background: rgba(255,167,38,0.02); border-right: 1px dashed rgba(255,167,38,0.15); }
+  .lane-gold { background: rgba(76,175,80,0.02); }
+  .lane-slack { background: rgba(171,71,188,0.02); border-left: 1px dashed rgba(171,71,188,0.15); }
+
+  /* Entry points row */
+  .entry-row { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; justify-content: center; }
+  .entry { padding: 10px 14px; border-radius: 10px; font-size: 11px; font-weight: 600; text-align: center; min-width: 100px; }
+  .entry-paid { background: rgba(66,165,245,0.12); color: #42A5F5; border: 1px solid rgba(66,165,245,0.3); }
+  .entry-organic { background: rgba(76,175,80,0.12); color: #4CAF50; border: 1px solid rgba(76,175,80,0.3); }
+  .entry-direct { background: rgba(255,193,7,0.12); color: #FFC107; border: 1px solid rgba(255,193,7,0.3); }
+  .entry-sub { font-size: 9px; color: #8B949E; margin-top: 3px; font-weight: 400; }
+
+  /* Golden path nodes */
+  .node { padding: 14px 18px; border-radius: 12px; margin-bottom: 8px; position: relative; }
+  .node-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+  .node-desc { font-size: 10px; color: #9DA7B3; line-height: 1.5; }
+  .node-gold { background: #15181D; border: 1px solid #30363D; border-left: 4px solid #4CAF50; }
+  .node-highlight { background: rgba(76,175,80,0.08); border: 1px solid rgba(76,175,80,0.25); border-left: 4px solid #4CAF50; }
+
+  /* GHL/Slack nodes */
+  .node-ghl { background: rgba(255,167,38,0.06); border: 1px dashed rgba(255,167,38,0.2); border-left: 3px solid rgba(255,167,38,0.4); }
+  .node-ghl .node-title { color: #FFA726; }
+  .node-slack { background: rgba(171,71,188,0.06); border: 1px dashed rgba(171,71,188,0.2); border-left: 3px solid rgba(171,71,188,0.4); }
+  .node-slack .node-title { color: #AB47BC; }
+  .node-essential { border-style: solid !important; }
+  .node-mirror { opacity: 0.5; }
+
+  /* Connector arrows */
+  .arrow-down { text-align: center; color: #30363D; font-size: 18px; margin: 4px 0; }
+  .arrow-gold { color: #4CAF50; }
+  .arrow-split { color: #FFC107; }
+
+  /* Converge indicator */
+  .converge { text-align: center; margin: 16px 0; padding: 8px 16px; border-radius: 8px; font-size: 10px; font-weight: 600; color: #FFC107; background: rgba(255,193,7,0.08); border: 1px solid rgba(255,193,7,0.2); }
+
+  /* Section divider */
+  .phase-label { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: #6E7681; margin: 20px 0 8px; padding: 4px 0; border-top: 1px solid #1C2128; }
+
+  /* Legend */
+  .legend { display: flex; gap: 20px; margin-top: 32px; padding: 16px; background: #15181D; border-radius: 10px; border: 1px solid #30363D; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 10px; color: #9DA7B3; }
+  .legend-swatch { width: 12px; height: 12px; border-radius: 3px; }
+
+  .tag { display: inline-block; font-size: 9px; font-weight: 600; padding: 1px 6px; border-radius: 3px; margin-left: 4px; vertical-align: middle; }
+  .tag-essential { background: rgba(76,175,80,0.15); color: #4CAF50; }
+  .tag-mirror { background: rgba(158,158,158,0.12); color: #9E9E9E; }
+</style>
+</head>
+<body>
+
+<h1>HPF Service Blueprint — Lead Flow Architecture</h1>
+<p class="sub">Golden path (center) with GHL touchpoints (left) and Slack notifications (right). Solid = essential. Dashed = mirror/optional.</p>
+
+<!-- ENTRY POINTS -->
+<div style="margin-bottom: 32px;">
+  <div class="phase-label">Entry Points — Ways In</div>
+  <div class="entry-row">
+    <div class="entry entry-paid">
+      Meta Ads (Paid)
+      <div class="entry-sub">→ Landing Page → Typeform</div>
+    </div>
+    <div class="entry entry-organic">
+      IG Organic (DM)
+      <div class="entry-sub">→ ManyChat → Booking Link</div>
+    </div>
+    <div class="entry entry-paid">
+      Meta Lead Ads
+      <div class="entry-sub">→ In-app Form → Direct</div>
+    </div>
+    <div class="entry entry-organic">
+      Dan's Content
+      <div class="entry-sub">→ Bio Link → Typeform</div>
+    </div>
+    <div class="entry entry-direct">
+      Referral / WOM
+      <div class="entry-sub">→ Direct Typeform URL</div>
+    </div>
+    <div class="entry entry-direct">
+      Setter Sends Link
+      <div class="entry-sub">→ Direct Booking URL</div>
+    </div>
+  </div>
+  <div class="converge">▼ All paths converge into HPFHQ leads table via webhooks ▼</div>
+</div>
+
+<!-- SWIM LANE BLUEPRINT -->
+<div class="blueprint">
+
+  <!-- Headers -->
+  <div class="lane-header lh-ghl">GHL (Comms + Calendar)</div>
+  <div class="lane-header lh-gold">Golden Path (HPFHQ)</div>
+  <div class="lane-header lh-slack">Slack (Team Alerts)</div>
+
+  <!-- PHASE: CAPTURE -->
+  <div class="lane lane-ghl">
+    <div class="phase-label">Capture</div>
+    <div class="node node-ghl node-mirror">
+      <div class="node-title">Contact Created <span class="tag tag-mirror">mirror</span></div>
+      <div class="node-desc">Auto-created from Typeform integration. Not source of truth.</div>
+    </div>
+  </div>
+  <div class="lane lane-gold">
+    <div class="phase-label">Capture</div>
+    <div class="node node-highlight">
+      <div class="node-title">Lead Created</div>
+      <div class="node-desc">Typeform/ManyChat/Meta Lead Ads webhook → hpf_id assigned, qualification computed, source tagged, Meta CAPI fired.</div>
+    </div>
+    <div class="arrow-down arrow-gold">↓</div>
+  </div>
+  <div class="lane lane-slack">
+    <div class="phase-label">Capture</div>
+    <div class="node node-slack">
+      <div class="node-title">#sales-applications</div>
+      <div class="node-desc">Lead card: name, qual tier, source, attribution.</div>
+    </div>
+  </div>
+
+  <!-- PHASE: QUALIFY + BOOK -->
+  <div class="lane lane-ghl">
+    <div class="phase-label">Book</div>
+    <div class="node node-ghl node-essential">
+      <div class="node-title">Calendar Booking <span class="tag tag-essential">essential</span></div>
+      <div class="node-desc">GHL calendar. Fires booking webhook → HPFHQ marks booked.</div>
+    </div>
+  </div>
+  <div class="lane lane-gold">
+    <div class="phase-label">Qualify → Book</div>
+    <div class="node node-gold">
+      <div class="node-title">Setter Triage</div>
+      <div class="node-desc">Fix attribution, verify qual, link setter_leads. All in HPFHQ.</div>
+    </div>
+    <div class="arrow-down arrow-gold">↓</div>
+    <div class="node node-highlight">
+      <div class="node-title">Booked</div>
+      <div class="node-desc">leads.booked=true, call_date set, closer assigned.</div>
+    </div>
+    <div class="arrow-down arrow-gold">↓</div>
+  </div>
+  <div class="lane lane-slack">
+    <div class="phase-label">Book</div>
+    <div class="node node-slack">
+      <div class="node-title">#sales-calls-booked</div>
+      <div class="node-desc">Booking confirmation: time, closer, setter, source.</div>
+    </div>
+  </div>
+
+  <!-- PHASE: CALL -->
+  <div class="lane lane-ghl">
+    <div class="phase-label">Call</div>
+    <div class="node node-ghl node-essential">
+      <div class="node-title">Appointment Data <span class="tag tag-essential">essential</span></div>
+      <div class="node-desc">Today's appointments feed the closer workstation. Calendar is GHL.</div>
+    </div>
+  </div>
+  <div class="lane lane-gold">
+    <div class="phase-label">Call</div>
+    <div class="node node-highlight">
+      <div class="node-title">Closer Workstation — Today</div>
+      <div class="node-desc">GHL appointments + Fathom recordings + HPFHQ lead data → card deck. Closer takes the call.</div>
+    </div>
+    <div class="arrow-down arrow-gold">↓</div>
+    <div class="node node-gold">
+      <div class="node-title">EOD Submit</div>
+      <div class="node-desc">Outcome per call: showed/no-show/cancelled + reflection. Marks submitted_at.</div>
+    </div>
+    <div class="arrow-down arrow-split">↓ splits ↓</div>
+  </div>
+  <div class="lane lane-slack">
+    <div class="phase-label">Call</div>
+    <div class="node node-slack" style="margin-top: 80px;">
+      <div class="node-title">#sales-closer-eod</div>
+      <div class="node-desc">Summary: booked, showed, closed, revenue. Per-call reflections.</div>
+    </div>
+  </div>
+
+  <!-- PHASE: OUTCOME -->
+  <div class="lane lane-ghl">
+    <div class="phase-label">Follow-up</div>
+    <div class="node node-ghl node-essential">
+      <div class="node-title">SMS / WhatsApp <span class="tag tag-essential">essential</span></div>
+      <div class="node-desc">Closer messages prospect via GHL. Only outbound comms channel.</div>
+    </div>
+    <div style="height: 8px;"></div>
+    <div class="node node-ghl node-mirror">
+      <div class="node-title">Stage Reflected <span class="tag tag-mirror">mirror</span></div>
+      <div class="node-desc">Phase 3.3.b: HPFHQ → GHL opportunity stage. Flag-gated.</div>
+    </div>
+  </div>
+  <div class="lane lane-gold">
+    <div class="phase-label">Outcome</div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+      <div class="node node-highlight" style="border-left-color: #4CAF50;">
+        <div class="node-title" style="color: #4CAF50;">🏆 Closed</div>
+        <div class="node-desc">Payment received → leads.closed=true</div>
+      </div>
+      <div class="node node-gold" style="border-left-color: #FFC107;">
+        <div class="node-title" style="color: #FFC107;">🔥 Follow-Up</div>
+        <div class="node-desc">→ Kanban Pipeline (Hot | Nurture)</div>
+      </div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px;">
+      <div class="node node-gold" style="border-left-color: #EF5350; opacity: 0.7;">
+        <div class="node-title" style="color: #EF5350;">❌ No Show / Cancel</div>
+        <div class="node-desc">Recovery Zone in kanban</div>
+      </div>
+      <div class="node node-gold" style="border-left-color: #78909C; opacity: 0.5;">
+        <div class="node-title" style="color: #78909C;">🛑 Lost</div>
+        <div class="node-desc">Terminal. Archive.</div>
+      </div>
+    </div>
+    <div class="arrow-down arrow-gold" style="margin-top: 12px;">↓</div>
+    <div class="node node-highlight">
+      <div class="node-title">Kanban Pipeline</div>
+      <div class="node-desc">Drag-and-drop. Inline FU date editing. Activity badges. Objection filter. Optimistic moves. This is where closers live between calls.</div>
+    </div>
+    <div class="arrow-down arrow-gold">↓</div>
+  </div>
+  <div class="lane lane-slack">
+    <div class="phase-label">Outcome</div>
+    <div class="node node-slack" style="margin-top: 0px;">
+      <div class="node-title">#sales-calls-closed</div>
+      <div class="node-desc">Win alert: revenue, Fathom link, handover thread for coaching team.</div>
+    </div>
+    <div style="height: 8px;"></div>
+    <div class="node node-slack" style="opacity: 0.6;">
+      <div class="node-title">#sales-calls-cancelled</div>
+      <div class="node-desc">Cancel alert for setter recovery.</div>
+    </div>
+  </div>
+
+  <!-- PHASE: CLOSE -->
+  <div class="lane lane-ghl">
+    <div class="phase-label">Close</div>
+    <div class="node node-ghl node-mirror">
+      <div class="node-title">Opportunity → WON <span class="tag tag-mirror">mirror</span></div>
+      <div class="node-desc">Reflected from payment webhook. Dan sees it in GHL.</div>
+    </div>
+  </div>
+  <div class="lane lane-gold">
+    <div class="phase-label">Close</div>
+    <div class="node node-highlight" style="border-left-color: #4CAF50; background: rgba(76,175,80,0.1);">
+      <div class="node-title" style="color: #4CAF50; font-size: 15px;">💰 Payment Received</div>
+      <div class="node-desc">Fanbasis or Stripe webhook → identity match → leads.closed=true. Meta CAPI Purchase event. The loop closes.</div>
+    </div>
+  </div>
+  <div class="lane lane-slack">
+    <div class="phase-label">Close</div>
+    <div class="node node-slack node-essential">
+      <div class="node-title">Coaching Handoff <span class="tag tag-essential">essential</span></div>
+      <div class="node-desc">Thread in #closed: Fathom link, handover notes, coaching team tags.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-swatch" style="background: #4CAF50;"></div> Golden Path (HPFHQ — source of truth)</div>
+  <div class="legend-item"><div class="legend-swatch" style="background: #FFA726; border: 1px solid #FFA726;"></div> GHL — essential (calendar, SMS)</div>
+  <div class="legend-item"><div class="legend-swatch" style="background: rgba(255,167,38,0.3);"></div> GHL — mirror only (read-only reflection)</div>
+  <div class="legend-item"><div class="legend-swatch" style="background: #AB47BC;"></div> Slack — team notification</div>
+  <div class="legend-item"><div class="legend-swatch" style="background: #42A5F5;"></div> Paid traffic entry</div>
+  <div class="legend-item"><div class="legend-swatch" style="background: #FFC107;"></div> Direct / referral entry</div>
+</div>
+
+<div style="margin-top: 24px; padding: 16px; background: #15181D; border: 1px solid #30363D; border-left: 3px solid #FFC107; border-radius: 10px; font-size: 12px; line-height: 1.6;">
+  <strong style="color: #FFC107;">This diagram type: Service Blueprint</strong><br>
+  <span style="color: #9DA7B3;">Service design methodology. Customer-facing flow (golden path) with supporting systems as parallel swim lanes. Use <code style="color: #E6EDF3; background: #1C2128; padding: 1px 4px; border-radius: 3px;">/service-blueprint</code> to regenerate from current codebase state. Essential GHL connections (solid borders) are the minimum viable integration — everything else can be migrated away.</span>
+</div>
+
+</body>
+</html>
