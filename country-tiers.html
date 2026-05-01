@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Country Qualification Tiers — HPF Typeform</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif; background: #fff; color: #1a1a1a; padding: 40px; line-height: 1.6; max-width: 800px; margin: 0 auto; }
+  h1 { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+  .subtitle { color: #666; font-size: 14px; margin-bottom: 28px; }
+
+  .tier-section { margin-bottom: 28px; }
+  .tier-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e0e0e0;
+  }
+  .tier-header h2 { font-size: 18px; font-weight: 600; }
+  .tier-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .badge-green { background: #e8f5e9; color: #2e7d32; }
+  .badge-amber { background: #fff8e1; color: #f57f17; }
+  .badge-red { background: #fce4ec; color: #c62828; }
+
+  .country-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 6px 16px;
+  }
+  .country-item {
+    font-size: 14px;
+    color: #333;
+    padding: 4px 0;
+  }
+
+  .tier-note {
+    font-size: 13px;
+    color: #888;
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  .how-it-works {
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 32px;
+    font-size: 14px;
+  }
+  .how-it-works strong { color: #1a1a1a; }
+  .how-it-works ul { padding-left: 20px; margin-top: 8px; }
+  .how-it-works li { margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<h1>Country Qualification Tiers</h1>
+<p class="subtitle">How the Typeform booking flow qualifies leads by location. Country is one of four qualification criteria (alongside occupation, income willingness, and timeline).</p>
+
+<!-- TIER 1 -->
+<div class="tier-section">
+  <div class="tier-header">
+    <span class="tier-badge badge-green">TIER 1 — GREEN</span>
+    <h2>Auto-Qualified (4 countries)</h2>
+  </div>
+  <div class="country-grid">
+    <div class="country-item">&#127482;&#127480; United States</div>
+    <div class="country-item">&#127468;&#127463; United Kingdom</div>
+    <div class="country-item">&#127464;&#127462; Canada</div>
+    <div class="country-item">&#127462;&#127482; Australia</div>
+  </div>
+  <div class="tier-note">These pass the location criterion automatically. If the other 3 criteria also pass, the lead is Green (fully qualified).</div>
+</div>
+
+<!-- TIER 2 -->
+<div class="tier-section">
+  <div class="tier-header">
+    <span class="tier-badge badge-amber">TIER 2 — AMBER</span>
+    <h2>Review Required (31 countries)</h2>
+  </div>
+  <div class="country-grid">
+    <div class="country-item">&#127462;&#127481; Austria</div>
+    <div class="country-item">&#127463;&#127480; Bahamas</div>
+    <div class="country-item">&#127463;&#127469; Bahrain</div>
+    <div class="country-item">&#127463;&#127463; Barbados</div>
+    <div class="country-item">&#127463;&#127466; Belgium</div>
+    <div class="country-item">&#127464;&#127486; Cyprus</div>
+    <div class="country-item">&#127465;&#127472; Denmark</div>
+    <div class="country-item">&#127467;&#127470; Finland</div>
+    <div class="country-item">&#127467;&#127479; France</div>
+    <div class="country-item">&#127465;&#127466; Germany</div>
+    <div class="country-item">&#127469;&#127472; Hong Kong</div>
+    <div class="country-item">&#127470;&#127480; Iceland</div>
+    <div class="country-item">&#127470;&#127466; Ireland</div>
+    <div class="country-item">&#127470;&#127481; Italy</div>
+    <div class="country-item">&#127471;&#127477; Japan</div>
+    <div class="country-item">&#127472;&#127484; Kuwait</div>
+    <div class="country-item">&#127473;&#127482; Luxembourg</div>
+    <div class="country-item">&#127474;&#127481; Malta</div>
+    <div class="country-item">&#127474;&#127464; Monaco</div>
+    <div class="country-item">&#127475;&#127473; Netherlands</div>
+    <div class="country-item">&#127475;&#127487; New Zealand</div>
+    <div class="country-item">&#127475;&#127476; Norway</div>
+    <div class="country-item">&#127477;&#127481; Portugal</div>
+    <div class="country-item">&#127478;&#127462; Qatar</div>
+    <div class="country-item">&#127480;&#127462; Saudi Arabia</div>
+    <div class="country-item">&#127480;&#127468; Singapore</div>
+    <div class="country-item">&#127480;&#127470; Slovenia</div>
+    <div class="country-item">&#127466;&#127480; Spain</div>
+    <div class="country-item">&#127480;&#127466; Sweden</div>
+    <div class="country-item">&#127464;&#127469; Switzerland</div>
+    <div class="country-item">&#127462;&#127466; United Arab Emirates</div>
+  </div>
+  <div class="tier-note">These fail the location criterion but can still reach Amber (review) if the other 3 criteria pass. They can never auto-qualify to Green. Shown via "Rest of the world" &rarr; country dropdown in the Typeform.</div>
+</div>
+
+<!-- TIER 3 / DQ -->
+<div class="tier-section">
+  <div class="tier-header">
+    <span class="tier-badge badge-red">TIER 3 — DQ (DISQUALIFIED)</span>
+    <h2>All Other Countries</h2>
+  </div>
+  <div class="country-grid">
+    <div class="country-item" style="grid-column: 1 / -1; color: #888;">Any country not listed above. In the Typeform, this is the "Other" option in the country dropdown.</div>
+  </div>
+  <div class="tier-note">Leads from unlisted countries are disqualified on location. Combined with other criteria failures, this typically results in a Red (DQ) outcome. DQ leads are routed to the Lean Body 90 landing page (dango.co/lean-body-90).</div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how-it-works">
+  <strong>How the full qualification works:</strong>
+  <ul>
+    <li><strong>4 criteria scored:</strong> Occupation, Location (country), Income willingness, Timeline</li>
+    <li><strong>Green:</strong> All 4 pass &rarr; fully qualified &rarr; routed to book a call</li>
+    <li><strong>Amber:</strong> 3 of 4 pass &rarr; review required (setter follows up)</li>
+    <li><strong>Red (DQ):</strong> Income unwilling, OR occupation = "other", OR timeline = "researching", OR &le;1 criteria pass</li>
+  </ul>
+  <br>
+  <strong>What this means for Tier 2 countries:</strong> A lead from Germany who is a business owner, willing to invest, and ready ASAP will be <strong>Amber</strong> (3/4 pass, location fails). The setter can still book them &mdash; they just don't auto-qualify.
+</div>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Platform Access Requests for Dan</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif; background: #fff; color: #1a1a1a; padding: 40px; line-height: 1.6; max-width: 800px; margin: 0 auto; }
+  h1 { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+  .subtitle { color: #666; font-size: 14px; margin-bottom: 28px; }
+  .summary-box {
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 28px;
+    font-size: 14px;
+  }
+  .summary-box strong { color: #1a1a1a; }
+
+  .request-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 14px;
+  }
+  .request-card h2 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .field { margin-bottom: 10px; }
+  .field-label { font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+  .field-value { font-size: 14px; color: #333; }
+  .steps { padding-left: 20px; margin-top: 4px; }
+  .steps li { font-size: 14px; color: #333; margin-bottom: 3px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .tag-urgent { background: #fce4ec; color: #c62828; }
+  .tag-soon { background: #fff8e1; color: #f57f17; }
+  .tag-security { background: #e3f2fd; color: #1565c0; }
+  .time-badge { display: inline-block; background: #e8f5e9; color: #2e7d32; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-left: 4px; }
+</style>
+</head>
+<body>
+
+<h1>Platform Access &mdash; Requests for Dan</h1>
+<p class="subtitle">Each of these is a one-time action. Most take under 60 seconds. Sorted by priority.</p>
+
+<div class="summary-box">
+  <strong>Total time needed from Dan: ~10 minutes across two conversations.</strong><br>
+  Items 1&ndash;2 unblock this month's impressions report. Items 3&ndash;5 unblock automation and improve security.
+</div>
+
+<!-- 1. YOUTUBE -->
+<div class="request-card">
+  <h2>1. YouTube Studio &mdash; Manager Access for Bea <span class="tag tag-urgent">Blocks report</span> <span class="time-badge">30 sec</span></h2>
+  <div class="field">
+    <div class="field-label">What to do</div>
+    <ol class="steps">
+      <li>Go to <strong>studio.youtube.com</strong></li>
+      <li>Click <strong>Settings</strong> (bottom-left gear icon)</li>
+      <li>Click <strong>Permissions</strong></li>
+      <li>Click <strong>Invite</strong></li>
+      <li>Enter Bea's email &rarr; set role to <strong>Manager</strong></li>
+      <li>Click <strong>Save</strong></li>
+    </ol>
+  </div>
+  <div class="field">
+    <div class="field-label">What this unblocks</div>
+    <div class="field-value">Bea can pull monthly YouTube views for the impressions report. Also unblocks the YouTube auto-reply bot that replaces the $200/mo Make.com automation.</div>
+  </div>
+</div>
+
+<!-- 2. SUBSTACK -->
+<div class="request-card">
+  <h2>2. Substack &mdash; Editor Access for Bea <span class="tag tag-urgent">Blocks report</span> <span class="time-badge">30 sec</span></h2>
+  <div class="field">
+    <div class="field-label">What to do</div>
+    <ol class="steps">
+      <li>Go to Substack &rarr; <strong>Settings</strong></li>
+      <li>Click <strong>Publication</strong> &rarr; <strong>Team</strong></li>
+      <li>Click <strong>Invite</strong></li>
+      <li>Enter Bea's email &rarr; set role to <strong>Editor</strong></li>
+    </ol>
+  </div>
+  <div class="field">
+    <div class="field-label">What this unblocks</div>
+    <div class="field-value">Bea can see stats (open rates, web views) for the monthly impressions report. Editor role cannot publish or change settings.</div>
+  </div>
+</div>
+
+<!-- 3. INSTAGRAM -->
+<div class="request-card">
+  <h2>3. Instagram &mdash; Connect to Facebook Business Suite <span class="tag tag-soon">For automation</span> <span class="time-badge">2 min</span></h2>
+  <div class="field">
+    <div class="field-label">What to do</div>
+    <ol class="steps">
+      <li>Open Instagram app &rarr; <strong>Settings</strong> &rarr; <strong>Account Center</strong></li>
+      <li>Under <strong>Accounts</strong>, confirm the coachdango IG is linked to the CoachDanGo Facebook Page</li>
+      <li>Confirm the connected Page is managed through <strong>Meta Business Suite</strong></li>
+    </ol>
+  </div>
+  <div class="field">
+    <div class="field-label">What this unblocks</div>
+    <div class="field-value">Enables the Instagram Graph API so we can pull impressions automatically (no more manual screenshots). Also lets Bea manage IG posting via Business Suite instead of using Dan's password directly.</div>
+  </div>
+  <div class="field">
+    <div class="field-label">Note</div>
+    <div class="field-value">Not urgent for this month &mdash; Bea can pull from the app manually. This is for automating the process going forward.</div>
+  </div>
+</div>
+
+<!-- 4. META BUSINESS VERIFICATION -->
+<div class="request-card">
+  <h2>4. Meta Business Verification &mdash; Provide Company Documents <span class="tag tag-soon">For security + API</span> <span class="time-badge">5 min</span></h2>
+  <div class="field">
+    <div class="field-label">What to provide</div>
+    <div class="field-value">Go Fitness Inc. documents &mdash; any <strong>one</strong> of:</div>
+    <ol class="steps">
+      <li>Articles of incorporation</li>
+      <li>Business license</li>
+      <li>Tax document (showing business name + address)</li>
+      <li>Utility bill (showing business name + address)</li>
+    </ol>
+  </div>
+  <div class="field">
+    <div class="field-label">What this unblocks</div>
+    <div class="field-value">Full Business Manager trust level &mdash; protects the ad account from arbitrary Meta restrictions. Required for full Instagram API access. Emil handles the upload once the document is provided. 2&ndash;5 business days to process.</div>
+  </div>
+</div>
+
+<!-- 5. ROLE-BASED ACCESS -->
+<div class="request-card">
+  <h2>5. Instagram + TikTok &mdash; Approve Role-Based Access for Bea <span class="tag tag-security">Security upgrade</span> <span class="time-badge">Decision only</span></h2>
+  <div class="field">
+    <div class="field-label">What to approve</div>
+    <div class="field-value">Move Bea from direct password access to role-based access on two platforms:</div>
+    <ol class="steps">
+      <li><strong>Instagram:</strong> Add Bea via Meta Business Suite with "Content" role &mdash; she can post but cannot change passwords, settings, or delete the account</li>
+      <li><strong>TikTok:</strong> Use a scheduling tool (Later or similar) so Bea posts through the tool instead of logging in directly</li>
+    </ol>
+  </div>
+  <div class="field">
+    <div class="field-label">Why this matters</div>
+    <div class="field-value">Bea currently has Dan's direct passwords to Instagram and TikTok. If her phone is compromised or she leaves, the accounts are exposed. Role-based access means each person has their own login, and Bea cannot change account settings. Also eliminates the VPN/geolocation flagging on TikTok.</div>
+  </div>
+  <div class="field">
+    <div class="field-label">What doesn't change</div>
+    <div class="field-value">LinkedIn (Taplio) and Twitter/X (HypeFury) are already secure &mdash; Bea accesses through tools, not passwords. No changes needed there.</div>
+  </div>
+</div>
+
+</body>
+</html>
