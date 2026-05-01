@@ -289,5 +289,101 @@
   <span style="color: #9DA7B3;">Service design methodology. Customer-facing flow (golden path) with supporting systems as parallel swim lanes. Use <code style="color: #E6EDF3; background: #1C2128; padding: 1px 4px; border-radius: 3px;">/service-blueprint</code> to regenerate from current codebase state. Essential GHL connections (solid borders) are the minimum viable integration — everything else can be migrated away.</span>
 </div>
 
+<!-- Annotation layer -->
+<div id="annotation-panel" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:100; background:#15181D; border:1px solid #30363D; border-radius:12px; padding:20px; width:400px; box-shadow:0 8px 32px rgba(0,0,0,0.6);">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+    <span id="ann-title" style="font-size:13px; font-weight:600; color:#E6EDF3;"></span>
+    <button onclick="closeAnnotation()" style="background:none; border:none; color:#6E7681; cursor:pointer; font-size:16px;">✕</button>
+  </div>
+  <textarea id="ann-text" rows="4" placeholder="Add a note or decision..."
+    style="width:100%; background:#08090B; border:1px solid #30363D; border-radius:8px; color:#E6EDF3; font-size:12px; padding:10px; resize:vertical; outline:none; font-family:Inter,system-ui;"></textarea>
+  <div style="display:flex; gap:8px; margin-top:10px;">
+    <button onclick="saveAnnotation()" style="flex:1; padding:8px; border-radius:8px; border:none; background:#4CAF50; color:#fff; font-size:12px; font-weight:600; cursor:pointer;">Save</button>
+    <button onclick="deleteAnnotation()" id="ann-delete" style="padding:8px 16px; border-radius:8px; border:1px solid #30363D; background:transparent; color:#EF5350; font-size:12px; cursor:pointer;">Delete</button>
+  </div>
+</div>
+<div id="ann-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:99;" onclick="closeAnnotation()"></div>
+
+<script>
+const STORAGE_KEY = 'hpf-blueprint-annotations';
+let currentNodeId = null;
+
+function getAnnotations() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch { return {}; }
+}
+
+function renderDots() {
+  document.querySelectorAll('.ann-dot').forEach(d => d.remove());
+  const anns = getAnnotations();
+  for (const [id, text] of Object.entries(anns)) {
+    const el = document.querySelector(`[data-ann-id="${id}"]`);
+    if (!el || !text) continue;
+    const dot = document.createElement('div');
+    dot.className = 'ann-dot';
+    dot.title = text;
+    Object.assign(dot.style, {
+      position:'absolute', top:'4px', right:'4px', width:'8px', height:'8px',
+      borderRadius:'50%', background:'#FFC107', cursor:'pointer', zIndex:'10'
+    });
+    el.style.position = 'relative';
+    el.appendChild(dot);
+  }
+}
+
+function openAnnotation(id, title) {
+  currentNodeId = id;
+  const anns = getAnnotations();
+  document.getElementById('ann-title').textContent = title;
+  document.getElementById('ann-text').value = anns[id] || '';
+  document.getElementById('ann-delete').style.display = anns[id] ? 'block' : 'none';
+  document.getElementById('annotation-panel').style.display = 'block';
+  document.getElementById('ann-overlay').style.display = 'block';
+  document.getElementById('ann-text').focus();
+}
+
+function closeAnnotation() {
+  document.getElementById('annotation-panel').style.display = 'none';
+  document.getElementById('ann-overlay').style.display = 'none';
+  currentNodeId = null;
+}
+
+function saveAnnotation() {
+  if (!currentNodeId) return;
+  const anns = getAnnotations();
+  const text = document.getElementById('ann-text').value.trim();
+  if (text) anns[currentNodeId] = text; else delete anns[currentNodeId];
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(anns));
+  renderDots();
+  closeAnnotation();
+}
+
+function deleteAnnotation() {
+  if (!currentNodeId) return;
+  const anns = getAnnotations();
+  delete anns[currentNodeId];
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(anns));
+  renderDots();
+  closeAnnotation();
+}
+
+// Make all nodes annotatable
+document.addEventListener('DOMContentLoaded', () => {
+  let i = 0;
+  document.querySelectorAll('.node, .entry, .converge').forEach(el => {
+    const id = 'node-' + (i++);
+    el.setAttribute('data-ann-id', id);
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const title = el.querySelector('.node-title')?.textContent
+        || el.querySelector('.entry-sub')?.textContent
+        || el.textContent.trim().slice(0, 40);
+      openAnnotation(id, title);
+    });
+  });
+  renderDots();
+});
+</script>
+
 </body>
 </html>
