@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NPS Survey — GHL Setup Guide for Sheena</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', -apple-system, sans-serif; background: #fff; color: #1a1a1a; max-width: 680px; margin: 0 auto; padding: 32px 20px 60px; line-height: 1.7; }
+  h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: #666; font-size: 14px; margin-bottom: 28px; }
+  h2 { font-size: 18px; font-weight: 600; margin-top: 36px; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 2px solid #2ED47A; color: #1a1a1a; }
+  h3 { font-size: 15px; font-weight: 600; margin-top: 20px; margin-bottom: 8px; }
+  p { margin-bottom: 12px; font-size: 15px; }
+  code { background: #f0f7f0; color: #1a7a3a; padding: 2px 6px; border-radius: 3px; font-size: 13px; }
+  .url-box { background: #f8f8f8; border: 1px solid #e0e0e0; border-radius: 8px; padding: 14px 16px; font-family: monospace; font-size: 13px; color: #1a7a3a; word-break: break-all; margin: 10px 0 16px; }
+  .url-box .label { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: block; }
+  ol, ul { margin-bottom: 14px; padding-left: 24px; font-size: 15px; }
+  li { margin-bottom: 8px; }
+  .step { background: #f8faf8; border: 1px solid #e8ece8; border-radius: 10px; padding: 18px 20px; margin-bottom: 14px; }
+  .step-num { display: inline-block; background: #2ED47A; color: #fff; width: 24px; height: 24px; border-radius: 50%; text-align: center; font-weight: 700; font-size: 13px; line-height: 24px; margin-right: 8px; }
+  .warning { background: #fff3e0; border: 1px solid #ffe0b2; border-radius: 8px; padding: 14px 16px; margin: 12px 0 16px; }
+  .warning-label { font-weight: 600; color: #e65100; font-size: 13px; }
+  .success { background: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 8px; padding: 14px 16px; margin: 12px 0 16px; }
+  .success-label { font-weight: 600; color: #2e7d32; font-size: 13px; }
+  .checklist { list-style: none; padding-left: 0; }
+  .checklist li { padding: 6px 0; padding-left: 28px; position: relative; }
+  .checklist li::before { content: "☐"; position: absolute; left: 4px; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 16px; font-size: 14px; }
+  th { text-align: left; padding: 8px 10px; border-bottom: 2px solid #ddd; font-weight: 600; font-size: 12px; color: #666; text-transform: uppercase; }
+  td { padding: 8px 10px; border-bottom: 1px solid #eee; }
+  hr { border: none; border-top: 1px solid #eee; margin: 28px 0; }
+  img { max-width: 100%; border-radius: 8px; border: 1px solid #e0e0e0; margin: 8px 0 12px; }
+  .tag { display: inline-block; background: #e8f5e9; color: #2e7d32; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<h1>NPS Survey — GHL Setup Guide</h1>
+<p class="subtitle">For Sheena — step-by-step instructions to wire up the NPS survey in GHL</p>
+
+<!-- ──────────────────────────────────── -->
+<h2>Overview</h2>
+<p>The NPS survey page is already built and live. This guide shows you how to connect it to GHL so clients automatically receive the survey at the right time.</p>
+
+<p><strong>What's already done:</strong></p>
+<ul>
+  <li>Survey page at <code>hpfhq.com/nps</code> — live and working</li>
+  <li>Responses automatically saved to database</li>
+  <li>Slack alerts automatically fire (promoters → #coaching-wins, detractors → #coaching-chat)</li>
+  <li>Trustpilot review flow built in for 9-10 scores</li>
+</ul>
+
+<p><strong>What you need to do:</strong></p>
+<ol>
+  <li>Update the existing GHL workflow with the correct survey link</li>
+  <li>Create the 90-day workflow</li>
+  <li>Do a one-time blast to current clients</li>
+  <li>Add cancellation stop triggers</li>
+</ol>
+
+<!-- ──────────────────────────────────── -->
+<h2>Step 1: Update "NPS Survey Blast - 1st month"</h2>
+
+<p>You already have a workflow called <strong>"NPS Survey Blast - 1st month"</strong> in GHL. It triggers when a contact gets the <span class="tag">nps-1st-month</span> tag.</p>
+
+<div class="step">
+  <p><span class="step-num">1</span> <strong>Open the workflow</strong> in GHL → Automation → "NPS Survey Blast - 1st month"</p>
+</div>
+
+<div class="step">
+  <p><span class="step-num">2</span> <strong>Click on "Send NPS Survey Email"</strong> action</p>
+</div>
+
+<div class="step">
+  <p><span class="step-num">3</span> <strong>Update the subject line</strong> to:</p>
+  <div class="url-box">
+    <span class="label">Subject</span>
+    Quick question about your coaching, {{contact.first_name}}
+  </div>
+</div>
+
+<div class="step">
+  <p><span class="step-num">4</span> <strong>Update the email body</strong> to include this link (replace the old survey link):</p>
+  <div class="url-box">
+    <span class="label">Survey Link (copy exactly)</span>
+    https://hpfhq.com/nps?email={{contact.email}}&amp;name={{contact.first_name}}&amp;coach={{contact.coach_name}}&amp;period=1
+  </div>
+  <p>Sample email body:</p>
+  <div style="background: #f8f8f8; border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px 20px; margin: 10px 0; font-size: 14px; line-height: 1.6;">
+    <p>Hey {{contact.first_name}},</p>
+    <p>You've been with us for a month now, and we'd love to hear how things are going.</p>
+    <p>It takes 30 seconds — just one quick question:</p>
+    <p><strong><a href="#" style="color: #2ED47A;">Take the 30-Second Survey →</a></strong></p>
+    <p>Your feedback helps us deliver a better coaching experience for everyone.</p>
+    <p>— The HPF Team</p>
+  </div>
+</div>
+
+<div class="step">
+  <p><span class="step-num">5</span> <strong>Add an SMS action</strong> (optional but recommended — higher open rate):</p>
+  <p>Add a new "Send SMS" action <em>before</em> the email. SMS text:</p>
+  <div class="url-box">
+    <span class="label">SMS Text</span>
+    Hey {{contact.first_name}}, quick 30-sec question about your coaching: https://hpfhq.com/nps?email={{contact.email}}&amp;name={{contact.first_name}}&amp;coach={{contact.coach_name}}&amp;period=1
+  </div>
+</div>
+
+<div class="step">
+  <p><span class="step-num">6</span> <strong>Save the workflow.</strong> Don't publish yet — test first (Step 5 below).</p>
+</div>
+
+<div class="warning">
+  <p class="warning-label">⚠️ Important: coach_name field</p>
+  <p>The <code>{{contact.coach_name}}</code> field needs to match one of: <strong>John</strong>, <strong>Bryan</strong>, or <strong>Ryan</strong> (case doesn't matter). If this custom field doesn't exist in GHL, create it, or replace with the coach's first name directly.</p>
+</div>
+
+<!-- ──────────────────────────────────── -->
+<h2>Step 2: Create 90-Day Workflow</h2>
+
+<div class="step">
+  <p><span class="step-num">1</span> <strong>Duplicate</strong> the "NPS Survey Blast - 1st month" workflow</p>
+</div>
+<div class="step">
+  <p><span class="step-num">2</span> <strong>Rename</strong> to "NPS Survey Blast - 3rd month"</p>
+</div>
+<div class="step">
+  <p><span class="step-num">3</span> <strong>Change the trigger tag</strong> from <span class="tag">nps-1st-month</span> to <span class="tag">nps-3rd-month</span></p>
+</div>
+<div class="step">
+  <p><span class="step-num">4</span> <strong>Update the survey link</strong> — change <code>period=1</code> to <code>period=2</code></p>
+  <div class="url-box">
+    <span class="label">90-day link</span>
+    https://hpfhq.com/nps?email={{contact.email}}&amp;name={{contact.first_name}}&amp;coach={{contact.coach_name}}&amp;period=2
+  </div>
+</div>
+<div class="step">
+  <p><span class="step-num">5</span> <strong>Update the subject</strong> to: "How's your coaching journey going, {{contact.first_name}}?"</p>
+</div>
+<div class="step">
+  <p><span class="step-num">6</span> <strong>Save</strong> (don't publish yet)</p>
+</div>
+
+<p><strong>Recurring every 90 days after:</strong> Create an automation that adds the <span class="tag">nps-3rd-month</span> tag every 90 days for active clients. Or create separate workflows for each period (period=3, 4, etc.) — whatever is simpler in your GHL setup.</p>
+
+<!-- ──────────────────────────────────── -->
+<h2>Step 3: Add Cancellation Stop Trigger</h2>
+
+<p>We need to prevent surveys going to cancelled clients.</p>
+
+<div class="step">
+  <p><span class="step-num">1</span> In <strong>both</strong> NPS workflows, add a new trigger: <strong>"Contact Tag Added"</strong> → tag: <span class="tag">cancelled</span></p>
+</div>
+<div class="step">
+  <p><span class="step-num">2</span> Set the action to <strong>"Remove from workflow"</strong> or <strong>"Stop"</strong></p>
+</div>
+<div class="step">
+  <p><span class="step-num">3</span> Also add stop triggers for any other cancellation tags you use (e.g., <span class="tag">churned</span>, <span class="tag">inactive</span>)</p>
+</div>
+
+<!-- ──────────────────────────────────── -->
+<h2>Step 4: Tag Automation for Milestones</h2>
+
+<p>GHL needs to automatically add NPS tags at the right time:</p>
+
+<table>
+  <tr><th>When</th><th>Tag to Add</th><th>How</th></tr>
+  <tr>
+    <td>30 days after start</td>
+    <td><span class="tag">nps-1st-month</span></td>
+    <td>Workflow triggered by onboarding date + 30 day wait</td>
+  </tr>
+  <tr>
+    <td>90 days after start</td>
+    <td><span class="tag">nps-3rd-month</span></td>
+    <td>Workflow triggered by onboarding date + 90 day wait</td>
+  </tr>
+  <tr>
+    <td>Every 90 days after</td>
+    <td><span class="tag">nps-3rd-month</span> (remove + re-add)</td>
+    <td>Recurring workflow on active client list</td>
+  </tr>
+</table>
+
+<p><strong>If you already have a milestone tagging workflow</strong>, just add the NPS tags to it. If not, create a simple one:</p>
+<ol>
+  <li>Trigger: Contact added to pipeline / payment received</li>
+  <li>Action 1: Wait 30 days → Add tag <span class="tag">nps-1st-month</span></li>
+  <li>Action 2: Wait 60 more days → Add tag <span class="tag">nps-3rd-month</span></li>
+</ol>
+
+<!-- ──────────────────────────────────── -->
+<h2>Step 5: Test Before Going Live</h2>
+
+<div class="step">
+  <p><span class="step-num">1</span> <strong>Send a test to yourself.</strong> In GHL, manually add the <span class="tag">nps-1st-month</span> tag to your own contact.</p>
+</div>
+<div class="step">
+  <p><span class="step-num">2</span> <strong>Check your email/SMS</strong> — click the survey link.</p>
+</div>
+<div class="step">
+  <p><span class="step-num">3</span> <strong>Complete the survey</strong> — enter a biggest win, score 10, submit.</p>
+</div>
+<div class="step">
+  <p><span class="step-num">4</span> <strong>Check Slack</strong> — you should see a message in <code>#coaching-wins</code>.</p>
+</div>
+<div class="step">
+  <p><span class="step-num">5</span> <strong>Check the tracking page</strong> — go to <code>hpfhq.com/team/fulfillment</code> → click "NPS Tracking" (or go directly to <code>hpfhq.com/team/fulfillment/nps</code>). Your test response should appear.</p>
+</div>
+
+<div class="success">
+  <p class="success-label">✅ If all 5 checks pass, publish both workflows.</p>
+</div>
+
+<!-- ──────────────────────────────────── -->
+<h2>Step 6: Blast to Current Clients</h2>
+
+<p>After the workflows are published and tested, send the survey to all existing active clients:</p>
+
+<div class="step">
+  <p><span class="step-num">1</span> Go to <strong>Contacts</strong> in GHL</p>
+</div>
+<div class="step">
+  <p><span class="step-num">2</span> <strong>Filter:</strong> contacts with tag <code>active-client</code> (or your equivalent) AND <strong>without</strong> tag <code>nps-1st-month</code></p>
+</div>
+<div class="step">
+  <p><span class="step-num">3</span> <strong>Select all</strong> filtered contacts</p>
+</div>
+<div class="step">
+  <p><span class="step-num">4</span> <strong>Bulk action → Add tag</strong> → <span class="tag">nps-1st-month</span></p>
+</div>
+<div class="step">
+  <p><span class="step-num">5</span> This triggers the "NPS Survey Blast - 1st month" workflow for all of them</p>
+</div>
+
+<div class="warning">
+  <p class="warning-label">⚠️ Do this during business hours (not late at night)</p>
+  <p>The SMS will go out immediately. Best time: weekday morning or early afternoon.</p>
+</div>
+
+<!-- ──────────────────────────────────── -->
+<h2>Where to See Results</h2>
+
+<table>
+  <tr><th>What</th><th>Where</th></tr>
+  <tr><td>Real-time alerts (9-10 scores)</td><td>Slack <code>#coaching-wins</code></td></tr>
+  <tr><td>Detractor alerts (1-6 scores)</td><td>Slack <code>#coaching-chat</code> (tags John)</td></tr>
+  <tr><td>All responses + scores</td><td><code>hpfhq.com/team/fulfillment/nps</code></td></tr>
+  <tr><td>How the system works</td><td><code>hpfhq.com/nps-guide.html</code></td></tr>
+  <tr><td>Survey preview</td><td><code>hpfhq.com/nps?email=test@test.com&amp;name=Test</code></td></tr>
+</table>
+
+<!-- ──────────────────────────────────── -->
+<h2>Checklist</h2>
+<ul class="checklist">
+  <li>Update "NPS Survey Blast - 1st month" with new link + subject</li>
+  <li>Add SMS action to 1st month workflow</li>
+  <li>Create "NPS Survey Blast - 3rd month" workflow</li>
+  <li>Add cancellation stop triggers to both workflows</li>
+  <li>Create/update milestone tagging automation</li>
+  <li>Test: tag yourself → receive survey → complete it → check Slack + tracking page</li>
+  <li>Publish both workflows</li>
+  <li>Blast: bulk-tag active clients with nps-1st-month</li>
+</ul>
+
+<hr>
+<p style="color: #999; font-size: 13px; text-align: center;">
+  NPS GHL Setup Guide — May 2026<br>
+  Questions? Message Emil on Slack.
+</p>
+
+</body>
+</html>
