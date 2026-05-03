@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>COMSAT v3 — Tile mocks</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root {
+    --bg: #08090b;
+    --panel: #0e1014;
+    --text: #e6e8eb;
+    --muted: #6b7079;
+    --rim: 4px;
+    --line: rgba(255, 255, 255, 0.08);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 14px/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+    padding: 32px 24px;
+  }
+  h1 { font-size: 20px; margin: 0 0 8px; letter-spacing: 0.02em; }
+  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--muted); margin: 28px 0 10px; font-weight: 600; }
+  h3 { font-size: 14px; margin: 20px 0 8px; color: #cbd0d8; }
+  p { margin: 0 0 12px; color: #c4c8cf; max-width: 760px; }
+  code, .mono {
+    font-family: "SF Mono", "Menlo", monospace;
+    font-size: 12px;
+    color: #cdd2dc;
+  }
+  hr { border: 0; border-top: 1px solid var(--line); margin: 32px 0; }
+
+  .lede {
+    display: flex;
+    gap: 24px;
+    align-items: baseline;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .lede-stamp { font-size: 11px; color: var(--muted); }
+
+  /* ========== layout ========== */
+  .stage {
+    display: grid;
+    grid-template-columns: minmax(280px, 1fr) 2fr;
+    gap: 32px;
+    margin-top: 12px;
+  }
+  @media (max-width: 840px) {
+    .stage { grid-template-columns: 1fr; }
+  }
+  .stage-frame {
+    background: #0a0c10;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .stage-frame caption {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    margin-bottom: 12px;
+  }
+
+  /* ========== shared tile chrome ========== */
+  .tile {
+    background: var(--panel);
+    border-left: var(--rim) solid var(--tile-color, #00ACC1);
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+  }
+  .tile-glyph-corner {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  /* ========== mini-tile (vertical-collapsed) ========== */
+  .sidebar-strip {
+    width: 80px;
+    background: #06080b;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .sidebar-strip .usage-mini {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-bottom: 6px;
+    padding: 4px 6px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    font-size: 10px;
+    color: var(--muted);
+  }
+  .sidebar-strip .usage-mini b { color: var(--text); font-weight: 600; }
+  .mini-tile {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto;
+    background: var(--panel);
+    border-left: var(--rim) solid var(--tile-color, #00ACC1);
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    border-right: 1px solid rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: rgba(255, 255, 255, 0.95);
+    cursor: pointer;
+    position: relative;
+    transition: transform 120ms;
+  }
+  .mini-tile:hover { transform: translateX(2px); }
+  .mini-tile .urgent-dot {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ff4d4f;
+    box-shadow: 0 0 6px #ff4d4f;
+  }
+  .mini-tile .tier-chip {
+    position: absolute;
+    bottom: 4px;
+    left: 6px;
+    font-size: 9px;
+    color: var(--muted);
+    font-family: var(--mono, monospace);
+  }
+  .mini-tile.dead { opacity: 0.4; filter: grayscale(0.6); }
+  .mini-tile.cooking::after {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    border-top-color: rgba(46, 212, 122, 0.55);
+    animation: rotor 1.4s linear infinite;
+  }
+  @keyframes rotor { to { transform: rotate(360deg); } }
+
+  /* ========== popover (click on a mini-tile) ========== */
+  .popover-wrap { position: relative; }
+  .popover {
+    position: absolute;
+    top: 0;
+    left: 100px;
+    width: 320px;
+    background: var(--panel);
+    border-left: var(--rim) solid var(--tile-color, #00ACC1);
+    border-radius: 6px;
+    padding: 10px 12px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+    border-top: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .popover h4 { font-size: 13px; margin: 0 0 4px; }
+  .popover .sub { font-size: 11px; color: var(--muted); font-style: italic; margin-bottom: 6px; }
+  .popover .perm-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 8px;
+    background: #1a1f27;
+    border-radius: 4px;
+    font-size: 12px;
+    margin: 6px 0;
+    font-family: var(--mono, monospace);
+  }
+  .popover .perm-row button {
+    margin-left: auto;
+    padding: 2px 8px;
+    font-size: 10px;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+  }
+  .popover .perm-row .y { background: #2ed47a; color: #000; }
+  .popover .perm-row .n { background: #ff4d4f; color: #000; }
+  .popover .focus-btn {
+    width: 100%;
+    padding: 6px;
+    margin-top: 8px;
+    background: rgba(0, 172, 193, 0.12);
+    border: 1px solid var(--tile-color, #00ACC1);
+    color: var(--tile-color, #00ACC1);
+    border-radius: 4px;
+    font-size: 11px;
+    cursor: pointer;
+  }
+
+  /* ========== detail stack (fullscreen card) ========== */
+  .full-card {
+    width: 100%;
+    max-width: 460px;
+    background: var(--panel);
+    border-left: var(--rim) solid var(--tile-color, #E53935);
+    border-top: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 12px 14px;
+    position: relative;
+    color: var(--text);
+  }
+  .full-card .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .full-card .name { font-size: 13px; font-weight: 600; letter-spacing: 0.04em; }
+  .full-card .badges { display: flex; gap: 4px; font-size: 12px; }
+  .full-card .sub { font-size: 11px; color: var(--muted); font-style: italic; margin-bottom: 8px; }
+  .full-card .row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    font-size: 12px;
+    color: #c4c8cf;
+    font-family: var(--mono, monospace);
+  }
+  .full-card .row .icon { width: 18px; text-align: center; color: var(--muted); }
+  .full-card .row .age { margin-left: auto; color: var(--muted); font-size: 11px; }
+  .full-card .divider {
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    margin: 8px -4px;
+  }
+  .full-card .stack-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--muted);
+    margin: 8px 0 4px;
+  }
+  .full-card .ascii-empty {
+    font-family: "SF Mono", monospace;
+    font-size: 10px;
+    line-height: 1.4;
+    color: rgba(110, 115, 125, 0.45);
+    margin: 4px 0 6px;
+    white-space: pre;
+  }
+  .full-card .summary {
+    font-size: 12px;
+    color: #c4c8cf;
+    line-height: 1.5;
+    margin: 4px 0;
+  }
+  .full-card .ctx-bar {
+    margin-top: 10px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .full-card .ctx-fill {
+    height: 100%;
+    width: 39%;
+    background: #2ed47a;
+  }
+  .full-card .ctx-pct { font-size: 10px; color: var(--muted); margin-top: 2px; text-align: right; }
+
+  /* ========== ascii block ========== */
+  .ascii-block {
+    background: #06080b;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 16px 18px;
+    font-family: "SF Mono", monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #c4c8cf;
+    white-space: pre;
+    overflow-x: auto;
+  }
+</style>
+</head>
+<body>
+
+<div class="lede">
+  <h1>COMSAT v3 — Tile mocks</h1>
+  <span class="lede-stamp">2026-05-03 · plan: sorry-start-again-these-dazzling-lamport.md</span>
+</div>
+
+<p>
+Two layouts to nail down before I touch React. Below: live HTML version of each
+plus matching ASCII for offline review. Approve and I move to step 2 (workspace
+reset) → step 6 (mini-tile build) → step 7 (detail stack).
+</p>
+
+<hr />
+
+<h2>1 · Vertical-collapsed mini-tile</h2>
+
+<p>
+Sidebar is ~80px wide. 12 mini-tiles stack inside it. Each is 60×60: colored
+left rim, centered status glyph, optional urgent dot top-right, optional tier
+chip bottom-left. Cooking tiles get a rotating green ring around the glyph so
+"this is the one running" is unmistakable. Click any mini-tile → popover anchors
+to its right edge with the full card (status, inline permission row, focus
+button). Click outside the popover or hit Esc to close.
+</p>
+
+<div class="stage">
+  <div class="stage-frame">
+    <caption>HTML · sidebar-collapsed (left) + popover open on HPF SALES</caption>
+    <div style="display: flex; gap: 12px; align-items: flex-start;">
+      <div class="sidebar-strip">
+        <div class="usage-mini"><span>5h</span><b>20%</b></div>
+        <div class="usage-mini"><span>Wk</span><b>89%</b></div>
+        <div class="popover-wrap">
+          <div class="mini-tile" style="--tile-color: #E53935;">
+            ?<span class="urgent-dot"></span>
+          </div>
+          <div class="popover" style="--tile-color: #E53935;">
+            <h4>HPF SALES · 7B</h4>
+            <div class="sub">Categorize repos and fix UI deadspace</div>
+            <div class="perm-row">
+              <span>git push origin main</span>
+              <button class="y">Y</button>
+              <button class="n">N</button>
+            </div>
+            <div class="row" style="font-size: 11px;">●●●●● T3 · Thinking · 19h ago</div>
+            <button class="focus-btn">Focus VS Code window →</button>
+          </div>
+        </div>
+        <div class="mini-tile cooking" style="--tile-color: #00ACC1;">▣</div>
+        <div class="mini-tile" style="--tile-color: #460B38;">✓</div>
+        <div class="mini-tile" style="--tile-color: #FB8C00;">⛔</div>
+        <div class="mini-tile dead" style="--tile-color: #FF6F61;">💀</div>
+        <div class="mini-tile" style="--tile-color: #2E7D32;">·</div>
+        <div class="mini-tile" style="--tile-color: #FD1C8B;">·</div>
+        <div class="mini-tile" style="--tile-color: #1E88E5;">✓</div>
+        <div class="mini-tile" style="--tile-color: #009688;">
+          <span class="tier-chip">T3</span>·
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h3>ASCII reference</h3>
+    <pre class="ascii-block">┌──────┐
+│▓▓ 5h │  20%
+└──────┘
+┌──────┐
+│▓▓ Wk │  89% red
+└──────┘
+
+┌──────┐  ◄─ HPF SALES (red rim, urgent dot)
+│▓▓  ?•│      click → popover opens at right
+└──────┘
+┌──────┐
+│▓▓  ▣│  ◄─ COMSAT (cyan, cooking — rotating ring)
+└──────┘
+┌──────┐
+│▓▓  ✓│  ◄─ Overmind (purple, awaiting)
+└──────┘
+┌──────┐
+│▓▓ ⛔│  ◄─ HPF Marketing (orange, blocked)
+└──────┘
+┌──────┐
+│▓▓  💀│ ◄─ HPF Setters (faded, dead session)
+└──────┘
+        ⋮  (12 total)</pre>
+  </div>
+</div>
+
+<hr />
+
+<h2>2 · Fullscreen / spacious card detail stack</h2>
+
+<p>
+Card is ~430×340 at MBP-17 baseline. Below the existing tool row + status row,
+fill the empty space with three info-bearing blocks: <b>Recent tools</b> (last
+3, with file paths and ages), <b>Todos</b> (top 2 in-progress titles), <b>Summary</b>
+(Haiku-generated, 3 lines). Empty slots use ASCII placeholder dots so a brand-new
+tile never looks bare.
+</p>
+
+<div class="stage">
+  <div class="stage-frame">
+    <caption>HTML · full card with detail stack</caption>
+    <div class="full-card" style="--tile-color: #E53935;">
+      <span class="tile-glyph-corner">?</span>
+      <div class="head">
+        <span class="name">HPF SALES</span>
+        <span class="badges">±13 · 🔥 🧍</span>
+      </div>
+      <div class="sub">Categorize repos and fix UI deadspace</div>
+      <div class="row">
+        <span class="icon">▶</span>
+        <span>git -C /Users/emil/Code/hpf...</span>
+        <span class="age">1m</span>
+      </div>
+      <div class="row">
+        <span class="icon">●●●●●</span>
+        <span>T3 · Thinking</span>
+        <span class="age">19h 32m</span>
+      </div>
+      <div class="divider"></div>
+      <div class="stack-label">Recent tools</div>
+      <div class="row"><span class="icon">📝</span><span>components/dashboard.tsx</span><span class="age">42s</span></div>
+      <div class="row"><span class="icon">▶</span><span>npm run typecheck</span><span class="age">1m</span></div>
+      <div class="row"><span class="icon">📖</span><span>lib/metrics.ts</span><span class="age">2m</span></div>
+      <div class="stack-label">Todos · 4 in-progress, 7 pending</div>
+      <div class="row"><span class="icon">◐</span><span>Fix MoM calculation drift</span></div>
+      <div class="row"><span class="icon">◐</span><span>Add Setter timezone column</span></div>
+      <div class="stack-label">Summary · Haiku · 3min ago</div>
+      <div class="summary">
+        Investigating dashboard discrepancy between MoM Calls Booked numbers
+        and underlying Sheet — likely TZ rounding error in week-boundary
+        calculation. Reverting to UTC eval before next ship.
+      </div>
+      <div class="ctx-bar"><div class="ctx-fill"></div></div>
+      <div class="ctx-pct">39%</div>
+    </div>
+  </div>
+
+  <div>
+    <h3>Empty-data fallbacks (ASCII)</h3>
+    <p>Brand-new tile, no tool history yet:</p>
+    <pre class="ascii-block">Recent tools:
+  · · · · · · · · · · · · · · · ·
+  · · · ·  no recent activity · · ·
+  · · · · · · · · · · · · · · · ·
+
+Todos:
+  ─ no active todos ─
+
+Summary (no signal yet):
+  · · · · · · · · · · · · · · · ·
+  · · · ·  awaiting first turn · ·
+  · · · · · · · · · · · · · · · ·</pre>
+
+    <p>"Just-spawned" mid-state — has tools, no summary yet:</p>
+    <pre class="ascii-block">Recent tools:
+  ▶ npm install                     8s
+  · ·  recent activity, no detail yet
+  · ·
+
+Todos: ─ none ─
+
+Summary: ⟳ generating via Haiku…</pre>
+  </div>
+</div>
+
+<hr />
+
+<h2>3 · Decisions baked in</h2>
+<ul>
+  <li><b>12 cards is the design baseline</b>, not a hard cap. Grid is <code>auto-fit minmax(430px, 1fr)</code> so >12 wraps cleanly with vertical scroll.</li>
+  <li><b>Mini-tile labels show only on hover.</b> Color rim + glyph carry the at-a-glance signal. Names below would clutter and force horizontal scroll.</li>
+  <li><b>Cooking gets the rotating ring</b>, not just a status word. It's the one state where "currently running" matters most for routing attention — it earns the animation budget.</li>
+  <li><b>ASCII fallbacks render at 45% opacity</b> to read as background noise, not as content. Cards never look broken; they just look quiet.</li>
+  <li><b>Popover anchors right-of-strip</b>, never overlaps the strip itself. So you can scan the strip while a popover is open.</li>
+</ul>
+
+<p>
+After approval: build sequence is workspace reset (step 2) → window class +
+hotkey + launch menu fix (3-5) → mini-tile + popover + detail stack (6-7).
+~4 hours focused.
+</p>
+
+</body>
+</html>
