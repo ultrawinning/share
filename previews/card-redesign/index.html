@@ -37,6 +37,7 @@
   .ch-neutral { background: #1C2128; border-color: #30363D; border-left: 4px solid #30363D; }
   .ch-won { background: linear-gradient(135deg, rgba(76,175,80,0.1) 0%, #1C2128 50%); border-color: rgba(76,175,80,0.4); border-left: 4px solid #4CAF50; }
   .ch-recovery { background: linear-gradient(135deg, rgba(171,71,188,0.06) 0%, #1C2128 35%); border-color: rgba(171,71,188,0.3); border-left: 4px solid #AB47BC; }
+  .ch-untouched { background: linear-gradient(135deg, rgba(255,152,0,0.07) 0%, #1C2128 35%); border-color: rgba(255,152,0,0.3); border-left: 4px solid #FF9800; }
 
   /* ── Status labels ── */
   .sl { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
@@ -46,6 +47,7 @@
   .sl-fresh { background: rgba(66,165,245,0.15); color: #42A5F5; }
   .sl-active { background: rgba(38,166,154,0.15); color: #26A69A; }
   .sl-recovery { background: rgba(171,71,188,0.15); color: #AB47BC; }
+  .sl-untouched { background: rgba(255,152,0,0.15); color: #FF9800; }
   .sl-won { background: rgba(76,175,80,0.2); color: #4CAF50; }
   .sl-lost { background: rgba(120,144,156,0.15); color: #78909C; }
 
@@ -366,8 +368,8 @@
   </div>
 
   <div>
-    <div class="card-label">No confirmation — email blast, unclaimed</div>
-    <div class="card ch-overdue">
+    <div class="card-label">Not contacted — nobody reached out yet</div>
+    <div class="card ch-untouched">
       <div class="r1">
         <div class="left">
           <span class="call-time">4:00 PM</span>
@@ -384,7 +386,7 @@
             </span>
           </span>
           <span class="name">Sarah Chen</span>
-          <span class="sl sl-overdue">No Confirmation</span>
+          <span class="sl sl-untouched">Not Contacted</span>
         </div>
         <div class="right">
           <span style="font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;background:rgba(97,97,97,0.15);color:#9E9E9E">UNCLAIMED</span>
@@ -479,7 +481,7 @@
             <span class="pi pi-phone">&#9742;<span class="tt">+1 (305) 555-1234 · Tap to call</span></span>
           </div>
           <div class="info-icons">
-            <span class="ei">💲<span class="tt">Objection: Price</span></span>
+            <span class="ei">🗣️<span class="tt">Objection: Price</span></span>
             <span class="ei">🔄<span class="tt">Rescheduled 1x</span></span>
           </div>
         </div>
@@ -517,7 +519,7 @@
             <span class="pi pi-phone">&#9742;<span class="tt">+1 (212) 555-9999 · Tap to call</span></span>
           </div>
           <div class="info-icons">
-            <span class="ei">📹<span class="tt">SendBlue video sent May 4</span></span>
+            <span class="ei">📨<span class="tt">Last outreach: Phone call May 4<br>SendBlue tracking: pending API integration</span></span>
           </div>
         </div>
         <span class="act act-y">📞 4d</span>
@@ -555,7 +557,7 @@
             <span class="pi pi-phone">&#9742;<span class="tt">+61 4 1234 5678 · Tap to call</span></span>
           </div>
           <div class="info-icons">
-            <span class="ei">⏰<span class="tt">Objection: Timing</span></span>
+            <span class="ei">🗣️<span class="tt">Objection: Timing</span></span>
           </div>
         </div>
         <span class="act act-g">💬 2d</span>
@@ -592,7 +594,7 @@
             <span class="pi pi-phone">&#9742;<span class="tt">+1 (647) 555-3333</span></span>
           </div>
           <div class="info-icons">
-            <span class="ei">👥<span class="tt">Objection: Spouse/Partner</span></span>
+            <span class="ei">🗣️<span class="tt">Objection: Spouse/Partner</span></span>
           </div>
         </div>
         <span class="act act-o">✉️ 6d</span>
@@ -1024,13 +1026,30 @@
 <h3>Design Notes</h3>
 <p class="note">
   <strong>Qual indicator:</strong> Closer Today/Pipeline uses three-bar (all 3 signals relevant post-call). Setter Inbox/Pipeline uses single dot (only pre-call data exists). Won cards always show three-bar (full journey visible).<br><br>
-  <strong>Setter badge:</strong> On Closer Today, shows setter name (replaces SET CALL + 👤). Tooltip shows full name + booking date + channel. When no setter: shows UNCLAIMED.<br><br>
-  <strong>Platform icons:</strong> Left side under name. IG (gradient), LI (blue), FB (blue), Meta AD (orange), MC (purple ManyChat), Email (grey), Phone (teal), YT (red), X (dark). Clickable where applicable (IG → DM, Phone → tel:).<br><br>
-  <strong>NLS number:</strong> In qual summary line on closer cards: "85 · CEO · $150K+ · Urgent". Colored by tier (green >70, amber 50-70, red <50, — if no data). Hover for explanation.<br><br>
-  <strong>Activity badge:</strong> Only surviving text badge. Shows last contact method + days ago. Color = urgency (green ≤3d, yellow 4-7d, orange 8-14d, red 15d+).
+  <strong>Setter badge:</strong> Shows setter name (replaces SET CALL + 👤). Tooltip: full name + booking date + channel. No setter → UNCLAIMED.<br><br>
+  <strong>Platform icons:</strong> Left under name. IG (gradient), LI (blue), Meta AD (orange), MC (purple), Email (grey), Phone (teal), YT (red). Clickable where applicable.<br><br>
+  <strong>NLS number:</strong> In qual summary line: "85 · CEO · $150K+ · Urgent". Green >70, amber 50-70, red <50, — if no data.<br><br>
+  <strong>Objection:</strong> Single 🗣️ emoji for all objection types. Tooltip shows which: Price, Timing, Spouse, Think About It, Not Ready, Other.<br><br>
+  <strong>Activity badge:</strong> Only text badge. Last contact method + days ago. Green ≤3d, yellow 4-7d, orange 8-14d, red 15d+.<br><br>
+  <strong>SendBlue:</strong> Pending API integration research. Once connected, can auto-detect video/text confirmations by phone number.
 </p>
 
-<p style="font-size:12px;color:#6E7681;text-align:center;margin-top:24px">HPFHQ Lead Card Redesign v3 — May 2026 · Hover everything for tooltips</p>
+<h3>Color System (v3.1 — no overlaps)</h3>
+<table class="info-table" style="max-width:600px">
+  <thead><tr><th>Color</th><th>Meaning</th><th>Where</th></tr></thead>
+  <tbody>
+    <tr><td style="border-left:3px solid #4CAF50;padding-left:8px"><strong>Green</strong></td><td>Confirmed / Won</td><td>Closer Today, Setter Booked, Outcomes</td></tr>
+    <tr><td style="border-left:3px solid #FFC107;padding-left:8px"><strong>Yellow</strong></td><td>Pending Reply</td><td>Closer Today (sent, awaiting)</td></tr>
+    <tr><td style="border-left:3px solid #FF9800;padding-left:8px"><strong>Orange</strong></td><td>Not Contacted</td><td>Closer Today (nobody reached out yet)</td></tr>
+    <tr><td style="border-left:3px solid #42A5F5;padding-left:8px"><strong>Blue</strong></td><td>Fresh / New</td><td>Setter Inbox (speed to lead)</td></tr>
+    <tr><td style="border-left:3px solid #26A69A;padding-left:8px"><strong>Teal</strong></td><td>Active / On Track</td><td>Pipeline (on schedule)</td></tr>
+    <tr><td style="border-left:3px solid #AB47BC;padding-left:8px"><strong>Purple</strong></td><td>Recovery</td><td>Cancel / no-show with attempt tracking</td></tr>
+    <tr><td style="border-left:3px solid #EF5350;padding-left:8px"><strong>Red</strong></td><td>Overdue / Urgent</td><td>Pipeline (past FU date, stale &gt;7d)</td></tr>
+    <tr><td style="border-left:3px solid #30363D;padding-left:8px"><strong>Grey</strong></td><td>Neutral / Done</td><td>Default resting state, submitted</td></tr>
+  </tbody>
+</table>
+
+<p style="font-size:12px;color:#6E7681;text-align:center;margin-top:24px">HPFHQ Lead Card Redesign v3.1 — May 2026 · Hover everything for tooltips</p>
 
 </div>
 </body>
