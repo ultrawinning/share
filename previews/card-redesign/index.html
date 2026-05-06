@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lead Card Redesign — Badge Audit</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0D1117; color: #E6EDF3; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; padding: 32px; line-height: 1.5; }
+  h1 { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+  h2 { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 600; margin: 40px 0 16px; color: #9DA7B3; }
+  h3 { font-size: 14px; font-weight: 600; margin: 24px 0 12px; color: #8B949E; text-transform: uppercase; letter-spacing: 0.05em; }
+  .subtitle { color: #8B949E; font-size: 14px; margin-bottom: 32px; }
+  .section { max-width: 900px; margin: 0 auto; }
+
+  /* ── Card shells ── */
+  .card-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 16px 0; }
+  @media (max-width: 800px) { .card-compare { grid-template-columns: 1fr; } }
+  .card-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #6E7681; margin-bottom: 8px; }
+
+  /* ── Current card style ── */
+  .card-current {
+    background: #1C2128;
+    border: 1px solid #30363D;
+    border-left: 4px solid #26A69A;
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .card-current .row1 { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .card-current .row2 { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+  .qual-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+  .qual-green { background: #4CAF50; }
+  .qual-amber { background: #FFC107; }
+  .lead-name { font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .icon-link { font-size: 13px; text-decoration: none; cursor: pointer; flex-shrink: 0; }
+  .badge { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px; white-space: nowrap; }
+  .badge-activity-green { background: rgba(76,175,80,0.12); color: #4CAF50; }
+  .badge-activity-yellow { background: rgba(255,193,7,0.12); color: #FFC107; }
+  .badge-activity-orange { background: rgba(255,152,0,0.12); color: #FB8C00; }
+  .badge-activity-red { background: rgba(239,83,80,0.12); color: #EF5350; }
+  .badge-source-paid { background: rgba(251,140,0,0.12); color: #FFA726; }
+  .badge-source-organic { background: rgba(66,165,245,0.08); color: #9DA7B3; }
+  .badge-income { background: rgba(76,175,80,0.08); color: #4CAF50; }
+  .badge-age { background: rgba(230,237,243,0.05); color: #8B949E; }
+  .badge-objection { background: rgba(255,167,38,0.12); color: #FFA726; }
+  .badge-closer { background: rgba(66,165,245,0.08); color: #9DA7B3; }
+  .badge-setter { background: rgba(230,237,243,0.05); color: #8B949E; }
+  .badge-paid { background: rgba(251,140,0,0.15); color: #FFA726; font-weight: 600; }
+  .badge-resched { background: rgba(255,152,0,0.15); color: #FFA726; font-weight: 600; }
+  .badge-unlinked { background: rgba(255,152,0,0.12); color: #FFA726; font-weight: 600; }
+  .fu-date { font-size: 11px; font-weight: 600; padding: 2px 6px; border-radius: 4px; white-space: nowrap; }
+  .fu-overdue { background: rgba(239,83,80,0.12); color: #EF5350; }
+  .fu-today { background: rgba(255,193,7,0.12); color: #FFB74D; }
+  .fu-future { color: #8B949E; }
+  .call-badge { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px; background: rgba(66,165,245,0.12); color: #42A5F5; white-space: nowrap; }
+  .chevron { color: #6E7681; font-size: 12px; flex-shrink: 0; }
+  .cash { font-size: 11px; font-weight: 600; color: #4CAF50; }
+
+  /* ── NEW card style ── */
+  .card-new {
+    border-radius: 8px;
+    padding: 12px 14px;
+    border: 1px solid;
+    position: relative;
+    transition: all 0.2s;
+  }
+  .card-confirmed {
+    background: linear-gradient(135deg, rgba(76,175,80,0.06) 0%, #1C2128 40%);
+    border-color: rgba(76,175,80,0.35);
+    border-left: 4px solid #4CAF50;
+  }
+  .card-unconfirmed {
+    background: linear-gradient(135deg, rgba(255,193,7,0.06) 0%, #1C2128 40%);
+    border-color: rgba(255,193,7,0.3);
+    border-left: 4px solid #FFC107;
+  }
+  .card-overdue {
+    background: linear-gradient(135deg, rgba(239,83,80,0.06) 0%, #1C2128 40%);
+    border-color: rgba(239,83,80,0.3);
+    border-left: 4px solid #EF5350;
+  }
+  .card-neutral {
+    background: #1C2128;
+    border-color: #30363D;
+    border-left: 4px solid #30363D;
+  }
+  .card-new .row1 { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .card-new .left { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .card-new .right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .card-new .row2 { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; }
+  .emoji-corner { display: flex; align-items: center; gap: 4px; }
+  .emoji-icon {
+    font-size: 11px;
+    cursor: help;
+    opacity: 0.7;
+    transition: opacity 0.15s;
+    position: relative;
+  }
+  .emoji-icon:hover { opacity: 1; }
+  .emoji-icon .tooltip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2D333B;
+    color: #E6EDF3;
+    font-size: 11px;
+    font-weight: 400;
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    pointer-events: none;
+  }
+  .emoji-icon:hover .tooltip { display: block; }
+  .status-indicator {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+  .status-confirmed { background: rgba(76,175,80,0.15); color: #4CAF50; }
+  .status-unconfirmed { background: rgba(255,193,7,0.15); color: #FFC107; }
+  .status-overdue { background: rgba(239,83,80,0.15); color: #EF5350; }
+  .stale-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    display: inline-block; flex-shrink: 0;
+  }
+
+  /* ── Badge audit table ── */
+  .audit-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  .audit-table th { text-align: left; padding: 8px 12px; border-bottom: 2px solid #30363D; color: #8B949E; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .audit-table td { padding: 8px 12px; border-bottom: 1px solid #21262D; vertical-align: top; }
+  .audit-table tr:hover { background: rgba(255,255,255,0.02); }
+  .audit-table .badge-cell { white-space: nowrap; }
+  .tag { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px; }
+  .tag-keep { background: rgba(76,175,80,0.15); color: #4CAF50; }
+  .tag-compress { background: rgba(66,165,245,0.15); color: #42A5F5; }
+  .tag-card { background: rgba(171,71,188,0.15); color: #AB47BC; }
+  .tag-remove { background: rgba(239,83,80,0.15); color: #EF5350; }
+  .tag-expand { background: rgba(255,193,7,0.15); color: #FFC107; }
+  .tag-new { background: rgba(38,166,154,0.15); color: #26A69A; }
+  .example { color: #6E7681; font-style: italic; }
+  .decision { display: inline-block; padding: 3px 8px; border: 1px solid #30363D; border-radius: 4px; font-size: 12px; margin: 2px 0; cursor: pointer; color: #9DA7B3; }
+  .divider { height: 1px; background: #21262D; margin: 40px 0; }
+
+  /* ── Scenario cards ── */
+  .scenarios { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin: 16px 0; }
+  .scenario-label { font-size: 10px; font-weight: 600; color: #6E7681; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* ── Legend ── */
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin: 16px 0; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #8B949E; }
+  .legend-swatch { width: 12px; height: 12px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="section">
+
+<h1>Lead Card Redesign</h1>
+<p class="subtitle">Card-level color for primary state. Emoji corners for metadata. Same component, role-based visibility.</p>
+
+<!-- ═══════════════════════ BEFORE / AFTER ═══════════════════════ -->
+
+<h2>Before / After — Setter Kanban (CALL_BOOKED stage)</h2>
+
+<div class="card-compare">
+  <div>
+    <div class="card-label">Current — 16 elements</div>
+    <div class="card-current">
+      <div class="row1">
+        <div style="display:flex;align-items:center;gap:8px;min-width:0">
+          <span class="qual-dot qual-green"></span>
+          <span class="lead-name">John Smith</span>
+          <span class="icon-link">📸</span>
+          <span class="icon-link">📞</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+          <span class="cash">$9,600</span>
+          <span class="fu-date fu-overdue">Setter FU: May 4</span>
+          <span class="call-badge">Call May 7</span>
+          <span class="chevron">▼</span>
+        </div>
+      </div>
+      <div class="row2">
+        <span class="badge badge-activity-green">📞 today</span>
+        <span class="badge badge-source-paid">Meta Ads</span>
+        <span class="badge badge-income">$150K+</span>
+        <span class="badge badge-age">35-44</span>
+        <span class="badge badge-objection">Price</span>
+        <span class="badge badge-closer">Brandon</span>
+        <span class="badge badge-setter">Set: Angelica</span>
+        <span class="badge badge-paid">Paid</span>
+        <span class="badge badge-resched">Resched #1</span>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card-label">Proposed — Card = state, emoji = metadata</div>
+    <div class="card-new card-unconfirmed">
+      <div class="row1">
+        <div class="left">
+          <span class="qual-dot qual-green"></span>
+          <span class="lead-name">John Smith</span>
+          <span class="status-indicator status-unconfirmed">Unconfirmed</span>
+        </div>
+        <div class="right">
+          <span class="fu-date fu-overdue">FU: May 4</span>
+          <span class="call-badge">May 7 · Brandon</span>
+          <span class="chevron">▼</span>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="emoji-corner">
+          <span class="emoji-icon">📸<span class="tooltip">Instagram: @johnsmith</span></span>
+          <span class="emoji-icon">📞<span class="tooltip">+1 (555) 123-4567</span></span>
+          <span class="emoji-icon">💰<span class="tooltip">Paid · Meta Ads</span></span>
+          <span class="emoji-icon">💵<span class="tooltip">Cash: $9,600</span></span>
+          <span class="emoji-icon">🔄<span class="tooltip">Rescheduled 1x</span></span>
+          <span class="emoji-icon">💲<span class="tooltip">Objection: Price</span></span>
+        </div>
+        <span class="badge badge-activity-green" style="font-size:10px">📞 today</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ CARD STATES ═══════════════════════ -->
+
+<h2>Card Color States</h2>
+<p style="font-size:13px;color:#8B949E;margin-bottom:16px">The card itself tells the story. No badge needed — the border + background gradient signals the state.</p>
+
+<div class="scenarios">
+  <div>
+    <div class="scenario-label">Confirmed (green)</div>
+    <div class="card-new card-confirmed">
+      <div class="row1">
+        <div class="left">
+          <span class="qual-dot qual-green"></span>
+          <span class="lead-name">Sarah Chen</span>
+          <span class="status-indicator status-confirmed">Confirmed</span>
+        </div>
+        <div class="right">
+          <span class="call-badge">May 7 · Joel</span>
+          <span class="chevron">▼</span>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="emoji-corner">
+          <span class="emoji-icon">📸<span class="tooltip">Instagram: @sarahchen</span></span>
+          <span class="emoji-icon">📞<span class="tooltip">+1 (555) 987-6543</span></span>
+        </div>
+        <span class="badge badge-activity-green">💬 1d</span>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="scenario-label">Unconfirmed (yellow)</div>
+    <div class="card-new card-unconfirmed">
+      <div class="row1">
+        <div class="left">
+          <span class="qual-dot qual-amber"></span>
+          <span class="lead-name">Mike Torres</span>
+          <span class="status-indicator status-unconfirmed">Unconfirmed</span>
+        </div>
+        <div class="right">
+          <span class="call-badge">May 7 · Brandon</span>
+          <span class="chevron">▼</span>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="emoji-corner">
+          <span class="emoji-icon">💰<span class="tooltip">Paid · Meta Ads</span></span>
+        </div>
+        <span class="badge badge-activity-yellow">📋 5d</span>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="scenario-label">Overdue / Stale (red)</div>
+    <div class="card-new card-overdue">
+      <div class="row1">
+        <div class="left">
+          <span class="qual-dot qual-amber"></span>
+          <span class="lead-name">Alex Rivera</span>
+          <span class="status-indicator status-overdue">Overdue FU</span>
+        </div>
+        <div class="right">
+          <span class="fu-date fu-overdue">FU: Apr 30</span>
+          <span class="chevron">▼</span>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="emoji-corner">
+          <span class="emoji-icon">📸<span class="tooltip">Instagram: @alexr</span></span>
+          <span class="emoji-icon">📞<span class="tooltip">+44 7700 900123</span></span>
+          <span class="emoji-icon">💲<span class="tooltip">Objection: Timing</span></span>
+        </div>
+        <span class="badge badge-activity-red">💬 12d</span>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="scenario-label">Neutral (pre-call / no state)</div>
+    <div class="card-new card-neutral">
+      <div class="row1">
+        <div class="left">
+          <span class="qual-dot qual-green"></span>
+          <span class="lead-name">Jamie Wilson</span>
+        </div>
+        <div class="right">
+          <span class="fu-date fu-future">FU: May 12</span>
+          <span class="chevron">▼</span>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="emoji-corner">
+          <span class="emoji-icon">📸<span class="tooltip">Instagram: @jamiewilson</span></span>
+          <span class="emoji-icon">📞<span class="tooltip">+1 (555) 444-3333</span></span>
+          <span class="emoji-icon">🌱<span class="tooltip">Organic · Instagram DM</span></span>
+        </div>
+        <span class="badge badge-activity-orange">📋 9d</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-swatch" style="background:#4CAF50"></div> Confirmed</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#FFC107"></div> Unconfirmed / Pending</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#EF5350"></div> Overdue FU / Stale (&gt;7d no contact)</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:#30363D"></div> Neutral (pre-call stages, no urgency)</div>
+</div>
+
+<!-- ═══════════════════════ CLOSER CARD ═══════════════════════ -->
+
+<h2>Closer Workstation — Today Tab</h2>
+<p style="font-size:13px;color:#8B949E;margin-bottom:16px">Same card structure. Closer sees call time + status pill. Confirmation state drives the card color.</p>
+
+<div class="card-compare">
+  <div>
+    <div class="scenario-label">Upcoming — Unconfirmed</div>
+    <div class="card-new card-unconfirmed">
+      <div class="row1">
+        <div class="left">
+          <span style="font-size:14px;font-weight:500;color:#8B949E">2:00 PM</span>
+          <span class="qual-dot qual-green"></span>
+          <span class="lead-name">John Smith</span>
+          <span class="status-indicator status-unconfirmed">Unconfirmed</span>
+        </div>
+        <div class="right">
+          <span class="badge" style="background:rgba(38,166,154,0.15);color:#26A69A">SET CALL</span>
+          <span class="chevron">▼</span>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="emoji-corner">
+          <span class="emoji-icon">👤<span class="tooltip">Set: Angelica</span></span>
+          <span class="emoji-icon">💰<span class="tooltip">Paid · Meta Ads</span></span>
+          <span class="emoji-icon">🎯<span class="tooltip">NLS: 72 — Good prospect</span></span>
+        </div>
+        <span style="font-size:11px;color:#8B949E">CEO · $150K+ · Urgent</span>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="scenario-label">Upcoming — Confirmed</div>
+    <div class="card-new card-confirmed">
+      <div class="row1">
+        <div class="left">
+          <span style="font-size:14px;font-weight:500;color:#8B949E">3:30 PM</span>
+          <span class="qual-dot qual-green"></span>
+          <span class="lead-name">Sarah Chen</span>
+          <span class="status-indicator status-confirmed">Confirmed</span>
+        </div>
+        <div class="right">
+          <span class="badge" style="background:rgba(38,166,154,0.15);color:#26A69A">SET CALL</span>
+          <span class="chevron">▼</span>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="emoji-corner">
+          <span class="emoji-icon">👤<span class="tooltip">Set: Roseve</span></span>
+          <span class="emoji-icon">🌱<span class="tooltip">Organic · Instagram DM</span></span>
+          <span class="emoji-icon">🎯<span class="tooltip">NLS: 85 — Strong prospect</span></span>
+        </div>
+        <span style="font-size:11px;color:#8B949E">Founder · $150K+ · Ready now</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ DIVIDER ═══════════════════════ -->
+
+<div class="divider"></div>
+
+<!-- ═══════════════════════ BADGE AUDIT ═══════════════════════ -->
+
+<h2>Full Badge & Information Audit</h2>
+<p style="font-size:13px;color:#8B949E;margin-bottom:8px">Every piece of data the card can show. Pick what goes where.</p>
+
+<div class="legend" style="margin-bottom:20px">
+  <div class="legend-item"><span class="tag tag-keep">KEEP</span> stays as-is on row 1</div>
+  <div class="legend-item"><span class="tag tag-compress">EMOJI</span> compress to emoji corner</div>
+  <div class="legend-item"><span class="tag tag-card">CARD</span> becomes card-level color</div>
+  <div class="legend-item"><span class="tag tag-expand">EXPAND</span> move to expanded view only</div>
+  <div class="legend-item"><span class="tag tag-remove">DROP</span> remove from collapsed card</div>
+  <div class="legend-item"><span class="tag tag-new">NEW</span> not currently shown</div>
+</div>
+
+<h3>Row 1 — Primary Information</h3>
+<table class="audit-table">
+  <thead><tr><th>Element</th><th>Current</th><th>Proposed</th><th>Setter</th><th>Closer</th><th>Your call</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>QualDot</strong></td>
+      <td class="badge-cell"><span class="qual-dot qual-green" style="vertical-align:middle"></span> Colored dot</td>
+      <td><span class="tag tag-keep">KEEP</span> — always visible, fast scan</td>
+      <td>Yes</td><td>Yes</td>
+      <td class="example">Universally useful</td>
+    </tr>
+    <tr>
+      <td><strong>Lead Name</strong></td>
+      <td>15px bold, truncated</td>
+      <td><span class="tag tag-keep">KEEP</span></td>
+      <td>Yes</td><td>Yes</td>
+      <td class="example">Essential</td>
+    </tr>
+    <tr>
+      <td><strong>Call Time</strong></td>
+      <td>Shown on closer workstation only</td>
+      <td><span class="tag tag-keep">KEEP</span> — closer today tab only</td>
+      <td>No</td><td>Yes</td>
+      <td class="example">Closer needs to see schedule</td>
+    </tr>
+    <tr>
+      <td><strong>Cash Collected</strong> ($9,600)</td>
+      <td>Green text, right side</td>
+      <td><span class="tag tag-compress">EMOJI</span> → 💵 with tooltip "$9,600"</td>
+      <td>Yes</td><td>Yes</td>
+      <td class="example">Important but rare — most cards $0</td>
+    </tr>
+    <tr>
+      <td><strong>Follow-up Date</strong></td>
+      <td>Color-coded text (red/orange/grey)</td>
+      <td><span class="tag tag-keep">KEEP</span> — urgency driver, color stays</td>
+      <td>Yes</td><td>Yes</td>
+      <td class="example">Drives daily action</td>
+    </tr>
+    <tr>
+      <td><strong>Scheduled Call</strong> (Call May 7)</td>
+      <td>Blue badge, date + time</td>
+      <td><span class="tag tag-keep">KEEP</span> — merge with closer name: "May 7 · Brandon"</td>
+      <td>Yes</td><td>No (has time)</td>
+      <td class="example">Critical in BOOKED stage</td>
+    </tr>
+    <tr>
+      <td><strong>Expand Chevron</strong></td>
+      <td>Grey ▼</td>
+      <td><span class="tag tag-keep">KEEP</span></td>
+      <td>Yes</td><td>Yes</td>
+      <td class="example">Navigation</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Row 2 — Secondary Badges (currently text pills)</h3>
+<table class="audit-table">
+  <thead><tr><th>Badge</th><th>Current</th><th>Proposed</th><th>Setter</th><th>Closer</th><th>Your call</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Activity Indicator</strong><br><span class="example">📞 today / 💬 3d / 📋 12d</span></td>
+      <td><span class="badge badge-activity-green">📞 today</span> color-coded aging</td>
+      <td><span class="tag tag-keep">KEEP</span> — only surviving text badge. Tells you "when did I last touch this?"</td>
+      <td>Yes</td><td>Yes</td>
+      <td class="example">High-signal, color = urgency</td>
+    </tr>
+    <tr>
+      <td><strong>📸 Instagram Handle</strong></td>
+      <td>📸 emoji link (setter only)</td>
+      <td><span class="tag tag-compress">EMOJI</span> → 📸 with tooltip "@handle"</td>
+      <td>Yes</td><td>No</td>
+      <td class="example">Setter DM channel</td>
+    </tr>
+    <tr>
+      <td><strong>📞 Phone</strong></td>
+      <td>📞 emoji link (setter) / blue text (closer)</td>
+      <td><span class="tag tag-compress">EMOJI</span> → 📞 with tooltip "+1 555..."</td>
+      <td>Yes</td><td>Yes</td>
+      <td class="example">Quick contact, but detail is on expand</td>
+    </tr>
+    <tr>
+      <td><strong>Source</strong><br><span class="example">Meta Ads, Instagram, Organic</span></td>
+      <td><span class="badge badge-source-paid">Meta Ads</span> orange/blue text pill</td>
+      <td><span class="tag tag-compress">EMOJI</span> → 💰 (paid) or 🌱 (organic) with tooltip "Meta Ads" or "Instagram DM"</td>
+      <td>Yes</td><td>No</td>
+      <td class="example">Paid vs organic is the decision; source is context</td>
+    </tr>
+    <tr>
+      <td><strong>Income Tier</strong><br><span class="example">$150K+, $100-150K, &lt;$100K</span></td>
+      <td><span class="badge badge-income">$150K+</span></td>
+      <td><span class="tag tag-expand">EXPAND</span> — move to Lead Profile section. Already in QualDot signal</td>
+      <td>Yes</td><td>No</td>
+      <td class="example">Rarely changes a decision at card level</td>
+    </tr>
+    <tr>
+      <td><strong>Age</strong><br><span class="example">35-44</span></td>
+      <td><span class="badge badge-age">35-44</span></td>
+      <td><span class="tag tag-expand">EXPAND</span> — in Lead Profile only</td>
+      <td>Yes</td><td>No</td>
+      <td class="example">Low signal for daily action</td>
+    </tr>
+    <tr>
+      <td><strong>Objection</strong><br><span class="example">Price, Timing, Spouse</span></td>
+      <td><span class="badge badge-objection">Price</span></td>
+      <td><span class="tag tag-compress">EMOJI</span> → 💲 (Price), ⏰ (Timing), 👥 (Spouse), 🤔 (Think), ❓ (Other) with tooltip</td>
+      <td>Yes</td><td>Yes</td>
+      <td class="example">Useful in FU stages, noise in pre-call</td>
+    </tr>
+    <tr>
+      <td><strong>Closer Name</strong><br><span class="example">Brandon</span></td>
+      <td><span class="badge badge-closer">Brandon</span></td>
+      <td><span class="tag tag-keep">KEEP</span> — merged into call badge: "May 7 · Brandon"</td>
+      <td>Yes</td><td>No</td>
+      <td class="example">Critical for setter to know who's calling</td>
+    </tr>
+    <tr>
+      <td><strong>Setter Name</strong><br><span class="example">Set: Angelica</span></td>
+      <td><span class="badge badge-setter">Set: Angelica</span></td>
+      <td><span class="tag tag-compress">EMOJI</span> → 👤 with tooltip "Set: Angelica"</td>
+      <td>No</td><td>Yes</td>
+      <td class="example">Closer needs to know setter; setter knows themselves</td>
+    </tr>
+    <tr>
+      <td><strong>Paid Badge</strong></td>
+      <td><span class="badge badge-paid">Paid</span></td>
+      <td><span class="tag tag-remove">DROP</span> — redundant with 💰 source emoji</td>
+      <td>Yes</td><td>No</td>
+      <td class="example">Source emoji already orange for paid</td>
+    </tr>
+    <tr>
+      <td><strong>Reschedule Count</strong></td>
+      <td><span class="badge badge-resched">Resched #1</span></td>
+      <td><span class="tag tag-compress">EMOJI</span> → 🔄 with tooltip "Rescheduled 2x"</td>
+      <td>Yes</td><td>Yes</td>
+      <td class="example">Signal but not frequent</td>
+    </tr>
+    <tr>
+      <td><strong>Unlinked Badge</strong></td>
+      <td><span class="badge badge-unlinked">Unlinked</span></td>
+      <td><span class="tag tag-compress">EMOJI</span> → ⚠️ with tooltip "Not linked to GHL contact"</td>
+      <td>No</td><td>Yes</td>
+      <td class="example">Admin concern, not daily workflow</td>
+    </tr>
+    <tr>
+      <td><strong>Outcome / Status Pill</strong><br><span class="example">Showed, No Show, Cancelled</span></td>
+      <td>Colored pill (closer pipeline only)</td>
+      <td><span class="tag tag-keep">KEEP</span> — closer pipeline view only</td>
+      <td>No</td><td>Yes</td>
+      <td class="example">Core closer workflow</td>
+    </tr>
+    <tr>
+      <td><strong>Call Type Badge</strong><br><span class="example">SET CALL, UNCLAIMED</span></td>
+      <td>Teal/grey badge (closer workstation)</td>
+      <td><span class="tag tag-keep">KEEP</span> — closer today tab only</td>
+      <td>No</td><td>Yes</td>
+      <td class="example">Tells closer who set the call</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Card-Level Color (NEW — replaces badges)</h3>
+<table class="audit-table">
+  <thead><tr><th>State</th><th>Trigger</th><th>Visual</th><th>Setter</th><th>Closer</th><th>Your call</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Confirmed</strong></td>
+      <td><span class="tag tag-new">NEW</span> Lead confirmed call attendance</td>
+      <td style="background:linear-gradient(90deg,rgba(76,175,80,0.08),transparent);border-left:3px solid #4CAF50;padding-left:12px">Green border + gradient</td>
+      <td>BOOKED</td><td>Today</td>
+      <td class="example">DJ's SOP — green = confirmed</td>
+    </tr>
+    <tr>
+      <td><strong>Unconfirmed</strong></td>
+      <td><span class="tag tag-new">NEW</span> Confirmation sent, no reply</td>
+      <td style="background:linear-gradient(90deg,rgba(255,193,7,0.08),transparent);border-left:3px solid #FFC107;padding-left:12px">Yellow border + gradient</td>
+      <td>BOOKED</td><td>Today</td>
+      <td class="example">DJ's SOP — yellow = pending</td>
+    </tr>
+    <tr>
+      <td><strong>Overdue / Stale</strong></td>
+      <td>FU date passed OR no contact &gt;7 days</td>
+      <td style="background:linear-gradient(90deg,rgba(239,83,80,0.08),transparent);border-left:3px solid #EF5350;padding-left:12px">Red border + gradient</td>
+      <td>FU stages</td><td>Pipeline</td>
+      <td class="example">Attio-style staleness at card level</td>
+    </tr>
+    <tr>
+      <td><strong>Neutral</strong></td>
+      <td>Default — no urgency state</td>
+      <td style="border-left:3px solid #30363D;padding-left:12px">Grey border, no gradient</td>
+      <td>WARM/HOT</td><td>Pipeline</td>
+      <td class="example">Default resting state</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Expanded View Only (not shown on collapsed card)</h3>
+<table class="audit-table">
+  <thead><tr><th>Section</th><th>Contents</th><th>Setter</th><th>Closer</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Contact</strong></td><td>Phone (editable), Email, Instagram, Conversation URL, GHL link</td><td>Yes</td><td>Partial</td><td class="example">Full detail on expand</td></tr>
+    <tr><td><strong>Notes</strong></td><td>Freeform notes, FU date picker, Objection dropdown</td><td>Yes</td><td>Yes</td><td class="example">Editable fields</td></tr>
+    <tr><td><strong>Lead Profile</strong></td><td>Occupation, Location, Age, Gender, Income, Situation, Timeline</td><td>Yes</td><td>Partial</td><td class="example">Income + Age move here from badges</td></tr>
+    <tr><td><strong>Attribution</strong></td><td>Source, Method, UTM Source/Medium/Campaign/Content</td><td>Yes</td><td>No</td><td class="example">Full UTM detail on expand</td></tr>
+    <tr><td><strong>Call Notes</strong></td><td>Reflection, Handover, Fathom link</td><td>If exists</td><td>If exists</td><td class="example">Post-call data</td></tr>
+    <tr><td><strong>Contact Log</strong></td><td>Last 5 contact entries with date, method, note</td><td>Yes</td><td>Yes</td><td class="example">Activity history</td></tr>
+    <tr><td><strong>Qual Summary</strong></td><td>Occupation + Income + Timeline one-liner</td><td>No</td><td>Yes</td><td class="example">Closer today tab, replaces full profile</td></tr>
+    <tr><td><strong>Lead History</strong></td><td>Timeline: form → created → attribution → call → reschedule → fathom</td><td>No</td><td>Yes</td><td class="example">Closer workstation, lazy-loaded</td></tr>
+    <tr><td><strong>NLS Score</strong></td><td>Transcript-based lead score with tier coloring</td><td>No</td><td>Yes</td><td class="example">Compressed to 🎯 emoji in proposed</td></tr>
+  </tbody>
+</table>
+
+<h3>Emoji Legend (proposed corner system)</h3>
+<table class="audit-table">
+  <thead><tr><th>Emoji</th><th>Meaning</th><th>Tooltip Shows</th><th>When Visible</th></tr></thead>
+  <tbody>
+    <tr><td style="font-size:16px">📸</td><td>Has Instagram handle</td><td>@handle (clickable)</td><td>If instagram_handle exists</td></tr>
+    <tr><td style="font-size:16px">📞</td><td>Has phone number</td><td>+1 (555) 123-4567 (clickable)</td><td>If phone exists</td></tr>
+    <tr><td style="font-size:16px">💰</td><td>Paid lead source</td><td>Source name: "Meta Ads"</td><td>If is_paid = true</td></tr>
+    <tr><td style="font-size:16px">🌱</td><td>Organic lead source</td><td>Source name: "Instagram DM"</td><td>If is_paid = false AND source exists</td></tr>
+    <tr><td style="font-size:16px">💵</td><td>Cash collected</td><td>$9,600</td><td>If cash_collected > 0</td></tr>
+    <tr><td style="font-size:16px">🔄</td><td>Rescheduled</td><td>Rescheduled 2x</td><td>If reschedule_count > 0</td></tr>
+    <tr><td style="font-size:16px">⚠️</td><td>Unlinked to GHL</td><td>Not linked to GHL contact</td><td>If no hpf_id + has pipeline_entry</td></tr>
+    <tr><td style="font-size:16px">👤</td><td>Setter assigned</td><td>Set: Angelica</td><td>Closer view, if setter_name</td></tr>
+    <tr><td style="font-size:16px">🎯</td><td>NLS score</td><td>NLS: 72 — Good prospect</td><td>Closer view, if transcript_score</td></tr>
+    <tr><td style="font-size:16px">💲</td><td>Objection: Price</td><td>Objection: Price</td><td>If objection = price</td></tr>
+    <tr><td style="font-size:16px">⏰</td><td>Objection: Timing</td><td>Objection: Timing</td><td>If objection = timing</td></tr>
+    <tr><td style="font-size:16px">👥</td><td>Objection: Spouse</td><td>Objection: Spouse/Partner</td><td>If objection = spouse</td></tr>
+    <tr><td style="font-size:16px">🤔</td><td>Objection: Think About It</td><td>Objection: Think About It</td><td>If objection = think_about_it</td></tr>
+    <tr><td style="font-size:16px">⏳</td><td>Objection: Not Ready</td><td>Objection: Not Ready</td><td>If objection = not_ready</td></tr>
+    <tr><td style="font-size:16px">❓</td><td>Objection: Other</td><td>Objection: Other</td><td>If objection = other</td></tr>
+  </tbody>
+</table>
+
+<div class="divider"></div>
+<p style="font-size:13px;color:#6E7681;text-align:center">HPFHQ Lead Card Redesign — May 2026</p>
+
+</div>
+</body>
+</html>
