@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lead Card Redesign v2 — 4 Card Types</title>
+<title>Lead Card Redesign v3 — Final Card Types</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: #0D1117; color: #E6EDF3; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; padding: 24px; line-height: 1.5; }
@@ -13,253 +13,429 @@
   h3 { font-size: 13px; font-weight: 600; margin: 20px 0 10px; color: #8B949E; text-transform: uppercase; letter-spacing: 0.05em; }
   .subtitle { color: #8B949E; font-size: 13px; margin-bottom: 24px; }
   .section { max-width: 960px; margin: 0 auto; }
-  .note { font-size: 12px; color: #6E7681; margin: 8px 0 16px; line-height: 1.6; }
+  .note { font-size: 12px; color: #6E7681; margin: 6px 0 14px; line-height: 1.6; }
   .divider { height: 1px; background: #21262D; margin: 36px 0; }
-
-  /* ── Grid layouts ── */
-  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 12px 0; }
-  .card-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin: 12px 0; }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 12px 0; }
+  .card-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 12px 0; }
   @media (max-width: 900px) { .card-grid-3 { grid-template-columns: 1fr; } }
   @media (max-width: 700px) { .card-grid { grid-template-columns: 1fr; } }
   .card-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #6E7681; margin-bottom: 6px; }
 
-  /* ── Universal card shell ── */
-  .card {
-    border-radius: 8px;
-    padding: 10px 12px;
-    border: 1px solid;
-    position: relative;
-  }
-  .card .row1 { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
-  .card .row2 { display: flex; align-items: center; justify-content: space-between; margin-top: 5px; }
-  .card .left { display: flex; align-items: center; gap: 6px; min-width: 0; }
-  .card .right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  /* ── Card shell ── */
+  .card { border-radius: 8px; padding: 10px 12px; border: 1px solid; }
+  .card .r1 { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+  .card .r2 { display: flex; align-items: center; justify-content: space-between; margin-top: 5px; }
+  .left { display: flex; align-items: center; gap: 6px; min-width: 0; }
+  .right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
 
-  /* ── 3 Universal Channels: border + background + label ── */
-
-  /* Channel: Confirmed */
+  /* ── Card color channels ── */
   .ch-confirmed { background: linear-gradient(135deg, rgba(76,175,80,0.07) 0%, #1C2128 35%); border-color: rgba(76,175,80,0.35); border-left: 4px solid #4CAF50; }
-  /* Channel: Unconfirmed */
   .ch-unconfirmed { background: linear-gradient(135deg, rgba(255,193,7,0.07) 0%, #1C2128 35%); border-color: rgba(255,193,7,0.3); border-left: 4px solid #FFC107; }
-  /* Channel: Overdue / Urgent */
   .ch-overdue { background: linear-gradient(135deg, rgba(239,83,80,0.07) 0%, #1C2128 35%); border-color: rgba(239,83,80,0.3); border-left: 4px solid #EF5350; }
-  /* Channel: Fresh / New */
   .ch-fresh { background: linear-gradient(135deg, rgba(66,165,245,0.07) 0%, #1C2128 35%); border-color: rgba(66,165,245,0.3); border-left: 4px solid #42A5F5; }
-  /* Channel: Active / In Progress */
   .ch-active { background: linear-gradient(135deg, rgba(38,166,154,0.06) 0%, #1C2128 35%); border-color: rgba(38,166,154,0.3); border-left: 4px solid #26A69A; }
-  /* Channel: Neutral */
   .ch-neutral { background: #1C2128; border-color: #30363D; border-left: 4px solid #30363D; }
-  /* Channel: Won */
   .ch-won { background: linear-gradient(135deg, rgba(76,175,80,0.1) 0%, #1C2128 50%); border-color: rgba(76,175,80,0.4); border-left: 4px solid #4CAF50; }
-  /* Channel: Lost */
-  .ch-lost { background: #1C2128; border-color: #30363D; border-left: 4px solid #78909C; opacity: 0.6; }
+  .ch-recovery { background: linear-gradient(135deg, rgba(171,71,188,0.06) 0%, #1C2128 35%); border-color: rgba(171,71,188,0.3); border-left: 4px solid #AB47BC; }
 
-  /* ── Status label (3rd channel) ── */
-  .status-label {
-    font-size: 10px; font-weight: 600;
-    padding: 2px 8px; border-radius: 10px;
-    white-space: nowrap; flex-shrink: 0;
-  }
+  /* ── Status labels ── */
+  .sl { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
   .sl-confirmed { background: rgba(76,175,80,0.15); color: #4CAF50; }
   .sl-unconfirmed { background: rgba(255,193,7,0.15); color: #FFC107; }
   .sl-overdue { background: rgba(239,83,80,0.15); color: #EF5350; }
   .sl-fresh { background: rgba(66,165,245,0.15); color: #42A5F5; }
   .sl-active { background: rgba(38,166,154,0.15); color: #26A69A; }
-  .sl-stale { background: rgba(255,152,0,0.15); color: #FB8C00; }
+  .sl-recovery { background: rgba(171,71,188,0.15); color: #AB47BC; }
   .sl-won { background: rgba(76,175,80,0.2); color: #4CAF50; }
   .sl-lost { background: rgba(120,144,156,0.15); color: #78909C; }
-  .sl-recovery { background: rgba(171,71,188,0.15); color: #AB47BC; }
 
-  /* ── Shared elements ── */
-  .qual-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; position: relative; cursor: help; }
-  .qual-dot .tooltip { display: none; position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: #2D333B; color: #E6EDF3; font-size: 11px; font-weight: 400; padding: 6px 10px; border-radius: 6px; white-space: nowrap; z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,0.4); pointer-events: none; line-height: 1.5; }
-  .qual-dot:hover .tooltip { display: block; }
-  .qd-green { background: #4CAF50; }
-  .qd-amber { background: #FFC107; }
-  .qd-red { background: #EF5350; }
-  .qd-grey { background: #6E7681; }
+  /* ── QualDot (Option A: single dot, combined tooltip) ── */
+  .qd { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex-shrink: 0; position: relative; cursor: help; }
+  .qd-g { background: #4CAF50; }
+  .qd-a { background: #FFC107; }
+  .qd-r { background: #EF5350; }
+  .qd-x { background: #6E7681; }
+  .qd .tip { display: none; position: absolute; bottom: calc(100% + 8px); left: 0; background: #2D333B; color: #E6EDF3; font-size: 11px; font-weight: 400; padding: 8px 10px; border-radius: 6px; white-space: nowrap; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.5); pointer-events: none; line-height: 1.6; min-width: 200px; }
+  .qd:hover .tip { display: block; }
+  .tip-section { font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 6px; padding-top: 5px; border-top: 1px solid #3D444D; }
+  .tip-section:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+  .tip-g { color: #4CAF50; }
+  .tip-a { color: #FFC107; }
+  .tip-r { color: #EF5350; }
+  .tip-x { color: #6E7681; }
 
-  .lead-name { font-size: 14px; font-weight: 600; color: #E6EDF3; white-space: nowrap; }
+  /* ── QualDot (Option B: three-bar indicator) ── */
+  .qual-bars { display: flex; flex-direction: column; gap: 2px; width: 14px; flex-shrink: 0; cursor: help; position: relative; }
+  .qual-bars .bar { height: 3px; border-radius: 1.5px; width: 100%; }
+  .qual-bars .tip { display: none; position: absolute; bottom: calc(100% + 8px); left: 0; background: #2D333B; color: #E6EDF3; font-size: 11px; font-weight: 400; padding: 8px 10px; border-radius: 6px; white-space: nowrap; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.5); pointer-events: none; line-height: 1.6; min-width: 220px; }
+  .qual-bars:hover .tip { display: block; }
+  .bar-g { background: #4CAF50; }
+  .bar-a { background: #FFC107; }
+  .bar-r { background: #EF5350; }
+  .bar-x { background: #3D444D; }
+
+  /* ── Lead name ── */
+  .name { font-size: 14px; font-weight: 600; color: #E6EDF3; white-space: nowrap; }
   .call-time { font-size: 13px; font-weight: 500; color: #8B949E; flex-shrink: 0; }
   .chevron { color: #6E7681; font-size: 11px; flex-shrink: 0; cursor: pointer; }
 
-  /* ── Emoji corner ── */
-  .emoji-corner { display: flex; align-items: center; gap: 3px; }
+  /* ── Platform icons (source, left side) ── */
+  .platform-icons { display: flex; align-items: center; gap: 3px; }
+  .pi { font-size: 9px; font-weight: 700; padding: 1px 4px; border-radius: 3px; cursor: help; position: relative; line-height: 1.3; }
+  .pi .tt { display: none; position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #2D333B; color: #E6EDF3; font-size: 11px; font-weight: 400; padding: 5px 9px; border-radius: 5px; white-space: nowrap; z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,0.4); pointer-events: none; }
+  .pi:hover .tt { display: block; }
+  .pi-ig { background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF); color: white; }
+  .pi-li { background: #0A66C2; color: white; }
+  .pi-fb { background: #1877F2; color: white; }
+  .pi-x { background: #333; color: white; }
+  .pi-yt { background: #FF0000; color: white; }
+  .pi-meta { background: #FF6B35; color: white; }
+  .pi-email { background: #6E7681; color: white; }
+  .pi-mc { background: #7B3FE4; color: white; }
+  .pi-phone { background: #26A69A; color: white; }
+
+  /* ── Info emojis (right side) ── */
+  .info-icons { display: flex; align-items: center; gap: 3px; }
   .ei { font-size: 11px; cursor: help; opacity: 0.65; transition: opacity 0.15s; position: relative; }
   .ei:hover { opacity: 1; }
-  .ei .tt { display: none; position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #2D333B; color: #E6EDF3; font-size: 11px; font-weight: 400; padding: 5px 9px; border-radius: 5px; white-space: nowrap; z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,0.4); pointer-events: none; line-height: 1.4; }
+  .ei .tt { display: none; position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #2D333B; color: #E6EDF3; font-size: 11px; font-weight: 400; padding: 5px 9px; border-radius: 5px; white-space: nowrap; z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,0.4); pointer-events: none; }
   .ei:hover .tt { display: block; }
 
-  /* ── Activity badge (only surviving text badge) ── */
-  .activity { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px; white-space: nowrap; }
-  .act-green { background: rgba(76,175,80,0.12); color: #4CAF50; }
-  .act-yellow { background: rgba(255,193,7,0.12); color: #FFC107; }
-  .act-orange { background: rgba(255,152,0,0.12); color: #FB8C00; }
-  .act-red { background: rgba(239,83,80,0.12); color: #EF5350; }
+  /* ── Qual summary line with NLS ── */
+  .qual-line { font-size: 11px; color: #8B949E; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nls { font-weight: 700; cursor: help; position: relative; }
+  .nls-g { color: #4CAF50; }
+  .nls-a { color: #FFC107; }
+  .nls-r { color: #EF5350; }
+  .nls-x { color: #6E7681; }
+  .nls .tt { display: none; position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #2D333B; color: #E6EDF3; font-size: 11px; font-weight: 400; padding: 5px 9px; border-radius: 5px; white-space: nowrap; z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,0.4); pointer-events: none; }
+  .nls:hover .tt { display: block; }
+
+  /* ── Activity badge ── */
+  .act { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px; white-space: nowrap; }
+  .act-g { background: rgba(76,175,80,0.12); color: #4CAF50; }
+  .act-y { background: rgba(255,193,7,0.12); color: #FFC107; }
+  .act-o { background: rgba(255,152,0,0.12); color: #FB8C00; }
+  .act-r { background: rgba(239,83,80,0.12); color: #EF5350; }
 
   /* ── Misc ── */
-  .fu-date { font-size: 11px; font-weight: 600; padding: 2px 6px; border-radius: 4px; white-space: nowrap; }
-  .fu-overdue { background: rgba(239,83,80,0.12); color: #EF5350; }
+  .fu { font-size: 11px; font-weight: 600; padding: 2px 6px; border-radius: 4px; white-space: nowrap; }
+  .fu-over { background: rgba(239,83,80,0.12); color: #EF5350; }
   .fu-today { background: rgba(255,193,7,0.12); color: #FFB74D; }
   .fu-future { color: #8B949E; }
   .call-badge { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px; background: rgba(66,165,245,0.12); color: #42A5F5; white-space: nowrap; }
+  .setter-badge { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px; background: rgba(38,166,154,0.15); color: #26A69A; white-space: nowrap; cursor: help; position: relative; }
+  .setter-badge .tt { display: none; position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #2D333B; color: #E6EDF3; font-size: 11px; font-weight: 400; padding: 5px 9px; border-radius: 5px; white-space: nowrap; z-index: 10; box-shadow: 0 2px 8px rgba(0,0,0,0.4); pointer-events: none; }
+  .setter-badge:hover .tt { display: block; }
   .claim-btn { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 6px; background: rgba(38,166,154,0.15); color: #26A69A; border: 1px solid rgba(38,166,154,0.3); cursor: pointer; white-space: nowrap; }
   .time-ago { font-size: 11px; font-weight: 600; white-space: nowrap; }
-  .time-fresh { color: #42A5F5; }
-  .time-warm { color: #FFC107; }
-  .time-stale { color: #EF5350; }
-  .qual-summary { font-size: 11px; color: #8B949E; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .attempt-badge { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px; white-space: nowrap; }
-  .attempt-active { background: rgba(171,71,188,0.12); color: #AB47BC; }
-  .source-channel { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px; white-space: nowrap; }
-  .src-paid { background: rgba(251,140,0,0.12); color: #FFA726; }
-  .src-organic { background: rgba(66,165,245,0.08); color: #9DA7B3; }
-  .src-manychat { background: rgba(171,71,188,0.08); color: #AB47BC; }
+  .ta-fresh { color: #42A5F5; }
+  .ta-warm { color: #FFC107; }
+  .ta-stale { color: #EF5350; }
 
-  /* ── Legend ── */
-  .legend { display: flex; gap: 14px; flex-wrap: wrap; margin: 12px 0; }
-  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #8B949E; }
-  .legend-swatch { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+  /* ── Compare box ── */
+  .compare-box { border: 1px dashed #30363D; border-radius: 8px; padding: 14px; margin: 16px 0; }
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 12px; }
+  @media (max-width: 700px) { .compare-grid { grid-template-columns: 1fr; } }
 
   /* ── Tables ── */
   .info-table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12px; }
-  .info-table th { text-align: left; padding: 6px 10px; border-bottom: 2px solid #30363D; color: #8B949E; font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .info-table th { text-align: left; padding: 6px 10px; border-bottom: 2px solid #30363D; color: #8B949E; font-weight: 600; font-size: 10px; text-transform: uppercase; }
   .info-table td { padding: 6px 10px; border-bottom: 1px solid #21262D; vertical-align: top; }
-  .info-table tr:hover { background: rgba(255,255,255,0.02); }
-  .tag { display: inline-block; font-size: 9px; font-weight: 600; padding: 1px 5px; border-radius: 3px; vertical-align: middle; }
-  .tag-border { background: rgba(171,71,188,0.12); color: #AB47BC; }
-  .tag-bg { background: rgba(66,165,245,0.12); color: #42A5F5; }
-  .tag-label { background: rgba(76,175,80,0.12); color: #4CAF50; }
 </style>
 </head>
 <body>
 <div class="section">
 
-<h1>Lead Card Redesign v2</h1>
-<p class="subtitle">4 card types. 3 universal channels (border + background + label). Emoji corners with tooltips. Same UnifiedLeadCard component, role-based rendering.</p>
+<h1>Lead Card Redesign v3</h1>
+<p class="subtitle">4 card types. 3 universal channels. Platform source icons. NLS as colored number. Qual indicator options.</p>
 
-<!-- ═══════════════════ UNIVERSAL CHANNELS ═══════════════════ -->
+<!-- ═══════════════════ QUAL INDICATOR COMPARE ═══════════════════ -->
 
-<h2>3 Universal Channels</h2>
-<p class="note">These 3 information channels are consistent across ALL pipelines, ALL roles. They tell the story before you read anything.</p>
-
-<div class="legend">
-  <div class="legend-item"><div class="legend-swatch" style="background:#4CAF50"></div> <span class="tag tag-border">BORDER</span> + <span class="tag tag-bg">BG</span> + <span class="tag tag-label">LABEL</span> = Confirmed / Won</div>
-  <div class="legend-item"><div class="legend-swatch" style="background:#FFC107"></div> Unconfirmed / Pending</div>
-  <div class="legend-item"><div class="legend-swatch" style="background:#42A5F5"></div> Fresh / New</div>
-  <div class="legend-item"><div class="legend-swatch" style="background:#26A69A"></div> Active / In Progress</div>
-  <div class="legend-item"><div class="legend-swatch" style="background:#EF5350"></div> Overdue / Urgent</div>
-  <div class="legend-item"><div class="legend-swatch" style="background:#30363D"></div> Neutral</div>
+<div class="compare-box">
+  <h3 style="margin-top:0">Qualification Indicator — Two Options</h3>
+  <p class="note">Three qualification signals: <strong>Pre-call</strong> (Typeform fields), <strong>NLS</strong> (transcript score), <strong>Post-call</strong> (closer verdict). Hover both options to see the combined tooltip.</p>
+  <div class="compare-grid">
+    <div>
+      <div class="card-label">Option A: Single dot, combined tooltip</div>
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 0">
+        <span class="qd qd-g">
+          <span class="tip">
+            <span class="tip-section tip-g">PRE-CALL (Typeform)</span><br>
+            &#10003; Income: $150K+<br>
+            &#10003; Occupation: CEO<br>
+            &#10003; Location: USA<br>
+            &#10003; Timeline: Urgent<br>
+            <span class="tip-section tip-g">NLS (Transcript)</span><br>
+            Score: 85 — Strong prospect<br>
+            <span class="tip-section tip-g">POST-CALL (Closer)</span><br>
+            &#10003; Qualified by Brandon
+          </span>
+        </span>
+        <span class="name">All 3 green — single dot</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 0">
+        <span class="qd qd-a">
+          <span class="tip">
+            <span class="tip-section tip-a">PRE-CALL (Typeform)</span><br>
+            &#10003; Income: $100-150K<br>
+            &#10003; Occupation: Coach<br>
+            &#10007; Timeline: missing<br>
+            &#10003; Location: UK<br>
+            <span class="tip-section tip-x">NLS (Transcript)</span><br>
+            No recording yet<br>
+            <span class="tip-section tip-x">POST-CALL (Closer)</span><br>
+            Not yet assessed
+          </span>
+        </span>
+        <span class="name">Pre-call amber, no NLS yet</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 0">
+        <span class="qd qd-x">
+          <span class="tip">
+            <span class="tip-section tip-x">PRE-CALL (Typeform)</span><br>
+            &#10007; No Typeform submitted<br>
+            ManyChat conversation only<br>
+            <span class="tip-section tip-x">NLS (Transcript)</span><br>
+            No recording yet<br>
+            <span class="tip-section tip-x">POST-CALL (Closer)</span><br>
+            Not yet assessed
+          </span>
+        </span>
+        <span class="name">No data — ManyChat pre-submission</span>
+      </div>
+    </div>
+    <div>
+      <div class="card-label">Option B: Three bars, combined tooltip</div>
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 0">
+        <span class="qual-bars">
+          <span class="bar bar-g"></span>
+          <span class="bar bar-g"></span>
+          <span class="bar bar-g"></span>
+          <span class="tip">
+            <span class="tip-section tip-g">&#9644; PRE-CALL (Typeform)</span><br>
+            &#10003; Income: $150K+ · Occupation: CEO<br>
+            &#10003; Location: USA · Timeline: Urgent<br>
+            <span class="tip-section tip-g">&#9644; NLS (Transcript)</span><br>
+            Score: 85 — Strong prospect<br>
+            <span class="tip-section tip-g">&#9644; POST-CALL (Closer)</span><br>
+            &#10003; Qualified by Brandon
+          </span>
+        </span>
+        <span class="name">All 3 green — fully qualified</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 0">
+        <span class="qual-bars">
+          <span class="bar bar-a"></span>
+          <span class="bar bar-x"></span>
+          <span class="bar bar-x"></span>
+          <span class="tip">
+            <span class="tip-section tip-a">&#9644; PRE-CALL (Typeform)</span><br>
+            &#10003; Income: $100-150K · Occupation: Coach<br>
+            &#10007; Timeline: missing · &#10003; Location: UK<br>
+            <span class="tip-section tip-x">&#9644; NLS (Transcript)</span><br>
+            No recording yet<br>
+            <span class="tip-section tip-x">&#9644; POST-CALL (Closer)</span><br>
+            Not yet assessed
+          </span>
+        </span>
+        <span class="name">Pre-call only, rest pending</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 0">
+        <span class="qual-bars">
+          <span class="bar bar-g"></span>
+          <span class="bar bar-r"></span>
+          <span class="bar bar-x"></span>
+          <span class="tip">
+            <span class="tip-section tip-g">&#9644; PRE-CALL (Typeform)</span><br>
+            &#10003; All fields present, qualified<br>
+            <span class="tip-section tip-r">&#9644; NLS (Transcript)</span><br>
+            Score: 32 — Weak prospect<br>
+            <span class="tip-section tip-x">&#9644; POST-CALL (Closer)</span><br>
+            Not yet assessed
+          </span>
+        </span>
+        <span class="name">Pre-call green but NLS red — mismatch</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 0">
+        <span class="qual-bars">
+          <span class="bar bar-x"></span>
+          <span class="bar bar-x"></span>
+          <span class="bar bar-x"></span>
+          <span class="tip">
+            <span class="tip-section tip-x">&#9644; PRE-CALL (Typeform)</span><br>
+            &#10007; No Typeform submitted<br>
+            <span class="tip-section tip-x">&#9644; NLS (Transcript)</span><br>
+            No recording yet<br>
+            <span class="tip-section tip-x">&#9644; POST-CALL (Closer)</span><br>
+            Not yet assessed
+          </span>
+        </span>
+        <span class="name">No data — ManyChat pre-submission</span>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="divider"></div>
 
 <!-- ═══════════════════ 1. CLOSER TODAY ═══════════════════ -->
 
-<h2>1. Closer — Today's Calls <small>Goal: Take the call. Close or outcome. Own show rate.</small></h2>
-<p class="note">Closers see today's schedule. Card color = confirmation status. Key info: time, name, qual, setter, source. DJ's SOP: yellow = reached out, green = confirmed.</p>
+<h2>1. Closer — Today's Calls <small>Card color = confirmation. Source icons left. NLS + qual summary right.</small></h2>
 
 <div class="card-grid">
   <div>
-    <div class="card-label">Confirmed by closer + setter</div>
+    <div class="card-label">Confirmed — set by Angelica via IG</div>
     <div class="card ch-confirmed">
-      <div class="row1">
+      <div class="r1">
         <div class="left">
           <span class="call-time">2:00 PM</span>
-          <span class="qual-dot qd-green"><span class="tooltip">Qualified<br>&#10003; Income: $150K+<br>&#10003; Occupation: CEO<br>&#10003; Location: USA<br>&#10003; Timeline: Urgent</span></span>
-          <span class="lead-name">Christian Fastler</span>
-          <span class="status-label sl-confirmed">Confirmed</span>
+          <span class="qual-bars" style="width:12px">
+            <span class="bar bar-g"></span><span class="bar bar-g"></span><span class="bar bar-x"></span>
+            <span class="tip">
+              <span class="tip-section tip-g">&#9644; PRE-CALL (Typeform)</span><br>
+              &#10003; Income: $150K+ · Occupation: CEO<br>
+              &#10003; Location: USA · Timeline: Urgent<br>
+              <span class="tip-section tip-g">&#9644; NLS (Transcript)</span><br>
+              Score: 85 — Strong prospect<br>
+              <span class="tip-section tip-x">&#9644; POST-CALL (Closer)</span><br>
+              Not yet assessed
+            </span>
+          </span>
+          <span class="name">Christian Fastler</span>
+          <span class="sl sl-confirmed">Confirmed</span>
         </div>
         <div class="right">
-          <span class="status-label sl-active">SET CALL</span>
+          <span class="setter-badge">Angelica<span class="tt">Set by Angelica Delos Reyes<br>Booked May 3 via Instagram DM</span></span>
           <span class="chevron">&#9660;</span>
         </div>
       </div>
-      <div class="row2">
-        <div class="emoji-corner">
-          <span class="ei">👤<span class="tt">Setter: Angelica</span></span>
-          <span class="ei">💰<span class="tt">Paid lead · Meta Ads</span></span>
-          <span class="ei">🎯<span class="tt">NLS: 85 — Strong prospect</span></span>
-          <span class="ei">📞<span class="tt">+1 (555) 234-5678</span></span>
+      <div class="r2">
+        <div class="left">
+          <div class="platform-icons">
+            <span class="pi pi-ig">IG<span class="tt">Instagram: @cfastler</span></span>
+            <span class="pi pi-meta">AD<span class="tt">Paid · Meta Lead Ad</span></span>
+            <span class="pi pi-phone">&#9742;<span class="tt">+1 (555) 234-5678</span></span>
+          </div>
         </div>
-        <span class="qual-summary">CEO · $150K+ · Urgent</span>
+        <div class="right">
+          <span class="qual-line"><span class="nls nls-g">85<span class="tt">NLS: 85 — Strong prospect<br>Based on Fathom transcript analysis</span></span> · CEO · $150K+ · Urgent</span>
+        </div>
       </div>
     </div>
   </div>
 
   <div>
-    <div class="card-label">Unconfirmed — closer sent, no reply</div>
+    <div class="card-label">Unconfirmed — set by Roseve via ManyChat</div>
     <div class="card ch-unconfirmed">
-      <div class="row1">
+      <div class="r1">
         <div class="left">
           <span class="call-time">3:30 PM</span>
-          <span class="qual-dot qd-amber"><span class="tooltip">Partial Qualification<br>&#10003; Income: $100-150K<br>&#10003; Occupation: Consultant<br>&#10007; Timeline: missing<br>&#10003; Location: Canada</span></span>
-          <span class="lead-name">Mike Torres</span>
-          <span class="status-label sl-unconfirmed">Unconfirmed</span>
+          <span class="qual-bars" style="width:12px">
+            <span class="bar bar-a"></span><span class="bar bar-x"></span><span class="bar bar-x"></span>
+            <span class="tip">
+              <span class="tip-section tip-a">&#9644; PRE-CALL (Typeform)</span><br>
+              &#10003; Income: $100-150K · Occupation: Consultant<br>
+              &#10007; Timeline: missing · &#10003; Location: Canada<br>
+              <span class="tip-section tip-x">&#9644; NLS (Transcript)</span><br>
+              No recording yet<br>
+              <span class="tip-section tip-x">&#9644; POST-CALL (Closer)</span><br>
+              Not yet assessed
+            </span>
+          </span>
+          <span class="name">Mike Torres</span>
+          <span class="sl sl-unconfirmed">Unconfirmed</span>
         </div>
         <div class="right">
-          <span class="status-label sl-active">SET CALL</span>
+          <span class="setter-badge">Roseve<span class="tt">Set by Roseve Salvador<br>Booked May 4 via ManyChat IG</span></span>
           <span class="chevron">&#9660;</span>
         </div>
       </div>
-      <div class="row2">
-        <div class="emoji-corner">
-          <span class="ei">👤<span class="tt">Setter: Roseve</span></span>
-          <span class="ei">🌱<span class="tt">Organic · Instagram DM</span></span>
-          <span class="ei">🎯<span class="tt">NLS: 62 — Average prospect</span></span>
-          <span class="ei">📞<span class="tt">+1 (416) 555-7890</span></span>
+      <div class="r2">
+        <div class="left">
+          <div class="platform-icons">
+            <span class="pi pi-ig">IG<span class="tt">Instagram: @miketorres</span></span>
+            <span class="pi pi-phone">&#9742;<span class="tt">+1 (416) 555-7890</span></span>
+          </div>
         </div>
-        <span class="qual-summary">Consultant · $100-150K</span>
+        <div class="right">
+          <span class="qual-line"><span class="nls nls-x">—<span class="tt">NLS: No recording yet</span></span> · Consultant · $100-150K</span>
+        </div>
       </div>
     </div>
   </div>
 
   <div>
-    <div class="card-label">Unclaimed — no setter, not confirmed</div>
+    <div class="card-label">No confirmation — email blast, unclaimed</div>
     <div class="card ch-overdue">
-      <div class="row1">
+      <div class="r1">
         <div class="left">
           <span class="call-time">4:00 PM</span>
-          <span class="qual-dot qd-green"><span class="tooltip">Qualified<br>&#10003; Income: $150K+<br>&#10003; Occupation: Founder<br>&#10003; Location: UK<br>&#10003; Timeline: Ready now</span></span>
-          <span class="lead-name">Sarah Chen</span>
-          <span class="status-label sl-overdue">No Confirmation</span>
+          <span class="qual-bars" style="width:12px">
+            <span class="bar bar-g"></span><span class="bar bar-x"></span><span class="bar bar-x"></span>
+            <span class="tip">
+              <span class="tip-section tip-g">&#9644; PRE-CALL (Typeform)</span><br>
+              &#10003; Income: $150K+ · Occupation: Founder<br>
+              &#10003; Location: UK · Timeline: Ready now<br>
+              <span class="tip-section tip-x">&#9644; NLS (Transcript)</span><br>
+              No recording yet<br>
+              <span class="tip-section tip-x">&#9644; POST-CALL (Closer)</span><br>
+              Not yet assessed
+            </span>
+          </span>
+          <span class="name">Sarah Chen</span>
+          <span class="sl sl-overdue">No Confirmation</span>
         </div>
         <div class="right">
           <span style="font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;background:rgba(97,97,97,0.15);color:#9E9E9E">UNCLAIMED</span>
           <span class="chevron">&#9660;</span>
         </div>
       </div>
-      <div class="row2">
-        <div class="emoji-corner">
-          <span class="ei">📧<span class="tt">Email blast · Newsletter May 5</span></span>
-          <span class="ei">📞<span class="tt">+44 7700 900123</span></span>
+      <div class="r2">
+        <div class="left">
+          <div class="platform-icons">
+            <span class="pi pi-email">&#9993;<span class="tt">Source: Email blast May 5</span></span>
+            <span class="pi pi-phone">&#9742;<span class="tt">+44 7700 900123</span></span>
+          </div>
         </div>
-        <span class="qual-summary">Founder · $150K+ · Ready now</span>
+        <div class="right">
+          <span class="qual-line"><span class="nls nls-x">—<span class="tt">NLS: No recording yet</span></span> · Founder · $150K+ · Ready now</span>
+        </div>
       </div>
     </div>
   </div>
 
   <div>
-    <div class="card-label">Done — submitted to EOD</div>
+    <div class="card-label">Done — submitted EOD</div>
     <div class="card ch-neutral" style="opacity:0.5">
-      <div class="row1">
+      <div class="r1">
         <div class="left">
           <span class="call-time">11:00 AM</span>
-          <span class="qual-dot qd-green"><span class="tooltip">Qualified<br>&#10003; All fields present</span></span>
-          <span class="lead-name">Alex Rivera</span>
-          <span class="status-label sl-won">Closed</span>
+          <span class="qual-bars" style="width:12px">
+            <span class="bar bar-g"></span><span class="bar bar-g"></span><span class="bar bar-g"></span>
+            <span class="tip">
+              <span class="tip-section tip-g">&#9644; PRE-CALL — Qualified</span><br>
+              <span class="tip-section tip-g">&#9644; NLS: 91 — Excellent</span><br>
+              <span class="tip-section tip-g">&#9644; POST-CALL — Closed &#10003;</span>
+            </span>
+          </span>
+          <span class="name">Alex Rivera</span>
+          <span class="sl sl-won">Closed</span>
         </div>
         <div class="right">
           <span style="font-size:10px;font-weight:600;color:#4CAF50">Submitted</span>
           <span class="chevron">&#9660;</span>
         </div>
       </div>
-      <div class="row2">
-        <div class="emoji-corner">
-          <span class="ei">👤<span class="tt">Setter: Angelica</span></span>
-          <span class="ei">💰<span class="tt">Paid lead · Meta Ads</span></span>
+      <div class="r2">
+        <div class="left">
+          <div class="platform-icons">
+            <span class="pi pi-meta">AD<span class="tt">Paid · Meta Lead Ad</span></span>
+          </div>
         </div>
-        <span class="qual-summary">$9,600 · 12-month PIF</span>
+        <div class="right">
+          <span class="qual-line" style="color:#4CAF50">$9,600 · 12-month PIF · Set by Angelica</span>
+        </div>
       </div>
     </div>
   </div>
@@ -269,32 +445,82 @@
 
 <!-- ═══════════════════ 2. CLOSER PIPELINE ═══════════════════ -->
 
-<h2>2. Closer — Pipeline <small>Goal: Get them on another call. Follow up or mark lost. Own the lead until resolved.</small></h2>
-<p class="note">Follow-up pipeline. Card color = urgency (overdue FU, stale contact, recovery). Key info: name, FU date, last contact, attempt count, phone for dialing. Cancel/no-show have recovery windows (3 attempts in 1 week).</p>
+<h2>2. Closer — Pipeline <small>Card color = urgency. Phone prominent for dialing. Recovery shows attempt count.</small></h2>
 
 <div class="card-grid">
   <div>
-    <div class="card-label">Hot follow-up — overdue</div>
+    <div class="card-label">Hot — overdue follow-up</div>
     <div class="card ch-overdue">
-      <div class="row1">
+      <div class="r1">
         <div class="left">
-          <span class="qual-dot qd-green"><span class="tooltip">Qualified<br>&#10003; Income: $150K+<br>&#10003; Occupation: Business Owner<br>&#10003; Location: USA<br>&#10003; Timeline: Soon</span></span>
-          <span class="lead-name">James Mitchell</span>
-          <span class="status-label sl-overdue">Overdue FU</span>
+          <span class="qual-bars" style="width:12px">
+            <span class="bar bar-g"></span><span class="bar bar-a"></span><span class="bar bar-x"></span>
+            <span class="tip">
+              <span class="tip-section tip-g">&#9644; PRE-CALL — Qualified</span><br>
+              &#10003; Income: $150K+ · Occupation: Owner<br>
+              <span class="tip-section tip-a">&#9644; NLS: 62 — Average</span><br>
+              Over-talked, didn't uncover urgency<br>
+              <span class="tip-section tip-x">&#9644; POST-CALL — Follow up</span><br>
+              Objection: Price. Booked FU May 2
+            </span>
+          </span>
+          <span class="name">James Mitchell</span>
+          <span class="sl sl-overdue">Overdue FU</span>
         </div>
         <div class="right">
-          <span class="fu-date fu-overdue">FU: May 2</span>
+          <span class="fu fu-over">FU: May 2</span>
           <span class="chevron">&#9660;</span>
         </div>
       </div>
-      <div class="row2">
-        <div class="emoji-corner">
-          <span class="ei">📞<span class="tt">+1 (305) 555-1234 · Tap to call</span></span>
-          <span class="ei">💲<span class="tt">Objection: Price</span></span>
-          <span class="ei">🔄<span class="tt">Rescheduled 1x</span></span>
-          <span class="ei">💰<span class="tt">Paid lead · Meta Ads</span></span>
+      <div class="r2">
+        <div class="left">
+          <div class="platform-icons">
+            <span class="pi pi-meta">AD<span class="tt">Paid · Meta Ads</span></span>
+            <span class="pi pi-phone">&#9742;<span class="tt">+1 (305) 555-1234 · Tap to call</span></span>
+          </div>
+          <div class="info-icons">
+            <span class="ei">💲<span class="tt">Objection: Price</span></span>
+            <span class="ei">🔄<span class="tt">Rescheduled 1x</span></span>
+          </div>
         </div>
-        <span class="activity act-red">📞 9d</span>
+        <span class="act act-r">📞 9d</span>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card-label">No-show recovery — 1 of 3 attempts</div>
+    <div class="card ch-recovery">
+      <div class="r1">
+        <div class="left">
+          <span class="qual-bars" style="width:12px">
+            <span class="bar bar-g"></span><span class="bar bar-x"></span><span class="bar bar-x"></span>
+            <span class="tip">
+              <span class="tip-section tip-g">&#9644; PRE-CALL — Qualified</span><br>
+              <span class="tip-section tip-x">&#9644; NLS — No recording (no show)</span><br>
+              <span class="tip-section tip-x">&#9644; POST-CALL — No show</span><br>
+              Recovery window: 7 days from May 5
+            </span>
+          </span>
+          <span class="name">Ryan Cooper</span>
+          <span class="sl sl-recovery">No Show · 1/3</span>
+        </div>
+        <div class="right">
+          <span class="fu fu-today">FU: Today</span>
+          <span class="chevron">&#9660;</span>
+        </div>
+      </div>
+      <div class="r2">
+        <div class="left">
+          <div class="platform-icons">
+            <span class="pi pi-meta">AD<span class="tt">Paid · Meta Ads</span></span>
+            <span class="pi pi-phone">&#9742;<span class="tt">+1 (212) 555-9999 · Tap to call</span></span>
+          </div>
+          <div class="info-icons">
+            <span class="ei">📹<span class="tt">SendBlue video sent May 4</span></span>
+          </div>
+        </div>
+        <span class="act act-y">📞 4d</span>
       </div>
     </div>
   </div>
@@ -302,74 +528,74 @@
   <div>
     <div class="card-label">Nurture — on track</div>
     <div class="card ch-active">
-      <div class="row1">
+      <div class="r1">
         <div class="left">
-          <span class="qual-dot qd-amber"><span class="tooltip">Partial Qualification<br>&#10003; Income: $150K+<br>&#10003; Occupation: Director<br>&#10007; Timeline: missing<br>&#10003; Location: Australia</span></span>
-          <span class="lead-name">David Park</span>
-          <span class="status-label sl-active">Nurture</span>
+          <span class="qual-bars" style="width:12px">
+            <span class="bar bar-a"></span><span class="bar bar-a"></span><span class="bar bar-x"></span>
+            <span class="tip">
+              <span class="tip-section tip-a">&#9644; PRE-CALL — Partial</span><br>
+              &#10003; Income: $150K+ · &#10007; Timeline: missing<br>
+              <span class="tip-section tip-a">&#9644; NLS: 58 — Average</span><br>
+              <span class="tip-section tip-x">&#9644; POST-CALL — Nurture FU</span><br>
+              Objection: Timing
+            </span>
+          </span>
+          <span class="name">David Park</span>
+          <span class="sl sl-active">Nurture</span>
         </div>
         <div class="right">
-          <span class="fu-date fu-future">FU: May 12</span>
+          <span class="fu fu-future">FU: May 12</span>
           <span class="chevron">&#9660;</span>
         </div>
       </div>
-      <div class="row2">
-        <div class="emoji-corner">
-          <span class="ei">📞<span class="tt">+61 4 1234 5678 · Tap to call</span></span>
-          <span class="ei">⏰<span class="tt">Objection: Timing</span></span>
-          <span class="ei">🌱<span class="tt">Organic · YouTube</span></span>
+      <div class="r2">
+        <div class="left">
+          <div class="platform-icons">
+            <span class="pi pi-yt">YT<span class="tt">Organic · YouTube</span></span>
+            <span class="pi pi-phone">&#9742;<span class="tt">+61 4 1234 5678 · Tap to call</span></span>
+          </div>
+          <div class="info-icons">
+            <span class="ei">⏰<span class="tt">Objection: Timing</span></span>
+          </div>
         </div>
-        <span class="activity act-green">💬 2d</span>
+        <span class="act act-g">💬 2d</span>
       </div>
     </div>
   </div>
 
   <div>
-    <div class="card-label">No-show recovery — attempt 1/3</div>
-    <div class="card ch-unconfirmed">
-      <div class="row1">
+    <div class="card-label">Cancelled recovery — setter following up</div>
+    <div class="card ch-recovery">
+      <div class="r1">
         <div class="left">
-          <span class="qual-dot qd-green"><span class="tooltip">Qualified<br>&#10003; All fields present</span></span>
-          <span class="lead-name">Ryan Cooper</span>
-          <span class="status-label sl-recovery">No Show · 1/3</span>
+          <span class="qual-bars" style="width:12px">
+            <span class="bar bar-g"></span><span class="bar bar-x"></span><span class="bar bar-x"></span>
+            <span class="tip">
+              <span class="tip-section tip-g">&#9644; PRE-CALL — Qualified</span><br>
+              <span class="tip-section tip-x">&#9644; NLS — Cancelled before call</span><br>
+              <span class="tip-section tip-x">&#9644; POST-CALL — Cancelled</span><br>
+              Setter Angelica following up via DM
+            </span>
+          </span>
+          <span class="name">Jennifer Walsh</span>
+          <span class="sl sl-recovery">Cancelled · 2/3</span>
         </div>
         <div class="right">
-          <span class="fu-date fu-today">FU: Today</span>
+          <span class="fu fu-over">FU: May 3</span>
           <span class="chevron">&#9660;</span>
         </div>
       </div>
-      <div class="row2">
-        <div class="emoji-corner">
-          <span class="ei">📞<span class="tt">+1 (212) 555-9999 · Tap to call</span></span>
-          <span class="ei">📹<span class="tt">SendBlue video sent May 4</span></span>
-          <span class="ei">💰<span class="tt">Paid lead · Meta Ads</span></span>
-        </div>
-        <span class="activity act-yellow">📞 4d</span>
-      </div>
-    </div>
-  </div>
-
-  <div>
-    <div class="card-label">Cancelled recovery — attempt 2/3</div>
-    <div class="card ch-overdue">
-      <div class="row1">
+      <div class="r2">
         <div class="left">
-          <span class="qual-dot qd-amber"><span class="tooltip">Partial Qualification<br>&#10003; Income: $100-150K<br>&#10007; Occupation: missing<br>&#10003; Location: Canada<br>&#10003; Timeline: Interested</span></span>
-          <span class="lead-name">Jennifer Walsh</span>
-          <span class="status-label sl-recovery">Cancelled · 2/3</span>
+          <div class="platform-icons">
+            <span class="pi pi-email">&#9993;<span class="tt">Organic · Email newsletter</span></span>
+            <span class="pi pi-phone">&#9742;<span class="tt">+1 (647) 555-3333</span></span>
+          </div>
+          <div class="info-icons">
+            <span class="ei">👥<span class="tt">Objection: Spouse/Partner</span></span>
+          </div>
         </div>
-        <div class="right">
-          <span class="fu-date fu-overdue">FU: May 3</span>
-          <span class="chevron">&#9660;</span>
-        </div>
-      </div>
-      <div class="row2">
-        <div class="emoji-corner">
-          <span class="ei">📞<span class="tt">+1 (647) 555-3333 · Tap to call</span></span>
-          <span class="ei">👥<span class="tt">Objection: Spouse/Partner</span></span>
-          <span class="ei">🌱<span class="tt">Organic · Email newsletter</span></span>
-        </div>
-        <span class="activity act-orange">✉️ 6d</span>
+        <span class="act act-o">✉️ 6d</span>
       </div>
     </div>
   </div>
@@ -379,56 +605,72 @@
 
 <!-- ═══════════════════ 3. SETTER INBOX ═══════════════════ -->
 
-<h2>3. Setter — Inbox <small>Goal: Qualify, claim, speed to lead. Triage within minutes.</small></h2>
-<p class="note">Unclaimed leads from ManyChat (pre-submission), Meta Lead Ads (post-submission), Typeform organic (post-submission), email blasts. Card color = freshness. Key info: source/channel, time since arrival, qual gaps, claim action. 1,022 conversations/week — must scan in &lt;1 second.</p>
+<h2>3. Setter — Inbox <small>Card color = freshness. Source filter tabs above (All / Meta / ManyChat / Typeform). Claim button.</small></h2>
 
 <div class="card-grid-3">
   <div>
-    <div class="card-label">Meta paid lead — 3 min ago</div>
+    <div class="card-label">Meta paid — 3 min ago</div>
     <div class="card ch-fresh">
-      <div class="row1">
+      <div class="r1">
         <div class="left">
-          <span class="qual-dot qd-green"><span class="tooltip">Qualified (auto-scored)<br>&#10003; Income: $150K+<br>&#10003; Occupation: Entrepreneur<br>&#10003; Location: USA<br>&#10003; Age: 35-44</span></span>
-          <span class="lead-name">Marcus Johnson</span>
+          <span class="qd qd-g">
+            <span class="tip">
+              <span class="tip-section tip-g">PRE-CALL (Meta Form)</span><br>
+              &#10003; Income: $150K+<br>
+              &#10003; Occupation: Entrepreneur<br>
+              &#10003; Location: USA<br>
+              &#10003; Age: 35-44
+            </span>
+          </span>
+          <span class="name">Marcus Johnson</span>
         </div>
         <div class="right">
-          <span class="time-ago time-fresh">3m ago</span>
+          <span class="time-ago ta-fresh">3m ago</span>
         </div>
       </div>
-      <div class="row2">
-        <div class="emoji-corner">
-          <span class="ei">📞<span class="tt">+1 (310) 555-0101</span></span>
-          <span class="ei">📸<span class="tt">IG: @marcusjfit</span></span>
+      <div class="r2">
+        <div class="left">
+          <div class="platform-icons">
+            <span class="pi pi-meta">AD<span class="tt">Meta Lead Ad · Form: Dan Go Leads 2026</span></span>
+            <span class="pi pi-ig">IG<span class="tt">@marcusjfit</span></span>
+            <span class="pi pi-phone">&#9742;<span class="tt">+1 (310) 555-0101</span></span>
+          </div>
         </div>
-        <div style="display:flex;align-items:center;gap:5px">
-          <span class="source-channel src-paid">Meta Lead Ad</span>
-          <span class="claim-btn">Claim</span>
-        </div>
+        <span class="claim-btn">Claim</span>
       </div>
     </div>
   </div>
 
   <div>
-    <div class="card-label">ManyChat DM — 45 min ago</div>
+    <div class="card-label">ManyChat IG — 45 min ago</div>
     <div class="card ch-active">
-      <div class="row1">
+      <div class="r1">
         <div class="left">
-          <span class="qual-dot qd-grey"><span class="tooltip">No qualification data<br>&#10007; Pre-submission<br>&#10007; No Typeform completed<br>Needs manual qualifying</span></span>
-          <span class="lead-name">Lisa Rodriguez</span>
+          <span class="qd qd-x">
+            <span class="tip">
+              <span class="tip-section tip-x">PRE-CALL</span><br>
+              &#10007; No Typeform submitted<br>
+              ManyChat conversation only<br>
+              Needs manual qualifying
+            </span>
+          </span>
+          <span class="name">Lisa Rodriguez</span>
         </div>
         <div class="right">
-          <span class="time-ago time-fresh">45m ago</span>
+          <span class="time-ago ta-fresh">45m ago</span>
         </div>
       </div>
-      <div class="row2">
-        <div class="emoji-corner">
-          <span class="ei">📸<span class="tt">IG: @lisarodriguezcoach</span></span>
-          <span class="ei">❓<span class="tt">No Typeform submitted yet</span></span>
+      <div class="r2">
+        <div class="left">
+          <div class="platform-icons">
+            <span class="pi pi-mc">MC<span class="tt">ManyChat · Instagram DM</span></span>
+            <span class="pi pi-ig">IG<span class="tt">@lisarodriguezcoach</span></span>
+          </div>
+          <div class="info-icons">
+            <span class="ei">❓<span class="tt">No Typeform — needs qualifying</span></span>
+          </div>
         </div>
-        <div style="display:flex;align-items:center;gap:5px">
-          <span class="source-channel src-manychat">ManyChat · IG</span>
-          <span class="claim-btn">Claim</span>
-        </div>
+        <span class="claim-btn">Claim</span>
       </div>
     </div>
   </div>
@@ -436,97 +678,128 @@
   <div>
     <div class="card-label">Typeform organic — 2h ago</div>
     <div class="card ch-neutral">
-      <div class="row1">
+      <div class="r1">
         <div class="left">
-          <span class="qual-dot qd-amber"><span class="tooltip">Partial Qualification<br>&#10003; Income: $100-150K<br>&#10003; Occupation: Coach<br>&#10007; Timeline: missing<br>&#10003; Location: UK<br>&#10003; Age: 25-34</span></span>
-          <span class="lead-name">Tom Bradley</span>
+          <span class="qd qd-a">
+            <span class="tip">
+              <span class="tip-section tip-a">PRE-CALL (Typeform)</span><br>
+              &#10003; Income: $100-150K<br>
+              &#10003; Occupation: Coach<br>
+              &#10007; Timeline: missing<br>
+              &#10003; Location: UK
+            </span>
+          </span>
+          <span class="name">Tom Bradley</span>
         </div>
         <div class="right">
-          <span class="time-ago time-warm">2h ago</span>
+          <span class="time-ago ta-warm">2h ago</span>
         </div>
       </div>
-      <div class="row2">
-        <div class="emoji-corner">
-          <span class="ei">📞<span class="tt">+44 7911 123456</span></span>
-          <span class="ei">📸<span class="tt">IG: @tombradley_</span></span>
+      <div class="r2">
+        <div class="left">
+          <div class="platform-icons">
+            <span class="pi pi-email">&#9993;<span class="tt">Newsletter subscriber</span></span>
+            <span class="pi pi-ig">IG<span class="tt">@tombradley_</span></span>
+            <span class="pi pi-phone">&#9742;<span class="tt">+44 7911 123456</span></span>
+          </div>
         </div>
-        <div style="display:flex;align-items:center;gap:5px">
-          <span class="source-channel src-organic">Newsletter</span>
-          <span class="claim-btn">Claim</span>
-        </div>
+        <span class="claim-btn">Claim</span>
       </div>
     </div>
   </div>
 
   <div>
-    <div class="card-label">Meta paid — going stale (4h)</div>
+    <div class="card-label">Meta paid — going stale 4h</div>
     <div class="card ch-unconfirmed">
-      <div class="row1">
+      <div class="r1">
         <div class="left">
-          <span class="qual-dot qd-red"><span class="tooltip">Not Qualified<br>&#10003; Income: &lt;$100K<br>&#10003; Occupation: Student<br>&#10003; Location: Albania<br>&#10007; Timeline: Not ready</span></span>
-          <span class="lead-name">Andi Krasniqi</span>
+          <span class="qd qd-r">
+            <span class="tip">
+              <span class="tip-section tip-r">PRE-CALL (Meta Form)</span><br>
+              &#10007; Income: &lt;$100K<br>
+              &#10003; Occupation: Student<br>
+              &#10007; Location: Albania<br>
+              &#10007; Timeline: Not ready
+            </span>
+          </span>
+          <span class="name">Andi Krasniqi</span>
         </div>
         <div class="right">
-          <span class="time-ago time-stale">4h ago</span>
+          <span class="time-ago ta-stale">4h ago</span>
         </div>
       </div>
-      <div class="row2">
-        <div class="emoji-corner">
-          <span class="ei">📞<span class="tt">+355 69 123 4567</span></span>
-          <span class="ei">🚫<span class="tt">DQ'd: Income &lt;$100K + wrong country</span></span>
+      <div class="r2">
+        <div class="left">
+          <div class="platform-icons">
+            <span class="pi pi-meta">AD<span class="tt">Meta Lead Ad</span></span>
+            <span class="pi pi-phone">&#9742;<span class="tt">+355 69 123 4567</span></span>
+          </div>
+          <div class="info-icons">
+            <span class="ei">🚫<span class="tt">DQ: Income &lt;$100K + wrong country</span></span>
+          </div>
         </div>
-        <div style="display:flex;align-items:center;gap:5px">
-          <span class="source-channel src-paid">Meta Lead Ad</span>
-          <span class="claim-btn">Claim</span>
-        </div>
+        <span class="claim-btn">Claim</span>
       </div>
     </div>
   </div>
 
   <div>
-    <div class="card-label">ManyChat — LinkedIn channel</div>
+    <div class="card-label">ManyChat LinkedIn — 20m ago</div>
     <div class="card ch-active">
-      <div class="row1">
+      <div class="r1">
         <div class="left">
-          <span class="qual-dot qd-grey"><span class="tooltip">No qualification data<br>&#10007; Pre-submission<br>&#10007; No Typeform completed<br>From LinkedIn DM outreach</span></span>
-          <span class="lead-name">Sophie Martinez</span>
+          <span class="qd qd-x">
+            <span class="tip">
+              <span class="tip-section tip-x">PRE-CALL</span><br>
+              &#10007; No Typeform submitted<br>
+              LinkedIn DM via VA outreach
+            </span>
+          </span>
+          <span class="name">Sophie Martinez</span>
         </div>
         <div class="right">
-          <span class="time-ago time-fresh">20m ago</span>
+          <span class="time-ago ta-fresh">20m ago</span>
         </div>
       </div>
-      <div class="row2">
-        <div class="emoji-corner">
-          <span class="ei">💼<span class="tt">LinkedIn: Sophie Martinez</span></span>
-          <span class="ei">❓<span class="tt">No Typeform submitted yet</span></span>
+      <div class="r2">
+        <div class="left">
+          <div class="platform-icons">
+            <span class="pi pi-mc">MC<span class="tt">ManyChat · LinkedIn DM</span></span>
+            <span class="pi pi-li">LI<span class="tt">LinkedIn: Sophie Martinez</span></span>
+          </div>
         </div>
-        <div style="display:flex;align-items:center;gap:5px">
-          <span class="source-channel src-manychat">ManyChat · LI</span>
-          <span class="claim-btn">Claim</span>
-        </div>
+        <span class="claim-btn">Claim</span>
       </div>
     </div>
   </div>
 
   <div>
-    <div class="card-label">Email blast DQ — dialer candidate</div>
-    <div class="card ch-neutral" style="opacity:0.7">
-      <div class="row1">
+    <div class="card-label">Email DQ — dialer queue</div>
+    <div class="card ch-neutral" style="opacity:0.6">
+      <div class="r1">
         <div class="left">
-          <span class="qual-dot qd-red"><span class="tooltip">Not Qualified (auto)<br>&#10003; Income: $150K+<br>&#10003; Occupation: Exec<br>&#10007; Location: Nigeria<br>&#10003; Age: 45-54<br>Note: High income, wrong country</span></span>
-          <span class="lead-name">Emeka Okonkwo</span>
+          <span class="qd qd-r">
+            <span class="tip">
+              <span class="tip-section tip-r">PRE-CALL (Typeform)</span><br>
+              &#10003; Income: $150K+ (high!)<br>
+              &#10003; Occupation: Exec<br>
+              &#10007; Location: Nigeria<br>
+              Note: High income, wrong country only
+            </span>
+          </span>
+          <span class="name">Emeka Okonkwo</span>
         </div>
         <div class="right">
-          <span class="time-ago" style="color:#8B949E">1d ago</span>
+          <span style="font-size:10px;color:#6E7681">1d ago · Dialer</span>
         </div>
       </div>
-      <div class="row2">
-        <div class="emoji-corner">
-          <span class="ei">📞<span class="tt">+234 805 123 4567</span></span>
-          <span class="ei">🚫<span class="tt">DQ'd: Wrong country. But $150K+ income</span></span>
-          <span class="ei">📧<span class="tt">Source: Email blast May 5</span></span>
+      <div class="r2">
+        <div class="left">
+          <div class="platform-icons">
+            <span class="pi pi-email">&#9993;<span class="tt">Email blast May 5</span></span>
+            <span class="pi pi-phone">&#9742;<span class="tt">+234 805 123 4567</span></span>
+          </div>
         </div>
-        <span style="font-size:10px;color:#6E7681">Dialer queue</span>
       </div>
     </div>
   </div>
@@ -536,32 +809,41 @@
 
 <!-- ═══════════════════ 4. SETTER PIPELINE ═══════════════════ -->
 
-<h2>4. Setter — Pipeline <small>Goal: Move through funnel to booked call. Track last contact. Follow DJ's priority: Proposed → Hot → Warm → Inbox.</small></h2>
-<p class="note">Owned leads. Card color = urgency/stage. Key info: name, last contact, stage progress, call date if booked, closer assigned. Link-to-booking is the #1 lever (22% actual vs 70% target).</p>
+<h2>4. Setter — Pipeline <small>Card color = stage urgency. Source icons left. Activity indicator right. Link-to-booking is the #1 lever.</small></h2>
 
 <div class="card-grid">
   <div>
-    <div class="card-label">Link sent — waiting for booking</div>
+    <div class="card-label">Link sent — waiting for booking (key lever)</div>
     <div class="card ch-unconfirmed">
-      <div class="row1">
+      <div class="r1">
         <div class="left">
-          <span class="qual-dot qd-green"><span class="tooltip">Qualified<br>&#10003; Income: $150K+<br>&#10003; Occupation: Founder<br>&#10003; Location: USA<br>&#10003; Timeline: Want to start</span></span>
-          <span class="lead-name">Andrew Kim</span>
-          <span class="status-label sl-unconfirmed">Link Sent</span>
+          <span class="qd qd-g">
+            <span class="tip">
+              <span class="tip-section tip-g">PRE-CALL (Typeform)</span><br>
+              &#10003; Income: $150K+ · Occupation: Founder<br>
+              &#10003; Location: USA · Timeline: Want to start
+            </span>
+          </span>
+          <span class="name">Andrew Kim</span>
+          <span class="sl sl-unconfirmed">Link Sent</span>
         </div>
         <div class="right">
-          <span class="fu-date fu-today">FU: Today</span>
+          <span class="fu fu-today">FU: Today</span>
           <span class="chevron">&#9660;</span>
         </div>
       </div>
-      <div class="row2">
-        <div class="emoji-corner">
-          <span class="ei">📸<span class="tt">IG: @andrewkim · Open DM</span></span>
-          <span class="ei">📞<span class="tt">+1 (415) 555-8888</span></span>
-          <span class="ei">💰<span class="tt">Paid lead · Meta Ads</span></span>
-          <span class="ei">🔗<span class="tt">Typeform link sent 2d ago</span></span>
+      <div class="r2">
+        <div class="left">
+          <div class="platform-icons">
+            <span class="pi pi-ig">IG<span class="tt">@andrewkim · Open DM</span></span>
+            <span class="pi pi-meta">AD<span class="tt">Paid · Meta Ads</span></span>
+            <span class="pi pi-phone">&#9742;<span class="tt">+1 (415) 555-8888</span></span>
+          </div>
+          <div class="info-icons">
+            <span class="ei">🔗<span class="tt">Typeform link sent 2d ago<br>22% conversion rate (target: 70%)</span></span>
+          </div>
         </div>
-        <span class="activity act-yellow">💬 3d</span>
+        <span class="act act-y">💬 3d</span>
       </div>
     </div>
   </div>
@@ -569,126 +851,169 @@
   <div>
     <div class="card-label">Call booked — confirmed</div>
     <div class="card ch-confirmed">
-      <div class="row1">
+      <div class="r1">
         <div class="left">
-          <span class="qual-dot qd-green"><span class="tooltip">Qualified<br>&#10003; Income: $150K+<br>&#10003; Occupation: CEO<br>&#10003; Location: Canada<br>&#10003; Timeline: Urgent</span></span>
-          <span class="lead-name">Pre-All Set</span>
-          <span class="status-label sl-confirmed">Booked &#10003;</span>
+          <span class="qd qd-g">
+            <span class="tip">
+              <span class="tip-section tip-g">PRE-CALL (Typeform)</span><br>
+              &#10003; All fields present, fully qualified
+            </span>
+          </span>
+          <span class="name">Pre-All Set</span>
+          <span class="sl sl-confirmed">Booked &#10003;</span>
         </div>
         <div class="right">
           <span class="call-badge">May 8 · Brandon</span>
           <span class="chevron">&#9660;</span>
         </div>
       </div>
-      <div class="row2">
-        <div class="emoji-corner">
-          <span class="ei">📸<span class="tt">IG: @preallset</span></span>
-          <span class="ei">📞<span class="tt">+1 (647) 555-2222</span></span>
-          <span class="ei">💰<span class="tt">Paid lead · Meta Ads</span></span>
+      <div class="r2">
+        <div class="left">
+          <div class="platform-icons">
+            <span class="pi pi-ig">IG<span class="tt">@preallset</span></span>
+            <span class="pi pi-meta">AD<span class="tt">Paid · Meta Ads</span></span>
+            <span class="pi pi-phone">&#9742;<span class="tt">+1 (647) 555-2222</span></span>
+          </div>
         </div>
-        <span class="activity act-green">💬 today</span>
+        <span class="act act-g">💬 today</span>
       </div>
     </div>
   </div>
 
   <div>
-    <div class="card-label">Hot lead — overdue follow up</div>
+    <div class="card-label">Hot — overdue, needs attention</div>
     <div class="card ch-overdue">
-      <div class="row1">
+      <div class="r1">
         <div class="left">
-          <span class="qual-dot qd-amber"><span class="tooltip">Partial Qualification<br>&#10003; Income: $100-150K<br>&#10003; Occupation: PT<br>&#10007; Timeline: missing<br>&#10003; Location: UK</span></span>
-          <span class="lead-name">Rachel Thompson</span>
-          <span class="status-label sl-overdue">Hot &#183; Overdue</span>
+          <span class="qd qd-a">
+            <span class="tip">
+              <span class="tip-section tip-a">PRE-CALL (Typeform)</span><br>
+              &#10003; Income: $100-150K · &#10003; Occupation: PT<br>
+              &#10007; Timeline: missing · &#10003; Location: UK
+            </span>
+          </span>
+          <span class="name">Rachel Thompson</span>
+          <span class="sl sl-overdue">Hot · Overdue</span>
         </div>
         <div class="right">
-          <span class="fu-date fu-overdue">FU: May 1</span>
+          <span class="fu fu-over">FU: May 1</span>
           <span class="chevron">&#9660;</span>
         </div>
       </div>
-      <div class="row2">
-        <div class="emoji-corner">
-          <span class="ei">📸<span class="tt">IG: @rachelt_fit</span></span>
-          <span class="ei">📞<span class="tt">+44 7800 111222</span></span>
-          <span class="ei">🌱<span class="tt">Organic · Instagram DM</span></span>
-          <span class="ei">💬<span class="tt">ManyChat: Open conversation</span></span>
+      <div class="r2">
+        <div class="left">
+          <div class="platform-icons">
+            <span class="pi pi-ig">IG<span class="tt">@rachelt_fit · Open DM</span></span>
+            <span class="pi pi-phone">&#9742;<span class="tt">+44 7800 111222</span></span>
+          </div>
+          <div class="info-icons">
+            <span class="ei">💬<span class="tt">ManyChat: Open conversation</span></span>
+          </div>
         </div>
-        <span class="activity act-red">💬 8d</span>
+        <span class="act act-r">💬 8d</span>
       </div>
     </div>
   </div>
 
   <div>
-    <div class="card-label">Warm lead — on schedule</div>
-    <div class="card ch-neutral">
-      <div class="row1">
+    <div class="card-label">Cancelled — setter follow-up</div>
+    <div class="card ch-recovery">
+      <div class="r1">
         <div class="left">
-          <span class="qual-dot qd-grey"><span class="tooltip">No qualification data<br>&#10007; No Typeform submitted<br>&#10007; ManyChat conversation only<br>Needs manual qualifying</span></span>
-          <span class="lead-name">Kevin Santana</span>
-          <span class="status-label" style="background:rgba(110,118,129,0.15);color:#8B949E">Warm</span>
+          <span class="qd qd-g">
+            <span class="tip">
+              <span class="tip-section tip-g">PRE-CALL (Typeform)</span><br>
+              &#10003; All fields present, qualified
+            </span>
+          </span>
+          <span class="name">Natalie Brooks</span>
+          <span class="sl sl-recovery">Cancelled</span>
         </div>
         <div class="right">
-          <span class="fu-date fu-future">FU: May 9</span>
+          <span class="fu fu-today">FU: Today</span>
           <span class="chevron">&#9660;</span>
         </div>
       </div>
-      <div class="row2">
-        <div class="emoji-corner">
-          <span class="ei">📸<span class="tt">IG: @kevinsantana</span></span>
-          <span class="ei">❓<span class="tt">No Typeform submitted yet</span></span>
-          <span class="ei">🌱<span class="tt">Organic · ManyChat IG</span></span>
+      <div class="r2">
+        <div class="left">
+          <div class="platform-icons">
+            <span class="pi pi-ig">IG<span class="tt">@nataliebrooks · Open DM</span></span>
+            <span class="pi pi-meta">AD<span class="tt">Paid · Meta Ads</span></span>
+            <span class="pi pi-phone">&#9742;<span class="tt">+1 (917) 555-4444</span></span>
+          </div>
+          <div class="info-icons">
+            <span class="ei">⚠️<span class="tt">Cancelled May 4<br>25% of cancels rebook (DJ data)</span></span>
+          </div>
         </div>
-        <span class="activity act-green">💬 1d</span>
+        <span class="act act-o">📞 5d</span>
       </div>
     </div>
   </div>
 
   <div>
-    <div class="card-label">Cancel/no-show — setter follow-up</div>
-    <div class="card ch-unconfirmed">
-      <div class="row1">
-        <div class="left">
-          <span class="qual-dot qd-green"><span class="tooltip">Qualified<br>&#10003; Income: $150K+<br>&#10003; Occupation: Business Owner<br>&#10003; Location: USA<br>&#10003; Timeline: This month</span></span>
-          <span class="lead-name">Natalie Brooks</span>
-          <span class="status-label sl-recovery">Cancelled</span>
-        </div>
-        <div class="right">
-          <span class="fu-date fu-today">FU: Today</span>
-          <span class="chevron">&#9660;</span>
-        </div>
-      </div>
-      <div class="row2">
-        <div class="emoji-corner">
-          <span class="ei">📸<span class="tt">IG: @nataliebrooks · Open DM</span></span>
-          <span class="ei">📞<span class="tt">+1 (917) 555-4444</span></span>
-          <span class="ei">💰<span class="tt">Paid lead · Meta Ads</span></span>
-          <span class="ei">⚠️<span class="tt">Cancelled May 4 · Setter follow-up required<br>DJ data: 25% of cancels rebook</span></span>
-        </div>
-        <span class="activity act-orange">📞 5d</span>
-      </div>
-    </div>
-  </div>
-
-  <div>
-    <div class="card-label">Won — closed by closer</div>
+    <div class="card-label">Won — closed, set by Angelica</div>
     <div class="card ch-won">
-      <div class="row1">
+      <div class="r1">
         <div class="left">
-          <span class="qual-dot qd-green"><span class="tooltip">Qualified<br>&#10003; All fields present</span></span>
-          <span class="lead-name">Christian Fastler</span>
-          <span class="status-label sl-won">Won · $5,000</span>
+          <span class="qual-bars" style="width:12px">
+            <span class="bar bar-g"></span><span class="bar bar-g"></span><span class="bar bar-g"></span>
+            <span class="tip">
+              <span class="tip-section tip-g">&#9644; PRE-CALL — Qualified</span><br>
+              <span class="tip-section tip-g">&#9644; NLS: 91 — Excellent</span><br>
+              <span class="tip-section tip-g">&#9644; Closed by Brandon &#10003;</span>
+            </span>
+          </span>
+          <span class="name">Christian Fastler</span>
+          <span class="sl sl-won">Won · $5,000</span>
         </div>
         <div class="right">
           <span style="font-size:10px;color:#4CAF50;font-weight:600">4-mo 4-pay</span>
           <span class="chevron">&#9660;</span>
         </div>
       </div>
-      <div class="row2">
-        <div class="emoji-corner">
-          <span class="ei">📸<span class="tt">IG: @cfastler</span></span>
-          <span class="ei">💰<span class="tt">Paid lead · Meta Ads</span></span>
-          <span class="ei">🏆<span class="tt">Closed by Brandon · May 4<br>Set by Angelica</span></span>
+      <div class="r2">
+        <div class="left">
+          <div class="platform-icons">
+            <span class="pi pi-meta">AD<span class="tt">Paid · Meta Ads</span></span>
+            <span class="pi pi-ig">IG<span class="tt">@cfastler</span></span>
+          </div>
         </div>
-        <span style="font-size:10px;color:#4CAF50;font-weight:600">&#10003; Set by Angelica</span>
+        <span style="font-size:10px;color:#4CAF50;font-weight:600">🏆 Set by Angelica · Closed by Brandon</span>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card-label">Warm — on schedule, no Typeform yet</div>
+    <div class="card ch-neutral">
+      <div class="r1">
+        <div class="left">
+          <span class="qd qd-x">
+            <span class="tip">
+              <span class="tip-section tip-x">PRE-CALL</span><br>
+              &#10007; No Typeform submitted<br>
+              ManyChat conversation only
+            </span>
+          </span>
+          <span class="name">Kevin Santana</span>
+          <span class="sl" style="background:rgba(110,118,129,0.15);color:#8B949E">Warm</span>
+        </div>
+        <div class="right">
+          <span class="fu fu-future">FU: May 9</span>
+          <span class="chevron">&#9660;</span>
+        </div>
+      </div>
+      <div class="r2">
+        <div class="left">
+          <div class="platform-icons">
+            <span class="pi pi-mc">MC<span class="tt">ManyChat · Instagram DM</span></span>
+            <span class="pi pi-ig">IG<span class="tt">@kevinsantana</span></span>
+          </div>
+          <div class="info-icons">
+            <span class="ei">❓<span class="tt">No Typeform — needs qualifying</span></span>
+          </div>
+        </div>
+        <span class="act act-g">💬 1d</span>
       </div>
     </div>
   </div>
@@ -696,66 +1021,16 @@
 
 <div class="divider"></div>
 
-<!-- ═══════════════════ REFERENCE ═══════════════════ -->
+<h3>Design Notes</h3>
+<p class="note">
+  <strong>Qual indicator:</strong> Closer Today/Pipeline uses three-bar (all 3 signals relevant post-call). Setter Inbox/Pipeline uses single dot (only pre-call data exists). Won cards always show three-bar (full journey visible).<br><br>
+  <strong>Setter badge:</strong> On Closer Today, shows setter name (replaces SET CALL + 👤). Tooltip shows full name + booking date + channel. When no setter: shows UNCLAIMED.<br><br>
+  <strong>Platform icons:</strong> Left side under name. IG (gradient), LI (blue), FB (blue), Meta AD (orange), MC (purple ManyChat), Email (grey), Phone (teal), YT (red), X (dark). Clickable where applicable (IG → DM, Phone → tel:).<br><br>
+  <strong>NLS number:</strong> In qual summary line on closer cards: "85 · CEO · $150K+ · Urgent". Colored by tier (green >70, amber 50-70, red <50, — if no data). Hover for explanation.<br><br>
+  <strong>Activity badge:</strong> Only surviving text badge. Shows last contact method + days ago. Color = urgency (green ≤3d, yellow 4-7d, orange 8-14d, red 15d+).
+</p>
 
-<h2>Reference: Universal Channel Mapping</h2>
-
-<table class="info-table">
-  <thead><tr><th>State</th><th><span class="tag tag-border">Border</span></th><th><span class="tag tag-bg">Background</span></th><th><span class="tag tag-label">Label</span></th><th>Where Used</th></tr></thead>
-  <tbody>
-    <tr><td><strong>Confirmed</strong></td><td style="border-left:3px solid #4CAF50;padding-left:8px">Green</td><td style="background:rgba(76,175,80,0.05)">Green gradient</td><td><span class="status-label sl-confirmed">Confirmed</span></td><td>Closer Today, Setter Booked</td></tr>
-    <tr><td><strong>Unconfirmed</strong></td><td style="border-left:3px solid #FFC107;padding-left:8px">Yellow</td><td style="background:rgba(255,193,7,0.05)">Yellow gradient</td><td><span class="status-label sl-unconfirmed">Unconfirmed</span></td><td>Closer Today, Setter Link Sent</td></tr>
-    <tr><td><strong>Fresh / New</strong></td><td style="border-left:3px solid #42A5F5;padding-left:8px">Blue</td><td style="background:rgba(66,165,245,0.05)">Blue gradient</td><td><span class="status-label sl-fresh">3m ago</span></td><td>Setter Inbox (speed to lead)</td></tr>
-    <tr><td><strong>Active</strong></td><td style="border-left:3px solid #26A69A;padding-left:8px">Teal</td><td style="background:rgba(38,166,154,0.05)">Teal gradient</td><td><span class="status-label sl-active">Active</span></td><td>Closer Pipeline nurture, Setter warm</td></tr>
-    <tr><td><strong>Overdue / Urgent</strong></td><td style="border-left:3px solid #EF5350;padding-left:8px">Red</td><td style="background:rgba(239,83,80,0.05)">Red gradient</td><td><span class="status-label sl-overdue">Overdue FU</span></td><td>Any card with overdue FU or stale contact</td></tr>
-    <tr><td><strong>Recovery</strong></td><td style="border-left:3px solid #FFC107;padding-left:8px">Yellow</td><td style="background:rgba(255,193,7,0.05)">Yellow gradient</td><td><span class="status-label sl-recovery">No Show · 1/3</span></td><td>Cancel/no-show with attempt tracking</td></tr>
-    <tr><td><strong>Won</strong></td><td style="border-left:3px solid #4CAF50;padding-left:8px">Green</td><td style="background:rgba(76,175,80,0.07)">Green gradient (stronger)</td><td><span class="status-label sl-won">Won · $5K</span></td><td>Outcomes section</td></tr>
-    <tr><td><strong>Lost</strong></td><td style="border-left:3px solid #78909C;padding-left:8px">Grey</td><td>None (faded)</td><td><span class="status-label sl-lost">Lost</span></td><td>Outcomes section</td></tr>
-    <tr><td><strong>Neutral</strong></td><td style="border-left:3px solid #30363D;padding-left:8px">Dark grey</td><td>None</td><td>Stage name</td><td>Default resting state</td></tr>
-  </tbody>
-</table>
-
-<h3>Emoji Legend</h3>
-<table class="info-table">
-  <thead><tr><th>Emoji</th><th>Meaning</th><th>Tooltip Shows</th><th>Visible When</th></tr></thead>
-  <tbody>
-    <tr><td style="font-size:15px">📸</td><td>Instagram handle</td><td>IG: @handle (clickable to DM)</td><td>If instagram_handle exists</td></tr>
-    <tr><td style="font-size:15px">📞</td><td>Phone number</td><td>Full number · Tap to call</td><td>If phone exists</td></tr>
-    <tr><td style="font-size:15px">💼</td><td>LinkedIn profile</td><td>LinkedIn: Full Name</td><td>If LinkedIn source/handle</td></tr>
-    <tr><td style="font-size:15px">📧</td><td>Email source</td><td>Email blast · Newsletter May 5</td><td>If source = email blast</td></tr>
-    <tr><td style="font-size:15px">💰</td><td>Paid lead</td><td>Paid lead · [source name]</td><td>If is_paid = true</td></tr>
-    <tr><td style="font-size:15px">🌱</td><td>Organic lead</td><td>Organic · [channel]</td><td>If is_paid = false + source exists</td></tr>
-    <tr><td style="font-size:15px">👤</td><td>Setter assigned</td><td>Setter: [name]</td><td>Closer views, if setter_name</td></tr>
-    <tr><td style="font-size:15px">🎯</td><td>NLS score</td><td>NLS: 85 — Strong prospect</td><td>Closer Today, if transcript_score</td></tr>
-    <tr><td style="font-size:15px">💲</td><td>Objection: Price</td><td>Objection: Price</td><td>If objection = price</td></tr>
-    <tr><td style="font-size:15px">⏰</td><td>Objection: Timing</td><td>Objection: Timing</td><td>If objection = timing</td></tr>
-    <tr><td style="font-size:15px">👥</td><td>Objection: Spouse</td><td>Objection: Spouse/Partner</td><td>If objection = spouse</td></tr>
-    <tr><td style="font-size:15px">🤔</td><td>Objection: Think</td><td>Objection: Think About It</td><td>If objection = think_about_it</td></tr>
-    <tr><td style="font-size:15px">⏳</td><td>Objection: Not ready</td><td>Objection: Not Ready</td><td>If objection = not_ready</td></tr>
-    <tr><td style="font-size:15px">🔄</td><td>Rescheduled</td><td>Rescheduled [N]x</td><td>If reschedule_count > 0</td></tr>
-    <tr><td style="font-size:15px">📹</td><td>SendBlue video sent</td><td>SendBlue video sent [date]</td><td>If confirmation method = video</td></tr>
-    <tr><td style="font-size:15px">🔗</td><td>Typeform link sent</td><td>Typeform link sent [N]d ago</td><td>Setter pipeline, LINK_SENT stage</td></tr>
-    <tr><td style="font-size:15px">💬</td><td>ManyChat conversation</td><td>ManyChat: Open conversation</td><td>If conversation_url exists</td></tr>
-    <tr><td style="font-size:15px">⚠️</td><td>Action required</td><td>Context-specific warning</td><td>Unlinked GHL, cancelled, etc.</td></tr>
-    <tr><td style="font-size:15px">❓</td><td>Missing qualification</td><td>No Typeform submitted yet</td><td>ManyChat leads pre-submission</td></tr>
-    <tr><td style="font-size:15px">🚫</td><td>Disqualified</td><td>DQ'd: [reasons]</td><td>If qual_tier = red</td></tr>
-    <tr><td style="font-size:15px">🏆</td><td>Won attribution</td><td>Closed by [closer] · [date]<br>Set by [setter]</td><td>Won cards only</td></tr>
-  </tbody>
-</table>
-
-<h3>QualDot Tooltip Structure</h3>
-<table class="info-table">
-  <thead><tr><th>Tier</th><th>Dot</th><th>Tooltip Format</th></tr></thead>
-  <tbody>
-    <tr><td>Green (Qualified)</td><td><span class="qual-dot qd-green" style="cursor:default"></span></td><td>Qualified<br>&#10003; Income: $150K+ | &#10003; Occupation: CEO | &#10003; Location: USA | &#10003; Timeline: Urgent</td></tr>
-    <tr><td>Amber (Partial)</td><td><span class="qual-dot qd-amber" style="cursor:default"></span></td><td>Partial Qualification<br>&#10003; fields present | &#10007; fields missing — shows exactly what's missing</td></tr>
-    <tr><td>Red (Not Qualified)</td><td><span class="qual-dot qd-red" style="cursor:default"></span></td><td>Not Qualified<br>Lists all fields with &#10003;/&#10007; + DQ reason</td></tr>
-    <tr><td>Grey (No Data)</td><td><span class="qual-dot qd-grey" style="cursor:default"></span></td><td>No qualification data<br>&#10007; Pre-submission / No Typeform</td></tr>
-  </tbody>
-</table>
-
-<div class="divider"></div>
-<p style="font-size:12px;color:#6E7681;text-align:center">HPFHQ Lead Card Redesign v2 — May 2026 · Hover emojis and qual dots for tooltips</p>
+<p style="font-size:12px;color:#6E7681;text-align:center;margin-top:24px">HPFHQ Lead Card Redesign v3 — May 2026 · Hover everything for tooltips</p>
 
 </div>
 </body>
