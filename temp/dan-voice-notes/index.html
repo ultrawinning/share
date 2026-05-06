@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice Note Scripts — Dan Go</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
+    .container { max-width: 720px; margin: 0 auto; }
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.25rem;
+    }
+    .subtitle {
+      color: #888;
+      font-size: 0.95rem;
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid #222;
+      padding-bottom: 1.5rem;
+    }
+    .card {
+      background: #141414;
+      border: 1px solid #222;
+      border-left: 3px solid #2ED47A;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .card.highlight {
+      border-left-color: #f59e0b;
+      background: #181510;
+    }
+    .card-number {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #2ED47A;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+    }
+    .card.highlight .card-number { color: #f59e0b; }
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.75rem;
+    }
+    .script {
+      background: #1a1a1a;
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #fff;
+      font-style: italic;
+      margin-bottom: 1rem;
+      border-left: 2px solid #333;
+    }
+    .riff-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.35rem;
+    }
+    .riff {
+      font-size: 0.9rem;
+      color: #999;
+      line-height: 1.6;
+    }
+    .section-divider {
+      text-align: center;
+      color: #333;
+      font-size: 0.8rem;
+      margin: 2rem 0 1.5rem;
+      letter-spacing: 0.15em;
+    }
+    .rules-box {
+      background: #141414;
+      border: 1px solid #222;
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .rules-box h3 {
+      font-size: 0.85rem;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .rules-box p {
+      font-size: 0.85rem;
+      color: #888;
+      line-height: 1.5;
+    }
+    .deploy-box {
+      background: #0f1510;
+      border: 1px solid #1a3020;
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-top: 2rem;
+    }
+    .deploy-box h3 {
+      font-size: 0.85rem;
+      color: #2ED47A;
+      margin-bottom: 0.5rem;
+    }
+    .deploy-box ul {
+      list-style: none;
+      padding: 0;
+    }
+    .deploy-box li {
+      font-size: 0.85rem;
+      color: #888;
+      padding: 0.25rem 0;
+      padding-left: 1.2rem;
+      position: relative;
+    }
+    .deploy-box li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: #2ED47A;
+    }
+    .structure-list {
+      list-style: none;
+      padding: 0;
+      margin-top: 0.5rem;
+    }
+    .structure-list li {
+      font-size: 0.88rem;
+      color: #bbb;
+      padding: 0.2rem 0 0.2rem 1.2rem;
+      position: relative;
+    }
+    .structure-list li::before {
+      content: attr(data-num);
+      position: absolute;
+      left: 0;
+      color: #f59e0b;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+    .structure-list li strong { color: #fff; }
+    footer {
+      margin-top: 3rem;
+      padding-top: 1rem;
+      border-top: 1px solid #222;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Voice Note Scripts</h1>
+    <p class="subtitle">Pre-recorded voice notes for setter DM conversations. Riff on these — they're launch pads, not teleprompters.</p>
+
+    <div class="rules-box">
+      <h3>Voice Rules</h3>
+      <p>Casual, peer-to-peer, like talking to a friend of a friend at a dinner. Business analogies. Ask "why" not "what." Never preachy. Never salesy. Kill setter-speak: no "just curious", no "I'd love to", no "would it be helpful if". Just talk like a human.</p>
+    </div>
+
+    <!-- 1 -->
+    <div class="card">
+      <div class="card-number">VN 1</div>
+      <div class="card-title">Outbound DM — Likes</div>
+      <div class="script">Yo what's going on — saw you liking some of the posts. What's going on with you right now?</div>
+      <div class="riff-label">Riff context</div>
+      <div class="riff">They're lurking, probably resonating with something specific. The question is the whole point. If you want to add warmth, "glad they're landing for you" works — but keep it under 8 seconds total.</div>
+    </div>
+
+    <!-- 2 -->
+    <div class="card">
+      <div class="card-number">VN 2</div>
+      <div class="card-title">Outbound DM — Story Viewers</div>
+      <div class="script">Hey what's up — noticed you been watching the stories. What made you start paying attention?</div>
+      <div class="riff-label">Riff context</div>
+      <div class="riff">Story viewers are more engaged than likers. "What made you start paying attention" implies something changed for them — it's a turning point question, not small talk. You can acknowledge their consistency ("you've been around for a minute") but the anchor is that one question.</div>
+    </div>
+
+    <!-- 3 -->
+    <div class="card">
+      <div class="card-number">VN 3</div>
+      <div class="card-title">How Much Does It Cost?</div>
+      <div class="script">So it depends — not everyone's dealing with the same stuff. A guy running on 5 hours of sleep with 40 pounds to lose is a different conversation from someone who's active but can't get the nutrition right. Best thing is to hop on a call so I can actually see what's going on, and then I'll tell you exactly what it looks like.</div>
+      <div class="riff-label">Riff context</div>
+      <div class="riff">Price question = buying signal. Reframe: the investment depends on what they need. Feel free to use a business analogy ("you wouldn't price a project without a scope call"). Ends with the call as the next step, not a number.</div>
+    </div>
+
+    <!-- 4 -->
+    <div class="card">
+      <div class="card-number">VN 4</div>
+      <div class="card-title">Pre-Call Motivation</div>
+      <div class="script">Hey — looking forward to the call. Block it off like a board meeting, go through any pre-call stuff, and let me know if anything changes. I'm carving out time for you so let's make it count.</div>
+      <div class="riff-label">Riff context</div>
+      <div class="riff">"Block it off like a board meeting" = their language. You're not begging them to show up — you're setting the frame that this is serious time, and you're investing yours too. Can add: "I've got a tight schedule too, so I wanna make sure we use the time well."</div>
+    </div>
+
+    <!-- 5 -->
+    <div class="card">
+      <div class="card-number">VN 5</div>
+      <div class="card-title">Call Proposal</div>
+      <div class="script">Look — from what you've told me, you know what's wrong, you've tried to fix it, it keeps coming back. That's not a motivation problem, that's a systems problem. Let's get on a call and figure out the root cause — you down?</div>
+      <div class="riff-label">Riff context</div>
+      <div class="riff">Lands after goal + pain + pleasure island + urgency. Key move: "not motivation, systems." Every entrepreneur understands systems failures. Can extend with a mirror ("you said you've been dealing with X for Y months...") but keep it tight. The explanation VN (#11) already did the heavy lifting.</div>
+    </div>
+
+    <!-- 6 -->
+    <div class="card">
+      <div class="card-number">VN 6</div>
+      <div class="card-title">It's Really Me</div>
+      <div class="script">Ha — yeah it's actually me. What's going on with you?</div>
+      <div class="riff-label">Riff context</div>
+      <div class="riff">People assume DMs are assistants or bots. Confirm and immediately turn it back to them. The shorter this is, the more authentic it feels. The redirect IS the proof.</div>
+    </div>
+
+    <div class="section-divider">— FOLLOW UPS —</div>
+
+    <!-- 7 -->
+    <div class="card">
+      <div class="card-number">VN 7</div>
+      <div class="card-title">Follow Up 1</div>
+      <div class="script">Hey — did you get my last message?</div>
+      <div class="riff-label">Riff context</div>
+      <div class="riff">That's it. One line. Short = confident. If you want to soften, "might've gotten buried" works but the bare question hits harder. 24-48 hours after no reply.</div>
+    </div>
+
+    <!-- 8 -->
+    <div class="card">
+      <div class="card-number">VN 8</div>
+      <div class="card-title">Follow Up 2</div>
+      <div class="script">Yo — floating this back up. If timing's off, no worries, just let me know.</div>
+      <div class="riff-label">Riff context</div>
+      <div class="riff">Second bump — give them an easy out. The easy out actually increases reply rate because it removes pressure. Can riff with "totally get it, life gets hectic" but keep it under 5 seconds.</div>
+    </div>
+
+    <!-- 9 -->
+    <div class="card">
+      <div class="card-number">VN 9</div>
+      <div class="card-title">Post-Link Follow Up — 24 Hours</div>
+      <div class="script">Hey — did you find a time? If the slots don't work, tell me and I'll sort it out.</div>
+      <div class="riff-label">Riff context</div>
+      <div class="riff">They got the booking link but didn't book. Assume friction, not disinterest. "I'll sort it out" = you remove the obstacle personally. Peer energy — a friend helping them get something done.</div>
+    </div>
+
+    <!-- 10 -->
+    <div class="card">
+      <div class="card-number">VN 10</div>
+      <div class="card-title">Post-Link Follow Up — 48 Hours</div>
+      <div class="script">Hey — any issues with the calendar? Sometimes the link acts up. Just tell me what works for you and I'll book it myself.</div>
+      <div class="riff-label">Riff context</div>
+      <div class="riff">48 hours = either tech issue or they're on the fence. "I'll book it myself" eliminates every barrier. Blames the tool, not the person. Can add: "I know these calendar tools can be janky."</div>
+    </div>
+
+    <div class="section-divider">— THE HEAVY HITTER —</div>
+
+    <!-- 11 -->
+    <div class="card highlight">
+      <div class="card-number">VN 11 — Record this one first</div>
+      <div class="card-title">Explanation VN — Root Cause Process Breakdown</div>
+      <div class="script">
+        So let me break down how this works because it's different from anything you've tried.<br><br>
+        Most guys who come to me — they've done the diets, the trainers, the 12-week challenges. Works for a bit, life gets busy, back to square one.<br><br>
+        Here's why. Every program you've tried treats the symptoms. Eat less, move more, here's your meal plan. Nobody figured out why you got here in the first place.<br><br>
+        Think about your business. Revenue drops — you don't just throw more ads at it. You find the bottleneck. Where's the system breaking down? You fix THAT, and everything else starts working.<br><br>
+        Your body's the same thing. There's a root cause. Could be stress jacking your cortisol, could be sleep tanking your recovery, could be nutrition timing totally off for your schedule. Could be all three compounding.<br><br>
+        So what we do on the call is find YOUR bottleneck. Not a generic plan. Once we identify it and fix it — energy comes back, weight starts moving, sleep improves, decision-making gets sharper.<br><br>
+        That's why guys who've been stuck for years break through with us. We're not handing out meal plans. We're fixing the system failure.
+      </div>
+      <div class="riff-label">Structure to riff on (45-60 seconds)</div>
+      <div class="riff">
+        <ul class="structure-list">
+          <li data-num="1."><strong>You've tried everything</strong> — validate, don't judge. "Most guys who come to me" = you're not alone, this is common among high performers.</li>
+          <li data-num="2."><strong>Those treated symptoms</strong> — the "eat less move more" line. Let that frustration come through naturally.</li>
+          <li data-num="3."><strong>Business analogy</strong> — bottleneck thinking. Revenue drops → find the bottleneck → fix root cause. Every entrepreneur has done this in their business.</li>
+          <li data-num="4."><strong>Your body = same system</strong> — the pivot. Cortisol, sleep, nutrition timing are the specific levers. Name whichever ones fit.</li>
+          <li data-num="5."><strong>The call finds YOUR root cause</strong> — personal, specific, not generic. "YOUR bottleneck" is the hook.</li>
+        </ul>
+        <br>
+        Don't end with a close or CTA. The setter sends the call proposal (VN 5) right after. This VN's job is to make them WANT the call before anyone asks.
+      </div>
+    </div>
+
+    <div class="deploy-box">
+      <h3>How to Use These</h3>
+      <ul>
+        <li>Record each one in a natural setting — phone mic, casual, not a studio</li>
+        <li>Setters save as audio clips, drop at the matching conversation stage</li>
+        <li>Setters text-preview before sending: "gonna send you a quick voice note"</li>
+        <li>Re-record quarterly or when the script/flow changes</li>
+        <li>VN 11 is the conversion driver — if you only record one today, it's that one</li>
+      </ul>
+    </div>
+
+    <footer>HPF Internal &middot; May 2026</footer>
+  </div>
+</body>
+</html>
