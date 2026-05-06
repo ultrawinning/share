@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pathfinder v2 — Technical Brief</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0a; color: #e0e0e0; line-height: 1.6; padding: 2rem; max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 1.8rem; color: #fff; margin-bottom: 0.3rem; }
+  .eyebrow { font-size: 0.85rem; color: #2ED47A; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.5rem; }
+  h2 { font-size: 1.2rem; color: #fff; margin: 2rem 0 0.8rem; border-bottom: 1px solid #222; padding-bottom: 0.4rem; }
+  h3 { font-size: 1rem; color: #2ED47A; margin: 1.2rem 0 0.5rem; }
+  p, li { font-size: 0.95rem; color: #bbb; }
+  ul { padding-left: 1.5rem; margin: 0.5rem 0; }
+  li { margin: 0.3rem 0; }
+  code { background: #1a1a1a; padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.85rem; color: #2ED47A; }
+  pre { background: #111; border: 1px solid #222; border-radius: 6px; padding: 1rem; overflow-x: auto; margin: 0.8rem 0; font-size: 0.85rem; color: #ccc; }
+  .arch-box { background: #111; border: 1px solid #222; border-radius: 8px; padding: 1.2rem; margin: 1rem 0; }
+  .arch-box pre { border: none; padding: 0; margin: 0; background: transparent; }
+  .stat { display: inline-block; background: #1a1a1a; border: 1px solid #333; border-radius: 6px; padding: 0.6rem 1rem; margin: 0.3rem; text-align: center; }
+  .stat .num { font-size: 1.4rem; font-weight: 700; color: #2ED47A; display: block; }
+  .stat .label { font-size: 0.75rem; color: #888; }
+  .note { background: #1a1a0a; border-left: 3px solid #2ED47A; padding: 0.8rem 1rem; margin: 1rem 0; font-size: 0.9rem; }
+  table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; }
+  th, td { text-align: left; padding: 0.5rem 0.8rem; border-bottom: 1px solid #222; font-size: 0.9rem; }
+  th { color: #888; font-weight: 500; }
+  td { color: #ccc; }
+  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #222; font-size: 0.8rem; color: #555; }
+</style>
+</head>
+<body>
+
+<div class="eyebrow">HPFHQ Infrastructure — Overmind Tool</div>
+<h1>Pathfinder v2: File-Level Embeddings + Context Packs</h1>
+<p>Semantic code search across the entire codebase with enforced context loading per task type. Built 2026-05-05/06.</p>
+
+<div style="margin: 1.5rem 0;">
+  <span class="stat"><span class="num">1,246</span><span class="label">Files indexed</span></span>
+  <span class="stat"><span class="num">2</span><span class="label">Projects</span></span>
+  <span class="stat"><span class="num">11</span><span class="label">Context packs</span></span>
+  <span class="stat"><span class="num">512d</span><span class="label">Voyage vectors</span></span>
+  <span class="stat"><span class="num">&lt;$2/mo</span><span class="label">Total cost</span></span>
+</div>
+
+<h2>Problem</h2>
+<p>HPFHQ has extensive documentation — integration guides, architecture specs, context docs, manifests — but it doesn't get loaded into the right Claude session at the right time. When working on the closer workstation, Pathfinder could find knowledge articles about sales but couldn't recommend "read <code>components/closer/KanbanPipeline.tsx</code>." Context exists but gets ignored.</p>
+
+<h2>Architecture</h2>
+<div class="arch-box">
+<pre>
+┌─────────────────────────────────────────────────────┐
+│  LAYER 1: DATA PIPELINE (mechanical, cron-driven)   │
+│  scripts/index-code-embeddings.ts                   │
+│  Scans files → hashes → embeds via Voyage → stores  │
+│  Runs nightly at 03:00. No AI needed.               │
+└────────────────────────┬────────────────────────────┘
+                         ▼
+┌─────────────────────────────────────────────────────┐
+│  LAYER 2: CODEX DISCOVERY AGENT (synthesis)         │
+│  Reads files → generates summaries + relationship   │
+│  maps → writes to code_embeddings table             │
+│  50 files/batch, gpt-5.5, subscription (free)       │
+└────────────────────────┬────────────────────────────┘
+                         ▼
+┌─────────────────────────────────────────────────────┐
+│  LAYER 3: RUNTIME SERVING                           │
+│  Pathfinder API: serves code_files + context_packs  │
+│  CC Hook: injects mandatory reads into every session│
+│  Claude Code: consumes pre-digested context, builds │
+└─────────────────────────────────────────────────────┘
+</pre>
+</div>
+
+<h2>What It Does</h2>
+
+<h3>Semantic Code Search</h3>
+<p>Every <code>.ts</code>, <code>.tsx</code>, <code>.md</code>, and <code>.sql</code> file is embedded with Voyage-3-lite (512 dimensions) and stored in a <code>code_embeddings</code> Supabase table. When you query Pathfinder, it returns the most semantically similar files to your task description.</p>
+<p>Example: querying "closer kanban pipeline" returns <code>KanbanPipeline.tsx</code> (1.0), <code>UnifiedPipeline.tsx</code> (0.92), <code>SetterKanban.tsx</code> (0.86), <code>UnifiedLeadCard.tsx</code> (0.80) — all genuinely relevant.</p>
+
+<h3>Context Packs</h3>
+<p>Pre-computed file sets for known task types. When the CC hook detects what you're working on (via prompt keywords), it looks up the matching pack and tells Claude which files to read before starting.</p>
+
+<table>
+  <tr><th>Task Type</th><th>Domain</th><th>Mandatory Reads</th></tr>
+  <tr><td>debug-metric</td><td>sales</td><td>state/SALES.md, manifests/sales.md, metric-sources.ts, metrics.ts</td></tr>
+  <tr><td>attribution-work</td><td>marketing</td><td>typeform.md, meta-ads.md, marketing-context.md</td></tr>
+  <tr><td>build-workstation</td><td>sales</td><td>state/SALES.md, PRD_Closer_Workstation.md, Workstation_Design_System.md</td></tr>
+  <tr><td>build-workstation</td><td>setter</td><td>state/SETTING.md, manifests/setter.md</td></tr>
+  <tr><td>memory-hive</td><td>nova</td><td>semantic.ts, write.ts, pathfinder/route.ts, manifests/nova.md</td></tr>
+  <tr><td>prompt-behavior</td><td>nova</td><td>Nova.md, nova-engine.ts, nova-context.ts, nova_spec.md</td></tr>
+  <tr><td colspan="3" style="color:#555">...+ 5 more packs</td></tr>
+</table>
+
+<h3>CC Hook Enforcement</h3>
+<p>The launch packet now includes an <code>INSTRUCTION</code> directive that forces Claude to read mandatory files before starting work. This isn't a suggestion — it's injected as a system instruction on every prompt.</p>
+<pre>
+INSTRUCTION: BEFORE starting any work, you MUST read the following
+files using the Read tool. Do not begin implementation, analysis,
+or suggestions until you have read each one.
+
+**Context Pack** (build-workstation/sales):
+- [ ] READ: state/SALES.md
+- [ ] READ: docs/PRD_Closer_Workstation.md
+- [ ] READ: docs/Workstation_Design_System.md
+**Also read if relevant:** app/closer/, components/closer/
+**Semantically related:** KanbanPipeline.tsx, UnifiedPipeline.tsx
+</pre>
+
+<h3>Codex Synthesis (Layer 2)</h3>
+<p>OpenAI Codex (gpt-5.5, subscription) reads each indexed file and generates:</p>
+<ul>
+  <li><strong>Summary:</strong> one-line description of what the file does (max 120 chars)</li>
+  <li><strong>Relationships:</strong> array of file paths it imports or references</li>
+</ul>
+<p>These populate <code>summary</code> and <code>relationships</code> columns on <code>code_embeddings</code>, enriching the semantic search results with human-readable context.</p>
+
+<h2>Key Technical Details</h2>
+<ul>
+  <li><strong>Embedding model:</strong> Voyage-3-lite, 512 dimensions (same as existing HIVE tables)</li>
+  <li><strong>Tables:</strong> <code>code_embeddings</code> (file vectors + metadata), <code>context_packs</code> (pre-computed read sets)</li>
+  <li><strong>RPC:</strong> <code>match_code_embeddings(query_embedding, match_count, filter_project, filter_domain)</code></li>
+  <li><strong>Indexer:</strong> <code>scripts/index-code-embeddings.ts</code> — hash-based staleness detection, cross-project support via <code>--project</code> flag</li>
+  <li><strong>Safeties:</strong> MAX_EMBEDS_PER_RUN=500, 5-min Codex timeout, 50-file synthesis batch cap</li>
+  <li><strong>Cross-project:</strong> HPF (1,171 files) + Overmind (75 files) indexed. Single table with <code>project</code> column for isolation.</li>
+  <li><strong>Nightly cron:</strong> launchd at 03:00 — re-indexes both repos, runs Codex synthesis on next 50 unsummarized files</li>
+</ul>
+
+<h2>For White-Label / Replication</h2>
+<div class="note">
+  This is an <strong>Overmind tool</strong>, not HPF-specific. Any project can be indexed with:<br>
+  <code>npm run index:code -- --project &lt;name&gt; --root &lt;path&gt;</code><br><br>
+  The architecture is designed to be portable:
+  <ul>
+    <li>Single <code>code_embeddings</code> table serves all projects (project column)</li>
+    <li>Context packs are per-project, per-domain, per-task-type</li>
+    <li>CC hook scoping via CWD guard (only fires in matching project directory)</li>
+    <li>Codex synthesis is generic — reads any codebase, generates summaries</li>
+  </ul>
+  For white-label HQ: index the customer's repo, seed their context packs, done.
+</div>
+
+<h2>Files Changed</h2>
+<table>
+  <tr><th>File</th><th>What</th></tr>
+  <tr><td><code>scripts/index-code-embeddings.ts</code></td><td>File indexer (new)</td></tr>
+  <tr><td><code>scripts/codex-synthesize.sh</code></td><td>Codex synthesis runner (new)</td></tr>
+  <tr><td><code>scripts/codex-synth-pending.ts</code></td><td>Pending rows helper (new)</td></tr>
+  <tr><td><code>scripts/apply-codex-sql.ts</code></td><td>SQL applier for sandbox workaround (new)</td></tr>
+  <tr><td><code>lib/hive/semantic.ts</code></td><td>Added fetchCodeEmbeddings + CodeFileResult</td></tr>
+  <tr><td><code>app/api/knowledge/pathfinder/route.ts</code></td><td>code_files + context_pack in response</td></tr>
+  <tr><td><code>scripts/cc-memory-lookup.js</code></td><td>Mandatory reads + task-type detection</td></tr>
+  <tr><td><code>supabase/migrations/applied/</code></td><td>code_embeddings + context_packs tables</td></tr>
+</table>
+
+<div class="footer">
+  Built by Emil + Claude Opus 4.6 · Commits f31c00b → 7f3e1b9 · 2026-05-05/06
+</div>
+
+</body>
+</html>
