@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>HG Funnel Tracking — Automation Map</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root {
+    --bg: #08090b;
+    --panel: #0e1014;
+    --panel-2: #12141a;
+    --text: #e6e8eb;
+    --muted: #6b7079;
+    --dim: #8a909a;
+    --line: rgba(255, 255, 255, 0.08);
+    --line-2: rgba(255, 255, 255, 0.04);
+    --accent: #f0c674;
+    --good: #7dcfa8;
+    --warn: #f0a674;
+    --bad: #d97a7a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 14px/1.6 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+    padding: 40px 24px 80px;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; }
+  h1 { font-size: 22px; margin: 0 0 4px; letter-spacing: 0.01em; }
+  .sub { color: var(--muted); font-size: 13px; margin: 0 0 32px; }
+  h2 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin: 40px 0 12px;
+    font-weight: 600;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  h3 {
+    font-size: 15px;
+    margin: 24px 0 8px;
+    color: #d8dce3;
+    font-weight: 600;
+  }
+  h3 .num {
+    color: var(--accent);
+    font-family: "SF Mono", "Menlo", monospace;
+    font-size: 13px;
+    margin-right: 8px;
+  }
+  p { margin: 0 0 12px; color: #c4c8cf; max-width: 780px; }
+  ul { margin: 0 0 16px; padding-left: 18px; color: #c4c8cf; }
+  li { margin-bottom: 4px; }
+  code, .mono {
+    font-family: "SF Mono", "Menlo", monospace;
+    font-size: 12.5px;
+    background: rgba(255,255,255,0.06);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: #d8dce3;
+  }
+  .why {
+    color: var(--dim);
+    font-size: 13px;
+    font-style: italic;
+    margin: -4px 0 10px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0 24px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+    font-size: 13px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line-2);
+    vertical-align: top;
+  }
+  th {
+    background: var(--panel-2);
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+  }
+  tr:last-child td { border-bottom: none; }
+  td.metric { color: var(--text); font-weight: 500; width: 30%; }
+  td.source { color: #b4b9c2; width: 28%; }
+  td.note { color: var(--dim); }
+  .tag {
+    display: inline-block;
+    font-size: 10.5px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    margin-left: 6px;
+  }
+  .tag-direct { background: rgba(125,207,168,0.15); color: var(--good); }
+  .tag-conditional { background: rgba(240,166,116,0.15); color: var(--warn); }
+  .tag-manual { background: rgba(217,122,122,0.15); color: var(--bad); }
+  .callout {
+    background: var(--panel);
+    border-left: 3px solid var(--accent);
+    padding: 12px 16px;
+    margin: 16px 0;
+    color: #d8dce3;
+    font-size: 13.5px;
+    border-radius: 0 4px 4px 0;
+  }
+  .callout strong { color: var(--accent); }
+  .footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .meta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 32px;
+  }
+  .meta span::before { content: "·"; margin-right: 12px; color: var(--line); }
+  .meta span:first-child::before { content: ""; margin: 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>HG Funnel Tracking — Automation Map</h1>
+<p class="sub">What plugs into APIs, what's calculated, what truly needs a human. Plus the onboarding steps for each integration.</p>
+
+<div class="meta">
+  <span>v0.1 · 2026-05-06</span>
+  <span>Bite / Hypergrowth</span>
+  <span>Verified against Meta Graph API v25 (May 2026)</span>
+</div>
+
+<div class="callout">
+  <strong>TL;DR.</strong> ~95% of HG's funnel metrics can be pulled or derived from APIs. Three fields require unavoidable human input — and even those become single-tag clicks inside GHL once the pipeline schema is set up. The unlocks are: Meta Ads + IG Graph + GHL + Stripe (or GHL Payments) + a meeting platform integration. Optional: call recording + LLM scoring removes the last manual judgment fields.
+</div>
+
+<h2>Onboarding Steps — Per API</h2>
+
+<h3><span class="num">01</span>Meta Ads API</h3>
+<p class="why">Drives all paid-side metrics: spend, CPL, objective, audience type, creative-level performance.</p>
+<ul>
+  <li>Create a Meta Developer App at <code>developers.facebook.com</code> → Apps → Create.</li>
+  <li>Add the <strong>Marketing API</strong> product.</li>
+  <li>In Business Manager, generate a <strong>System User access token</strong> (long-lived, no 60-day expiry).</li>
+  <li>Grant scopes: <code>ads_read</code>, <code>ads_management</code>, <code>business_management</code>.</li>
+  <li>Save the token and the ad account ID (<code>act_XXXXXX</code>) into Bite env.</li>
+  <li>Endpoint pattern: <code>GET /act_&lt;id&gt;/insights?fields=spend,actions,objective,reach&amp;date_preset=this_month&amp;level=ad</code>.</li>
+</ul>
+
+<h3><span class="num">02</span>Instagram Graph API</h3>
+<p class="why">Per-post profile visits and per-post follower attribution — both available at media level as of v25.</p>
+<ul>
+  <li>Convert client's IG account to <strong>Business or Creator</strong> (in the IG app → Settings → Account type).</li>
+  <li>Connect the IG account to a Facebook Page (required by API).</li>
+  <li>Reuse the Meta App from step 01; add the <strong>Instagram Graph API</strong> product.</li>
+  <li>Request scopes: <code>instagram_basic</code>, <code>instagram_manage_insights</code>, <code>pages_show_list</code>.</li>
+  <li>Submit for App Review for production traffic (skippable for own-account dev token).</li>
+  <li>Endpoint pattern: <code>GET /&lt;media_id&gt;/insights?metric=profile_visits,follows,reach,views</code>.</li>
+  <li><strong>Verify before relying on it:</strong> test the <code>follows</code> field against one boosted post — confirm it returns post-level follower growth (matches the IG Professional Dashboard number) rather than total account followers. Field description in Meta docs is ambiguous.</li>
+</ul>
+
+<h3><span class="num">03</span>GoHighLevel API</h3>
+<p class="why">Central system of record for setter activity, closer activity, deal stages, contracts.</p>
+<ul>
+  <li>In GHL → Settings → Private Integrations → create a Private Integration token.</li>
+  <li>Required scopes: <code>contacts.readonly</code>, <code>opportunities.readonly</code>, <code>calendars/events.readonly</code>, <code>payments/transactions.readonly</code>.</li>
+  <li>Required GHL setup before pulling is meaningful:
+    <ul>
+      <li>Pipeline with stages: <code>Lead</code> → <code>Offer Made</code> → <code>Booked</code> → <code>Showed</code> → <code>Qualified</code> → <code>Closed Won</code>.</li>
+      <li>Tag schema for setter/closer judgment fields (e.g. <code>qualified</code>, <code>offer-made</code>, <code>show</code>, <code>no-show</code>).</li>
+      <li>Setters and closers must update on mobile in real time, or via a Zap.</li>
+    </ul>
+  </li>
+  <li>Endpoint: <code>GET /opportunities/search?location_id=&lt;id&gt;&amp;pipeline_id=&lt;id&gt;</code>.</li>
+</ul>
+
+<h3><span class="num">04</span>Stripe (or GHL Payments)</h3>
+<p class="why">Powers all cash-collected metrics and auto-flips deals to closed-won.</p>
+<ul>
+  <li><strong>Stripe path:</strong> create a restricted API key with <code>charges:read</code>, <code>customers:read</code>, <code>invoices:read</code>.</li>
+  <li>Subscribe Bite webhook to <code>charge.succeeded</code> and <code>invoice.paid</code>.</li>
+  <li><strong>GHL Payments path:</strong> already covered by the GHL token in step 03 (<code>payments/transactions.readonly</code>).</li>
+  <li>On payment event: write back to GHL deal → flip stage to <code>Closed Won</code>.</li>
+</ul>
+
+<h3><span class="num">05</span>Zoom or Google Meet — attendance</h3>
+<p class="why">Eliminates manual show / no-show flagging.</p>
+<ul>
+  <li><strong>Zoom:</strong> create an OAuth app with <code>report:read:admin</code>; pull <code>/report/meetings/&lt;meeting_id&gt;/participants</code>.</li>
+  <li><strong>Google Meet:</strong> Workspace admin enables Meet attendance reports → pull via Google Reports API.</li>
+  <li>Match join logs to GHL appointments by attendee email or scheduled start time.</li>
+  <li>Below ~90s of attendance = no-show.</li>
+</ul>
+
+<h3><span class="num">06</span>Setter / DM tool — Manychat, Instantly, etc.</h3>
+<p class="why">Captures OB volume and reply rate without manual logging.</p>
+<ul>
+  <li><strong>Manychat:</strong> account API key → pull broadcast and sequence delivery + reply stats.</li>
+  <li><strong>Instantly / similar:</strong> exports campaign-level send / reply / positive-reply counts.</li>
+  <li>If setters use the IG inbox manually with no tool: no API path. They must tag in GHL on offer-made.</li>
+</ul>
+
+<h3><span class="num">07</span>Call recording + LLM scoring <em>(optional advanced layer)</em></h3>
+<p class="why">Removes the last subjective field — the closer's "qualified Y/N" tag.</p>
+<ul>
+  <li>Record calls via Zoom Cloud Recording, Fathom, or Gong.</li>
+  <li>Pipe transcripts through an LLM with HG's qualification rubric.</li>
+  <li>Write the score back to the GHL deal as a tag.</li>
+  <li>Build cost: ~1 day eng, then ~$0.01–0.05 per call in LLM cost.</li>
+</ul>
+
+<h2>Summary — Three Tables</h2>
+
+<h3>1. Fully automatable <span class="tag tag-direct">Direct API</span> <span class="tag tag-conditional">Conditional — needs extra infra</span></h3>
+<p>Direct rows pull straight from an API today. Conditional rows become automatable once the noted infrastructure is in place — most are quick adds.</p>
+<table>
+  <thead>
+    <tr><th>Metric</th><th>Source</th><th>What's needed (if any)</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="metric">Total ad spend <span class="tag tag-direct">Direct</span></td><td class="source">Meta Ads API</td><td class="note">—</td></tr>
+    <tr><td class="metric">Spend per ad <span class="tag tag-direct">Direct</span></td><td class="source">Meta Ads API</td><td class="note">—</td></tr>
+    <tr><td class="metric">Number of ads tested / active <span class="tag tag-direct">Direct</span></td><td class="source">Meta Ads API</td><td class="note">—</td></tr>
+    <tr><td class="metric">Objective per ad (follow / VSL / lead / DM / RT) <span class="tag tag-direct">Direct</span></td><td class="source">Meta campaign objective field</td><td class="note">—</td></tr>
+    <tr><td class="metric">Retargeting Y/N <span class="tag tag-direct">Direct</span></td><td class="source">Meta audience type</td><td class="note">—</td></tr>
+    <tr><td class="metric">Lead form leads <span class="tag tag-direct">Direct</span></td><td class="source">Meta Lead Ads API</td><td class="note">—</td></tr>
+    <tr><td class="metric">IG profile visits per post <span class="tag tag-direct">Direct</span></td><td class="source">IG Graph <code>/media/{id}/insights</code> · <code>profile_visits</code></td><td class="note">—</td></tr>
+    <tr><td class="metric">Total new followers (period) <span class="tag tag-direct">Direct</span></td><td class="source">IG Graph <code>follows_and_unfollows</code></td><td class="note">—</td></tr>
+    <tr><td class="metric">New followers per boosted post <span class="tag tag-conditional">Conditional</span></td><td class="source">IG Graph <code>/media/{id}/insights</code> · <code>follows</code></td><td class="note">Verify the field returns post-level attribution (matches IG Professional Dashboard) and not total account followers. Test against one live boosted post first.</td></tr>
+    <tr><td class="metric">OB messages sent / replies <span class="tag tag-conditional">Conditional</span></td><td class="source">Manychat / Instantly API</td><td class="note">Setters must use a DM tool, not the raw IG inbox. If using IG inbox, no automation path — log via GHL tag.</td></tr>
+    <tr><td class="metric">Call offer made <span class="tag tag-conditional">Conditional</span></td><td class="source">GHL pipeline stage</td><td class="note">Requires a pipeline stage <code>Offer Made</code> and setter discipline to advance the deal. Or — LLM scoring of DM transcripts to detect "want to hop on a call?" patterns.</td></tr>
+    <tr><td class="metric">Calls booked <span class="tag tag-direct">Direct</span></td><td class="source">GHL Calendars API</td><td class="note">—</td></tr>
+    <tr><td class="metric">Show / no-show <span class="tag tag-conditional">Conditional</span></td><td class="source">Zoom or Google Meet attendance API</td><td class="note">Requires meeting-platform integration. Without it, closer flips a GHL tag manually.</td></tr>
+    <tr><td class="metric">Qualified Y/N <span class="tag tag-conditional">Conditional</span></td><td class="source">Call recording + LLM scoring → GHL tag</td><td class="note">Requires call recording (Zoom Cloud / Fathom / Gong) plus an LLM scoring pipeline against HG's qualification rubric. Otherwise closer tags manually in GHL.</td></tr>
+    <tr><td class="metric">Closed won <span class="tag tag-direct">Direct</span></td><td class="source">Stripe webhook → GHL deal</td><td class="note">—</td></tr>
+    <tr><td class="metric">New cash collected <span class="tag tag-direct">Direct</span></td><td class="source">Stripe / GHL Payments</td><td class="note">—</td></tr>
+    <tr><td class="metric">Total cash MTD (incl. existing clients) <span class="tag tag-direct">Direct</span></td><td class="source">Stripe / GHL Payments</td><td class="note">—</td></tr>
+    <tr><td class="metric">Total contracted value <span class="tag tag-conditional">Conditional</span></td><td class="source">PandaDoc / GHL Contracts API</td><td class="note">Requires using a contracting tool with an API. Ad-hoc emailed PDFs = manual entry.</td></tr>
+    <tr><td class="metric">Active winners <span class="tag tag-conditional">Conditional</span></td><td class="source">Rules engine over Meta Ads data</td><td class="note">Define "winner" objectively (e.g. ROAS ≥ 2.0 over £200 spend) and the dashboard tags it automatically. Otherwise — human judgment.</td></tr>
+    <tr><td class="metric">Team structure <span class="tag tag-direct">Direct</span></td><td class="source">One-time config in Bite</td><td class="note">Manual once. Not ongoing.</td></tr>
+  </tbody>
+</table>
+
+<h3>2. Calculated <span class="tag tag-direct">Auto-derived</span></h3>
+<p>Pure formulas over the data above. No human input.</p>
+<table>
+  <thead>
+    <tr><th>Metric</th><th>Formula</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="metric">MTD / Last Month / PB Month</td><td class="source">Period aggregations over raw events</td></tr>
+    <tr><td class="metric">CPF (cost per follower)</td><td class="source">Spend ÷ new followers</td></tr>
+    <tr><td class="metric">CPLD (cost per lead)</td><td class="source">Spend ÷ leads</td></tr>
+    <tr><td class="metric">CPQF (cost per qualified follower / lead)</td><td class="source">Spend ÷ qualified</td></tr>
+    <tr><td class="metric">OB Reply Rate</td><td class="source">Replies ÷ messages sent</td></tr>
+    <tr><td class="metric">Offer → Booking conversion</td><td class="source">Bookings ÷ offers made</td></tr>
+    <tr><td class="metric">SUR (show-up rate)</td><td class="source">Showed ÷ booked</td></tr>
+    <tr><td class="metric">Qualified %</td><td class="source">Qualified ÷ taken</td></tr>
+    <tr><td class="metric">Close Rate</td><td class="source">Closed ÷ qualified</td></tr>
+    <tr><td class="metric">AOV</td><td class="source">New cash ÷ new clients</td></tr>
+    <tr><td class="metric">ROAS</td><td class="source">New cash ÷ spend</td></tr>
+    <tr><td class="metric">R-ROAS</td><td class="source">Total contracted ÷ spend</td></tr>
+    <tr><td class="metric">Collection %</td><td class="source">Cash collected ÷ contracted</td></tr>
+  </tbody>
+</table>
+
+<h3>3. Truly 100% manual <span class="tag tag-manual">Irreducible</span></h3>
+<p>If you don't build the optional infrastructure flagged above, these stay manual. With the full stack in place — meeting-platform integration plus call recording plus LLM scoring — the irreducible list is empty.</p>
+<table>
+  <thead>
+    <tr><th>Metric</th><th>Why manual without extra infra</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="metric">Qualified Y/N</td><td class="note">Closer judgment. Becomes auto with call recording + LLM scoring (see step 07).</td></tr>
+    <tr><td class="metric">Call offer made (Y/N)</td><td class="note">Setter judgment when setters work the IG inbox manually. Becomes auto with a DM tool (Manychat / Instantly) or with disciplined GHL stage updates.</td></tr>
+    <tr><td class="metric">Show / no-show</td><td class="note">Closer flag if no Zoom/Meet attendance integration. Auto with the integration in step 05.</td></tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <strong>Recommended order of integration.</strong> Meta Ads + GHL + Stripe first — that single trio unlocks ~70% of the dashboard with maybe a day of work each. Then IG Graph for the organic side. Meeting attendance integration is a half-day. Call recording + LLM scoring last — it's the highest-leverage but also the most build-heavy.
+</div>
+
+<div class="footer">
+  Generated 2026-05-06. Source-of-truth metric definitions live in <code>bite-app/supabase/metric-definitions.md</code>.
+</div>
+
+</div>
+</body>
+</html>
