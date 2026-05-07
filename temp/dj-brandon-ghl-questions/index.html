@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GHL Replacement — Questions for Tuesday</title>
+<title>Sales Sequences — Questions for Tuesday</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: #0a0a0a; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 2rem; max-width: 720px; margin: 0 auto; line-height: 1.6; }
@@ -24,55 +24,59 @@
 </head>
 <body>
 
-<h1>GHL → HPFHQ Migration — Input Needed</h1>
+<h1>Sales Sequences — Mapping Automatic vs Manual</h1>
 <p class="subtitle">For Tuesday call (May 13) · DJ + Brandon</p>
 
 <div class="context">
-  <strong>What's happening:</strong> We're moving GHL's messaging workflows into HPFHQ so everything lives in one system. The sales pipeline, closer workstation, and data layer ship first. The messaging pieces below come later — but we want your input now so we build it right the first time. Nothing changes for the team until we've tested it in parallel.
+  <strong>What this is about:</strong> We're mapping out all the automated messaging sequences that run through GHL — what's automatic, what's manual, and what's actually working. The goal is to understand the full picture so we can optimize the current setup and plan properly for when we eventually consolidate everything into HPFHQ. Nothing is changing right now — we just need your input on what's happening on the ground.
 </div>
 
 <div class="section">
-  <div class="section-title"><span class="num">1</span> Pre-Call SMS Sequence</div>
+  <div class="section-title"><span class="num">1</span> Pre-Call SMS Sequence (automated)</div>
   <div class="current">
-    <div class="current-label">What exists today</div>
+    <div class="current-label">What runs today</div>
     6 personalized branches (gender × goal), ~60 iMessages over the 48 hours before a booked call. Sender identity: "James from Dan Go's team." Includes rapport questions, prep messages, day-before Zoom link confirmation, day-of "hopping on zoom now" message.
   </div>
-  <div class="question"><p>Is the current cadence working? Any messages that feel too early, too late, or too frequent?</p></div>
-  <div class="question"><p>Should the sender name stay as "James" or match the assigned setter/closer?</p></div>
+  <div class="question"><p>Is this cadence working? Any messages that feel too early, too late, or too frequent?</p></div>
+  <div class="question"><p>Should the sender name stay as "James" or should it match the assigned setter/closer?</p></div>
+  <div class="question"><p>Do setters or closers do anything manual alongside these automated messages? If so, what?</p></div>
 </div>
 
 <div class="section">
-  <div class="section-title"><span class="num">2</span> Incomplete App Recovery</div>
+  <div class="section-title"><span class="num">2</span> Incomplete App Recovery (automated)</div>
   <div class="current">
-    <div class="current-label">What exists today</div>
-    4 iMessages sent to people who start the application but don't book. 1,851 currently in the sequence. Timing: immediate → 1 min → 2h wait-for-reply → 24h wait-for-reply. Uses urgency ("application expires in 24 hours"). Stops if they reply or book.
+    <div class="current-label">What runs today</div>
+    4 iMessages sent to people who start the application but don't book. ~1,850 currently in the sequence. Timing: immediate → 1 min → 2h wait-for-reply → 24h wait-for-reply. Uses urgency ("application expires in 24 hours"). Stops if they reply or book.
   </div>
-  <div class="question"><p>Is this cadence landing well or does it feel too aggressive / too passive?</p></div>
-  <div class="question"><p>Is the "application expires" urgency line converting, or does it feel pushy?</p></div>
+  <div class="question"><p>Is this landing well or does it feel too aggressive / too passive?</p></div>
+  <div class="question"><p>Is the "application expires" urgency line converting?</p></div>
+  <div class="question"><p>Does anyone manually follow up on these leads beyond the automated sequence? If so, who and when?</p></div>
 </div>
 
 <div class="section">
-  <div class="section-title"><span class="num">3</span> Reply Handling</div>
+  <div class="section-title"><span class="num">3</span> Reply Handling (manual?)</div>
   <div class="current">
-    <div class="current-label">What exists today</div>
-    When a lead replies to an iMessage, the response goes... somewhere in GHL? Unclear how setters currently see and respond to replies.
+    <div class="current-label">What we need to understand</div>
+    When a lead replies to an automated iMessage, someone needs to respond. We need to understand the current workflow so we can map it properly.
   </div>
-  <div class="question"><p>What does the current workflow look like when a lead replies? GHL conversations tab, direct phone, SendBlue dashboard, or something else?</p></div>
+  <div class="question"><p>Where do replies show up? GHL conversations tab, direct phone, SendBlue dashboard, or somewhere else?</p></div>
+  <div class="question"><p>Who handles replies — setters, closers, or both?</p></div>
   <div class="question"><p>What would make reply handling faster or easier?</p></div>
 </div>
 
 <div class="section">
   <div class="section-title"><span class="num">4</span> Cancel / No-Show Recovery</div>
   <div class="current">
-    <div class="current-label">What we're planning</div>
-    When a booked call is cancelled: Day 0 iMessage, Day 1 email, Day 3 phone task to setter. Same pattern for no-shows.
+    <div class="current-label">What we're mapping</div>
+    When a booked call is cancelled or no-showed — what happens today? Is there an automated sequence, manual follow-up, or both?
   </div>
-  <div class="question"><p>Does that match what's working now?</p></div>
-  <div class="question"><p>Any recovery sequences you'd add or remove?</p></div>
+  <div class="question"><p>What's the current recovery process for cancellations?</p></div>
+  <div class="question"><p>What about no-shows — who follows up and when?</p></div>
+  <div class="question"><p>Is there anything that should be automated that's currently manual, or vice versa?</p></div>
 </div>
 
 <div class="note">
-  <strong>Timeline note:</strong> These messaging pieces are later in the build. The closer workstation, data pipeline, and forms engine ship first. We're collecting input now so when we get to messaging, we build it matched to what's actually working on the ground. No changes to current workflows until the new system is tested in parallel.
+  <strong>Why we're asking:</strong> We want a clear map of what's automated, what's manual, and where the gaps are. This helps us optimize what's running now and plan properly for the future. No changes coming to your current workflow — just gathering intel.
 </div>
 
 </body>
