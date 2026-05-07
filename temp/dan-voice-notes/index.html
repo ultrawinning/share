@@ -8,18 +8,15 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      background: #0a0a0a;
-      color: #e0e0e0;
-      line-height: 1.6;
-      padding: 2rem 1rem;
+      background: #0a0a0a; color: #e0e0e0; line-height: 1.6; padding: 2rem 1rem;
     }
     .container { max-width: 760px; margin: 0 auto; }
     h1 { font-size: 1.8rem; font-weight: 700; color: #fff; margin-bottom: 0.25rem; }
     .subtitle { color: #888; font-size: 0.95rem; margin-bottom: 1.5rem; }
+
     .toolbar {
       display: flex; gap: 0.5rem; margin-bottom: 2rem;
-      padding-bottom: 1.5rem; border-bottom: 1px solid #222;
-      flex-wrap: wrap;
+      padding-bottom: 1.5rem; border-bottom: 1px solid #222; flex-wrap: wrap;
     }
     .toolbar button {
       background: #1a1a1a; border: 1px solid #333; color: #ccc;
@@ -27,13 +24,13 @@
       cursor: pointer; transition: all 0.15s;
     }
     .toolbar button:hover { background: #252525; border-color: #555; color: #fff; }
-    .toolbar button.active { background: #1a2a1a; border-color: #2ED47A; color: #2ED47A; }
     .toolbar .edit-toggle {
       background: #2ED47A; color: #0a0a0a; border-color: #2ED47A; font-weight: 600;
     }
     .toolbar .edit-toggle.active {
       background: #f59e0b; border-color: #f59e0b; color: #0a0a0a;
     }
+
     .toast {
       position: fixed; bottom: 2rem; right: 2rem;
       background: #2ED47A; color: #0a0a0a; padding: 0.6rem 1.2rem;
@@ -42,50 +39,61 @@
     }
     .toast.show { opacity: 1; }
 
-    .order-box {
+    .info-box {
       background: #141414; border: 1px solid #222; border-radius: 8px;
-      padding: 1.25rem; margin-bottom: 2rem;
+      padding: 1.25rem; margin-bottom: 1.5rem;
     }
-    .order-box h3 { font-size: 0.85rem; color: #fff; margin-bottom: 0.75rem; }
-    .order-item {
-      font-size: 0.85rem; color: #888; padding: 0.3rem 0 0.3rem 0;
-    }
-    .order-item strong { color: #ccc; }
-    .order-item em { color: #666; font-style: normal; }
+    .info-box h3 { font-size: 0.85rem; color: #fff; margin-bottom: 0.5rem; }
+    .info-box p, .info-box div { font-size: 0.85rem; color: #888; line-height: 1.5; }
+    .info-box div { padding: 0.2rem 0; }
+    .info-box strong { color: #ccc; }
+    .info-box em { color: #666; font-style: normal; }
 
-    .rules-box {
-      background: #141414; border: 1px solid #222; border-radius: 8px;
-      padding: 1.25rem; margin-bottom: 2rem;
-    }
-    .rules-box h3 { font-size: 0.85rem; color: #fff; margin-bottom: 0.5rem; }
-    .rules-box p { font-size: 0.85rem; color: #888; line-height: 1.5; }
-
-    .section-label {
-      text-align: center; color: #444; font-size: 0.75rem;
-      margin: 2rem 0 1.25rem; letter-spacing: 0.15em; text-transform: uppercase;
-    }
-
+    /* Cards */
     .card {
       background: #141414; border: 1px solid #222;
       border-left: 3px solid #2ED47A; border-radius: 8px;
-      padding: 1.5rem; margin-bottom: 1.25rem;
+      padding: 1.5rem; margin-bottom: 1.25rem; position: relative;
+      transition: transform 0.15s, box-shadow 0.15s;
     }
     .card.highlight { border-left-color: #f59e0b; background: #181510; }
+    .card.dragging { opacity: 0.4; }
+    .card.drag-over { box-shadow: 0 -3px 0 0 #2ED47A; }
+
+    .card-header {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem;
+    }
+    .card-header-left { flex: 1; }
     .card-number {
       font-size: 0.7rem; font-weight: 600; color: #2ED47A;
       text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.15rem;
     }
     .card.highlight .card-number { color: #f59e0b; }
-    .card-title {
-      font-size: 1.1rem; font-weight: 600; color: #fff; margin-bottom: 0.35rem;
-    }
-    .card-brief {
-      font-size: 0.85rem; color: #777; margin-bottom: 0.75rem; font-style: italic;
-    }
+    .card-title { font-size: 1.1rem; font-weight: 600; color: #fff; margin-bottom: 0.35rem; }
+    .card-brief { font-size: 0.85rem; color: #777; margin-bottom: 0.75rem; font-style: italic; }
 
-    .variation {
-      margin-bottom: 0.75rem;
+    /* Reorder controls */
+    .reorder-controls {
+      display: none; flex-direction: column; gap: 2px;
     }
+    body.editing .reorder-controls { display: flex; }
+    .reorder-btn {
+      background: #222; border: 1px solid #333; color: #888;
+      width: 28px; height: 24px; border-radius: 4px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; transition: all 0.15s; line-height: 1;
+    }
+    .reorder-btn:hover { background: #2ED47A; color: #0a0a0a; border-color: #2ED47A; }
+
+    /* Drag handle */
+    .drag-handle {
+      display: none; cursor: grab; color: #444; font-size: 1rem;
+      padding: 0.2rem; margin-right: 0.25rem; user-select: none;
+    }
+    .drag-handle:active { cursor: grabbing; }
+    body.editing .drag-handle { display: block; }
+
+    .variation { margin-bottom: 0.75rem; }
     .var-label {
       font-size: 0.7rem; font-weight: 700; color: #555;
       text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.2rem;
@@ -97,8 +105,7 @@
       transition: background 0.2s, border-color 0.2s;
     }
     .script[contenteditable="true"] {
-      border-color: #2ED47A; background: #0f1a0f; cursor: text;
-      outline: none;
+      border-color: #2ED47A; background: #0f1a0f; cursor: text; outline: none;
     }
     .script[contenteditable="true"]:focus {
       border-color: #f59e0b; background: #1a1810;
@@ -111,7 +118,7 @@
       padding: 0.6rem 0.85rem; margin-top: 0.5rem;
       font-size: 0.8rem; color: #c9a44a; line-height: 1.5;
     }
-    .setter-note::before { content: "⚠ Setter note: "; font-weight: 600; }
+    .setter-note::before { content: "\26A0  Setter note: "; font-weight: 600; }
 
     .riff-toggle {
       font-size: 0.75rem; color: #555; cursor: pointer;
@@ -143,7 +150,7 @@
     .deploy-box li {
       font-size: 0.85rem; color: #888; padding: 0.25rem 0 0.25rem 1.2rem; position: relative;
     }
-    .deploy-box li::before { content: "→"; position: absolute; left: 0; color: #2ED47A; }
+    .deploy-box li::before { content: "\2192"; position: absolute; left: 0; color: #2ED47A; }
 
     footer {
       margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #222;
@@ -161,98 +168,134 @@
 <body>
   <div class="container">
     <h1>Voice Note Scripts</h1>
-    <p class="subtitle">12 voice notes for setter DM conversations. Tap scripts to edit, changes save in your browser.</p>
+    <p class="subtitle">12 voice notes for setter DM conversations. Edit mode: edit scripts, drag or arrow-reorder cards. All changes save in your browser.</p>
 
     <div class="toolbar">
       <button class="edit-toggle" onclick="toggleEdit()" id="editBtn">Edit Mode</button>
       <button onclick="expandAll()">Show All Context</button>
       <button onclick="collapseAll()">Hide All Context</button>
-      <button onclick="resetAll()">Reset to Original</button>
+      <button onclick="resetAll()">Reset Everything</button>
     </div>
 
-    <div class="order-box">
+    <div class="info-box">
       <h3>Recording Order (by energy state)</h3>
-      <div class="order-item"><strong>Block 1 — Heavy Hitter first.</strong> <em>Record when voice is freshest.</em></div>
-      <div class="order-item"><strong>Block 2 — Warmth:</strong> Identity Proof, Outbound Opener, Lead Magnet Recovery, Cold Reactivation.</div>
-      <div class="order-item"><strong>Block 3 — Transactional:</strong> Price Reframe, Direct Transition, Pre-Call Lock-In, Post-Link Follow-Ups.</div>
-      <div class="order-item"><strong>Block 4 — Follow-ups:</strong> Ghost Nudge #1, Ghost Nudge #2. <em>Smile in the voice. Record last.</em></div>
+      <div><strong>Block 1 — Heavy Hitter first.</strong> <em>Record when voice is freshest.</em></div>
+      <div><strong>Block 2 — Warmth:</strong> Identity Proof, Outbound Opener, Lead Magnet Recovery, Cold Reactivation.</div>
+      <div><strong>Block 3 — Transactional:</strong> Price Reframe, Direct Transition, Pre-Call Lock-In, Post-Link Follow-Ups.</div>
+      <div><strong>Block 4 — Follow-ups:</strong> Ghost Nudge #1, Ghost Nudge #2. <em>Smile in the voice. Record last.</em></div>
     </div>
 
-    <div class="rules-box">
+    <div class="info-box">
       <h3>Voice Rules</h3>
       <p>Speak like you would to an entrepreneur friend you respect. Warm, direct, peer energy — not coach voice, not sales voice. No "just curious", no "I'd love to", no "would it be helpful if". Just talk like a human.</p>
     </div>
 
-    <!-- VN 1 -->
-    <div class="card">
-      <div class="card-number">VN 1</div>
-      <div class="card-title">Warm Outbound Opener</div>
-      <div class="card-brief">First-touch DM to anyone showing engagement.</div>
-      <div class="variation">
-        <div class="var-label">A — Lurker (default)</div>
-        <div class="script" data-original="Hey — I see you lurking. Wanted to drop in and say hi. Where are you at with your health right now?">Hey — I see you lurking. Wanted to drop in and say hi. Where are you at with your health right now?</div>
-      </div>
-      <div class="variation">
-        <div class="var-label">B — Story-engaged</div>
-        <div class="script" data-original="Hey — appreciate you watching the stories. Quick check-in — what's actually on your plate health-wise right now?">Hey — appreciate you watching the stories. Quick check-in — what's actually on your plate health-wise right now?</div>
-      </div>
-      <div class="variation">
-        <div class="var-label">C — Commenter</div>
-        <div class="script" data-original="Hey — saw your comment, appreciate it. Where are you at right now with the energy and the body?">Hey — saw your comment, appreciate it. Where are you at right now with the energy and the body?</div>
-      </div>
-      <div class="riff-toggle" onclick="toggleRiff(this)">▸ Context</div>
-      <div class="riff-content">With 3.6M+ followers, you can't claim you spotted one person. "Lurking" is playful and frames it as general observation. The closing question is open ("where are you at" not "what's wrong") — comfortable place to start. Setter picks variation based on engagement type.</div>
-    </div>
+    <div id="card-list">
 
-    <!-- VN 2 -->
-    <div class="card">
-      <div class="card-number">VN 2</div>
-      <div class="card-title">Identity Proof</div>
-      <div class="card-brief">When they question whether it's really you.</div>
-      <div class="variation">
-        <div class="var-label">A — Default</div>
-        <div class="script" data-original="Ha — yeah, it's actually me. I jump in here when I can because I want to know who I'm talking to. So — where are you at with your health right now?">Ha — yeah, it's actually me. I jump in here when I can because I want to know who I'm talking to. So — where are you at with your health right now?</div>
+      <!-- opener -->
+      <div class="card" data-id="opener" draggable="false">
+        <div class="card-header">
+          <span class="drag-handle" title="Drag to reorder">&#x2630;</span>
+          <div class="card-header-left">
+            <div class="card-number"></div>
+            <div class="card-title">Warm Outbound Opener</div>
+          </div>
+          <div class="reorder-controls">
+            <button class="reorder-btn" onclick="moveCard(this,-1)" title="Move up">&#x25B2;</button>
+            <button class="reorder-btn" onclick="moveCard(this,1)" title="Move down">&#x25BC;</button>
+          </div>
+        </div>
+        <div class="card-brief">First-touch DM to anyone showing engagement.</div>
+        <div class="variation">
+          <div class="var-label">A — Lurker (default)</div>
+          <div class="script" data-original="Hey — I see you lurking. Wanted to drop in and say hi. Where are you at with your health right now?">Hey — I see you lurking. Wanted to drop in and say hi. Where are you at with your health right now?</div>
+        </div>
+        <div class="variation">
+          <div class="var-label">B — Story-engaged</div>
+          <div class="script" data-original="Hey — appreciate you watching the stories. Quick check-in — what's actually on your plate health-wise right now?">Hey — appreciate you watching the stories. Quick check-in — what's actually on your plate health-wise right now?</div>
+        </div>
+        <div class="variation">
+          <div class="var-label">C — Commenter</div>
+          <div class="script" data-original="Hey — saw your comment, appreciate it. Where are you at right now with the energy and the body?">Hey — saw your comment, appreciate it. Where are you at right now with the energy and the body?</div>
+        </div>
+        <div class="riff-toggle" onclick="toggleRiff(this)">&#x25B8; Context</div>
+        <div class="riff-content">With 3.6M+ followers, you can't claim you spotted one person. "Lurking" is playful and frames it as general observation. The closing question is open ("where are you at" not "what's wrong") — comfortable place to start. Setter picks variation based on engagement type.</div>
       </div>
-      <div class="variation">
-        <div class="var-label">B — More direct</div>
-        <div class="script" data-original="Yeah, this is actually me, not a VA. I keep an eye on the DMs because I want to know who's in my world. Where are you at right now?">Yeah, this is actually me, not a VA. I keep an eye on the DMs because I want to know who's in my world. Where are you at right now?</div>
-      </div>
-      <div class="riff-toggle" onclick="toggleRiff(this)">▸ Context</div>
-      <div class="riff-content">The proof underneath the proof is the WHY — "here's why I'm in the DMs." That reveal converts skeptics. Redirect immediately with a real question. Keep it casual, almost amused — surprise, not defensiveness.</div>
-    </div>
 
-    <!-- VN 3 -->
-    <div class="card">
-      <div class="card-number">VN 3</div>
-      <div class="card-title">Lead Magnet Recovery</div>
-      <div class="card-brief">After they grabbed a lead magnet and went silent. Highest-frequency salvage VN.</div>
-      <div class="variation">
-        <div class="var-label">A — Feedback-led (within 24–48hrs)</div>
-        <div class="script" data-original="Hey — saw you grabbed the [guide]. How'd you find it? Anything in there actually land, or did it miss the mark on what you were after?">Hey — saw you grabbed the [guide]. How'd you find it? Anything in there actually land, or did it miss the mark on what you were after?</div>
+      <!-- identity -->
+      <div class="card" data-id="identity" draggable="false">
+        <div class="card-header">
+          <span class="drag-handle" title="Drag to reorder">&#x2630;</span>
+          <div class="card-header-left">
+            <div class="card-number"></div>
+            <div class="card-title">Identity Proof</div>
+          </div>
+          <div class="reorder-controls">
+            <button class="reorder-btn" onclick="moveCard(this,-1)" title="Move up">&#x25B2;</button>
+            <button class="reorder-btn" onclick="moveCard(this,1)" title="Move down">&#x25BC;</button>
+          </div>
+        </div>
+        <div class="card-brief">When they question whether it's really you.</div>
+        <div class="variation">
+          <div class="var-label">A — Default</div>
+          <div class="script" data-original="Ha — yeah, it's actually me. I jump in here when I can because I want to know who I'm talking to. So — where are you at with your health right now?">Ha — yeah, it's actually me. I jump in here when I can because I want to know who I'm talking to. So — where are you at with your health right now?</div>
+        </div>
+        <div class="variation">
+          <div class="var-label">B — More direct</div>
+          <div class="script" data-original="Yeah, this is actually me, not a VA. I keep an eye on the DMs because I want to know who's in my world. Where are you at right now?">Yeah, this is actually me, not a VA. I keep an eye on the DMs because I want to know who's in my world. Where are you at right now?</div>
+        </div>
+        <div class="riff-toggle" onclick="toggleRiff(this)">&#x25B8; Context</div>
+        <div class="riff-content">The proof underneath the proof is the WHY — "here's why I'm in the DMs." That reveal converts skeptics. Redirect immediately with a real question. Keep it casual, almost amused — surprise, not defensiveness.</div>
       </div>
-      <div class="variation">
-        <div class="var-label">B — Curiosity-led (don't know much yet)</div>
-        <div class="script" data-original="Hey — saw you got the [guide]. What's going on that made you grab it? People don't usually reach for that one unless something's been on their mind.">Hey — saw you got the [guide]. What's going on that made you grab it? People don't usually reach for that one unless something's been on their mind.</div>
-      </div>
-      <div class="variation">
-        <div class="var-label">C — Implementation-led (7+ days only)</div>
-        <div class="script" data-original="Hey — saw you grabbed the [guide] a bit ago. Be straight with me — did you actually get into it, or did it land on the pile of things you keep meaning to check out?">Hey — saw you grabbed the [guide] a bit ago. Be straight with me — did you actually get into it, or did it land on the pile of things you keep meaning to check out?</div>
-      </div>
-      <div class="setter-note">Only use C when the gap is real — 7+ days minimum. For 3-day silences, use A or B. "Be straight with me" hits wrong if they just got busy for a weekend.</div>
-      <div class="riff-toggle" onclick="toggleRiff(this)">▸ Context</div>
-      <div class="riff-content">Don't thank them for grabbing the resource. Open with genuine interest, not a pivot to sales. Setter swaps [guide] for the actual asset name. Three doors: feedback on the content, motivation behind grabbing it, or whether they actually used it.</div>
-    </div>
 
-    <div class="section-label">— the heavy hitter —</div>
+      <!-- lead-magnet -->
+      <div class="card" data-id="lead-magnet" draggable="false">
+        <div class="card-header">
+          <span class="drag-handle" title="Drag to reorder">&#x2630;</span>
+          <div class="card-header-left">
+            <div class="card-number"></div>
+            <div class="card-title">Lead Magnet Recovery</div>
+          </div>
+          <div class="reorder-controls">
+            <button class="reorder-btn" onclick="moveCard(this,-1)" title="Move up">&#x25B2;</button>
+            <button class="reorder-btn" onclick="moveCard(this,1)" title="Move down">&#x25BC;</button>
+          </div>
+        </div>
+        <div class="card-brief">After they grabbed a lead magnet and went silent. Highest-frequency salvage VN.</div>
+        <div class="variation">
+          <div class="var-label">A — Feedback-led (within 24–48hrs)</div>
+          <div class="script" data-original="Hey — saw you grabbed the [guide]. How'd you find it? Anything in there actually land, or did it miss the mark on what you were after?">Hey — saw you grabbed the [guide]. How'd you find it? Anything in there actually land, or did it miss the mark on what you were after?</div>
+        </div>
+        <div class="variation">
+          <div class="var-label">B — Curiosity-led (don't know much yet)</div>
+          <div class="script" data-original="Hey — saw you got the [guide]. What's going on that made you grab it? People don't usually reach for that one unless something's been on their mind.">Hey — saw you got the [guide]. What's going on that made you grab it? People don't usually reach for that one unless something's been on their mind.</div>
+        </div>
+        <div class="variation">
+          <div class="var-label">C — Implementation-led (7+ days only)</div>
+          <div class="script" data-original="Hey — saw you grabbed the [guide] a bit ago. Be straight with me — did you actually get into it, or did it land on the pile of things you keep meaning to check out?">Hey — saw you grabbed the [guide] a bit ago. Be straight with me — did you actually get into it, or did it land on the pile of things you keep meaning to check out?</div>
+        </div>
+        <div class="setter-note">Only use C when the gap is real — 7+ days minimum. For 3-day silences, use A or B. "Be straight with me" hits wrong if they just got busy for a weekend.</div>
+        <div class="riff-toggle" onclick="toggleRiff(this)">&#x25B8; Context</div>
+        <div class="riff-content">Don't thank them for grabbing the resource. Open with genuine interest, not a pivot to sales. Setter swaps [guide] for the actual asset name. Three doors: feedback on the content, motivation behind grabbing it, or whether they actually used it.</div>
+      </div>
 
-    <!-- VN 4 -->
-    <div class="card highlight">
-      <div class="card-number">VN 4 — Record this one first</div>
-      <div class="card-title">Root Cause Explanation</div>
-      <div class="card-brief">45–60 seconds. Lands after goal + pain + history. Makes them want the call before anyone asks.</div>
-      <div class="variation">
-        <div class="var-label">Canonical script (multiple takes)</div>
-        <div class="script" data-original="So let me break down how this works because it's different from anything you've tried.
+      <!-- heavy-hitter -->
+      <div class="card highlight" data-id="heavy-hitter" draggable="false">
+        <div class="card-header">
+          <span class="drag-handle" title="Drag to reorder">&#x2630;</span>
+          <div class="card-header-left">
+            <div class="card-number"></div>
+            <div class="card-title">Root Cause Explanation</div>
+          </div>
+          <div class="reorder-controls">
+            <button class="reorder-btn" onclick="moveCard(this,-1)" title="Move up">&#x25B2;</button>
+            <button class="reorder-btn" onclick="moveCard(this,1)" title="Move down">&#x25BC;</button>
+          </div>
+        </div>
+        <div class="card-brief">45–60 seconds. THE conversion lever. Makes them want the call before anyone asks. Record first.</div>
+        <div class="variation">
+          <div class="var-label">Canonical script (multiple takes)</div>
+          <div class="script" data-original="So let me break down how this works because it's different from anything you've tried.
 
 Most guys who come to me — they've done the diets, the trainers, the 12-week challenges. Works for a bit, life gets busy, back to square one.
 
@@ -265,162 +308,231 @@ Your body's the same thing. There's a root cause. Could be stress jacking your c
 So what we do on the call is find YOUR bottleneck. Not a generic plan. Once we identify it and fix it — energy comes back, weight starts moving, sleep improves, decision-making gets sharper.
 
 That's why guys who've been stuck for years break through with us. We're not handing out meal plans. We're fixing the system failure.">So let me break down how this works because it's different from anything you've tried.<br><br>Most guys who come to me — they've done the diets, the trainers, the 12-week challenges. Works for a bit, life gets busy, back to square one.<br><br>Here's why. Every program you've tried treats the symptoms. Eat less, move more, here's your meal plan. Nobody figured out why you got here in the first place.<br><br><em style="color:#f59e0b">[pause]</em> Think about your business. Revenue drops — you don't just throw more ads at it. You find the bottleneck. Where's the system breaking down? You fix THAT, and everything else starts working.<br><br><em style="color:#f59e0b">[pause]</em> Your body's the same thing. There's a root cause. Could be stress jacking your cortisol, could be sleep tanking your recovery, could be nutrition timing totally off for your schedule. Could be all three compounding.<br><br>So what we do on the call is find YOUR bottleneck. Not a generic plan. Once we identify it and fix it — energy comes back, weight starts moving, sleep improves, decision-making gets sharper.<br><br>That's why guys who've been stuck for years break through with us. We're not handing out meal plans. We're fixing the system failure.</div>
+        </div>
+        <div class="riff-toggle" onclick="toggleRiff(this)">&#x25B8; Structure breakdown</div>
+        <div class="riff-content">
+          <ul class="structure-list">
+            <li data-num="1."><strong>You've tried everything</strong> — validate, don't judge. "Most guys who come to me" = you're not alone.</li>
+            <li data-num="2."><strong>Those treated symptoms</strong> — "eat less move more." Let the frustration come through naturally.</li>
+            <li data-num="3."><strong>Business analogy</strong> — bottleneck thinking. Revenue then find the bottleneck then fix root cause. Slow down here.</li>
+            <li data-num="4."><strong>Your body = same system</strong> — the pivot. Cortisol, sleep, nutrition timing = the levers.</li>
+            <li data-num="5."><strong>YOUR bottleneck</strong> — personal, specific, not generic. End on "system failure."</li>
+          </ul>
+          <br>No CTA at the end. The setter sends the Direct Transition VN right after.
+        </div>
       </div>
-      <div class="riff-toggle" onclick="toggleRiff(this)">▸ Structure breakdown</div>
-      <div class="riff-content">
-        <ul class="structure-list">
-          <li data-num="1."><strong>You've tried everything</strong> — validate, don't judge. "Most guys who come to me" = you're not alone.</li>
-          <li data-num="2."><strong>Those treated symptoms</strong> — "eat less move more." Let the frustration come through naturally.</li>
-          <li data-num="3."><strong>Business analogy</strong> — bottleneck thinking. Revenue → find the bottleneck → fix root cause. Slow down here.</li>
-          <li data-num="4."><strong>Your body = same system</strong> — the pivot. Cortisol, sleep, nutrition timing = the levers.</li>
-          <li data-num="5."><strong>YOUR bottleneck</strong> — personal, specific, not generic. End on "system failure."</li>
-        </ul>
-        <br>No CTA at the end. The setter sends VN 6 (Direct Transition) right after.
-      </div>
-    </div>
 
-    <div class="section-label">— transactional set —</div>
+      <!-- price -->
+      <div class="card" data-id="price" draggable="false">
+        <div class="card-header">
+          <span class="drag-handle" title="Drag to reorder">&#x2630;</span>
+          <div class="card-header-left">
+            <div class="card-number"></div>
+            <div class="card-title">Price / Cost Reframe</div>
+          </div>
+          <div class="reorder-controls">
+            <button class="reorder-btn" onclick="moveCard(this,-1)" title="Move up">&#x25B2;</button>
+            <button class="reorder-btn" onclick="moveCard(this,1)" title="Move down">&#x25BC;</button>
+          </div>
+        </div>
+        <div class="card-brief">When they ask how much it costs. Never quote a number in DMs.</div>
+        <div class="variation">
+          <div class="var-label">A — Contrast (default)</div>
+          <div class="script" data-original="So it depends — not everyone's dealing with the same stuff. A guy running on 5 hours of sleep with 40 pounds to lose is a different conversation from someone who's active but can't get the nutrition right. Best thing is to hop on a call with me or one of my team so we can actually see what's going on, and we'll tell you exactly what it looks like.">So it depends — not everyone's dealing with the same stuff. A guy running on 5 hours of sleep with 40 pounds to lose is a different conversation from someone who's active but can't get the nutrition right. Best thing is to hop on a call with me or one of my team so we can actually see what's going on, and we'll tell you exactly what it looks like.</div>
+        </div>
+        <div class="variation">
+          <div class="var-label">B — Business-frame</div>
+          <div class="script" data-original="Real talk — pricing without context is impossible. You wouldn't price out a project for a client without scoping it first. Same here. Best move is to hop on a call with me or one of my team, see what you're actually dealing with, and we'll lay out exactly what it looks like.">Real talk — pricing without context is impossible. You wouldn't price out a project for a client without scoping it first. Same here. Best move is to hop on a call with me or one of my team, see what you're actually dealing with, and we'll lay out exactly what it looks like.</div>
+        </div>
+        <div class="riff-toggle" onclick="toggleRiff(this)">&#x25B8; Context</div>
+        <div class="riff-content">Price question = buying signal, not objection. Reframe: investment depends on what they need. Use A for general; B when prospect has mentioned they're a business owner. Both route to the call.</div>
+      </div>
 
-    <!-- VN 5 -->
-    <div class="card">
-      <div class="card-number">VN 5</div>
-      <div class="card-title">Price / Cost Reframe</div>
-      <div class="card-brief">When they ask how much it costs. Never quote a number in DMs.</div>
-      <div class="variation">
-        <div class="var-label">A — Contrast (default)</div>
-        <div class="script" data-original="So it depends — not everyone's dealing with the same stuff. A guy running on 5 hours of sleep with 40 pounds to lose is a different conversation from someone who's active but can't get the nutrition right. Best thing is to hop on a call with me or one of my team so we can actually see what's going on, and we'll tell you exactly what it looks like.">So it depends — not everyone's dealing with the same stuff. A guy running on 5 hours of sleep with 40 pounds to lose is a different conversation from someone who's active but can't get the nutrition right. Best thing is to hop on a call with me or one of my team so we can actually see what's going on, and we'll tell you exactly what it looks like.</div>
+      <!-- transition -->
+      <div class="card" data-id="transition" draggable="false">
+        <div class="card-header">
+          <span class="drag-handle" title="Drag to reorder">&#x2630;</span>
+          <div class="card-header-left">
+            <div class="card-number"></div>
+            <div class="card-title">Direct Transition to Call</div>
+          </div>
+          <div class="reorder-controls">
+            <button class="reorder-btn" onclick="moveCard(this,-1)" title="Move up">&#x25B2;</button>
+            <button class="reorder-btn" onclick="moveCard(this,1)" title="Move down">&#x25BC;</button>
+          </div>
+        </div>
+        <div class="card-brief">The closer move. Lands after Heavy Hitter.</div>
+        <div class="variation">
+          <div class="var-label">A — Systems frame (default)</div>
+          <div class="script" data-original="Look — from what you've told me, you know what's wrong, you've tried to fix it, it keeps coming back. That's not a motivation problem, that's a systems problem. Let's get you on a call with my team to figure out the root cause — you down?">Look — from what you've told me, you know what's wrong, you've tried to fix it, it keeps coming back. That's not a motivation problem, that's a systems problem. Let's get you on a call with my team to figure out the root cause — you down?</div>
+        </div>
+        <div class="variation">
+          <div class="var-label">B — Mirror-led (when you have specifics)</div>
+          <div class="script" data-original="You've been telling me about [issue] for [time] now. You're clearly smart enough to figure out generic fixes — they're not the answer. Let's get you on a call with my team and find the actual root cause. You in?">You've been telling me about [issue] for [time] now. You're clearly smart enough to figure out generic fixes — they're not the answer. Let's get you on a call with my team and find the actual root cause. You in?</div>
+        </div>
+        <div class="riff-toggle" onclick="toggleRiff(this)">&#x25B8; Context</div>
+        <div class="riff-content">"Not motivation, systems" — nobody wants to be told they lack motivation. "My team" framing keeps it honest about who's on the call. Use B when you have clear context to mirror back; A when you don't.</div>
       </div>
-      <div class="variation">
-        <div class="var-label">B — Business-frame</div>
-        <div class="script" data-original="Real talk — pricing without context is impossible. You wouldn't price out a project for a client without scoping it first. Same here. Best move is to hop on a call with me or one of my team, see what you're actually dealing with, and we'll lay out exactly what it looks like.">Real talk — pricing without context is impossible. You wouldn't price out a project for a client without scoping it first. Same here. Best move is to hop on a call with me or one of my team, see what you're actually dealing with, and we'll lay out exactly what it looks like.</div>
-      </div>
-      <div class="riff-toggle" onclick="toggleRiff(this)">▸ Context</div>
-      <div class="riff-content">Price question = buying signal, not objection. Reframe: investment depends on what they need. Use A for general; B when prospect has mentioned they're a business owner. Both route to the call.</div>
-    </div>
 
-    <!-- VN 6 -->
-    <div class="card">
-      <div class="card-number">VN 6</div>
-      <div class="card-title">Direct Transition to Call</div>
-      <div class="card-brief">The closer move. Lands after VN 4 (Heavy Hitter).</div>
-      <div class="variation">
-        <div class="var-label">A — Systems frame (default)</div>
-        <div class="script" data-original="Look — from what you've told me, you know what's wrong, you've tried to fix it, it keeps coming back. That's not a motivation problem, that's a systems problem. Let's get you on a call with my team to figure out the root cause — you down?">Look — from what you've told me, you know what's wrong, you've tried to fix it, it keeps coming back. That's not a motivation problem, that's a systems problem. Let's get you on a call with my team to figure out the root cause — you down?</div>
+      <!-- pre-call -->
+      <div class="card" data-id="pre-call" draggable="false">
+        <div class="card-header">
+          <span class="drag-handle" title="Drag to reorder">&#x2630;</span>
+          <div class="card-header-left">
+            <div class="card-number"></div>
+            <div class="card-title">Pre-Call Lock-In</div>
+          </div>
+          <div class="reorder-controls">
+            <button class="reorder-btn" onclick="moveCard(this,-1)" title="Move up">&#x25B2;</button>
+            <button class="reorder-btn" onclick="moveCard(this,1)" title="Move down">&#x25BC;</button>
+          </div>
+        </div>
+        <div class="card-brief">After they book. No-show prevention frame.</div>
+        <div class="variation">
+          <div class="var-label">A — Day before</div>
+          <div class="script" data-original="Hey — looking forward to your call tomorrow with my team. Block it off like a board meeting, go through any pre-call stuff, and let me know if anything changes. They're carving out time for you, so let's make it count.">Hey — looking forward to your call tomorrow with my team. Block it off like a board meeting, go through any pre-call stuff, and let me know if anything changes. They're carving out time for you, so let's make it count.</div>
+        </div>
+        <div class="variation">
+          <div class="var-label">B — Day of (shorter)</div>
+          <div class="script" data-original="Hey — quick one before your call today. Block it off proper, go through anything they sent over, show up ready. We're carving out the time — let's use it.">Hey — quick one before your call today. Block it off proper, go through anything they sent over, show up ready. We're carving out the time — let's use it.</div>
+        </div>
+        <div class="riff-toggle" onclick="toggleRiff(this)">&#x25B8; Context</div>
+        <div class="riff-content">Frame the team's time as investment in them — not begged for. "Block it off like a board meeting" = entrepreneur language. A is day-before; B is day-of confirmation.</div>
       </div>
-      <div class="variation">
-        <div class="var-label">B — Mirror-led (when you have specifics)</div>
-        <div class="script" data-original="You've been telling me about [issue] for [time] now. You're clearly smart enough to figure out generic fixes — they're not the answer. Let's get you on a call with my team and find the actual root cause. You in?">You've been telling me about [issue] for [time] now. You're clearly smart enough to figure out generic fixes — they're not the answer. Let's get you on a call with my team and find the actual root cause. You in?</div>
-      </div>
-      <div class="riff-toggle" onclick="toggleRiff(this)">▸ Context</div>
-      <div class="riff-content">"Not motivation, systems" — nobody wants to be told they lack motivation. "My team" framing keeps it honest about who's on the call. Use B when you have clear context to mirror back; A when you don't.</div>
-    </div>
 
-    <!-- VN 7 -->
-    <div class="card">
-      <div class="card-number">VN 7</div>
-      <div class="card-title">Pre-Call Lock-In</div>
-      <div class="card-brief">After they book. No-show prevention frame.</div>
-      <div class="variation">
-        <div class="var-label">A — Day before</div>
-        <div class="script" data-original="Hey — looking forward to your call tomorrow with my team. Block it off like a board meeting, go through any pre-call stuff, and let me know if anything changes. They're carving out time for you, so let's make it count.">Hey — looking forward to your call tomorrow with my team. Block it off like a board meeting, go through any pre-call stuff, and let me know if anything changes. They're carving out time for you, so let's make it count.</div>
+      <!-- post-link-24 -->
+      <div class="card" data-id="post-link-24" draggable="false">
+        <div class="card-header">
+          <span class="drag-handle" title="Drag to reorder">&#x2630;</span>
+          <div class="card-header-left">
+            <div class="card-number"></div>
+            <div class="card-title">Post-Link Follow Up — 24 Hours</div>
+          </div>
+          <div class="reorder-controls">
+            <button class="reorder-btn" onclick="moveCard(this,-1)" title="Move up">&#x25B2;</button>
+            <button class="reorder-btn" onclick="moveCard(this,1)" title="Move down">&#x25BC;</button>
+          </div>
+        </div>
+        <div class="card-brief">They got the booking link but didn't book. Assume friction, not disinterest.</div>
+        <div class="variation">
+          <div class="script single" data-original="Hey — did you find a time? If the slots don't work, tell me and I'll sort it out.">Hey — did you find a time? If the slots don't work, tell me and I'll sort it out.</div>
+        </div>
+        <div class="riff-toggle" onclick="toggleRiff(this)">&#x25B8; Context</div>
+        <div class="riff-content">"I'll sort it out" = you remove the obstacle personally. Peer energy — a friend helping them get something done.</div>
       </div>
-      <div class="variation">
-        <div class="var-label">B — Day of (shorter)</div>
-        <div class="script" data-original="Hey — quick one before your call today. Block it off proper, go through anything they sent over, show up ready. We're carving out the time — let's use it.">Hey — quick one before your call today. Block it off proper, go through anything they sent over, show up ready. We're carving out the time — let's use it.</div>
-      </div>
-      <div class="riff-toggle" onclick="toggleRiff(this)">▸ Context</div>
-      <div class="riff-content">Frame the team's time as investment in them — not begged for. "Block it off like a board meeting" = entrepreneur language. A is day-before; B is day-of confirmation.</div>
-    </div>
 
-    <!-- VN 10, 11 -->
-    <div class="card">
-      <div class="card-number">VN 10</div>
-      <div class="card-title">Post-Link Follow Up — 24 Hours</div>
-      <div class="card-brief">They got the booking link but didn't book. Assume friction, not disinterest.</div>
-      <div class="variation">
-        <div class="script single" data-original="Hey — did you find a time? If the slots don't work, tell me and I'll sort it out.">Hey — did you find a time? If the slots don't work, tell me and I'll sort it out.</div>
+      <!-- post-link-48 -->
+      <div class="card" data-id="post-link-48" draggable="false">
+        <div class="card-header">
+          <span class="drag-handle" title="Drag to reorder">&#x2630;</span>
+          <div class="card-header-left">
+            <div class="card-number"></div>
+            <div class="card-title">Post-Link Follow Up — 48 Hours</div>
+          </div>
+          <div class="reorder-controls">
+            <button class="reorder-btn" onclick="moveCard(this,-1)" title="Move up">&#x25B2;</button>
+            <button class="reorder-btn" onclick="moveCard(this,1)" title="Move down">&#x25BC;</button>
+          </div>
+        </div>
+        <div class="card-brief">48 hours = either tech issue or on the fence. Remove every barrier.</div>
+        <div class="variation">
+          <div class="script single" data-original="Hey — any issues with the calendar? Sometimes the link acts up. Just tell me what works for you and I'll book it myself.">Hey — any issues with the calendar? Sometimes the link acts up. Just tell me what works for you and I'll book it myself.</div>
+        </div>
+        <div class="riff-toggle" onclick="toggleRiff(this)">&#x25B8; Context</div>
+        <div class="riff-content">"I'll book it myself" eliminates remaining friction. Blames the tool, not the person.</div>
       </div>
-      <div class="riff-toggle" onclick="toggleRiff(this)">▸ Context</div>
-      <div class="riff-content">"I'll sort it out" = you remove the obstacle personally. Peer energy — a friend helping them get something done.</div>
-    </div>
 
-    <div class="card">
-      <div class="card-number">VN 11</div>
-      <div class="card-title">Post-Link Follow Up — 48 Hours</div>
-      <div class="card-brief">48 hours = either tech issue or on the fence. Remove every barrier.</div>
-      <div class="variation">
-        <div class="script single" data-original="Hey — any issues with the calendar? Sometimes the link acts up. Just tell me what works for you and I'll book it myself.">Hey — any issues with the calendar? Sometimes the link acts up. Just tell me what works for you and I'll book it myself.</div>
+      <!-- ghost-1 -->
+      <div class="card" data-id="ghost-1" draggable="false">
+        <div class="card-header">
+          <span class="drag-handle" title="Drag to reorder">&#x2630;</span>
+          <div class="card-header-left">
+            <div class="card-number"></div>
+            <div class="card-title">Ghost Nudge #1 — Jokey / Self-Aware</div>
+          </div>
+          <div class="reorder-controls">
+            <button class="reorder-btn" onclick="moveCard(this,-1)" title="Move up">&#x25B2;</button>
+            <button class="reorder-btn" onclick="moveCard(this,1)" title="Move down">&#x25BC;</button>
+          </div>
+        </div>
+        <div class="card-brief">First follow-up after 24–48 hours of silence. The joke breaks the awkwardness. Smile in the voice.</div>
+        <div class="variation">
+          <div class="var-label">A — Three options (default)</div>
+          <div class="script" data-original="Hey — so I'm either getting ghosted, you're under a pile of emails, or Instagram ate my message. All three are completely valid. Just give me a thumbs up or down so I know you're alive over there.">Hey — so I'm either getting ghosted, you're under a pile of emails, or Instagram ate my message. All three are completely valid. Just give me a thumbs up or down so I know you're alive over there.</div>
+        </div>
+        <div class="variation">
+          <div class="var-label">B — Movie trailer</div>
+          <div class="script" data-original="Previously, on our DM conversation... I said something, you disappeared. The audience needs closure. What's the verdict?">Previously, on our DM conversation... I said something, you disappeared. The audience needs closure. What's the verdict?</div>
+        </div>
+        <div class="variation">
+          <div class="var-label">C — Self-roast</div>
+          <div class="script" data-original="Hey — I realize I'm now that guy who double-texts. It's fine, I've accepted it. Just let me know if you're still breathing and we're good.">Hey — I realize I'm now that guy who double-texts. It's fine, I've accepted it. Just let me know if you're still breathing and we're good.</div>
+        </div>
+        <div class="variation">
+          <div class="var-label">D — Entrepreneur frame</div>
+          <div class="script" data-original="Hey — I know your inbox looks like mine right now. Just floating this back up. Yes, no, or a random emoji all work — just give me something.">Hey — I know your inbox looks like mine right now. Just floating this back up. Yes, no, or a random emoji all work — just give me something.</div>
+        </div>
+        <div class="riff-toggle" onclick="toggleRiff(this)">&#x25B8; Context</div>
+        <div class="riff-content">Humor does two things: breaks awkwardness and makes it socially easy to reply. A flat delivery kills these — the smile has to be in the voice. Record with the energy of texting a mate who owes you a reply. Re-record if any take sounds even slightly wounded.</div>
       </div>
-      <div class="riff-toggle" onclick="toggleRiff(this)">▸ Context</div>
-      <div class="riff-content">"I'll book it myself" eliminates remaining friction. Blames the tool, not the person.</div>
-    </div>
 
-    <div class="section-label">— follow-ups (smile in the voice) —</div>
+      <!-- ghost-2 -->
+      <div class="card" data-id="ghost-2" draggable="false">
+        <div class="card-header">
+          <span class="drag-handle" title="Drag to reorder">&#x2630;</span>
+          <div class="card-header-left">
+            <div class="card-number"></div>
+            <div class="card-title">Ghost Nudge #2 — Closing the Door</div>
+          </div>
+          <div class="reorder-controls">
+            <button class="reorder-btn" onclick="moveCard(this,-1)" title="Move up">&#x25B2;</button>
+            <button class="reorder-btn" onclick="moveCard(this,1)" title="Move down">&#x25BC;</button>
+          </div>
+        </div>
+        <div class="card-brief">Final follow-up, 5–7 days silent. The easy out increases reply rate.</div>
+        <div class="variation">
+          <div class="var-label">A — Default</div>
+          <div class="script" data-original="Hey — last bump from me. If the timing's off or it's just not a priority right now, totally fine, just tell me and I'll get out of your way. If it is, let's pick this up. Either way works.">Hey — last bump from me. If the timing's off or it's just not a priority right now, totally fine, just tell me and I'll get out of your way. If it is, let's pick this up. Either way works.</div>
+        </div>
+        <div class="variation">
+          <div class="var-label">B — Cleaner close</div>
+          <div class="script" data-original="Hey — closing the loop here. If this isn't a fit or now isn't the time, all good, just say so and I won't bother you again. If it is, let's get moving.">Hey — closing the loop here. If this isn't a fit or now isn't the time, all good, just say so and I won't bother you again. If it is, let's get moving.</div>
+        </div>
+        <div class="riff-toggle" onclick="toggleRiff(this)">&#x25B8; Context</div>
+        <div class="riff-content">Sandler "closing the file." "Either way works" = you genuinely don't need an answer, which makes them feel safe to give one. Don't send another follow-up after this — move to LTFU. Warm and matter-of-fact, not wounded.</div>
+      </div>
 
-    <!-- VN 8 -->
-    <div class="card">
-      <div class="card-number">VN 8</div>
-      <div class="card-title">Ghost Nudge #1 — Jokey / Self-Aware</div>
-      <div class="card-brief">First follow-up after 24–48 hours of silence. The joke breaks the awkwardness.</div>
-      <div class="variation">
-        <div class="var-label">A — Three options (default)</div>
-        <div class="script" data-original="Hey — so I'm either getting ghosted, you're under a pile of emails, or Instagram ate my message. All three are completely valid. Just give me a thumbs up or down so I know you're alive over there.">Hey — so I'm either getting ghosted, you're under a pile of emails, or Instagram ate my message. All three are completely valid. Just give me a thumbs up or down so I know you're alive over there.</div>
+      <!-- reactivation -->
+      <div class="card" data-id="reactivation" draggable="false">
+        <div class="card-header">
+          <span class="drag-handle" title="Drag to reorder">&#x2630;</span>
+          <div class="card-header-left">
+            <div class="card-number"></div>
+            <div class="card-title">Cold Lead Reactivation</div>
+          </div>
+          <div class="reorder-controls">
+            <button class="reorder-btn" onclick="moveCard(this,-1)" title="Move up">&#x25B2;</button>
+            <button class="reorder-btn" onclick="moveCard(this,1)" title="Move down">&#x25BC;</button>
+          </div>
+        </div>
+        <div class="card-brief">LTFU/Cold leads — 1+ months silent. Weekly batch sends.</div>
+        <div class="variation">
+          <div class="var-label">A — Popped into my head (default)</div>
+          <div class="script" data-original="Hey — you popped into my head today. We connected a while back and then life probably got in the way on both ends. Where are you at now with the energy and the body? Different chapter, same goal, or you've moved on entirely... all valid answers.">Hey — you popped into my head today. We connected a while back and then life probably got in the way on both ends. Where are you at now with the energy and the body? Different chapter, same goal, or you've moved on entirely... all valid answers.</div>
+        </div>
+        <div class="variation">
+          <div class="var-label">B — Random check-in</div>
+          <div class="script" data-original="Hey — random message. We talked a while back, then crickets. Not chasing you down, but wondering if anything's shifted on the health front since then. Where are you at now?">Hey — random message. We talked a while back, then crickets. Not chasing you down, but wondering if anything's shifted on the health front since then. Where are you at now?</div>
+        </div>
+        <div class="variation">
+          <div class="var-label">C — Specific recall</div>
+          <div class="script" data-original="Hey — long time. We talked back when you were dealing with [issue] — wondering if any of that's still a thing or if you got it sorted. Just checking in, no pressure either way.">Hey — long time. We talked back when you were dealing with [issue] — wondering if any of that's still a thing or if you got it sorted. Just checking in, no pressure either way.</div>
+        </div>
+        <div class="riff-toggle" onclick="toggleRiff(this)">&#x25B8; Context</div>
+        <div class="riff-content">"Popped into my head" reads personal, not automated. Shifting blame to "life" removes awkwardness. Multiple-option closes signal you don't care which they pick. Use A as default; B for shorter gap; C when you remember a specific issue.</div>
       </div>
-      <div class="variation">
-        <div class="var-label">B — Movie trailer</div>
-        <div class="script" data-original="Previously, on our DM conversation... I said something, you disappeared. The audience needs closure. What's the verdict?">Previously, on our DM conversation... I said something, you disappeared. The audience needs closure. What's the verdict?</div>
-      </div>
-      <div class="variation">
-        <div class="var-label">C — Self-roast</div>
-        <div class="script" data-original="Hey — I realize I'm now that guy who double-texts. It's fine, I've accepted it. Just let me know if you're still breathing and we're good.">Hey — I realize I'm now that guy who double-texts. It's fine, I've accepted it. Just let me know if you're still breathing and we're good.</div>
-      </div>
-      <div class="variation">
-        <div class="var-label">D — Entrepreneur frame</div>
-        <div class="script" data-original="Hey — I know your inbox looks like mine right now. Just floating this back up. Yes, no, or a random emoji all work — just give me something.">Hey — I know your inbox looks like mine right now. Just floating this back up. Yes, no, or a random emoji all work — just give me something.</div>
-      </div>
-      <div class="riff-toggle" onclick="toggleRiff(this)">▸ Context</div>
-      <div class="riff-content">Humor does two things: breaks awkwardness and makes it socially easy to reply. A flat delivery kills these — the smile has to be in the voice. Record with the energy of texting a mate who owes you a reply. Re-record if any take sounds even slightly wounded.</div>
-    </div>
 
-    <!-- VN 9 -->
-    <div class="card">
-      <div class="card-number">VN 9</div>
-      <div class="card-title">Ghost Nudge #2 — Closing the Door</div>
-      <div class="card-brief">Final follow-up, 5–7 days silent. The easy out increases reply rate.</div>
-      <div class="variation">
-        <div class="var-label">A — Default</div>
-        <div class="script" data-original="Hey — last bump from me. If the timing's off or it's just not a priority right now, totally fine, just tell me and I'll get out of your way. If it is, let's pick this up. Either way works.">Hey — last bump from me. If the timing's off or it's just not a priority right now, totally fine, just tell me and I'll get out of your way. If it is, let's pick this up. Either way works.</div>
-      </div>
-      <div class="variation">
-        <div class="var-label">B — Cleaner close</div>
-        <div class="script" data-original="Hey — closing the loop here. If this isn't a fit or now isn't the time, all good, just say so and I won't bother you again. If it is, let's get moving.">Hey — closing the loop here. If this isn't a fit or now isn't the time, all good, just say so and I won't bother you again. If it is, let's get moving.</div>
-      </div>
-      <div class="riff-toggle" onclick="toggleRiff(this)">▸ Context</div>
-      <div class="riff-content">Sandler "closing the file." "Either way works" = you genuinely don't need an answer, which makes them feel safe to give one. Don't send another follow-up after this — move to LTFU. Warm and matter-of-fact, not wounded.</div>
-    </div>
-
-    <div class="section-label">— reactivation —</div>
-
-    <!-- VN 12 -->
-    <div class="card">
-      <div class="card-number">VN 12</div>
-      <div class="card-title">Cold Lead Reactivation</div>
-      <div class="card-brief">LTFU/Cold leads — 1+ months silent. Weekly batch sends.</div>
-      <div class="variation">
-        <div class="var-label">A — Popped into my head (default)</div>
-        <div class="script" data-original="Hey — you popped into my head today. We connected a while back and then life probably got in the way on both ends. Where are you at now with the energy and the body? Different chapter, same goal, or you've moved on entirely... all valid answers.">Hey — you popped into my head today. We connected a while back and then life probably got in the way on both ends. Where are you at now with the energy and the body? Different chapter, same goal, or you've moved on entirely... all valid answers.</div>
-      </div>
-      <div class="variation">
-        <div class="var-label">B — Random check-in</div>
-        <div class="script" data-original="Hey — random message. We talked a while back, then crickets. Not chasing you down, but wondering if anything's shifted on the health front since then. Where are you at now?">Hey — random message. We talked a while back, then crickets. Not chasing you down, but wondering if anything's shifted on the health front since then. Where are you at now?</div>
-      </div>
-      <div class="variation">
-        <div class="var-label">C — Specific recall</div>
-        <div class="script" data-original="Hey — long time. We talked back when you were dealing with [issue] — wondering if any of that's still a thing or if you got it sorted. Just checking in, no pressure either way.">Hey — long time. We talked back when you were dealing with [issue] — wondering if any of that's still a thing or if you got it sorted. Just checking in, no pressure either way.</div>
-      </div>
-      <div class="riff-toggle" onclick="toggleRiff(this)">▸ Context</div>
-      <div class="riff-content">"Popped into my head" reads personal, not automated. Shifting blame to "life" removes awkwardness. Multiple-option closes signal you don't care which they pick. Use A as default; B for shorter gap; C when you remember a specific issue.</div>
-    </div>
+    </div><!-- /card-list -->
 
     <div class="deploy-box">
       <h3>Recording Notes</h3>
@@ -428,77 +540,202 @@ That's why guys who've been stuck for years break through with us. We're not han
         <li>Most VNs run 8–20 seconds. Heavy Hitter is 45–60 seconds</li>
         <li>Each variation = separate audio file. Setters rotate to avoid repetition</li>
         <li>Record 2–3 takes per script. Best take wins; others archived</li>
-        <li>Follow-ups (VN 8, 9): re-record if any take sounds wounded or pressured</li>
-        <li>Heavy Hitter (VN 4): pause before "Think about your business" and "Your body's the same thing"</li>
-        <li>Identity Proof (VN 2): casual, almost amused — surprise, not defensiveness</li>
+        <li>Follow-ups (Ghost Nudges): re-record if any take sounds wounded or pressured</li>
+        <li>Heavy Hitter: pause before "Think about your business" and "Your body's the same thing"</li>
+        <li>Identity Proof: casual, almost amused — surprise, not defensiveness</li>
         <li>Setters text-preview before sending: "gonna send you a quick voice note"</li>
       </ul>
     </div>
 
-    <footer>HPF Internal &middot; May 2026 &middot; Edits save locally in your browser</footer>
+    <footer>HPF Internal &middot; May 2026 &middot; Edits + order save in your browser</footer>
   </div>
 
   <div class="toast" id="toast"></div>
 
   <script>
     let editing = false;
-    const STORAGE_KEY = 'dan-vn-scripts-v2';
+    const STORAGE_KEY = 'dan-vn-v3';
+    const ORDER_KEY = 'dan-vn-order-v3';
+    const EDITS_KEY = 'dan-vn-edits-v3';
+    const list = document.getElementById('card-list');
 
+    function renumber() {
+      list.querySelectorAll('.card').forEach((card, i) => {
+        const numEl = card.querySelector('.card-number');
+        const isHH = card.dataset.id === 'heavy-hitter';
+        numEl.textContent = isHH ? `VN ${i+1} — Record this one first` : `VN ${i+1}`;
+      });
+    }
+
+    function getOrder() {
+      return Array.from(list.querySelectorAll('.card')).map(c => c.dataset.id);
+    }
+
+    function saveOrder() {
+      localStorage.setItem(ORDER_KEY, JSON.stringify(getOrder()));
+    }
+
+    function loadOrder() {
+      try {
+        const order = JSON.parse(localStorage.getItem(ORDER_KEY));
+        if (!order) return;
+        order.forEach(id => {
+          const card = list.querySelector(`[data-id="${id}"]`);
+          if (card) list.appendChild(card);
+        });
+      } catch(e) {}
+    }
+
+    function moveCard(btn, dir) {
+      const card = btn.closest('.card');
+      const sibling = dir === -1 ? card.previousElementSibling : card.nextElementSibling;
+      if (!sibling || !sibling.classList.contains('card')) return;
+      if (dir === -1) {
+        list.insertBefore(card, sibling);
+      } else {
+        list.insertBefore(sibling, card);
+      }
+      renumber();
+      saveOrder();
+      showToast('Reordered');
+    }
+
+    // Drag and drop
+    let dragCard = null;
+
+    function enableDrag() {
+      list.querySelectorAll('.card').forEach(card => {
+        card.draggable = true;
+        card.addEventListener('dragstart', onDragStart);
+        card.addEventListener('dragend', onDragEnd);
+        card.addEventListener('dragover', onDragOver);
+        card.addEventListener('drop', onDrop);
+        card.addEventListener('dragleave', onDragLeave);
+      });
+    }
+
+    function disableDrag() {
+      list.querySelectorAll('.card').forEach(card => {
+        card.draggable = false;
+        card.removeEventListener('dragstart', onDragStart);
+        card.removeEventListener('dragend', onDragEnd);
+        card.removeEventListener('dragover', onDragOver);
+        card.removeEventListener('drop', onDrop);
+        card.removeEventListener('dragleave', onDragLeave);
+      });
+    }
+
+    function onDragStart(e) {
+      dragCard = this;
+      this.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    }
+
+    function onDragEnd() {
+      this.classList.remove('dragging');
+      list.querySelectorAll('.card').forEach(c => c.classList.remove('drag-over'));
+      dragCard = null;
+    }
+
+    function onDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      if (this !== dragCard) this.classList.add('drag-over');
+    }
+
+    function onDragLeave() {
+      this.classList.remove('drag-over');
+    }
+
+    function onDrop(e) {
+      e.preventDefault();
+      this.classList.remove('drag-over');
+      if (this === dragCard) return;
+      const cards = Array.from(list.querySelectorAll('.card'));
+      const fromIdx = cards.indexOf(dragCard);
+      const toIdx = cards.indexOf(this);
+      if (fromIdx < toIdx) {
+        list.insertBefore(dragCard, this.nextSibling);
+      } else {
+        list.insertBefore(dragCard, this);
+      }
+      renumber();
+      saveOrder();
+      showToast('Reordered');
+    }
+
+    // Edit mode
     function toggleEdit() {
       editing = !editing;
+      document.body.classList.toggle('editing', editing);
       const btn = document.getElementById('editBtn');
       btn.textContent = editing ? 'Editing On' : 'Edit Mode';
       btn.classList.toggle('active', editing);
       document.querySelectorAll('.script').forEach(el => {
         el.contentEditable = editing;
       });
-      if (!editing) saveAll();
-      showToast(editing ? 'Tap any script to edit' : 'Changes saved');
+      if (editing) {
+        enableDrag();
+      } else {
+        disableDrag();
+        saveEdits();
+      }
+      showToast(editing ? 'Edit scripts + drag to reorder' : 'Changes saved');
     }
 
-    function saveAll() {
+    function saveEdits() {
       const data = {};
       document.querySelectorAll('.script').forEach((el, i) => {
-        if (el.innerHTML !== el.dataset.original) {
-          data[i] = el.innerHTML;
+        const key = el.closest('.card').dataset.id + '-' + i;
+        if (el.innerHTML !== el.dataset.original && el.textContent !== el.dataset.original) {
+          data[key] = el.innerHTML;
         }
       });
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      localStorage.setItem(EDITS_KEY, JSON.stringify(data));
     }
 
-    function loadSaved() {
+    function loadEdits() {
       try {
-        const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        const data = JSON.parse(localStorage.getItem(EDITS_KEY));
         if (!data) return;
         document.querySelectorAll('.script').forEach((el, i) => {
-          if (data[i]) el.innerHTML = data[i];
+          const key = el.closest('.card').dataset.id + '-' + i;
+          if (data[key]) el.innerHTML = data[key];
         });
       } catch(e) {}
     }
 
     function resetAll() {
-      if (!confirm('Reset all scripts to originals? Your edits will be lost.')) return;
+      if (!confirm('Reset all scripts and order to originals?')) return;
       document.querySelectorAll('.script').forEach(el => {
         el.innerHTML = el.dataset.original;
       });
-      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(ORDER_KEY);
+      localStorage.removeItem(EDITS_KEY);
+      // Restore default order
+      const defaultOrder = ['opener','identity','lead-magnet','heavy-hitter','price','transition','pre-call','post-link-24','post-link-48','ghost-1','ghost-2','reactivation'];
+      defaultOrder.forEach(id => {
+        const card = list.querySelector(`[data-id="${id}"]`);
+        if (card) list.appendChild(card);
+      });
+      renumber();
       showToast('Reset to originals');
     }
 
     function toggleRiff(el) {
       const content = el.nextElementSibling;
       const open = content.classList.toggle('open');
-      el.textContent = open ? '▾ Context' : '▸ Context';
+      el.innerHTML = open ? '&#x25BE; Context' : '&#x25B8; Context';
     }
 
     function expandAll() {
       document.querySelectorAll('.riff-content').forEach(el => el.classList.add('open'));
-      document.querySelectorAll('.riff-toggle').forEach(el => el.textContent = '▾ Context');
+      document.querySelectorAll('.riff-toggle').forEach(el => el.innerHTML = '&#x25BE; Context');
     }
 
     function collapseAll() {
       document.querySelectorAll('.riff-content').forEach(el => el.classList.remove('open'));
-      document.querySelectorAll('.riff-toggle').forEach(el => el.textContent = '▸ Context');
+      document.querySelectorAll('.riff-toggle').forEach(el => el.innerHTML = '&#x25B8; Context');
     }
 
     function showToast(msg) {
@@ -511,11 +748,14 @@ That's why guys who've been stuck for years break through with us. We're not han
     document.addEventListener('input', e => {
       if (e.target.classList.contains('script') && editing) {
         clearTimeout(window._saveTimer);
-        window._saveTimer = setTimeout(saveAll, 500);
+        window._saveTimer = setTimeout(saveEdits, 500);
       }
     });
 
-    loadSaved();
+    // Init
+    loadOrder();
+    renumber();
+    loadEdits();
   </script>
 </body>
 </html>
