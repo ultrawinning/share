@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GHL Replacement — Questions for Tuesday</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0a; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 2rem; max-width: 720px; margin: 0 auto; line-height: 1.6; }
+  h1 { font-size: 1.4rem; color: #fff; margin-bottom: 0.25rem; }
+  .subtitle { color: #888; font-size: 0.85rem; margin-bottom: 2rem; }
+  .context { background: #141414; border-left: 3px solid #2ED47A; padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin-bottom: 2rem; font-size: 0.85rem; color: #aaa; }
+  .context strong { color: #ccc; }
+  .section { margin-bottom: 2rem; }
+  .section-title { font-size: 1rem; color: #2ED47A; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+  .section-title .num { background: #1a2e1f; color: #2ED47A; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; }
+  .current { background: #141414; border: 1px solid #222; border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 0.75rem; font-size: 0.85rem; }
+  .current-label { color: #666; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; }
+  .question { background: #0f1a14; border: 1px solid #1a3326; border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 0.5rem; }
+  .question p { font-size: 0.9rem; color: #ccc; }
+  .note { background: #1a1a0a; border: 1px solid #333300; border-radius: 8px; padding: 0.75rem 1rem; margin-top: 1.5rem; font-size: 0.8rem; color: #999; }
+  .note strong { color: #bbb; }
+</style>
+</head>
+<body>
+
+<h1>GHL → HPFHQ Migration — Input Needed</h1>
+<p class="subtitle">For Tuesday call (May 13) · DJ + Brandon</p>
+
+<div class="context">
+  <strong>What's happening:</strong> We're moving GHL's messaging workflows into HPFHQ so everything lives in one system. The sales pipeline, closer workstation, and data layer ship first. The messaging pieces below come later — but we want your input now so we build it right the first time. Nothing changes for the team until we've tested it in parallel.
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">1</span> Pre-Call SMS Sequence</div>
+  <div class="current">
+    <div class="current-label">What exists today</div>
+    6 personalized branches (gender × goal), ~60 iMessages over the 48 hours before a booked call. Sender identity: "James from Dan Go's team." Includes rapport questions, prep messages, day-before Zoom link confirmation, day-of "hopping on zoom now" message.
+  </div>
+  <div class="question"><p>Is the current cadence working? Any messages that feel too early, too late, or too frequent?</p></div>
+  <div class="question"><p>Should the sender name stay as "James" or match the assigned setter/closer?</p></div>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">2</span> Incomplete App Recovery</div>
+  <div class="current">
+    <div class="current-label">What exists today</div>
+    4 iMessages sent to people who start the application but don't book. 1,851 currently in the sequence. Timing: immediate → 1 min → 2h wait-for-reply → 24h wait-for-reply. Uses urgency ("application expires in 24 hours"). Stops if they reply or book.
+  </div>
+  <div class="question"><p>Is this cadence landing well or does it feel too aggressive / too passive?</p></div>
+  <div class="question"><p>Is the "application expires" urgency line converting, or does it feel pushy?</p></div>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">3</span> Reply Handling</div>
+  <div class="current">
+    <div class="current-label">What exists today</div>
+    When a lead replies to an iMessage, the response goes... somewhere in GHL? Unclear how setters currently see and respond to replies.
+  </div>
+  <div class="question"><p>What does the current workflow look like when a lead replies? GHL conversations tab, direct phone, SendBlue dashboard, or something else?</p></div>
+  <div class="question"><p>What would make reply handling faster or easier?</p></div>
+</div>
+
+<div class="section">
+  <div class="section-title"><span class="num">4</span> Cancel / No-Show Recovery</div>
+  <div class="current">
+    <div class="current-label">What we're planning</div>
+    When a booked call is cancelled: Day 0 iMessage, Day 1 email, Day 3 phone task to setter. Same pattern for no-shows.
+  </div>
+  <div class="question"><p>Does that match what's working now?</p></div>
+  <div class="question"><p>Any recovery sequences you'd add or remove?</p></div>
+</div>
+
+<div class="note">
+  <strong>Timeline note:</strong> These messaging pieces are later in the build. The closer workstation, data pipeline, and forms engine ship first. We're collecting input now so when we get to messaging, we build it matched to what's actually working on the ground. No changes to current workflows until the new system is tested in parallel.
+</div>
+
+</body>
+</html>
