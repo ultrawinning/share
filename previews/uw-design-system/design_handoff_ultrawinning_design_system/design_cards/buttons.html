@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .card { padding: 20px 28px; display:flex; flex-wrap:wrap; gap:12px 10px; align-items:center; }
+  .btn { font-family:'Rajdhani',sans-serif; font-weight:600; font-size:13px; letter-spacing:.1em; text-transform:uppercase; padding:11px 20px; cursor:pointer; border:1px solid #ff1a8c; background:#ff1a8c; color:#000; transition:opacity .2s; }
+  .btn:hover { opacity:.85; }
+  .btn.ghost { background:transparent; color:#f0ede8; border:1px solid #222; }
+  .btn.ghost:hover { border-color:#ff1a8c; color:#ff1a8c; }
+  .btn.mono { font-family:'Share Tech Mono',monospace; text-transform:none; letter-spacing:.08em; background:transparent; color:#888; border:none; padding:8px 0; }
+  .btn.mono:hover { color:#ff1a8c; }
+  .btn.mono::before { content:'// '; color:#ff1a8c; }
+  .tag { font-family:'Share Tech Mono',monospace; font-size:10px; color:#888; letter-spacing:.1em; margin-left:8px; }
+  .lbl { font-family:'Share Tech Mono',monospace; font-size:9px; color:#666; letter-spacing:.18em; text-transform:uppercase; width:100%; margin-top:6px; }
+</style>
+</head><body>
+<div class="card">
+  <div class="lbl">// primary · pink fill, black text</div>
+  <button class="btn">RUN</button>
+  <button class="btn">Submit →</button>
+  <div class="lbl">// ghost · default cta</div>
+  <button class="btn ghost">← back</button>
+  <button class="btn ghost">Read article</button>
+  <div class="lbl">// mono text-link · inline nav</div>
+  <button class="btn mono">essays</button>
+  <button class="btn mono">technical</button>
+  <button class="btn mono">search articles</button>
+</div>
+</body></html>

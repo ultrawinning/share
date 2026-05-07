@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ultrawinning Design System — Portfolio</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --uw-pink: #ff1a8c;
+    --uw-pink-dim: rgba(255,26,140,.10);
+    --uw-pink-overlay: rgba(255,26,140,.05);
+    --uw-pink-ghost: rgba(255,10,138,.09);
+    --uw-bg: #000;
+    --uw-fg: #ccc;
+    --uw-title: #f0ede8;
+    --uw-muted: #888;
+    --uw-border: #222;
+    --uw-footer: #333;
+    --uw-ghost: rgba(255,255,255,.05);
+    --uw-scanline: rgba(255,255,255,.007);
+    --font-display: 'Rajdhani', system-ui, sans-serif;
+    --font-mono: 'Share Tech Mono', ui-monospace, Menlo, monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--uw-bg); color: var(--uw-fg); }
+  body {
+    font-family: var(--font-display);
+    font-size: 16px;
+    line-height: 1.55;
+    min-height: 100vh;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Scanlines — full page */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 3px,
+      var(--uw-scanline) 3px, var(--uw-scanline) 4px
+    );
+  }
+  /* Ambient pink bloom — bottom of viewport */
+  body::after {
+    content: '';
+    position: fixed; left: 0; right: 0; bottom: 0;
+    height: 50vh; z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at 50% 100%, rgba(255,26,140,.07) 0%, transparent 60%);
+  }
+
+  a { color: var(--uw-pink); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .wrap {
+    position: relative; z-index: 1;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 80px 32px 120px;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    padding: 64px 0 56px;
+    border-bottom: 1px solid var(--uw-border);
+    margin-bottom: 64px;
+    overflow: hidden;
+  }
+  .hero .ghost {
+    position: absolute;
+    top: 0; left: 50%; transform: translateX(-50%);
+    z-index: 0;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(64px, 14vw, 200px);
+    line-height: .9;
+    color: var(--uw-ghost);
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+  }
+  .hero .ghost .cur { color: var(--uw-pink-ghost); }
+  .hero h1 {
+    position: relative; z-index: 1;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1.05;
+    color: var(--uw-title);
+    letter-spacing: -.01em;
+    margin: 80px 0 8px;
+    text-wrap: balance;
+  }
+  .hero h1 em { font-style: normal; color: var(--uw-pink); }
+  .hero .eyebrow {
+    position: relative; z-index: 1;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--uw-pink);
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    margin: 0 0 24px;
+  }
+  .hero .lead {
+    position: relative; z-index: 1;
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--uw-fg);
+    max-width: 720px;
+    line-height: 1.45;
+    margin: 24px 0 0;
+  }
+  .hero .meta {
+    position: relative; z-index: 1;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--uw-muted);
+    margin-top: 32px;
+    letter-spacing: .04em;
+  }
+  .hero .meta a { color: var(--uw-fg); }
+  .hero .meta .sep { color: var(--uw-border); margin: 0 12px; }
+
+  /* SECTION */
+  section { margin: 0 0 80px; }
+  section header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    border-bottom: 1px solid var(--uw-border);
+    padding-bottom: 16px;
+    margin-bottom: 32px;
+  }
+  section header .label {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--uw-pink);
+    letter-spacing: .22em;
+    text-transform: uppercase;
+  }
+  section header h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 32px;
+    color: var(--uw-title);
+    letter-spacing: -.005em;
+    margin: 0;
+  }
+  section header .count {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--uw-muted);
+    letter-spacing: .04em;
+  }
+
+  /* GRID */
+  .grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+  .grid.social {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  .card {
+    display: block;
+    border: 1px solid var(--uw-border);
+    background: transparent;
+    padding: 20px 22px;
+    color: var(--uw-fg);
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .card:hover {
+    border-color: var(--uw-pink);
+    background: rgba(255,255,255,.02);
+    text-decoration: none;
+  }
+  .card .num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--uw-muted);
+    letter-spacing: .08em;
+  }
+  .card .name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--uw-title);
+    margin: 6px 0 4px;
+  }
+  .card .desc {
+    font-family: var(--font-display);
+    font-size: 14px;
+    color: var(--uw-muted);
+    line-height: 1.45;
+  }
+
+  /* SOCIAL CARD — embedded preview */
+  .social-card {
+    border: 1px solid var(--uw-border);
+    background: #0a0a0a;
+    padding: 14px;
+    transition: border-color .15s ease;
+  }
+  .social-card:hover { border-color: var(--uw-pink); }
+  .social-card .frame {
+    position: relative;
+    width: 100%;
+    background: #000;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .social-card .frame iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: 0;
+    pointer-events: none; /* let card click pass through */
+  }
+  .social-card[data-ratio="9-16"] .frame { padding-bottom: 177.77%; } /* 1920/1080 */
+  .social-card[data-ratio="1-1"] .frame  { padding-bottom: 100%; }
+  .social-card[data-ratio="16-9"] .frame { padding-bottom: 56.25%; }
+  .social-card .meta {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--uw-muted);
+    letter-spacing: .08em;
+  }
+  .social-card .meta .name {
+    color: var(--uw-title);
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0;
+  }
+  .social-card .meta .ratio { color: var(--uw-pink); }
+
+  /* REFERENCE SCREENSHOT */
+  .ref {
+    border: 1px solid var(--uw-border);
+    margin-bottom: 24px;
+    overflow: hidden;
+    background: #0a0a0a;
+  }
+  .ref img { display: block; width: 100%; height: auto; }
+  .ref .meta {
+    padding: 12px 18px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--uw-muted);
+    letter-spacing: .08em;
+    border-top: 1px solid var(--uw-border);
+  }
+  .ref .meta .name { color: var(--uw-title); font-family: var(--font-display); font-weight: 600; font-size: 14px; letter-spacing: 0; }
+
+  /* FOOTER */
+  footer {
+    margin-top: 96px;
+    padding-top: 40px;
+    border-top: 1px solid var(--uw-border);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--uw-footer);
+    letter-spacing: .08em;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  footer .url { color: var(--uw-fg); font-family: var(--font-display); font-weight: 500; letter-spacing: .15em; text-transform: uppercase; }
+  footer .url .cur { color: var(--uw-pink); animation: blink 1s step-end infinite; display: inline-block; }
+  @keyframes blink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="ghost" aria-hidden>ULTRAWINNING<span class="cur">_</span></div>
+    <div class="eyebrow">// design system / portfolio</div>
+    <h1>A small, rigorous system. Sharp rectangles, one pink accent, <em>three fonts</em>.</h1>
+    <p class="lead">Terminal-adjacent, dark-mode-first, anti-slop. Outputs the website (<a href="https://ultrawinning.com">ultrawinning.com</a>), IG stories, IG posts, carousels, and pull-quote graphics. Sourced from a claude.ai/design handoff bundle, dogfooded here.</p>
+    <p class="meta">
+      <a href="BUNDLE_README.md">// bundle readme</a>
+      <span class="sep">·</span>
+      <a href="README.md">// project readme</a>
+      <span class="sep">·</span>
+      <a href="SKILL.md">// agent skill</a>
+      <span class="sep">·</span>
+      <a href="colors_and_type.css">// raw tokens</a>
+    </p>
+  </header>
+
+  <!-- SOCIAL TEMPLATES -->
+  <section>
+    <header>
+      <div>
+        <div class="label">// 01</div>
+        <h2>Social templates</h2>
+      </div>
+      <div class="count">4 surfaces · 1080-native</div>
+    </header>
+    <div class="grid social">
+      <a class="social-card" data-ratio="9-16" href="social/ig-story.html" target="_blank" rel="noopener">
+        <div class="frame"><iframe src="social/ig-story.html" title="IG Story"></iframe></div>
+        <div class="meta"><span class="name">IG Story</span><span class="ratio">9:16 · 1080×1920</span></div>
+      </a>
+      <a class="social-card" data-ratio="1-1" href="social/ig-post.html" target="_blank" rel="noopener">
+        <div class="frame"><iframe src="social/ig-post.html" title="IG Post"></iframe></div>
+        <div class="meta"><span class="name">IG Post</span><span class="ratio">1:1 · 1080×1080</span></div>
+      </a>
+      <a class="social-card" data-ratio="1-1" href="social/ig-carousel.html" target="_blank" rel="noopener">
+        <div class="frame"><iframe src="social/ig-carousel.html" title="IG Carousel"></iframe></div>
+        <div class="meta"><span class="name">IG Carousel</span><span class="ratio">1:1 · 1080×1080</span></div>
+      </a>
+      <a class="social-card" data-ratio="16-9" href="social/pullquote-1200x675.html" target="_blank" rel="noopener">
+        <div class="frame"><iframe src="social/pullquote-1200x675.html" title="Pullquote"></iframe></div>
+        <div class="meta"><span class="name">Pullquote · X / LinkedIn</span><span class="ratio">16:9 · 1200×675</span></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- FOUNDATIONS -->
+  <section>
+    <header>
+      <div>
+        <div class="label">// 02</div>
+        <h2>Foundations</h2>
+      </div>
+      <div class="count">color · type · space · motion</div>
+    </header>
+    <div class="grid">
+      <a class="card" href="preview/colors-dark.html" target="_blank"><div class="num">// 01</div><div class="name">Colors — dark</div><div class="desc">Black surfaces, body #ccc, title #f0ede8, muted #888, border #222.</div></a>
+      <a class="card" href="preview/colors-pink.html" target="_blank"><div class="num">// 02</div><div class="name">Colors — pink</div><div class="desc">Solid · dim · overlay · ghost. The only accent in the system.</div></a>
+      <a class="card" href="preview/colors-light.html" target="_blank"><div class="num">// 03</div><div class="name">Colors — light</div><div class="desc">Opt-in light mode. Writing pages only.</div></a>
+      <a class="card" href="preview/type-families.html" target="_blank"><div class="num">// 04</div><div class="name">Type families</div><div class="desc">Rajdhani · Share Tech Mono · Verdana. Three only.</div></a>
+      <a class="card" href="preview/type-scale.html" target="_blank"><div class="num">// 05</div><div class="name">Type scale</div><div class="desc">17 · 13 · 12 · 11 · 108/64 ghost. Canonical sizes.</div></a>
+      <a class="card" href="preview/type-prose.html" target="_blank"><div class="num">// 06</div><div class="name">Type prose</div><div class="desc">Verdana 14/1.6, 435px column. Article body only.</div></a>
+      <a class="card" href="preview/spacing.html" target="_blank"><div class="num">// 07</div><div class="name">Spacing</div><div class="desc">4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 px. Page gutters and rule widths.</div></a>
+      <a class="card" href="preview/backgrounds.html" target="_blank"><div class="num">// 08</div><div class="name">Backgrounds</div><div class="desc">Solid black + scanline overlay + radial pink glow + ghost masthead.</div></a>
+      <a class="card" href="preview/iconography.html" target="_blank"><div class="num">// 09</div><div class="name">Iconography</div><div class="desc">Pixel mark + ASCII markers + unicode glyphs. No emoji, ever.</div></a>
+      <a class="card" href="preview/logo.html" target="_blank"><div class="num">// 10</div><div class="name">Logo + wordmark</div><div class="desc">Pixel mark + ULTRAWINNING wordmark with blinking pink underscore.</div></a>
+      <a class="card" href="preview/voice.html" target="_blank"><div class="num">// 11</div><div class="name">Voice</div><div class="desc">First-person, plainspoken, anti-slop ban list, casing rules.</div></a>
+      <a class="card" href="preview/overlays.html" target="_blank"><div class="num">// 12</div><div class="name">Overlays</div><div class="desc">Scanlines, pink bloom, ghost wordmark — the only decorative layers.</div></a>
+    </div>
+  </section>
+
+  <!-- COMPONENTS -->
+  <section>
+    <header>
+      <div>
+        <div class="label">// 03</div>
+        <h2>Components</h2>
+      </div>
+      <div class="count">primitives + page-level</div>
+    </header>
+    <div class="grid">
+      <a class="card" href="preview/buttons.html" target="_blank"><div class="num">// 01</div><div class="name">Buttons</div><div class="desc">1px borders, sharp rectangles, pink on focus.</div></a>
+      <a class="card" href="preview/inputs.html" target="_blank"><div class="num">// 02</div><div class="name">Inputs</div><div class="desc">Terminal-adjacent fields. Pink focus border.</div></a>
+      <a class="card" href="preview/blockquote.html" target="_blank"><div class="num">// 03</div><div class="name">Blockquote</div><div class="desc">2px pink left border on pink-overlay bg, italic, title color.</div></a>
+      <a class="card" href="preview/terminal-lines.html" target="_blank"><div class="num">// 04</div><div class="name">Terminal lines</div><div class="desc">System: / Node: / &gt; _ chrome. Share Tech Mono.</div></a>
+      <a class="card" href="preview/nav.html" target="_blank"><div class="num">// 05</div><div class="name">Nav</div><div class="desc">Fixed top, transparent default, blur-on-scroll.</div></a>
+      <a class="card" href="preview/article-hero.html" target="_blank"><div class="num">// 06</div><div class="name">Article hero</div><div class="desc">Ghost masthead → 60px pink rule → tight prose column.</div></a>
+      <a class="card" href="preview/article-list.html" target="_blank"><div class="num">// 07</div><div class="name">Article list</div><div class="desc">Row dividers, hover state, no cards-as-such.</div></a>
+      <a class="card" href="preview/leaderboard-row.html" target="_blank"><div class="num">// 08</div><div class="name">Leaderboard row</div><div class="desc">Rank chip + handle + metric. Pink glow only on rank-1.</div></a>
+    </div>
+  </section>
+
+  <!-- WEB UI KIT -->
+  <section>
+    <header>
+      <div>
+        <div class="label">// 04</div>
+        <h2>Web UI kit</h2>
+      </div>
+      <div class="count">React recreation of ultrawinning.com</div>
+    </header>
+    <div class="grid">
+      <a class="card" href="ui_kits/ultrawinning-web/" target="_blank"><div class="num">// 01</div><div class="name">UI kit index</div><div class="desc">Components: App · Nav · Article · Writing · TerminalBoot · tokens.</div></a>
+      <a class="card" href="ui_kits/ultrawinning-web/README.md" target="_blank"><div class="num">// 02</div><div class="name">UI kit README</div><div class="desc">How the React kit maps to the canonical CSS tokens.</div></a>
+    </div>
+  </section>
+
+  <!-- REFERENCES -->
+  <section>
+    <header>
+      <div>
+        <div class="label">// 05</div>
+        <h2>Live-site reference</h2>
+      </div>
+      <div class="count">screenshots from ultrawinning.com</div>
+    </header>
+    <div class="ref">
+      <img src="assets/reference-home.png" alt="ultrawinning.com homepage reference">
+      <div class="meta"><span class="name">Homepage</span> &nbsp;·&nbsp; reference-home.png</div>
+    </div>
+    <div class="ref">
+      <img src="assets/reference-article.png" alt="ultrawinning.com article reference">
+      <div class="meta"><span class="name">Article — The Moat Is Not the Model</span> &nbsp;·&nbsp; reference-article.png</div>
+    </div>
+  </section>
+
+  <footer>
+    <span>// claude.ai/design handoff · captured 2026-05-07</span>
+    <span class="url">ultrawinning.com<span class="cur">_</span></span>
+  </footer>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<title>IG Carousel — Ultrawinning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;padding:0;background:#0a0a0a;font-family:'Rajdhani',sans-serif;min-height:100vh;color:#ccc}
+  .deck{display:flex;flex-wrap:wrap;gap:24px;padding:32px;justify-content:center;max-width:1400px;margin:0 auto}
+
+  /* 1080x1080 scaled to 420x420 for preview. For export, remove the scale and capture at native size. */
+  .slide{
+    width:420px;height:420px;
+    background:#000;color:#ccc;
+    position:relative;overflow:hidden;
+    flex-shrink:0;
+  }
+  .slide::before{
+    content:'';position:absolute;inset:0;z-index:3;pointer-events:none;
+    background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(255,255,255,.012) 3px,rgba(255,255,255,.012) 4px);
+  }
+  .slide::after{
+    content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(ellipse 75% 60% at 15% 100%,rgba(255,26,140,.45) 0%,rgba(255,26,140,.12) 30%,transparent 65%),
+      radial-gradient(ellipse 100% 55% at 50% 110%,rgba(255,26,140,.22) 0%,transparent 70%);
+  }
+
+  /* slide-wide chrome */
+  .idx{position:absolute;top:20px;right:22px;font-family:'Share Tech Mono',monospace;font-size:12px;color:#ff1a8c;letter-spacing:.2em;z-index:2}
+  .wm{
+    position:absolute;bottom:20px;left:22px;z-index:2;
+    display:flex;align-items:center;gap:9px;
+    font-family:'Rajdhani',sans-serif;font-weight:500;font-size:13px;color:#888;
+    letter-spacing:.18em;text-transform:uppercase;
+  }
+  .wm .mark{width:17px;height:12px;display:block;opacity:.85}
+  .wm .c{color:#ff1a8c;animation:blink 1s step-end infinite}
+  @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+
+  .inner{
+    position:relative;z-index:1;
+    padding:60px 32px 66px;
+    display:flex;flex-direction:column;
+    height:100%;box-sizing:border-box;
+  }
+
+  /* COVER — big pixel-logo watermark */
+  .slide.cover{overflow:hidden}
+  .cover-bg-mark{
+    position:absolute;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    width:280px;height:auto;
+    opacity:.055;
+    z-index:0;pointer-events:none;
+  }
+  .cov-eyebrow{font-family:'Share Tech Mono',monospace;font-size:11px;color:#ff1a8c;letter-spacing:.22em;text-transform:uppercase;margin-top:16px}
+  .cov-title{
+    font-family:'Rajdhani',sans-serif;font-weight:600;
+    font-size:38px;line-height:1.02;
+    color:#f0ede8;letter-spacing:-.005em;text-transform:uppercase;
+    margin:auto 0 14px;text-wrap:balance;
+  }
+  .cov-rule{width:56px;height:2px;background:#ff1a8c;margin-bottom:12px}
+  .cov-sub{font-family:Verdana,Arial,sans-serif;font-size:13px;color:#ccc;line-height:1.55;max-width:320px}
+
+  /* QUOTE slides */
+  .q-num{font-family:'Share Tech Mono',monospace;font-size:13px;color:#ff1a8c;letter-spacing:.18em;margin-bottom:24px}
+  .q-text{
+    font-family:'Rajdhani',sans-serif;font-weight:600;
+    font-size:32px;line-height:1.15;
+    color:#f0ede8;letter-spacing:0;
+    margin:auto 0;text-wrap:balance;
+  }
+  .q-text em{color:#ff1a8c;font-style:normal}
+
+  /* OUTRO */
+  .out-head{font-family:'Share Tech Mono',monospace;font-size:12px;color:#888;letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px}
+  .out-title{
+    font-family:'Rajdhani',sans-serif;font-weight:600;
+    font-size:30px;line-height:1.1;
+    color:#f0ede8;text-transform:uppercase;letter-spacing:0;
+    margin:auto 0 14px;text-wrap:balance;
+  }
+  .out-cta{
+    font-family:'Share Tech Mono',monospace;font-size:11px;
+    color:#ff1a8c;letter-spacing:.18em;
+    margin-top:auto;padding-top:14px;border-top:1px solid #222;
+  }
+
+  /* Export helper — double-click a slide to temporarily zoom it 2.57× (= 1080/420) for a clean screenshot at native size. */
+  .slide.zoom{transform:scale(2.57);transform-origin:top left;margin-right:680px;margin-bottom:680px}
+
+  h1,h2,h3,h4,p{margin:0}
+</style>
+</head><body>
+
+<div class="deck">
+
+  <!-- 01 COVER -->
+  <div class="slide cover" onclick="this.classList.toggle('zoom')">
+    <svg class="cover-bg-mark" viewBox="0 0 11 8" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+      <rect x="2" y="0" width="1" height="1" fill="#ff1a8c"/>
+      <rect x="8" y="0" width="1" height="1" fill="#ff1a8c"/>
+      <rect x="3" y="1" width="1" height="1" fill="#ff1a8c"/>
+      <rect x="7" y="1" width="1" height="1" fill="#ff1a8c"/>
+      <rect x="2" y="2" width="7" height="1" fill="#ff1a8c"/>
+      <rect x="1" y="3" width="2" height="1" fill="#ff1a8c"/>
+      <rect x="4" y="3" width="3" height="1" fill="#ff1a8c"/>
+      <rect x="8" y="3" width="2" height="1" fill="#ff1a8c"/>
+      <rect x="0" y="4" width="11" height="1" fill="#ff1a8c"/>
+      <rect x="0" y="5" width="1" height="1" fill="#ff1a8c"/>
+      <rect x="2" y="5" width="7" height="1" fill="#ff1a8c"/>
+      <rect x="10" y="5" width="1" height="1" fill="#ff1a8c"/>
+      <rect x="0" y="6" width="1" height="1" fill="#ff1a8c"/>
+      <rect x="2" y="6" width="1" height="1" fill="#ff1a8c"/>
+      <rect x="8" y="6" width="1" height="1" fill="#ff1a8c"/>
+      <rect x="10" y="6" width="1" height="1" fill="#ff1a8c"/>
+      <rect x="3" y="7" width="2" height="1" fill="#ff1a8c"/>
+      <rect x="6" y="7" width="2" height="1" fill="#ff1a8c"/>
+    </svg>
+    <div class="idx">01 / 06</div>
+    <div class="inner">
+      <div class="cov-eyebrow">// new essay</div>
+      <div style="flex:1"></div>
+      <h1 class="cov-title">The Moat Is Not the Model</h1>
+      <div class="cov-rule"></div>
+      <p class="cov-sub">Why the real AI advantage lives in the knowledge layer — not the model.</p>
+    </div>
+    <div class="wm">
+      <svg class="mark" viewBox="0 0 11 8" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+        <rect x="2" y="0" width="1" height="1" fill="#ff1a8c"/><rect x="8" y="0" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="3" y="1" width="1" height="1" fill="#ff1a8c"/><rect x="7" y="1" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="2" y="2" width="7" height="1" fill="#ff1a8c"/>
+        <rect x="1" y="3" width="2" height="1" fill="#ff1a8c"/><rect x="4" y="3" width="3" height="1" fill="#ff1a8c"/><rect x="8" y="3" width="2" height="1" fill="#ff1a8c"/>
+        <rect x="0" y="4" width="11" height="1" fill="#ff1a8c"/>
+        <rect x="0" y="5" width="1" height="1" fill="#ff1a8c"/><rect x="2" y="5" width="7" height="1" fill="#ff1a8c"/><rect x="10" y="5" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="0" y="6" width="1" height="1" fill="#ff1a8c"/><rect x="2" y="6" width="1" height="1" fill="#ff1a8c"/><rect x="8" y="6" width="1" height="1" fill="#ff1a8c"/><rect x="10" y="6" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="3" y="7" width="2" height="1" fill="#ff1a8c"/><rect x="6" y="7" width="2" height="1" fill="#ff1a8c"/>
+      </svg>
+      <span>ultrawinning.com<span class="c">_</span></span>
+    </div>
+  </div>
+
+  <!-- 02 -->
+  <div class="slide">
+    <div class="idx">02 / 06</div>
+    <div class="inner">
+      <div class="q-num">// 01</div>
+      <div class="q-text">Most people think the advantage comes from the model.<br><em>I think it comes from the knowledge layer.</em></div>
+    </div>
+    <div class="wm">
+      <svg class="mark" viewBox="0 0 11 8" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+        <rect x="2" y="0" width="1" height="1" fill="#ff1a8c"/><rect x="8" y="0" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="3" y="1" width="1" height="1" fill="#ff1a8c"/><rect x="7" y="1" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="2" y="2" width="7" height="1" fill="#ff1a8c"/>
+        <rect x="1" y="3" width="2" height="1" fill="#ff1a8c"/><rect x="4" y="3" width="3" height="1" fill="#ff1a8c"/><rect x="8" y="3" width="2" height="1" fill="#ff1a8c"/>
+        <rect x="0" y="4" width="11" height="1" fill="#ff1a8c"/>
+        <rect x="0" y="5" width="1" height="1" fill="#ff1a8c"/><rect x="2" y="5" width="7" height="1" fill="#ff1a8c"/><rect x="10" y="5" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="0" y="6" width="1" height="1" fill="#ff1a8c"/><rect x="2" y="6" width="1" height="1" fill="#ff1a8c"/><rect x="8" y="6" width="1" height="1" fill="#ff1a8c"/><rect x="10" y="6" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="3" y="7" width="2" height="1" fill="#ff1a8c"/><rect x="6" y="7" width="2" height="1" fill="#ff1a8c"/>
+      </svg>
+      <span>ultrawinning.com<span class="c">_</span></span>
+    </div>
+  </div>
+
+  <!-- 03 -->
+  <div class="slide">
+    <div class="idx">03 / 06</div>
+    <div class="inner">
+      <div class="q-num">// 02</div>
+      <div class="q-text">Not a pile of documents in a shared drive. A governed system a machine can actually use.</div>
+    </div>
+    <div class="wm">
+      <svg class="mark" viewBox="0 0 11 8" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+        <rect x="2" y="0" width="1" height="1" fill="#ff1a8c"/><rect x="8" y="0" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="3" y="1" width="1" height="1" fill="#ff1a8c"/><rect x="7" y="1" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="2" y="2" width="7" height="1" fill="#ff1a8c"/>
+        <rect x="1" y="3" width="2" height="1" fill="#ff1a8c"/><rect x="4" y="3" width="3" height="1" fill="#ff1a8c"/><rect x="8" y="3" width="2" height="1" fill="#ff1a8c"/>
+        <rect x="0" y="4" width="11" height="1" fill="#ff1a8c"/>
+        <rect x="0" y="5" width="1" height="1" fill="#ff1a8c"/><rect x="2" y="5" width="7" height="1" fill="#ff1a8c"/><rect x="10" y="5" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="0" y="6" width="1" height="1" fill="#ff1a8c"/><rect x="2" y="6" width="1" height="1" fill="#ff1a8c"/><rect x="8" y="6" width="1" height="1" fill="#ff1a8c"/><rect x="10" y="6" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="3" y="7" width="2" height="1" fill="#ff1a8c"/><rect x="6" y="7" width="2" height="1" fill="#ff1a8c"/>
+      </svg>
+      <span>ultrawinning.com<span class="c">_</span></span>
+    </div>
+  </div>
+
+  <!-- 04 -->
+  <div class="slide">
+    <div class="idx">04 / 06</div>
+    <div class="inner">
+      <div class="q-num">// 03</div>
+      <div class="q-text">Context and memory are not sexy. They are treated like supporting details. <em>That is upside down.</em></div>
+    </div>
+    <div class="wm">
+      <svg class="mark" viewBox="0 0 11 8" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+        <rect x="2" y="0" width="1" height="1" fill="#ff1a8c"/><rect x="8" y="0" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="3" y="1" width="1" height="1" fill="#ff1a8c"/><rect x="7" y="1" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="2" y="2" width="7" height="1" fill="#ff1a8c"/>
+        <rect x="1" y="3" width="2" height="1" fill="#ff1a8c"/><rect x="4" y="3" width="3" height="1" fill="#ff1a8c"/><rect x="8" y="3" width="2" height="1" fill="#ff1a8c"/>
+        <rect x="0" y="4" width="11" height="1" fill="#ff1a8c"/>
+        <rect x="0" y="5" width="1" height="1" fill="#ff1a8c"/><rect x="2" y="5" width="7" height="1" fill="#ff1a8c"/><rect x="10" y="5" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="0" y="6" width="1" height="1" fill="#ff1a8c"/><rect x="2" y="6" width="1" height="1" fill="#ff1a8c"/><rect x="8" y="6" width="1" height="1" fill="#ff1a8c"/><rect x="10" y="6" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="3" y="7" width="2" height="1" fill="#ff1a8c"/><rect x="6" y="7" width="2" height="1" fill="#ff1a8c"/>
+      </svg>
+      <span>ultrawinning.com<span class="c">_</span></span>
+    </div>
+  </div>
+
+  <!-- 05 -->
+  <div class="slide">
+    <div class="idx">05 / 06</div>
+    <div class="inner">
+      <div class="q-num">// 04</div>
+      <div class="q-text">Most AI memory systems are not memory. They are outdated storage. <em>Filing cabinets of the digital world.</em></div>
+    </div>
+    <div class="wm">
+      <svg class="mark" viewBox="0 0 11 8" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+        <rect x="2" y="0" width="1" height="1" fill="#ff1a8c"/><rect x="8" y="0" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="3" y="1" width="1" height="1" fill="#ff1a8c"/><rect x="7" y="1" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="2" y="2" width="7" height="1" fill="#ff1a8c"/>
+        <rect x="1" y="3" width="2" height="1" fill="#ff1a8c"/><rect x="4" y="3" width="3" height="1" fill="#ff1a8c"/><rect x="8" y="3" width="2" height="1" fill="#ff1a8c"/>
+        <rect x="0" y="4" width="11" height="1" fill="#ff1a8c"/>
+        <rect x="0" y="5" width="1" height="1" fill="#ff1a8c"/><rect x="2" y="5" width="7" height="1" fill="#ff1a8c"/><rect x="10" y="5" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="0" y="6" width="1" height="1" fill="#ff1a8c"/><rect x="2" y="6" width="1" height="1" fill="#ff1a8c"/><rect x="8" y="6" width="1" height="1" fill="#ff1a8c"/><rect x="10" y="6" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="3" y="7" width="2" height="1" fill="#ff1a8c"/><rect x="6" y="7" width="2" height="1" fill="#ff1a8c"/>
+      </svg>
+      <span>ultrawinning.com<span class="c">_</span></span>
+    </div>
+  </div>
+
+  <!-- 06 OUTRO -->
+  <div class="slide">
+    <div class="idx">06 / 06</div>
+    <div class="inner">
+      <div class="out-head">// final</div>
+      <h2 class="out-title">This is the moat.<br>This will decide if you win or lose.</h2>
+      <div class="out-cta">→ READ FULL ESSAY · <span style="font-family:'Rajdhani',sans-serif;font-weight:500;letter-spacing:.18em">ULTRAWINNING.COM/WRITING</span></div>
+    </div>
+    <div class="wm">
+      <svg class="mark" viewBox="0 0 11 8" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+        <rect x="2" y="0" width="1" height="1" fill="#ff1a8c"/><rect x="8" y="0" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="3" y="1" width="1" height="1" fill="#ff1a8c"/><rect x="7" y="1" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="2" y="2" width="7" height="1" fill="#ff1a8c"/>
+        <rect x="1" y="3" width="2" height="1" fill="#ff1a8c"/><rect x="4" y="3" width="3" height="1" fill="#ff1a8c"/><rect x="8" y="3" width="2" height="1" fill="#ff1a8c"/>
+        <rect x="0" y="4" width="11" height="1" fill="#ff1a8c"/>
+        <rect x="0" y="5" width="1" height="1" fill="#ff1a8c"/><rect x="2" y="5" width="7" height="1" fill="#ff1a8c"/><rect x="10" y="5" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="0" y="6" width="1" height="1" fill="#ff1a8c"/><rect x="2" y="6" width="1" height="1" fill="#ff1a8c"/><rect x="8" y="6" width="1" height="1" fill="#ff1a8c"/><rect x="10" y="6" width="1" height="1" fill="#ff1a8c"/>
+        <rect x="3" y="7" width="2" height="1" fill="#ff1a8c"/><rect x="6" y="7" width="2" height="1" fill="#ff1a8c"/>
+      </svg>
+      <span>ultrawinning.com<span class="c">_</span></span>
+    </div>
+  </div>
+
+</div>
+
+</body></html>

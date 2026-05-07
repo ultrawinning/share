@@ -1,0 +1,281 @@
+/* Ultrawinning Design System — base tokens
+ * Dark is default. Light is opt-in by adding class="light" to <body>.
+ *
+ * Copy this file directly, or @import into your own stylesheet.
+ * Paired fonts live in /fonts — see fonts.css for the @font-face block.
+ */
+
+/* ------------------------------------------------------------------
+ * 1. PALETTE — exact production values from ultrawinning.com
+ * ------------------------------------------------------------------ */
+:root {
+  /* Signature accent — the ONLY accent, ever. */
+  --uw-pink:            #ff1a8c;
+  --uw-pink-link:       #ff5fa9;   /* softer pink — used for inline links in article prose */
+  --uw-pink-dim:        rgba(255, 26, 140, 0.1);
+  --uw-pink-overlay:    rgba(255, 26, 140, 0.05);  /* blockquote bg, row hover */
+  --uw-pink-ghost:      rgba(255, 10, 138, 0.09);  /* ghost wordmark cursor */
+
+  /* Dark mode surfaces */
+  --uw-bg:              #000;
+  --uw-bg-article:      #0a0a0a;  /* article pages — slightly softer black for long-read */
+  --uw-fg:              #ccc;     /* body text */
+  --uw-title:           #f0ede8;  /* titles, strong, em */
+  --uw-muted:           #888;     /* meta, secondary */
+  --uw-border:          #222;     /* hr, rule, cell border */
+  --uw-border-strong:   #1a1a1a;  /* table row lines */
+  --uw-footer:          #333;
+  --uw-ghost:           rgba(255, 255, 255, 0.05); /* ghost wordmark body */
+  --uw-scanline:        rgba(255, 255, 255, 0.007);
+
+  /* Semantic tokens — prefer these in components */
+  --bg:                 var(--uw-bg);
+  --fg:                 var(--uw-fg);
+  --fg-strong:          var(--uw-title);
+  --fg-muted:           var(--uw-muted);
+  --accent:             var(--uw-pink);
+  --accent-overlay:     var(--uw-pink-overlay);
+  --border:             var(--uw-border);
+  --footer-fg:          var(--uw-footer);
+}
+
+/* Light-mode opt-in — add class="light" to <body> */
+body.light {
+  --uw-bg:              #fff;
+  --uw-fg:              #000;
+  --uw-title:           #000;
+  --uw-muted:           #666;
+  --uw-border:          #ddd;
+  --uw-border-strong:   #e6e6e6;
+  --uw-footer:          #ccc;
+  --uw-ghost:           rgba(0, 0, 0, 0.05);
+  --uw-pink-ghost:      rgba(255, 10, 138, 0.10);
+  --uw-pink-overlay:    rgba(255, 26, 140, 0.04);
+}
+
+/* ------------------------------------------------------------------
+ * 2. TYPE FAMILIES
+ *    - Rajdhani:        UI, headings, nav, meta, pull-quotes, WORDMARK (logo/ghost/footer/ultrawinning.com)
+ *    - Share Tech Mono: terminal chrome only (System:/ Node:/ > _, // comments, slide counters, date slugs)
+ *    - Verdana:         long-form article body (Paul-Graham coded)
+ * ------------------------------------------------------------------ */
+:root {
+  --font-display:  'Rajdhani', system-ui, sans-serif;
+  --font-mono:     'Share Tech Mono', ui-monospace, Menlo, monospace;
+  --font-prose:    Verdana, Arial, sans-serif;
+
+  /* Canonical weights used in production */
+  --fw-regular:    400;
+  --fw-medium:     500;
+  --fw-semibold:   600;
+  --fw-bold:       700;
+
+  /* Canonical sizes (px, straight from the live site) */
+  --fs-title:      17px;  /* article title */
+  --fs-body:       13px;  /* short-form prose (homepage blurbs, cards) */
+  --fs-article:    14px;  /* ARTICLE PAGE prose — readability tuned */
+  --lh-article:    1.6;   /* ARTICLE PAGE line-height */
+  --fs-meta:       12px;  /* byline, back-link */
+  --fs-footer:     11px;  /* bottom slug */
+  --fs-ghost-d:    108px; /* desktop ghost wordmark */
+  --fs-ghost-m:    64px;  /* mobile ghost wordmark */
+
+  /* Tracking — UI is spacious, prose is tight */
+  --tr-ui:         0.1em;
+  --tr-wordmark:   0.18em;  /* NAV + wordmark (logo / ghost / footer) — Rajdhani 500, uppercase */
+  --tr-ui-widest:  0.22em;  /* section eyebrows */
+  --tr-prose:      normal;
+
+  --lh-tight:      1.1;
+  --lh-snug:       1.35;    /* title */
+  --lh-body:       normal;  /* article body — intentionally default */
+  --lh-ui:         1.7;     /* terminal system log */
+}
+
+/* ------------------------------------------------------------------
+ * 3. SPACE, BORDER, MOTION
+ *    No rounded corners. No drop shadows. No gradients.
+ *    Sharp rectangular forms only.
+ * ------------------------------------------------------------------ */
+:root {
+  /* Page gutters */
+  --pad-page-d:    20px 28px 80px;
+  --pad-page-m:    16px 20px 60px;
+
+  /* Column — intentionally narrow, forces short lines */
+  --col-prose:     435px;
+  --col-wide:      640px;
+
+  --space-1:       4px;
+  --space-2:       8px;
+  --space-3:       12px;
+  --space-4:       16px;
+  --space-5:       24px;
+  --space-6:       32px;
+  --space-7:       48px;
+  --space-8:       64px;
+
+  /* Radii — zero. Do not round. */
+  --radius:        0;
+
+  /* Borders — 1px, sharp */
+  --bw:            1px;
+  --rule-w:        60px;   /* pink hr under titles */
+
+  /* Motion — fast, linear, minimal */
+  --dur-fast:      .15s;
+  --dur:           .2s;
+  --dur-slow:      .3s;
+  --dur-boot:      .8s;
+  --ease:          ease;
+
+  /* Breakpoint */
+  --bp-mobile:     500px;
+}
+
+/* ------------------------------------------------------------------
+ * 4. SEMANTIC BASE STYLES
+ *    Apply by adding class="uw" to any root, or copy selectively.
+ * ------------------------------------------------------------------ */
+.uw {
+  background: var(--bg);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.uw-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-snug);
+  color: var(--fg-strong);
+  letter-spacing: 0;
+  margin: 0 0 14px 0;
+}
+
+.uw-eyebrow {
+  font-family: var(--font-display);
+  font-size: var(--fs-footer);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tr-ui);
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.uw-meta {
+  font-family: var(--font-display);
+  font-size: var(--fs-meta);
+  letter-spacing: 0.08em;
+  color: var(--fg-muted);
+}
+
+.uw-footer-text {
+  font-family: var(--font-display);
+  font-size: var(--fs-footer);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--footer-fg);
+}
+
+.uw-prose {
+  font-family: var(--font-prose);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--fg);
+  max-width: var(--col-prose);
+}
+.uw-prose p { margin: 0 0 16px 0; }
+.uw-prose a { color: var(--accent); text-decoration: none; }
+.uw-prose a:hover { text-decoration: underline; }
+.uw-prose strong,
+.uw-prose em { color: var(--fg-strong); }
+.uw-prose blockquote {
+  border-left: 2px solid var(--accent);
+  background: var(--accent-overlay);
+  padding: 8px 16px;
+  margin: 1.3em 0;
+  font-style: italic;
+  color: var(--fg-strong);
+}
+.uw-prose hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em 0;
+}
+
+/* ARTICLE-PAGE PROSE — readability-tuned variant.
+ * Wrap long-read article bodies in <article class="uw-prose uw-prose--article"> or
+ * use <body class="uw-article"> to get the softer bg + tuned prose in one go. */
+.uw-article {
+  background: var(--uw-bg-article);
+}
+.uw-prose--article {
+  font-size: var(--fs-article);
+  line-height: var(--lh-article);
+}
+.uw-prose--article p { margin: 0 0 18px 0; }
+.uw-prose--article a { color: var(--uw-pink-link); }
+
+/* Mono — terminal / wordmark / counters */
+.uw-mono {
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+/* Pink separator — sits under article titles. 60px wide, 1px tall, pink. */
+.uw-sep {
+  border: none;
+  border-top: 1px solid var(--accent);
+  margin: 0 0 32px 0;
+  width: var(--rule-w);
+  max-width: var(--rule-w);
+}
+
+/* Blinking cursor — used after wordmark, on prompt lines, on CTAs. */
+.uw-cursor {
+  color: var(--accent);
+  animation: uw-blink 1s step-end infinite;
+  display: inline-block;
+}
+@keyframes uw-blink {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* Scanline overlay — dark mode only. Very subtle. */
+.uw-scanlines::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent, transparent 3px,
+    var(--uw-scanline) 3px, var(--uw-scanline) 4px
+  );
+}
+body.light .uw-scanlines::before { display: none; }
+
+/* Ghost wordmark — sits behind article heroes at ~5% opacity. Rajdhani 500 uppercase. */
+.uw-ghost-wordmark {
+  position: absolute;
+  top: 0; left: 0;
+  z-index: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-ghost-d);
+  line-height: 0.9;
+  font-weight: 500;
+  letter-spacing: var(--tr-wordmark);
+  text-transform: uppercase;
+  color: var(--uw-ghost);
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+}
+.uw-ghost-wordmark .uw-cursor { color: var(--uw-pink-ghost); }
+
+@media (max-width: 500px) {
+  .uw-ghost-wordmark { font-size: var(--fs-ghost-m); }
+}

@@ -1,0 +1,32 @@
+/* Preview card shell — 700×(variable) cards for the design-system tab.
+ * Minimal frame, the asset name is shown outside.
+ */
+html, body { margin: 0; padding: 0; }
+body {
+  background: #000;
+  color: #ccc;
+  font-family: 'Rajdhani', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+body.light { background: #fff; color: #000; }
+
+.card {
+  box-sizing: border-box;
+  width: 700px;
+  padding: 24px 28px;
+  position: relative;
+  overflow: hidden;
+}
+
+.mono { font-family: 'Share Tech Mono', ui-monospace, Menlo, monospace; }
+.display { font-family: 'Rajdhani', system-ui, sans-serif; }
+.prose { font-family: Verdana, Arial, sans-serif; }
+.pink { color: #ff1a8c; }
+.muted { color: #888; }
+.title { color: #f0ede8; }
+.eyebrow { font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: #888; font-weight: 600; }
+
+.sep { border: none; border-top: 1px solid #ff1a8c; width: 60px; margin: 8px 0 16px; }
+
+@keyframes uw-blink { 0%,49% { opacity: 1; } 50%,100% { opacity: 0; } }
+.cursor { color: #ff1a8c; animation: uw-blink 1s step-end infinite; }

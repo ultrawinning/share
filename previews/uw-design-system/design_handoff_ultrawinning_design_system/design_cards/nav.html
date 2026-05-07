@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .card { padding: 18px 28px; }
+  .nav { display:flex; align-items:center; gap:16px; padding:12px 0; border-bottom:1px solid #1a1a1a; }
+  .mark { width:28px; height:20px; image-rendering:pixelated; }
+  .wm { font-family:'Rajdhani',sans-serif; font-size:16px; font-weight:500; letter-spacing:.18em; text-transform:uppercase; color:#f0ede8; }
+  .wm .c { color:#ff1a8c; }
+  .spacer { flex:1; }
+  .lnk { font-family:'Share Tech Mono',monospace; font-size:11px; color:#888; letter-spacing:.1em; text-decoration:none; }
+  .lnk:hover { color:#ff1a8c; }
+  .lnk::before { content:'// '; color:#ff1a8c; }
+  .note { font-family:'Share Tech Mono',monospace; font-size:10px; color:#666; letter-spacing:.08em; margin-top:10px; }
+</style>
+</head><body>
+<div class="card">
+  <div class="nav">
+    <img class="mark" src="../assets/logo-mark.svg">
+    <span class="wm">ULTRAWINNING<span class="c cursor">_</span></span>
+    <span class="spacer"></span>
+    <a class="lnk">writing</a>
+    <a class="lnk">projects</a>
+  </div>
+  <div class="note">// fixed top; 18px 64px desktop · backdrop-blur on scroll · 1px border appears on scroll</div>
+</div>
+</body></html>

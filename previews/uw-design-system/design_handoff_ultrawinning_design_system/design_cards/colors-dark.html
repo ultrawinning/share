@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .card { padding: 0; }
+  .row { display: flex; height: 110px; }
+  .sw { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; padding: 14px 16px; border-right: 1px solid rgba(255,255,255,.06); }
+  .sw:last-child { border-right: none; }
+  .name { font-family: 'Share Tech Mono', monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
+  .hex { font-family: 'Share Tech Mono', monospace; font-size: 10px; opacity: .55; margin-top: 2px; }
+</style>
+</head><body>
+<div class="card">
+  <div class="row">
+    <div class="sw" style="background:#000;color:#f0ede8"><div class="name">bg</div><div class="hex">#000</div></div>
+    <div class="sw" style="background:#0a0a0a;color:#f0ede8"><div class="name">surface</div><div class="hex">#0a0a0a</div></div>
+    <div class="sw" style="background:#ccc;color:#000"><div class="name">fg</div><div class="hex">#ccc</div></div>
+    <div class="sw" style="background:#f0ede8;color:#000"><div class="name">title</div><div class="hex">#f0ede8</div></div>
+    <div class="sw" style="background:#888;color:#000"><div class="name">muted</div><div class="hex">#888</div></div>
+    <div class="sw" style="background:#222;color:#ccc"><div class="name">border</div><div class="hex">#222</div></div>
+    <div class="sw" style="background:#333;color:#ccc"><div class="name">footer</div><div class="hex">#333</div></div>
+  </div>
+</div>
+</body></html>

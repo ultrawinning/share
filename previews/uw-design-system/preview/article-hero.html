@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .card { padding: 20px 28px; position:relative; overflow:hidden; height:220px; }
+  .card::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,.01) 3px, rgba(255,255,255,.01) 4px); pointer-events:none; }
+  .ghost { position:absolute; top:-10px; left:-6px; font-family:'Rajdhani',sans-serif; font-weight:500; font-size:100px; line-height:.9; color:rgba(255,255,255,.06); letter-spacing:.18em; text-transform:uppercase; white-space:nowrap; pointer-events:none; }
+  .ghost span { color:rgba(255,10,138,.09); }
+  .bk { position:relative; z-index:1; padding-top:100px; font-family:'Rajdhani',sans-serif; font-size:12px; color:#888; letter-spacing:.1em; text-transform:uppercase; font-weight:600; text-decoration:none; }
+  .title { position:relative; z-index:1; font-family:'Rajdhani',sans-serif; font-size:17px; font-weight:600; color:#f0ede8; line-height:1.35; margin-top:16px; }
+  .meta { position:relative; z-index:1; font-family:'Rajdhani',sans-serif; font-size:12px; color:#888; letter-spacing:.08em; margin-top:4px; display:flex; gap:12px; align-items:center; }
+  .sep { position:relative; z-index:1; border:none; border-top:1px solid #ff1a8c; width:60px; margin:16px 0 0; }
+</style>
+</head><body>
+<div class="card">
+  <div class="ghost">ULTRAWINNING<span class="cursor">_</span></div>
+  <a class="bk">← ultrawinning</a>
+  <div class="title">The Moat Is Not the Model</div>
+  <div class="meta"><span>April 2026 · 5 min read</span><span style="color:#888">☀</span></div>
+  <hr class="sep">
+</div>
+</body></html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .card { padding: 18px 28px; display:flex; gap:22px; align-items:stretch; }
+  .col { flex:1; display:flex; flex-direction:column; gap:10px; }
+  .tok { display:flex; align-items:center; gap:12px; font-family:'Share Tech Mono',monospace; font-size:10px; color:#888; letter-spacing:.08em; }
+  .box { background:#ff1a8c; flex-shrink:0; }
+  .lbl { color:#f0ede8; min-width:28px; text-transform:uppercase; }
+  h4 { font-family:'Share Tech Mono',monospace; font-size:10px; font-weight:400; color:#888; letter-spacing:.2em; text-transform:uppercase; margin:0 0 6px; }
+</style>
+</head><body>
+<div class="card">
+  <div class="col">
+    <h4>// spacing</h4>
+    <div class="tok"><div class="box" style="width:4px;height:16px;background:#333"></div><span class="lbl">4</span>space-1</div>
+    <div class="tok"><div class="box" style="width:8px;height:16px;background:#333"></div><span class="lbl">8</span>space-2</div>
+    <div class="tok"><div class="box" style="width:16px;height:16px;background:#333"></div><span class="lbl">16</span>space-4</div>
+    <div class="tok"><div class="box" style="width:24px;height:16px;background:#333"></div><span class="lbl">24</span>space-5</div>
+    <div class="tok"><div class="box" style="width:48px;height:16px;background:#333"></div><span class="lbl">48</span>space-7</div>
+    <div class="tok"><div class="box" style="width:64px;height:16px;background:#333"></div><span class="lbl">64</span>space-8</div>
+  </div>
+  <div class="col">
+    <h4>// borders &amp; rules</h4>
+    <div class="tok"><div class="box" style="width:60px;height:1px;background:#ff1a8c"></div>pink-hr · 60×1</div>
+    <div class="tok"><div class="box" style="width:40px;height:40px;border:1px solid #222;background:none"></div>border · 1 · #222</div>
+    <div class="tok"><div class="box" style="width:40px;height:40px;border:1px solid #ff1a8c;background:none"></div>focus · 1 · pink</div>
+    <h4 style="margin-top:8px">// radii</h4>
+    <div class="tok"><div class="box" style="width:40px;height:20px;background:#ff1a8c;border-radius:0"></div>radius-0 — no rounded corners, ever</div>
+  </div>
+</div>
+</body></html>
