@@ -11,49 +11,57 @@
   h1 { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; margin-bottom: 6px; }
   .subtitle { color: #8B949E; font-size: 14px; margin-bottom: 32px; }
   h2 { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 600; margin: 32px 0 12px; color: #E6EDF3; }
-  .divider { height: 1px; background: #21262D; margin: 32px 0; }
+  .divider { height: 1px; background: #30363D; margin: 32px 0; }
 
   /* ── Stage table ── */
-  table { width: 100%; border-collapse: collapse; margin: 16px 0; }
-  th { text-align: left; padding: 10px 14px; border-bottom: 2px solid #30363D; color: #8B949E; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
-  td { padding: 10px 14px; border-bottom: 1px solid #1C2128; vertical-align: middle; font-size: 13px; }
-  tr:hover td { background: rgba(255,255,255,0.02); }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; border: 1px solid #30363D; border-radius: 8px; overflow: hidden; }
+  th { text-align: left; padding: 12px 16px; background: #161B22; border-bottom: 2px solid #30363D; color: #E6EDF3; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+  td { padding: 12px 16px; border-bottom: 1px solid #21262D; vertical-align: middle; font-size: 13px; background: #0D1117; }
+  tr:hover td { background: #161B22; }
 
-  .stage-key { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 11px; color: #6E7681; }
+  .stage-key { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 11px; color: #8B949E; background: #161B22; padding: 2px 6px; border-radius: 4px; }
   .role-cell { display: flex; align-items: center; gap: 8px; }
-  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .pill { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; white-space: nowrap; }
-  .loc { font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px; white-space: nowrap; }
-  .loc-kanban { background: rgba(66,165,245,0.12); color: #42A5F5; }
-  .loc-grey { background: rgba(120,144,156,0.12); color: #78909C; }
-  .loc-bottom { background: rgba(76,175,80,0.12); color: #4CAF50; }
-  .loc-lost { background: rgba(239,83,80,0.10); color: #EF5350; }
-  .empty { color: #30363D; font-size: 12px; }
-  .note { font-size: 11px; color: #6E7681; margin-top: 2px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; border: 1px solid rgba(255,255,255,0.1); }
+  .loc { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 4px; white-space: nowrap; }
+  .loc-kanban { background: rgba(66,165,245,0.18); color: #64B5F6; }
+  .loc-grey { background: rgba(120,144,156,0.18); color: #90A4AE; }
+  .loc-bottom { background: rgba(76,175,80,0.18); color: #66BB6A; }
+  .loc-lost { background: rgba(239,83,80,0.15); color: #EF5350; }
+  .empty { color: #30363D; font-size: 13px; }
+  .note { font-size: 11px; color: #8B949E; margin-top: 3px; }
+  .stage-name { font-weight: 600; color: #E6EDF3; }
+  .greyed .stage-name { color: #6E7681; }
+  .greyed .dot { opacity: 0.35; }
+  .greyed .note { color: #4A5158; }
+
+  /* ── Section headers in table ── */
+  .section-row td { background: #161B22; padding: 8px 16px; font-size: 11px; font-weight: 700; color: #8B949E; text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid #30363D; }
 
   /* ── Handoff diagram ── */
-  .handoff-box { border: 1px solid #30363D; border-radius: 10px; padding: 20px; margin: 20px 0; background: #161B22; }
-  .handoff-title { font-size: 13px; font-weight: 700; color: #E6EDF3; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .handoff-box { border: 1px solid #30363D; border-radius: 10px; padding: 20px; margin: 16px 0; background: #161B22; }
+  .handoff-title { font-size: 13px; font-weight: 700; color: #E6EDF3; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
   .flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
-  .flow-step { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 6px; white-space: nowrap; }
+  .flow-step { font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 6px; white-space: nowrap; }
   .flow-arrow { color: #6E7681; font-size: 16px; }
-  .fs-setter { background: rgba(38,166,154,0.15); color: #26A69A; }
-  .fs-dialer { background: rgba(66,165,245,0.15); color: #42A5F5; }
-  .fs-closer { background: rgba(255,193,7,0.15); color: #FFC107; }
-  .fs-outcome { background: rgba(76,175,80,0.15); color: #4CAF50; }
-  .fs-lost { background: rgba(239,83,80,0.10); color: #EF5350; }
+  .fs-setter { background: rgba(38,166,154,0.18); color: #26A69A; }
+  .fs-dialer { background: rgba(66,165,245,0.18); color: #42A5F5; }
+  .fs-closer { background: rgba(255,193,7,0.18); color: #FFC107; }
+  .fs-outcome { background: rgba(76,175,80,0.18); color: #4CAF50; }
+  .fs-lost { background: rgba(239,83,80,0.15); color: #EF5350; }
 
   /* ── Legend ── */
-  .legend { display: flex; gap: 20px; flex-wrap: wrap; margin: 16px 0; }
-  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #8B949E; }
+  .legend { display: flex; gap: 24px; flex-wrap: wrap; margin: 16px 0; padding: 16px; background: #161B22; border-radius: 8px; border: 1px solid #30363D; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #E6EDF3; }
 
-  /* ── Section labels ── */
-  .section-label { font-size: 10px; font-weight: 700; color: #6E7681; text-transform: uppercase; letter-spacing: 0.08em; padding: 6px 14px; background: #161B22; }
+  /* ── Rules table ── */
+  .rules td:first-child { font-weight: 600; color: #E6EDF3; width: 35%; }
+  .rules td:last-child { color: #9DA7B3; }
 
   @media (max-width: 768px) {
     body { padding: 16px; }
     table { font-size: 12px; }
     th, td { padding: 8px 10px; }
+    .legend { flex-direction: column; gap: 10px; }
   }
 </style>
 </head>
@@ -66,9 +74,9 @@
 <!-- ═══════════════════ LEGEND ═══════════════════ -->
 
 <div class="legend">
-  <div class="legend-item"><span class="loc loc-kanban">Kanban</span> Active — drag, edit, follow up</div>
-  <div class="legend-item"><span class="loc loc-grey">Read-only</span> Visible but greyed — lead handed off</div>
-  <div class="legend-item"><span class="loc loc-bottom">Outcome</span> Bottom bar — definitive result</div>
+  <div class="legend-item"><span class="loc loc-kanban">Kanban</span> Active column — drag, edit, follow up</div>
+  <div class="legend-item"><span class="loc loc-grey">Read-only</span> Greyed — lead handed off to closer</div>
+  <div class="legend-item"><span class="loc loc-bottom">Outcome</span> Bottom bar — definitive win</div>
   <div class="legend-item"><span class="loc loc-lost">Lost</span> Bottom bar — terminal</div>
 </div>
 
@@ -81,106 +89,152 @@
 <table>
   <thead>
     <tr>
-      <th style="width:18%">DB Stage</th>
-      <th style="width:22%">Setter</th>
-      <th style="width:22%">Dialer</th>
-      <th style="width:22%">Closer</th>
-      <th style="width:16%">Location</th>
+      <th style="width:16%">DB Stage</th>
+      <th style="width:23%">Setter</th>
+      <th style="width:23%">Dialer</th>
+      <th style="width:23%">Closer</th>
+      <th style="width:15%">Location</th>
     </tr>
   </thead>
   <tbody>
-    <!-- Intake -->
-    <tr class="section-label"><td colspan="5">INTAKE</td></tr>
+    <!-- INTAKE -->
+    <tr><td colspan="5" class="section-row" style="background:#161B22">INTAKE — Unclaimed Leads</td></tr>
     <tr>
-      <td><span class="stage-key">(not in pipeline)</span></td>
-      <td><div class="role-cell"><span class="dot" style="background:#42A5F5"></span> NEW</div><div class="note">Unclaimed leads from Typeform / Meta / ManyChat</div></td>
-      <td><span class="empty">—</span></td>
-      <td><span class="empty">—</span></td>
-      <td><span class="loc loc-kanban">Kanban</span></td>
-    </tr>
-    <tr>
-      <td><span class="stage-key">NOT_CONTACTED</span></td>
-      <td><span class="empty">—</span></td>
-      <td><div class="role-cell"><span class="dot" style="background:#42A5F5"></span> New</div><div class="note">Not Contacted. Call immediately. CSV imports land here.</div></td>
+      <td><span class="stage-key">(leads table)</span></td>
+      <td>
+        <div class="role-cell"><span class="dot" style="background:#42A5F5"></span> <span class="stage-name">NEW</span></div>
+        <div class="note">Typeform / Meta Ads / ManyChat</div>
+      </td>
+      <td>
+        <div class="role-cell"><span class="dot" style="background:#42A5F5"></span> <span class="stage-name">New</span></div>
+        <div class="note">Same table, different source filter. CSV imports, course buyers.</div>
+      </td>
       <td><span class="empty">—</span></td>
       <td><span class="loc loc-kanban">Kanban</span></td>
     </tr>
 
-    <!-- Setter funnel -->
-    <tr class="section-label"><td colspan="5">SETTER FUNNEL</td></tr>
+    <!-- SETTER FUNNEL -->
+    <tr><td colspan="5" class="section-row">SETTER FUNNEL — Pre-Booking Nurture</td></tr>
     <tr>
       <td><span class="stage-key">WARM</span></td>
-      <td><div class="role-cell"><span class="dot" style="background:#78909C"></span> Warm</div><div class="note">Claimed. Outreach pending or done.</div></td>
+      <td>
+        <div class="role-cell"><span class="dot" style="background:#78909C"></span> <span class="stage-name">Warm</span></div>
+        <div class="note">Claimed. Outreach pending or done.</div>
+      </td>
       <td><span class="empty">—</span></td>
       <td><span class="empty">—</span></td>
       <td><span class="loc loc-kanban">Kanban</span></td>
     </tr>
     <tr>
       <td><span class="stage-key">HOT</span></td>
-      <td><div class="role-cell"><span class="dot" style="background:#26A69A"></span> Hot</div><div class="note">Lead is responding. Active conversation.</div></td>
+      <td>
+        <div class="role-cell"><span class="dot" style="background:#26A69A"></span> <span class="stage-name">Hot</span></div>
+        <div class="note">Lead is responding. Active conversation.</div>
+      </td>
       <td><span class="empty">—</span></td>
       <td><span class="empty">—</span></td>
       <td><span class="loc loc-kanban">Kanban</span></td>
     </tr>
     <tr>
       <td><span class="stage-key">CALL_PROPOSED</span></td>
-      <td><div class="role-cell"><span class="dot" style="background:#26A69A"></span> Call Proposed</div><div class="note">Pitched the call. Awaiting yes/no.</div></td>
+      <td>
+        <div class="role-cell"><span class="dot" style="background:#26A69A"></span> <span class="stage-name">Call Proposed</span></div>
+        <div class="note">Pitched the call. Awaiting yes/no.</div>
+      </td>
       <td><span class="empty">—</span></td>
       <td><span class="empty">—</span></td>
       <td><span class="loc loc-kanban">Kanban</span></td>
     </tr>
     <tr>
       <td><span class="stage-key">LINK_SENT</span></td>
-      <td><div class="role-cell"><span class="dot" style="background:#26A69A"></span> Link Sent</div><div class="note">Booking link sent. Nudge if no book in 10-15 min.</div></td>
+      <td>
+        <div class="role-cell"><span class="dot" style="background:#26A69A"></span> <span class="stage-name">Link Sent</span></div>
+        <div class="note">Booking link sent. Nudge if no book in 10-15 min.</div>
+      </td>
       <td><span class="empty">—</span></td>
       <td><span class="empty">—</span></td>
       <td><span class="loc loc-kanban">Kanban</span></td>
     </tr>
 
-    <!-- Dialer funnel -->
-    <tr class="section-label"><td colspan="5">DIALER FUNNEL</td></tr>
+    <!-- DIALER FUNNEL -->
+    <tr><td colspan="5" class="section-row">DIALER FUNNEL — Phone Outreach</td></tr>
     <tr>
       <td><span class="stage-key">CALLED_NO_ANSWER</span></td>
       <td><span class="empty">—</span></td>
-      <td><div class="role-cell"><span class="dot" style="background:#FFC107"></span> Called, No Answer</div><div class="note">No pickup. Needs callback.</div></td>
+      <td>
+        <div class="role-cell"><span class="dot" style="background:#FFC107"></span> <span class="stage-name">Called, No Answer</span></div>
+        <div class="note">No pickup. Needs callback.</div>
+      </td>
       <td><span class="empty">—</span></td>
       <td><span class="loc loc-kanban">Kanban</span></td>
     </tr>
 
-    <!-- Shared: Booked -->
-    <tr class="section-label"><td colspan="5">HANDOFF TO CLOSER</td></tr>
+    <!-- HANDOFF -->
+    <tr><td colspan="5" class="section-row" style="color:#4CAF50">HANDOFF TO CLOSER — Call Booked</td></tr>
     <tr>
       <td><span class="stage-key">BOOKED</span></td>
-      <td><div class="role-cell"><span class="dot" style="background:#4CAF50"></span> Call Booked</div><div class="note">Booked. Prep the closer.</div></td>
-      <td><div class="role-cell"><span class="dot" style="background:#4CAF50"></span> Call Booked</div><div class="note">Booked via phone. Handoff to closer.</div></td>
-      <td><div class="role-cell"><span class="dot" style="background:#4CAF50"></span> Call Booked</div><div class="note">Via GHL calendar. Today's calls view.</div></td>
+      <td>
+        <div class="role-cell"><span class="dot" style="background:#4CAF50"></span> <span class="stage-name">Call Booked</span></div>
+        <div class="note">Booked. Prep the closer.</div>
+      </td>
+      <td>
+        <div class="role-cell"><span class="dot" style="background:#4CAF50"></span> <span class="stage-name">Call Booked</span></div>
+        <div class="note">Booked via phone. Handoff to closer.</div>
+      </td>
+      <td>
+        <div class="role-cell"><span class="dot" style="background:#4CAF50"></span> <span class="stage-name">Call Booked</span></div>
+        <div class="note">Via GHL calendar. Today's calls view.</div>
+      </td>
       <td><span class="loc loc-kanban">Kanban</span></td>
     </tr>
 
-    <!-- Post-call -->
-    <tr class="section-label"><td colspan="5">POST-CALL (CLOSER OWNS)</td></tr>
+    <!-- POST-CALL -->
+    <tr><td colspan="5" class="section-row">POST-CALL — Closer Owns</td></tr>
     <tr>
       <td><span class="stage-key">CANCEL_NO_SHOW</span></td>
-      <td><div class="role-cell"><span class="dot" style="background:#AB47BC"></span> Cancelled / No Show</div><div class="note">Recovery attempts. Up to 3.</div></td>
-      <td><div class="role-cell"><span class="dot" style="background:#AB47BC"></span> No Show</div><div class="note">Didn't attend. Dialer follows up.</div></td>
-      <td><div class="role-cell"><span class="dot" style="background:#AB47BC"></span> Cancelled / No Show</div></td>
+      <td>
+        <div class="role-cell"><span class="dot" style="background:#AB47BC"></span> <span class="stage-name">Cancelled / No Show</span></div>
+        <div class="note">Recovery attempts. Up to 3.</div>
+      </td>
+      <td>
+        <div class="role-cell"><span class="dot" style="background:#AB47BC"></span> <span class="stage-name">No Show</span></div>
+        <div class="note">Didn't attend. Dialer follows up.</div>
+      </td>
+      <td>
+        <div class="role-cell"><span class="dot" style="background:#AB47BC"></span> <span class="stage-name">Cancelled / No Show</span></div>
+      </td>
       <td><span class="loc loc-kanban">Kanban</span></td>
     </tr>
     <tr>
       <td><span class="stage-key">FU_IMMEDIATE</span></td>
-      <td><div class="role-cell" style="opacity:0.4"><span class="dot" style="background:#26A69A"></span> PCFU (Hot)</div><div class="note" style="opacity:0.4">Read-only after handoff</div></td>
-      <td><div class="role-cell" style="opacity:0.4"><span class="dot" style="background:#26A69A"></span> No Close → FU</div><div class="note" style="opacity:0.4">Read-only. Closer follows up.</div></td>
-      <td><div class="role-cell"><span class="dot" style="background:#EF5350"></span> Immediate</div><div class="note">Active follow-up. Chase within days.</div></td>
+      <td class="greyed">
+        <div class="role-cell"><span class="dot" style="background:#26A69A"></span> <span class="stage-name">PCFU (Hot)</span></div>
+        <div class="note">Read-only. Closer owns follow-up.</div>
+      </td>
+      <td class="greyed">
+        <div class="role-cell"><span class="dot" style="background:#26A69A"></span> <span class="stage-name">No Close &rarr; FU</span></div>
+        <div class="note">Read-only. Closer follows up.</div>
+      </td>
+      <td>
+        <div class="role-cell"><span class="dot" style="background:#EF5350"></span> <span class="stage-name">Immediate</span></div>
+        <div class="note">Active follow-up. Chase within days.</div>
+      </td>
       <td>
         <span class="loc loc-kanban">Closer</span><br>
-        <span class="loc loc-grey" style="margin-top:4px;display:inline-block">Setter/Dialer</span>
+        <span class="loc loc-grey" style="margin-top:4px;display:inline-block">Setter / Dialer</span>
       </td>
     </tr>
     <tr>
       <td><span class="stage-key">FU_NURTURE</span></td>
-      <td><div class="role-cell" style="opacity:0.4"><span class="dot" style="background:#26A69A"></span> LTFU (Nurture)</div><div class="note" style="opacity:0.4">Read-only after handoff</div></td>
+      <td class="greyed">
+        <div class="role-cell"><span class="dot" style="background:#26A69A"></span> <span class="stage-name">LTFU (Nurture)</span></div>
+        <div class="note">Read-only. Closer owns.</div>
+      </td>
       <td><span class="empty">—</span></td>
-      <td><div class="role-cell"><span class="dot" style="background:#26A69A"></span> Nurture</div><div class="note">Long-term. Periodic check-in.</div></td>
+      <td>
+        <div class="role-cell"><span class="dot" style="background:#26A69A"></span> <span class="stage-name">Nurture</span></div>
+        <div class="note">Long-term. Periodic check-in.</div>
+      </td>
       <td>
         <span class="loc loc-kanban">Closer</span><br>
         <span class="loc loc-grey" style="margin-top:4px;display:inline-block">Setter</span>
@@ -188,26 +242,41 @@
     </tr>
     <tr>
       <td><span class="stage-key">REQUALIFICATION</span></td>
-      <td><div class="role-cell"><span class="dot" style="background:#AB47BC"></span> Requalification</div><div class="note">Re-evaluating. Setter-only stage.</div></td>
+      <td>
+        <div class="role-cell"><span class="dot" style="background:#AB47BC"></span> <span class="stage-name">Requalification</span></div>
+        <div class="note">Re-evaluating. Setter-only stage.</div>
+      </td>
       <td><span class="empty">—</span></td>
       <td><span class="empty">—</span></td>
       <td><span class="loc loc-kanban">Kanban</span></td>
     </tr>
 
-    <!-- Outcomes -->
-    <tr class="section-label"><td colspan="5">OUTCOMES (BOTTOM BAR — DEFINITIVE)</td></tr>
+    <!-- OUTCOMES -->
+    <tr><td colspan="5" class="section-row" style="color:#4CAF50">OUTCOMES — Bottom Bar (Definitive)</td></tr>
     <tr>
       <td><span class="stage-key">WON</span></td>
-      <td><div class="role-cell"><span class="dot" style="background:#4CAF50"></span> Deposit Closed</div></td>
-      <td><div class="role-cell"><span class="dot" style="background:#4CAF50"></span> Closed</div></td>
-      <td><div class="role-cell"><span class="dot" style="background:#4CAF50"></span> Won</div></td>
+      <td>
+        <div class="role-cell"><span class="dot" style="background:#4CAF50"></span> <span class="stage-name">Deposit Closed</span></div>
+      </td>
+      <td>
+        <div class="role-cell"><span class="dot" style="background:#4CAF50"></span> <span class="stage-name">Closed</span></div>
+      </td>
+      <td>
+        <div class="role-cell"><span class="dot" style="background:#4CAF50"></span> <span class="stage-name">Won</span></div>
+      </td>
       <td><span class="loc loc-bottom">Bottom bar</span></td>
     </tr>
     <tr>
       <td><span class="stage-key">LOST_NO_FU</span></td>
-      <td><div class="role-cell"><span class="dot" style="background:#EF5350"></span> Lost</div></td>
-      <td><div class="role-cell"><span class="dot" style="background:#EF5350"></span> Not Interested</div></td>
-      <td><div class="role-cell"><span class="dot" style="background:#EF5350"></span> Dead</div></td>
+      <td>
+        <div class="role-cell"><span class="dot" style="background:#EF5350"></span> <span class="stage-name">Lost</span></div>
+      </td>
+      <td>
+        <div class="role-cell"><span class="dot" style="background:#EF5350"></span> <span class="stage-name">Not Interested</span></div>
+      </td>
+      <td>
+        <div class="role-cell"><span class="dot" style="background:#EF5350"></span> <span class="stage-name">Dead</span></div>
+      </td>
       <td><span class="loc loc-lost">Bottom bar</span></td>
     </tr>
   </tbody>
@@ -215,58 +284,70 @@
 
 <div class="divider"></div>
 
+<!-- ═══════════════════ KEY INSIGHT ═══════════════════ -->
+
+<div class="handoff-box" style="border-color:#42A5F5">
+  <div class="handoff-title" style="color:#42A5F5">Key: Setter NEW = Dialer NEW</div>
+  <p style="font-size:13px;color:#9DA7B3;line-height:1.7">
+    Both setter and dialer "New" columns read from the same <code style="background:#161B22;padding:2px 6px;border-radius:3px;font-size:12px;color:#8B949E">leads</code> table.
+    The only difference is the <strong style="color:#E6EDF3">source filter</strong>:<br><br>
+    <span class="flow-step fs-setter" style="margin:0 4px">Setter</span> Typeform, Meta Lead Ads, ManyChat<br>
+    <span class="flow-step fs-dialer" style="margin:0 4px">Dialer</span> CSV imports (LB90 buyers, partial apps, Meta ads list)
+  </p>
+</div>
+
 <!-- ═══════════════════ HANDOFF FLOWS ═══════════════════ -->
 
 <h2>Handoff Flows</h2>
 
 <div class="handoff-box">
-  <div class="handoff-title">Setter → Closer</div>
+  <div class="handoff-title">Setter &rarr; Closer</div>
   <div class="flow">
     <span class="flow-step fs-setter">NEW</span>
-    <span class="flow-arrow">→</span>
-    <span class="flow-step fs-setter">Warm → Hot → Link Sent</span>
-    <span class="flow-arrow">→</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-step fs-setter">Warm &rarr; Hot &rarr; Link Sent</span>
+    <span class="flow-arrow">&rarr;</span>
     <span class="flow-step fs-setter" style="border:2px solid #4CAF50">Call Booked</span>
-    <span class="flow-arrow">⤳</span>
+    <span class="flow-arrow">&rArr;</span>
     <span class="flow-step fs-closer">Closer takes call</span>
-    <span class="flow-arrow">→</span>
+    <span class="flow-arrow">&rarr;</span>
     <span class="flow-step fs-outcome">Won</span>
     <span style="color:#6E7681;font-size:12px">or</span>
-    <span class="flow-step fs-closer">FU Immediate / Nurture</span>
+    <span class="flow-step fs-closer">FU / Nurture</span>
     <span style="color:#6E7681;font-size:12px">or</span>
     <span class="flow-step fs-lost">Dead</span>
   </div>
-  <div class="note" style="margin-top:8px">Setter sees FU/Nurture as greyed-out columns (read-only). Can coordinate with closer but cannot move the card.</div>
+  <div class="note" style="margin-top:8px">After Call Booked, setter sees FU/Nurture as greyed-out columns. Can coordinate with closer via Slack but cannot move the card.</div>
 </div>
 
 <div class="handoff-box">
-  <div class="handoff-title">Dialer → Closer</div>
+  <div class="handoff-title">Dialer &rarr; Closer</div>
   <div class="flow">
-    <span class="flow-step fs-dialer">New (Not Contacted)</span>
-    <span class="flow-arrow">→</span>
+    <span class="flow-step fs-dialer">New (CSV import)</span>
+    <span class="flow-arrow">&rarr;</span>
     <span class="flow-step fs-dialer">Called, No Answer</span>
-    <span class="flow-arrow">→</span>
+    <span class="flow-arrow">&rarr;</span>
     <span class="flow-step fs-dialer" style="border:2px solid #4CAF50">Call Booked</span>
-    <span class="flow-arrow">⤳</span>
+    <span class="flow-arrow">&rArr;</span>
     <span class="flow-step fs-closer">Closer takes call</span>
-    <span class="flow-arrow">→</span>
+    <span class="flow-arrow">&rarr;</span>
     <span class="flow-step fs-outcome">Closed</span>
     <span style="color:#6E7681;font-size:12px">or</span>
-    <span class="flow-step fs-closer">No Close → FU</span>
+    <span class="flow-step fs-closer">No Close &rarr; FU</span>
     <span style="color:#6E7681;font-size:12px">or</span>
     <span class="flow-step fs-lost">Not Interested</span>
   </div>
-  <div class="note" style="margin-top:8px">Dialer sees FU as greyed-out (read-only). No Show stays in dialer kanban — dialer handles recovery calls.</div>
+  <div class="note" style="margin-top:8px">Dialer sees FU as greyed-out (read-only). No Show stays in dialer kanban for recovery calls.</div>
 </div>
 
 <div class="handoff-box">
   <div class="handoff-title">No Show Recovery</div>
   <div class="flow">
-    <span class="flow-step" style="background:rgba(171,71,188,0.15);color:#AB47BC">No Show</span>
-    <span class="flow-arrow">→</span>
-    <span style="color:#8B949E;font-size:12px">Setter or Dialer follows up (whoever booked the original call)</span>
-    <span class="flow-arrow">→</span>
-    <span class="flow-step fs-setter" style="border:2px solid #4CAF50">Re-booked</span>
+    <span class="flow-step" style="background:rgba(171,71,188,0.18);color:#AB47BC">No Show</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span style="color:#9DA7B3;font-size:12px">Setter or Dialer follows up (whoever booked the original call)</span>
+    <span class="flow-arrow">&rarr;</span>
+    <span class="flow-step" style="border:2px solid #4CAF50;background:rgba(76,175,80,0.12);color:#4CAF50">Re-booked</span>
     <span style="color:#6E7681;font-size:12px">or</span>
     <span class="flow-step fs-lost">Lost</span>
   </div>
@@ -278,33 +359,30 @@
 
 <h2>Rules</h2>
 
-<table>
+<table class="rules">
   <thead>
-    <tr>
-      <th>Rule</th>
-      <th>Why</th>
-    </tr>
+    <tr><th>Rule</th><th>Why</th></tr>
   </thead>
   <tbody>
     <tr>
-      <td style="font-weight:600">Bottom bar = definitive only</td>
+      <td>Bottom bar = definitive only</td>
       <td>Won and Lost/Not Interested/Dead are terminal. Everything that can be followed up stays in the kanban columns.</td>
     </tr>
     <tr>
-      <td style="font-weight:600">Greyed columns = read-only visibility</td>
-      <td>After handoff (BOOKED), the setter/dialer can see where their lead is in the closer pipeline, but cannot move it. Coordinate via Slack if needed.</td>
+      <td>Greyed columns = read-only</td>
+      <td>After handoff (Call Booked), the setter/dialer can see where their lead is in the closer pipeline, but cannot move the card.</td>
     </tr>
     <tr>
-      <td style="font-weight:600">One owner per stage</td>
-      <td>Each lead_pipeline row has an owner_role. The role that owns the row controls the card. UNIQUE(lead_id, owner_name, owner_role) prevents duplicates.</td>
+      <td>One owner per role per lead</td>
+      <td>Each lead_pipeline row has an owner_role. UNIQUE(lead_id, owner_name, owner_role) prevents duplicates. Multiple roles can have rows for the same lead.</td>
     </tr>
     <tr>
-      <td style="font-weight:600">Handoff creates a new row</td>
-      <td>When a setter/dialer books a call, the system creates a closer pipeline row. Both rows coexist — the setter/dialer row stays at BOOKED (greyed), the closer row is active.</td>
+      <td>Handoff creates a closer row</td>
+      <td>When a setter/dialer books a call, the system creates a closer pipeline row. Both rows coexist — setter/dialer at BOOKED (greyed), closer active.</td>
     </tr>
     <tr>
-      <td style="font-weight:600">No Show = kanban, not bottom bar</td>
-      <td>No-shows need recovery calls. They stay in the active kanban where the responsible role (setter or dialer) can follow up.</td>
+      <td>No Show = kanban, not bottom bar</td>
+      <td>No-shows need recovery calls. They stay in the active kanban where the setter or dialer can follow up.</td>
     </tr>
   </tbody>
 </table>
@@ -312,7 +390,7 @@
 <div class="divider"></div>
 
 <p style="font-size:11px;color:#6E7681;text-align:center;margin-top:20px">
-  HPFHQ Pipeline Stages v1 — May 2026<br>
+  HPFHQ Pipeline Stages v1 &mdash; May 2026<br>
   Questions? Reach out to Emil.
 </p>
 
