@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Call Intelligence — 30 Calls | HPF</title>
+<style>
+  :root {
+    --bg: #0c0c0c;
+    --card: #161616;
+    --border: #2a2a2a;
+    --text: #e0e0e0;
+    --dim: #888;
+    --accent: #f5c542;
+    --green: #2ED47A;
+    --red: #e05252;
+    --blue: #5b9bd5;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 40px 24px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: var(--dim); font-size: 14px; margin-bottom: 40px; }
+  h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin: 48px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 { font-size: 15px; font-weight: 600; margin: 20px 0 8px; color: #fff; }
+  p, li { font-size: 14px; }
+  ul { padding-left: 20px; margin: 8px 0; }
+  li { margin: 4px 0; }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .stat-card .label { color: var(--dim); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+  .stat-card .value { font-size: 24px; font-weight: 700; color: #fff; margin-top: 4px; }
+  .stat-card .detail { font-size: 12px; color: var(--dim); margin-top: 2px; }
+
+  .bar-row {
+    display: flex;
+    align-items: center;
+    margin: 6px 0;
+    font-size: 13px;
+  }
+  .bar-label { width: 220px; flex-shrink: 0; }
+  .bar-track {
+    flex: 1;
+    height: 20px;
+    background: var(--card);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0 10px;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.4s;
+  }
+  .bar-pct { width: 50px; text-align: right; font-weight: 600; flex-shrink: 0; }
+
+  .quote-block {
+    border-left: 3px solid var(--accent);
+    padding: 12px 16px;
+    margin: 12px 0;
+    background: var(--card);
+    border-radius: 0 6px 6px 0;
+    font-style: italic;
+    font-size: 13px;
+  }
+  .quote-block .attribution {
+    font-style: normal;
+    color: var(--dim);
+    font-size: 11px;
+    margin-top: 6px;
+  }
+
+  .anti-persona {
+    border: 1px solid var(--red);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    background: rgba(224, 82, 82, 0.05);
+  }
+  .anti-persona strong { color: var(--red); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 13px;
+  }
+  th {
+    text-align: left;
+    padding: 8px 12px;
+    background: var(--card);
+    color: var(--dim);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:last-child td { border-bottom: none; }
+  .pct { color: var(--accent); font-weight: 600; }
+  .cnt { color: var(--dim); }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    margin: 2px;
+  }
+  .tag-green { background: rgba(46, 212, 122, 0.15); color: var(--green); }
+  .tag-amber { background: rgba(245, 197, 66, 0.15); color: var(--accent); }
+  .tag-red { background: rgba(224, 82, 82, 0.15); color: var(--red); }
+
+  .section-note {
+    font-size: 12px;
+    color: var(--dim);
+    margin-top: -8px;
+    margin-bottom: 16px;
+  }
+
+  @media print {
+    body { background: #fff; color: #111; padding: 20px; }
+    .stat-card { border: 1px solid #ccc; }
+    .quote-block { border-left-color: #333; background: #f5f5f5; }
+    h2 { color: #333; }
+  }
+  @media (max-width: 600px) {
+    .stat-grid { grid-template-columns: 1fr; }
+    .bar-label { width: 140px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Sales Call Intelligence</h1>
+<p class="subtitle">30 most recent closer calls &middot; Apr 20 &ndash; May 8, 2026 &middot; Brandon D + Joel S &middot; Source: Fathom transcripts</p>
+
+<!-- ============================================ -->
+<h2>1. Who We Help</h2>
+
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="label">Age Range</div>
+    <div class="value">38 &ndash; 73</div>
+    <div class="detail">Core: 40&ndash;58 &middot; Median ~52</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Gender Split</div>
+    <div class="value">70 / 30</div>
+    <div class="detail">21 male &middot; 9 female</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Avg Weight Goal</div>
+    <div class="value">&minus;25 lbs</div>
+    <div class="detail">Range: 10&ndash;60 lbs to lose</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Program Price</div>
+    <div class="value">$4,800</div>
+    <div class="detail">4 months &middot; $1,250/mo option</div>
+  </div>
+</div>
+
+<p>Busy professionals, founders, and executives in midlife who <strong>know what to do</strong> but can't stay consistent. They have the income, the intent, and usually some fitness history &mdash; what they lack is a system that survives their schedule.</p>
+
+<!-- ============================================ -->
+<h2>2. Typical Profile</h2>
+
+<ul>
+  <li><strong>Career:</strong> Founders, C-suite, managing partners, surgeons, attorneys, engineers, IT directors. High-income, high-demand, decision-heavy roles.</li>
+  <li><strong>Family:</strong> Married with kids (often young children they want to keep up with, or adult children they're now free from).</li>
+  <li><strong>Fitness history:</strong> Not beginners. Most have gym experience, have done diets (keto, paleo, Medifast), and some have worked with personal trainers before. They've had results &mdash; they just can't hold them.</li>
+  <li><strong>Trigger:</strong> A specific moment &mdash; health scare, milestone birthday, vacation where the body failed them, post-COVID slide, kids growing up, wanting to model health.</li>
+  <li><strong>Mindset at booking:</strong> "I've been meaning to do this for years." This is a deferred dream, not an impulse. Many have followed Dan for months or years before the call.</li>
+</ul>
+
+<!-- ============================================ -->
+<h2>3. What They Actually Want</h2>
+<p class="section-note">Ranked by how often it appeared across 30 calls.</p>
+
+<div class="bar-row">
+  <span class="bar-label">Lose weight / body fat</span>
+  <div class="bar-track"><div class="bar-fill" style="width:83%;background:var(--green)"></div></div>
+  <span class="bar-pct">83%</span>
+</div>
+<div class="bar-row">
+  <span class="bar-label">Sustainable system (not a diet)</span>
+  <div class="bar-track"><div class="bar-fill" style="width:67%;background:var(--green)"></div></div>
+  <span class="bar-pct">67%</span>
+</div>
+<div class="bar-row">
+  <span class="bar-label">Nutrition help specifically</span>
+  <div class="bar-track"><div class="bar-fill" style="width:60%;background:var(--green)"></div></div>
+  <span class="bar-pct">60%</span>
+</div>
+<div class="bar-row">
+  <span class="bar-label">Accountability / someone checking</span>
+  <div class="bar-track"><div class="bar-fill" style="width:43%;background:var(--blue)"></div></div>
+  <span class="bar-pct">43%</span>
+</div>
+<div class="bar-row">
+  <span class="bar-label">Muscle / strength / tone</span>
+  <div class="bar-track"><div class="bar-fill" style="width:33%;background:var(--blue)"></div></div>
+  <span class="bar-pct">33%</span>
+</div>
+<div class="bar-row">
+  <span class="bar-label">More energy / less brain fog</span>
+  <div class="bar-track"><div class="bar-fill" style="width:27%;background:var(--blue)"></div></div>
+  <span class="bar-pct">27%</span>
+</div>
+<div class="bar-row">
+  <span class="bar-label">Longevity / aging well</span>
+  <div class="bar-track"><div class="bar-fill" style="width:23%;background:var(--blue)"></div></div>
+  <span class="bar-pct">23%</span>
+</div>
+<div class="bar-row">
+  <span class="bar-label">Keep up with kids / be a role model</span>
+  <div class="bar-track"><div class="bar-fill" style="width:20%;background:var(--blue)"></div></div>
+  <span class="bar-pct">20%</span>
+</div>
+<div class="bar-row">
+  <span class="bar-label">Health markers (BP, cholesterol, A1C)</span>
+  <div class="bar-track"><div class="bar-fill" style="width:17%;background:var(--blue)"></div></div>
+  <span class="bar-pct">17%</span>
+</div>
+<div class="bar-row">
+  <span class="bar-label">Professional confidence / image</span>
+  <div class="bar-track"><div class="bar-fill" style="width:13%;background:var(--blue)"></div></div>
+  <span class="bar-pct">13%</span>
+</div>
+
+<p style="margin-top: 16px; font-size: 13px; color: var(--dim)"><strong>Key insight:</strong> Weight loss is the stated goal, but the real purchase is <em>consistency and a system</em>. 67% explicitly said they want something sustainable &mdash; they&rsquo;re buying a structure for their life, not a diet.</p>
+
+<!-- ============================================ -->
+<h2>4. Who They Are NOT</h2>
+
+<div class="anti-persona">
+  <p><strong>Not beginners.</strong> Almost no one on these calls is starting from zero. They have gym memberships, own home equipment, have tried diets. The gap isn&rsquo;t knowledge &mdash; it&rsquo;s implementation.</p>
+  <p style="margin-top:8px"><strong>Not broke.</strong> Only 2 of 30 declined purely on price (Bob Palmer &mdash; CAD/USD gap, Hans Mast &mdash; wanted $400&ndash;800/mo range). The rest either closed, are pending, or objected on timing/spouse.</p>
+  <p style="margin-top:8px"><strong>Not looking for a quick fix.</strong> Multiple leads explicitly said &ldquo;I want a life change, not something fast.&rdquo; The all-or-nothing dieters are who they <em>used to be</em> &mdash; they&rsquo;re now looking for the opposite.</p>
+  <p style="margin-top:8px"><strong>Not lazy or unmotivated.</strong> These are people who run companies, perform surgeries, argue in federal court, manage 65-person teams. The discipline is there in their career &mdash; what&rsquo;s missing is someone applying that same structure to their health.</p>
+  <p style="margin-top:8px"><strong>Not young.</strong> No one under 38 in 30 calls. The sweet spot is 44&ndash;58. They&rsquo;re not chasing a beach body &mdash; they&rsquo;re chasing longevity and not slowing down.</p>
+</div>
+
+<!-- ============================================ -->
+<h2>5. How We Help Them</h2>
+<p class="section-note">Extracted from closer demos &mdash; how Brandon/Joel actually position the program on calls.</p>
+
+<table>
+  <tr>
+    <th style="width:35%">Positioning Frame</th>
+    <th>How the Closer Says It</th>
+  </tr>
+  <tr>
+    <td><strong>System &gt; willpower</strong></td>
+    <td>&ldquo;I&rsquo;d rather have no discipline and a great system than the best discipline and no system.&rdquo; The pitch reframes the problem from motivation to infrastructure.</td>
+  </tr>
+  <tr>
+    <td><strong>Holistic, not workout-only</strong></td>
+    <td>&ldquo;Dan realized that just giving someone workouts wasn&rsquo;t enough. If someone wasn&rsquo;t making progress, it was nutrition, sleep, stress, supplements &mdash; everything outside the gym.&rdquo;</td>
+  </tr>
+  <tr>
+    <td><strong>Decision fatigue removal</strong></td>
+    <td>&ldquo;Every decision you have to make is taking away from some other aspect of life. We outsource that to your coach &mdash; you&rsquo;re not using brainpower on something we can handle.&rdquo;</td>
+  </tr>
+  <tr>
+    <td><strong>Travel-adapted</strong></td>
+    <td>&ldquo;Send us the hotel name. We&rsquo;ll check the gym, adjust workouts in the app. Send us the restaurant &mdash; we&rsquo;ll tell you what to order.&rdquo;</td>
+  </tr>
+  <tr>
+    <td><strong>Custom-built, 94% success</strong></td>
+    <td>&ldquo;No ego &mdash; everything is built from the ground up for each individual. A plan that works for me isn&rsquo;t going to work for you.&rdquo;</td>
+  </tr>
+  <tr>
+    <td><strong>Not a diet &mdash; a life change</strong></td>
+    <td>Mirrors back the prospect&rsquo;s own language about sustainability. Contrasts explicitly with keto/paleo restriction they described.</td>
+  </tr>
+  <tr>
+    <td><strong>Money-back guarantee</strong></td>
+    <td>&ldquo;100% results-based guarantee. Goals are set at onboarding &mdash; body fat, weight, blood markers &mdash; whatever is measurable and mutually agreed.&rdquo;</td>
+  </tr>
+</table>
+
+<!-- ============================================ -->
+<h2>6. What Makes Us Different vs. What They Tried</h2>
+
+<table>
+  <tr>
+    <th style="width:45%">What They Tried</th>
+    <th>Why It Failed</th>
+  </tr>
+  <tr>
+    <td>Keto / Paleo / restrictive diets</td>
+    <td>&ldquo;I did keto for three years and didn&rsquo;t eat fruit. It works but it sucks.&rdquo; Results don&rsquo;t stick &mdash; life forces them off it.</td>
+  </tr>
+  <tr>
+    <td>Personal trainers (in-person)</td>
+    <td>Workout-only, no nutrition. &ldquo;I&rsquo;ve had trainers who were focused on lifting, not what I eat.&rdquo;</td>
+  </tr>
+  <tr>
+    <td>Online coaches ($20&ndash;$400/mo)</td>
+    <td>Low-touch, slow response. &ldquo;I was expecting high-touch. It wasn&rsquo;t. I had to do all the research myself.&rdquo;</td>
+  </tr>
+  <tr>
+    <td>Group programs / masterminds</td>
+    <td>&ldquo;A lot of stupidity talking&rdquo; &mdash; men&rsquo;s group felt off-brand, not fitness-focused.</td>
+  </tr>
+  <tr>
+    <td>Medifast / meal replacement</td>
+    <td>&ldquo;I couldn&rsquo;t get off of it. When they moved me to maintenance, I gained it right back. 1,100 calories.&rdquo;</td>
+  </tr>
+  <tr>
+    <td>Self-directed (YouTube, AI, apps)</td>
+    <td>&ldquo;I have the knowledge. A lot of inconsistency and stops and starts.&rdquo; No accountability loop.</td>
+  </tr>
+  <tr>
+    <td>Dietitian / bariatric consults</td>
+    <td>Generic macros without schedule integration. &ldquo;Meal prep is the first thing to fall to the side.&rdquo;</td>
+  </tr>
+  <tr>
+    <td>GLP-1 medications (Ozempic, Mounjaro)</td>
+    <td>Used by some as a tool &mdash; helped with weight, but didn&rsquo;t address the system underneath.</td>
+  </tr>
+</table>
+
+<p style="margin-top: 12px; font-size: 13px;"><strong>The gap HPF fills:</strong> High-touch, holistic, custom, and adaptive to their actual life. Every failed attempt shares the same root: it didn&rsquo;t survive contact with their schedule.</p>
+
+<!-- ============================================ -->
+<h2>7. Goals &amp; Problems — Frequency</h2>
+
+<h3>Top Problems (why they can&rsquo;t do it alone)</h3>
+<table>
+  <tr><th>Problem</th><th style="width:60px">Count</th><th style="width:60px">%</th></tr>
+  <tr><td>Can&rsquo;t stay consistent / yo-yo cycles</td><td class="cnt">22</td><td class="pct">73%</td></tr>
+  <tr><td>Demanding work schedule eats all bandwidth</td><td class="cnt">18</td><td class="pct">60%</td></tr>
+  <tr><td>Nutrition is the weak link (not exercise)</td><td class="cnt">17</td><td class="pct">57%</td></tr>
+  <tr><td>Prior diets/coaches failed or weren&rsquo;t sustainable</td><td class="cnt">14</td><td class="pct">47%</td></tr>
+  <tr><td>Travel disrupts any routine they build</td><td class="cnt">9</td><td class="pct">30%</td></tr>
+  <tr><td>All-or-nothing pattern &mdash; extreme then burnout</td><td class="cnt">8</td><td class="pct">27%</td></tr>
+  <tr><td>Decision fatigue / no mental bandwidth for food planning</td><td class="cnt">8</td><td class="pct">27%</td></tr>
+  <tr><td>Late-night eating / stress eating</td><td class="cnt">6</td><td class="pct">20%</td></tr>
+  <tr><td>Health scare that triggered urgency</td><td class="cnt">5</td><td class="pct">17%</td></tr>
+  <tr><td>Aging / hormonal shift (perimenopause, metabolic slowdown)</td><td class="cnt">5</td><td class="pct">17%</td></tr>
+</table>
+
+<p style="margin-top:12px; font-size:13px;"><strong>The #1 problem is consistency, not knowledge.</strong> These leads can describe their own macros. They know they should eat better. The issue is structural: their life doesn&rsquo;t allow it without outside infrastructure.</p>
+
+<!-- ============================================ -->
+<h2>8. Pleasure Island</h2>
+<p class="section-note">What the leads described when asked about their ideal future. Direct quotes from transcripts.</p>
+
+<h3>Theme A: Family &amp; Fatherhood / Motherhood</h3>
+<div class="quote-block">
+  &ldquo;I want my boys to be proud. And I think that&rsquo;s it.&rdquo;
+  <div class="attribution">&mdash; Mark L., 40s, two sons, calcium score scare</div>
+</div>
+<div class="quote-block">
+  &ldquo;I have kids and want to be fit to do lots of active things with them. And just age well and remain vigorous well into my middle age.&rdquo;
+  <div class="attribution">&mdash; Hans M., 38, three kids under 5</div>
+</div>
+<div class="quote-block">
+  &ldquo;Now I have a young child, so thinking about how do I stay fit, longevity longer, right, into 50s, 60s, 70s.&rdquo;
+  <div class="attribution">&mdash; Priyal S., 38, first child</div>
+</div>
+
+<h3>Theme B: Professional Confidence &amp; Identity</h3>
+<div class="quote-block">
+  &ldquo;I&rsquo;m constantly on the news and I don&rsquo;t watch the segments afterwards because I&rsquo;m so uncomfortable with how I look.&rdquo;
+  <div class="attribution">&mdash; Viktoriya S., CEO, mother of three. Closed immediately.</div>
+</div>
+<div class="quote-block">
+  &ldquo;We&rsquo;re meeting with everybody from federal agencies to the White House. I want that confidence. Clients want to have a confident attorney.&rdquo;
+  <div class="attribution">&mdash; Thomasina R.B., 46, managing attorney for Native American tribes</div>
+</div>
+<div class="quote-block">
+  &ldquo;I&rsquo;m in commercial real estate. The reality is people in this industry &mdash; it matters how you present yourself. I want to feel confident in that.&rdquo;
+  <div class="attribution">&mdash; Emilie C., CEO, 70&ndash;85 hr weeks</div>
+</div>
+
+<h3>Theme C: The Deferred Dream</h3>
+<div class="quote-block">
+  &ldquo;I&rsquo;ve been trying since 15. I&rsquo;ve been telling myself the same thing since 15.&rdquo;
+  <div class="attribution">&mdash; Priyal S., 38, on finally getting visible abs. 23 years deferred. Closed on the call.</div>
+</div>
+<div class="quote-block">
+  &ldquo;It&rsquo;s been something I&rsquo;ve wanted to do for 5, 10 years, and I&rsquo;m just having increasing urgency as I get older.&rdquo;
+  <div class="attribution">&mdash; Hans M., 38, approaching 40</div>
+</div>
+
+<h3>Theme D: Freedom &amp; Relief</h3>
+<div class="quote-block">
+  &ldquo;I would enjoy our vacations even more. I would have more to give to my husband and my kids at the end of a day.&rdquo;
+  <div class="attribution">&mdash; Dawn G., 60, CFO. Closed on the call.</div>
+</div>
+<div class="quote-block">
+  &ldquo;Whenever I&rsquo;m at the hotel and I walk by the gym and I see people in there &mdash; you&rsquo;re on vacation and you&rsquo;re in the gym &mdash; I want that.&rdquo;
+  <div class="attribution">&mdash; Viktoriya S., CEO</div>
+</div>
+<div class="quote-block">
+  &ldquo;I don&rsquo;t want to be 20 years from now paying for the mistakes I made or the discipline I didn&rsquo;t have at this age.&rdquo;
+  <div class="attribution">&mdash; Viktoriya S., CEO</div>
+</div>
+
+<h3>Theme E: Health Non-Negotiable</h3>
+<div class="quote-block">
+  &ldquo;I want to incorporate this into my life and make it as non-negotiable as taking care of my kids or responding to an urgent crisis. I want it to be that important &mdash; because I am that important.&rdquo;
+  <div class="attribution">&mdash; Viktoriya S., CEO. The strongest Pleasure Island statement across all 30 calls.</div>
+</div>
+
+<!-- ============================================ -->
+<h2>9. Objections the Closers Had to Solve</h2>
+
+<table>
+  <tr><th>Objection</th><th style="width:60px">Freq</th><th>How the Closer Handles It</th></tr>
+  <tr>
+    <td><strong>&ldquo;I need to think about it&rdquo; / discuss with spouse</strong></td>
+    <td class="pct">~33%</td>
+    <td>Brandon sends the deck, asks what the spouse&rsquo;s specific concern is, offers a follow-up call. Doesn&rsquo;t pressure &mdash; creates an open loop.</td>
+  </tr>
+  <tr>
+    <td><strong>Price too high</strong></td>
+    <td class="pct">~20%</td>
+    <td>Offers monthly ($1,250/mo) or quarterly ($2,500/qtr). Discount to $4,000 used once (Bob &mdash; still declined). Terminal in only ~10% of calls. Most who mention price still close or stay warm.</td>
+  </tr>
+  <tr>
+    <td><strong>&ldquo;Not ready / wrong timing&rdquo;</strong></td>
+    <td class="pct">~13%</td>
+    <td>3-month follow-up. No pressure. Directs to free content (YouTube, LB90) as interim.</td>
+  </tr>
+  <tr>
+    <td><strong>&ldquo;I want to try on my own first&rdquo;</strong></td>
+    <td class="pct">~10%</td>
+    <td>Acknowledges, offers the 3-month check-in. Doesn&rsquo;t fight it. These leads have high self-efficacy and extensive self-research &mdash; usually the lowest-conversion segment.</td>
+  </tr>
+  <tr>
+    <td><strong>Shopping other programs</strong></td>
+    <td class="pct">~7%</td>
+    <td>Brandon backs off gracefully, keeps the link open, lets them compare. No competitive positioning deployed against specific alternatives (potential gap).</td>
+  </tr>
+  <tr>
+    <td><strong>Virtual vs. in-person concern</strong></td>
+    <td class="pct">~7%</td>
+    <td>&ldquo;That&rsquo;s why Dan transitioned from personal training &mdash; results come from the holistic picture, not someone meeting you at the gym.&rdquo;</td>
+  </tr>
+  <tr>
+    <td><strong>Prior programs failed (trust issue)</strong></td>
+    <td class="pct">~17%</td>
+    <td>Brandon asks exactly what didn&rsquo;t work, then distinguishes: &ldquo;Luckily, we don&rsquo;t do that.&rdquo; Money-back guarantee is the credibility anchor.</td>
+  </tr>
+</table>
+
+<p style="margin-top:16px; font-size: 13px;"><strong>The biggest insight:</strong> Price is rarely the real objection. In 30 calls, only 2 hard price declines. The real friction is <strong>&ldquo;I need to think&rdquo;</strong> &mdash; which is usually code for: I believe it works, I&rsquo;m not convinced I&rsquo;ll actually do it this time. The conversation that would solve this objection is the one about <em>why this time is different from the last 5 times you tried</em>.</p>
+
+<!-- ============================================ -->
+
+<div style="margin-top:56px; padding:20px; background:var(--card); border-radius:8px; border:1px solid var(--border);">
+  <p style="font-size:12px; color:var(--dim); margin-bottom:8px;">METHODOLOGY</p>
+  <p style="font-size:13px;">30 most recent &ldquo;Health &amp; Fitness Strategy Call&rdquo; recordings from Fathom (Apr 20 &ndash; May 8, 2026). Quantitative data from AI-generated summaries across all 30 calls. Qualitative depth (pleasure island, objection handling, prior attempts, closer positioning) from full transcript analysis of 9 representative calls &mdash; mix of closed, pending, and declined outcomes across both closers (Brandon D + Joel S) and diverse demographics.</p>
+</div>
+
+</body>
+</html>
