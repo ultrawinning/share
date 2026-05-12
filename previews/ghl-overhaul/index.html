@@ -3,684 +3,233 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GHL Overhaul — Command Map</title>
+<title>GHL Exit — System Map</title>
 <style>
-  :root {
-    --bg: #08090B; --surface: #111318; --card: #16181F;
-    --border: rgba(255,255,255,0.06); --border-hi: rgba(255,255,255,0.12);
-    --text: #F0F2F5; --text-2: #A0A8B4; --text-3: #5C6370;
-    --green: #2ED47A; --red: #E53935; --amber: #FB8C00; --blue: #1E88E5; --purple: #9C27B0;
-    --font: 'Inter', -apple-system, sans-serif; --mono: 'JetBrains Mono', 'SF Mono', monospace;
-  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 14px; line-height: 1.5; }
-  .container { max-width: 1400px; margin: 0 auto; padding: 24px 32px 120px; }
-
-  /* Header */
-  .header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 24px; }
-  .header h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; }
-  .header h1 span { color: var(--red); }
-  .header .sub { color: var(--text-3); font-size: 13px; margin-top: 4px; }
-  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-  .badge-red { background: rgba(229,57,53,0.15); color: var(--red); }
-  .badge-amber { background: rgba(251,140,0,0.12); color: var(--amber); }
-  .badge-green { background: rgba(46,212,122,0.12); color: var(--green); }
-  .badge-blue { background: rgba(30,136,229,0.12); color: var(--blue); }
-  .badge-purple { background: rgba(156,39,176,0.12); color: var(--purple); }
-
-  /* Tabs */
-  .tabs { display: flex; gap: 2px; margin-bottom: 24px; background: var(--surface); border-radius: 8px; padding: 3px; width: fit-content; }
-  .tab { padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-2); transition: all 0.15s; }
-  .tab:hover { color: var(--text); }
-  .tab.active { background: var(--card); color: var(--text); box-shadow: 0 1px 2px rgba(0,0,0,0.4); }
-  .tab-panel { display: none; }
-  .tab-panel.active { display: block; }
-
-  /* Cards */
-  .card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 12px;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.02) inset, 0 1px 2px rgba(0,0,0,0.4); }
-  .card-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-  .card-meta { font-size: 12px; color: var(--text-3); font-family: var(--mono); }
-
-  /* Dependency Map */
-  .dep-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-  .dep-card { cursor: pointer; transition: border-color 0.15s; }
-  .dep-card:hover { border-color: var(--border-hi); }
-  .dep-card.expanded { grid-column: 1 / -1; }
-  .dep-card .direction { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-  .dep-card .direction.in { color: var(--blue); }
-  .dep-card .direction.out { color: var(--amber); }
-  .dep-card .direction.internal { color: var(--purple); }
-  .dep-card .direction.dead { color: var(--text-3); }
-  .dep-detail { display: none; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-2); }
-  .dep-card.expanded .dep-detail { display: block; }
-  .dep-replacement { margin-top: 8px; padding: 8px 12px; background: rgba(46,212,122,0.04); border: 1px solid rgba(46,212,122,0.12); border-radius: 6px; }
-  .dep-replacement strong { color: var(--green); }
-
-  /* Phase tracker */
-  .phase { margin-bottom: 16px; }
-  .phase-header { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--card); border: 1px solid var(--border);
-    border-radius: 10px; cursor: pointer; transition: all 0.15s; }
-  .phase-header:hover { border-color: var(--border-hi); }
-  .phase-header.expanded { border-radius: 10px 10px 0 0; }
-  .phase-num { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--text-3); min-width: 48px; }
-  .phase-title { font-weight: 700; flex: 1; }
-  .phase-status { font-size: 12px; font-weight: 700; }
-  .phase-bar { height: 3px; background: var(--surface); border-radius: 2px; min-width: 80px; overflow: hidden; }
-  .phase-bar-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
-  .phase-chevron { color: var(--text-3); transition: transform 0.2s; font-size: 12px; }
-  .phase-header.expanded .phase-chevron { transform: rotate(90deg); }
-  .phase-body { display: none; border: 1px solid var(--border); border-top: none; border-radius: 0 0 10px 10px; padding: 16px; background: var(--surface); }
-  .phase-header.expanded + .phase-body { display: block; }
-  .step { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
-  .step:last-child { border-bottom: none; }
-  .step-check { width: 18px; height: 18px; border-radius: 4px; border: 1.5px solid var(--text-3); display: flex; align-items: center;
-    justify-content: center; flex-shrink: 0; margin-top: 1px; font-size: 11px; }
-  .step-check.done { border-color: var(--green); background: rgba(46,212,122,0.12); color: var(--green); }
-  .step-check.partial { border-color: var(--amber); background: rgba(251,140,0,0.08); color: var(--amber); }
-  .step-check.new { border-color: var(--blue); background: rgba(30,136,229,0.08); color: var(--blue); }
-  .step-label { flex: 1; }
-  .step-label strong { font-weight: 600; }
-  .step-label .note { color: var(--text-3); font-size: 12px; display: block; margin-top: 2px; }
-
-  /* Meeting items */
-  .meeting-card { border-left: 3px solid var(--blue); }
-  .decision-card { border-left: 3px solid var(--green); }
-  .quote-card { border-left: 3px solid var(--purple); font-style: italic; color: var(--text-2); }
-  .quote-card .speaker { font-style: normal; font-weight: 700; color: var(--text); font-size: 12px; margin-bottom: 4px; }
-
-  /* Flow diagram */
-  .flow-row { display: flex; align-items: center; gap: 0; margin-bottom: 8px; }
-  .flow-node { padding: 8px 14px; border-radius: 6px; font-size: 12px; font-weight: 600; white-space: nowrap; }
-  .flow-arrow { color: var(--text-3); padding: 0 8px; font-size: 16px; }
-  .flow-ghl { background: rgba(229,57,53,0.15); color: var(--red); border: 1px solid rgba(229,57,53,0.3); }
-  .flow-hpf { background: rgba(46,212,122,0.1); color: var(--green); border: 1px solid rgba(46,212,122,0.2); }
-  .flow-ext { background: rgba(30,136,229,0.1); color: var(--blue); border: 1px solid rgba(30,136,229,0.2); }
-  .flow-zap { background: rgba(251,140,0,0.1); color: var(--amber); border: 1px solid rgba(251,140,0,0.2); }
-  .flow-dead { background: var(--surface); color: var(--text-3); border: 1px dashed var(--text-3); }
-
-  /* Critical path */
-  .crit { display: flex; align-items: stretch; gap: 8px; margin: 16px 0; overflow-x: auto; padding-bottom: 8px; }
-  .crit-step { flex: 1; min-width: 180px; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); position: relative; }
-  .crit-step::after { content: '\25B6'; position: absolute; right: -14px; top: 50%; transform: translateY(-50%); color: var(--text-3); font-size: 10px; }
-  .crit-step:last-child::after { display: none; }
-  .crit-step .num { font-family: var(--mono); font-size: 20px; font-weight: 800; color: var(--green); }
-  .crit-step .label { font-size: 12px; font-weight: 600; margin-top: 4px; }
-  .crit-step .est { font-size: 11px; color: var(--text-3); margin-top: 2px; }
-
-  /* Stats strip */
-  .stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 24px; }
-  .stat { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px; text-align: center; }
-  .stat-num { font-size: 24px; font-weight: 800; font-family: var(--mono); }
-  .stat-label { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
-
-  /* New items highlight */
-  .new-tag { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 700;
-    background: rgba(30,136,229,0.12); color: var(--blue); text-transform: uppercase; letter-spacing: 0.5px; margin-left: 6px; }
-
-  @media (max-width: 900px) {
-    .dep-grid { grid-template-columns: 1fr; }
-    .stats { grid-template-columns: repeat(3, 1fr); }
-    .crit { flex-direction: column; }
-    .crit-step::after { display: none; }
-  }
+  body { background: #0a0b0d; color: #f0f2f5; font-family: 'Inter', -apple-system, sans-serif; overflow: auto; }
+  svg { display: block; }
+  .box { cursor: default; }
+  .box rect { rx: 8; ry: 8; stroke-width: 2; }
+  .box text { font-size: 13px; font-weight: 600; fill: #f0f2f5; text-anchor: middle; dominant-baseline: central; }
+  .box .sub { font-size: 10px; font-weight: 400; fill: #a0a8b4; }
+  .ghl rect { stroke: #e53935; fill: rgba(229,57,53,0.12); }
+  .hpf rect { stroke: #2ed47a; fill: rgba(46,212,122,0.08); }
+  .ext rect { stroke: #1e88e5; fill: rgba(30,136,229,0.08); }
+  .trans rect { stroke: #fb8c00; fill: rgba(251,140,0,0.08); }
+  .dead rect { stroke: #5c6370; fill: rgba(255,255,255,0.03); stroke-dasharray: 6 3; }
+  .arrow { stroke-width: 1.5; fill: none; marker-end: url(#arrowhead); }
+  .arrow-ghl { stroke: #e53935; opacity: 0.7; }
+  .arrow-hpf { stroke: #2ed47a; opacity: 0.7; }
+  .arrow-ext { stroke: #1e88e5; opacity: 0.6; }
+  .arrow-zap { stroke: #fb8c00; opacity: 0.7; }
+  .arrow-dead { stroke: #5c6370; opacity: 0.4; stroke-dasharray: 6 3; }
+  .arrow-label { font-size: 9px; fill: #5c6370; font-family: 'JetBrains Mono', monospace; }
+  .section-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; }
+  .legend { font-size: 11px; fill: #a0a8b4; }
+  h1 { position: fixed; top: 16px; left: 24px; font-size: 22px; font-weight: 800; z-index: 10; }
+  h1 span { color: #e53935; }
+  .updated { position: fixed; top: 44px; left: 24px; font-size: 11px; color: #5c6370; z-index: 10; }
 </style>
 </head>
 <body>
-<div class="container">
+<h1>GHL <span>Exit</span> — System Map</h1>
+<div class="updated">May 12, 2026 &middot; Trainerize API unlocked &middot; Kajabi API available</div>
 
-<!-- Header -->
-<div class="header">
-  <h1>GHL <span>Exit</span> — Command Map</h1>
-  <div class="sub">Multi-day big-bang migration. Once we start, we cannot stop. Last updated: May 12, 2026</div>
-  <div style="margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap;">
-    <span class="badge badge-red">GHL EXIT</span>
-    <span class="badge badge-green">TRAINERIZE API UNLOCKED</span>
-    <span class="badge badge-blue">KAJABI API AVAILABLE</span>
-    <span class="badge badge-amber">SENDBLUE + RESEND READY</span>
-  </div>
-</div>
+<svg width="1400" height="1050" viewBox="0 0 1400 1050" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+    <path d="M0,0 L8,3 L0,6" fill="#a0a8b4" />
+  </marker>
+  <marker id="ah-red" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+    <path d="M0,0 L8,3 L0,6" fill="#e53935" />
+  </marker>
+  <marker id="ah-green" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+    <path d="M0,0 L8,3 L0,6" fill="#2ed47a" />
+  </marker>
+  <marker id="ah-orange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+    <path d="M0,0 L8,3 L0,6" fill="#fb8c00" />
+  </marker>
+  <marker id="ah-blue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+    <path d="M0,0 L8,3 L0,6" fill="#1e88e5" />
+  </marker>
+  <marker id="ah-grey" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+    <path d="M0,0 L8,3 L0,6" fill="#5c6370" />
+  </marker>
+</defs>
 
-<!-- Stats -->
-<div class="stats">
-  <div class="stat"><div class="stat-num" style="color:var(--red)">9</div><div class="stat-label">GHL Dependencies</div></div>
-  <div class="stat"><div class="stat-num" style="color:var(--green)">4</div><div class="stat-label">Can Delete Day 1</div></div>
-  <div class="stat"><div class="stat-num" style="color:var(--amber)">5</div><div class="stat-label">Need Replacement</div></div>
-  <div class="stat"><div class="stat-num" style="color:var(--blue)">7</div><div class="stat-label">Phases Total</div></div>
-  <div class="stat"><div class="stat-num" style="color:var(--purple)">6</div><div class="stat-label">Meeting Decisions</div></div>
-</div>
+<!-- ============ SECTION LABELS ============ -->
+<text x="160" y="80" class="section-label" fill="#1e88e5">LEAD SOURCES</text>
+<text x="630" y="80" class="section-label" fill="#e53935">GHL (TO KILL)</text>
+<text x="1050" y="80" class="section-label" fill="#2ed47a">HPFHQ (BUILT)</text>
 
-<!-- Tabs -->
-<div class="tabs">
-  <div class="tab active" onclick="switchTab('dependencies')">Dependencies</div>
-  <div class="tab" onclick="switchTab('flows')">Data Flows</div>
-  <div class="tab" onclick="switchTab('phases')">Phase Tracker</div>
-  <div class="tab" onclick="switchTab('meeting')">Meeting Lock-In</div>
-  <div class="tab" onclick="switchTab('critical')">Critical Path</div>
-</div>
+<!-- ============ ROW 1: LEAD SOURCES (blue) ============ -->
+<g class="box ext" transform="translate(40,100)">
+  <rect width="180" height="60" /><text x="90" y="24">Meta Lead Ads</text><text x="90" y="42" class="sub">webhook → HPFHQ</text>
+</g>
+<g class="box ext" transform="translate(40,180)">
+  <rect width="180" height="60" /><text x="90" y="24">Typeform</text><text x="90" y="42" class="sub">webhook → HPFHQ</text>
+</g>
+<g class="box ext" transform="translate(40,260)">
+  <rect width="180" height="60" /><text x="90" y="24">ManyChat</text><text x="90" y="42" class="sub">webhook → HPFHQ</text>
+</g>
+<g class="box ext" transform="translate(40,340)">
+  <rect width="180" height="60" /><text x="90" y="24">Email Blasts</text><text x="90" y="42" class="sub">Dan's list → booking</text>
+</g>
+<g class="box ext" transform="translate(40,440)">
+  <rect width="180" height="60" /><text x="90" y="24">Fanbasis</text><text x="90" y="42" class="sub">payments (direct LIVE)</text>
+</g>
+<g class="box ext" transform="translate(40,540)">
+  <rect width="180" height="60" /><text x="90" y="24">Kajabi</text><text x="90" y="42" class="sub">LB90 · API avail $25/mo</text>
+</g>
 
-<!-- TAB: Dependencies -->
-<div id="tab-dependencies" class="tab-panel active">
-  <h2 style="font-size:18px; margin-bottom:16px;">Every System Touching GHL</h2>
-  <p style="color:var(--text-3); margin-bottom:16px; font-size:13px;">Click any card to expand details and replacement plan.</p>
+<!-- ============ CENTER: GHL (red) ============ -->
+<g class="box ghl" transform="translate(500,100)">
+  <rect width="200" height="60" /><text x="100" y="24">GHL Calendar</text><text x="100" y="42" class="sub">2 round-robins</text>
+</g>
+<g class="box ghl" transform="translate(500,200)">
+  <rect width="200" height="60" /><text x="100" y="24">GHL Webhook</text><text x="100" y="42" class="sub">book / cancel / reschedule</text>
+</g>
+<g class="box ghl" transform="translate(500,310)">
+  <rect width="200" height="60" /><text x="100" y="24">GHL Contacts</text><text x="100" y="42" class="sub">CRM (read + write)</text>
+</g>
+<g class="box ghl" transform="translate(500,420)">
+  <rect width="200" height="60" /><text x="100" y="24">GHL Workflows</text><text x="100" y="42" class="sub">23 total: 6 replace / 13 kill</text>
+</g>
+<g class="box ghl" transform="translate(500,530)">
+  <rect width="200" height="60" /><text x="100" y="24">GHL Pipelines</text><text x="100" y="42" class="sub">reflection = OFF</text>
+</g>
+<g class="box ghl" transform="translate(500,640)">
+  <rect width="200" height="60" /><text x="100" y="24">GHL Dialer Pipeline</text><text x="100" y="42" class="sub">Riley this week</text>
+</g>
 
-  <div class="dep-grid">
+<!-- ============ RIGHT: HPFHQ (green) ============ -->
+<g class="box hpf" transform="translate(920,100)">
+  <rect width="200" height="60" /><text x="100" y="24">HPFHQ Webhooks</text><text x="100" y="42" class="sub">all intake handlers</text>
+</g>
+<g class="box hpf" transform="translate(920,210)">
+  <rect width="200" height="80" /><text x="100" y="28" style="font-size:15px;">HPFHQ leads</text><text x="100" y="50" class="sub">SOURCE OF TRUTH</text><text x="100" y="66" class="sub">4,828+ leads</text>
+</g>
+<g class="box hpf" transform="translate(920,340)">
+  <rect width="200" height="60" /><text x="100" y="24">HPFHQ Pipelines</text><text x="100" y="42" class="sub">lead_pipeline (unified)</text>
+</g>
+<g class="box hpf" transform="translate(920,440)">
+  <rect width="200" height="60" /><text x="100" y="24">Closer Workstation</text><text x="100" y="42" class="sub">polls GHL calendar</text>
+</g>
+<g class="box hpf" transform="translate(920,540)">
+  <rect width="200" height="60" /><text x="100" y="24">HPFHQ Dialer</text><text x="100" y="42" class="sub">built, not live yet</text>
+</g>
+<g class="box hpf" transform="translate(920,640)">
+  <rect width="200" height="60" /><text x="100" y="24">Slack</text><text x="100" y="42" class="sub">alerts live</text>
+</g>
 
-    <div class="card dep-card" onclick="toggleDep(this)">
-      <div class="direction in">GHL &rarr; HPFHQ (read)</div>
-      <div class="card-title">1. Sales Calendar <span class="badge badge-red">CRITICAL</span></div>
-      <div class="card-meta">2 round-robin calendars &middot; Powers closer workstation</div>
-      <div class="dep-detail">
-        <p><strong>What:</strong> GHL hosts the HP Academy Call booking calendars. HPFHQ polls <code>GET /calendars/events</code> day-by-day. The closer workstation (<code>app/api/closer/calls/</code>) is dead without this.</p>
-        <p style="margin-top:6px;"><strong>Hardcoded IDs:</strong> <code>F7LrkRTwvJTcNEg056q6</code> (main), <code>XAgttwvhYNaZjXR40X94</code> (extended)</p>
-        <p style="margin-top:6px;"><strong>Files:</strong> <code>lib/sources/ghl.ts</code>, <code>app/api/ghl/appointments/</code>, <code>app/api/closer/calls/</code></p>
-        <div class="dep-replacement">
-          <strong>Replacement:</strong> Phase 2 booking engine (schema exists, routes exist, mode=off). Needs GCal integration, slot picker, confirmation flow. OR Cal.com if speed &gt; ownership.
-        </div>
-      </div>
-    </div>
+<!-- ============ BOTTOM: TRANSITIONAL (orange) ============ -->
+<text x="350" y="760" class="section-label" fill="#fb8c00">POST-PURCHASE CHAIN (CRITICAL)</text>
 
-    <div class="card dep-card" onclick="toggleDep(this)">
-      <div class="direction in">GHL &rarr; HPFHQ (webhook)</div>
-      <div class="card-title">2. Booking Webhook <span class="badge badge-red">CRITICAL</span></div>
-      <div class="card-meta">Book/cancel/reschedule &middot; 852-line handler</div>
-      <div class="dep-detail">
-        <p><strong>What:</strong> GHL fires POST on appointment events. Creates/updates leads, sends Slack alerts, triggers pipeline reflection. This is the lead intake path for non-Typeform leads (ManyChat, direct booking, setter links).</p>
-        <p style="margin-top:6px;"><strong>Files:</strong> <code>app/api/ghl/webhook/route.ts</code> (852 lines)</p>
-        <p style="margin-top:6px;"><strong>GHL Workflows:</strong> <code>20 :: APPT-CANCELLED :: HPFHQ Webhook + Slack</code></p>
-        <div class="dep-replacement">
-          <strong>Replacement:</strong> New booking system must emit webhooks. Handler logic stays; trigger side changes. Custom field UUID mappings are GHL-specific and won't transfer.
-        </div>
-      </div>
-    </div>
+<g class="box trans" transform="translate(280,780)">
+  <rect width="180" height="60" /><text x="90" y="24">Zapier</text><text x="90" y="42" class="sub">10 product paths · TO KILL</text>
+</g>
+<g class="box trans" transform="translate(530,780)">
+  <rect width="180" height="60" /><text x="90" y="24">Trainerize</text><text x="90" y="42" class="sub" style="fill:#2ed47a;">API UNLOCKED ✓</text>
+</g>
+<g class="box trans" transform="translate(780,780)">
+  <rect width="180" height="60" /><text x="90" y="24">SendBlue</text><text x="90" y="42" class="sub">adapter built · env not wired</text>
+</g>
+<g class="box trans" transform="translate(1030,780)">
+  <rect width="180" height="60" /><text x="90" y="24">Resend</text><text x="90" y="42" class="sub">adapter built · no account</text>
+</g>
 
-    <div class="card dep-card" onclick="toggleDep(this)">
-      <div class="direction in">GHL &rarr; HPFHQ (read)</div>
-      <div class="card-title">3. Contact Fetch <span class="badge badge-red">CRITICAL</span></div>
-      <div class="card-meta">By contactId or email &middot; Enriches leads at booking</div>
-      <div class="dep-detail">
-        <p><strong>What:</strong> Multiple routes pull contact data from GHL. Booking webhook enriches contacts (name, email, UTMs, qual fields). Setter import flow fetches full GHL contact. Activity sync cron pulls <code>dateLastActivity</code>.</p>
-        <p style="margin-top:6px;"><strong>Files:</strong> <code>lib/sources/ghl.ts</code> (getContactById, searchContacts), <code>app/api/cron/ghl-activity-sync/</code>, <code>app/api/setter/leads/from-ghl/</code></p>
-        <div class="dep-replacement">
-          <strong>Replacement:</strong> HPFHQ <code>leads</code> table IS the CRM. Once all intake paths write directly to it, GHL contact fetch is unnecessary. Activity sync cron = delete.
-        </div>
-      </div>
-    </div>
+<!-- ============ ARROWS ============ -->
 
-    <div class="card dep-card" onclick="toggleDep(this)">
-      <div class="direction out">HPFHQ &rarr; GHL (write)</div>
-      <div class="card-title">4. Contact Write <span class="badge badge-amber">MEDIUM</span></div>
-      <div class="card-meta">Meta Lead Ads &rarr; GHL contact creation</div>
-      <div class="dep-detail">
-        <p><strong>What:</strong> HPFHQ pushes new contacts into GHL for Meta Lead Ad submissions with custom field values and tags. Fire-and-forget.</p>
-        <p style="margin-top:6px;"><strong>Files:</strong> <code>lib/sources/ghl.ts</code> (createOrUpdateGhlContact), <code>app/api/meta/leads-webhook/</code>, <code>app/api/dialer/backfill-ghl/</code></p>
-        <div class="dep-replacement">
-          <strong>Replacement:</strong> Delete the GHL write. Meta leads already land in HPFHQ <code>leads</code> table. GHL copy only exists for legacy visibility.
-        </div>
-      </div>
-    </div>
+<!-- 1. Meta → HPFHQ Webhooks -->
+<path class="arrow arrow-hpf" d="M220,130 L920,130" marker-end="url(#ah-green)" />
 
-    <div class="card dep-card" onclick="toggleDep(this)">
-      <div class="direction dead">HPFHQ &rarr; GHL (disabled)</div>
-      <div class="card-title">5. Pipeline Reflection <span class="badge badge-green">DELETE</span></div>
-      <div class="card-meta">GHL_REFLECTION_ENABLED = false &middot; Dry-run only</div>
-      <div class="dep-detail">
-        <p><strong>What:</strong> Every HPFHQ stage transition fires a write to GHL opportunities. Currently disabled (dry-run). All reflection calls logged to <code>ghl_opportunity_sync</code> but no API calls made.</p>
-        <p style="margin-top:6px;"><strong>Files:</strong> <code>lib/ghl/reflection.ts</code>, <code>lib/ghl/pipeline.ts</code>, 5 call sites across webhooks</p>
-        <div class="dep-replacement">
-          <strong>Replacement:</strong> Delete all reflection code + <code>ghl_opportunity_sync</code> table. HPFHQ <code>lead_pipeline</code> is already source of truth.
-        </div>
-      </div>
-    </div>
+<!-- 2. Typeform → HPFHQ Webhooks -->
+<path class="arrow arrow-hpf" d="M220,200 Q570,200 920,140" marker-end="url(#ah-green)" />
 
-    <div class="card dep-card" onclick="toggleDep(this)">
-      <div class="direction in">Zapier + GHL (chain)</div>
-      <div class="card-title">6. Post-Purchase Onboarding <span class="badge badge-red">CRITICAL</span></div>
-      <div class="card-meta">Fanbasis &rarr; Zapier &rarr; GHL tag &rarr; Contract + Trainerize</div>
-      <div class="dep-detail">
-        <p><strong>What:</strong> When a sale closes via Fanbasis, Zapier adds a product-tier tag to the GHL contact. That tag triggers GHL workflows that send the contract email + Trainerize invite. 10 product paths, 4 active GHL workflows.</p>
-        <p style="margin-top:6px;"><strong>This is the highest-consequence dependency.</strong> Kill GHL without replacing = no contract emails, no Trainerize onboarding, no welcome sequences.</p>
-        <p style="margin-top:6px;"><strong>New context (2026-05-12):</strong> Trainerize upgraded to Studio Plus ($275/mo). API now available. Can replace Zapier &rarr; GHL &rarr; Trainerize chain with direct HPFHQ &rarr; Trainerize API call.</p>
-        <div class="dep-replacement">
-          <strong>Replacement:</strong> Phase 5.2 orchestration. Fanbasis webhook handler (<code>app/api/payments/fanbasis-webhook/</code>) already receives payments. Add: (1) Resend for contract emails, (2) direct Trainerize API for onboarding, (3) product-tier routing (10 paths). Zapier dies after this.
-        </div>
-      </div>
-    </div>
+<!-- 3. ManyChat → HPFHQ Webhooks -->
+<path class="arrow arrow-hpf" d="M220,280 Q570,260 920,145" marker-end="url(#ah-green)" />
 
-    <div class="card dep-card" onclick="toggleDep(this)">
-      <div class="direction internal">GHL internal</div>
-      <div class="card-title">7. Outbound Messaging <span class="badge badge-red">CRITICAL</span></div>
-      <div class="card-meta">1,851 active in iMessage sequences &middot; 18 in pre-call</div>
-      <div class="dep-detail">
-        <p><strong>What:</strong> GHL runs messaging workflows with no HPFHQ counterpart:</p>
-        <ul style="margin:8px 0 0 16px; font-size:13px;">
-          <li><strong>Incomplete app recovery (SendBlue):</strong> 1,851 enrolled. iMessage sequence for Typeform dropoffs.</li>
-          <li><strong>Pre-call SMS (SendBlue):</strong> 8 enrolled. 6-branch personalized SMS. No-show prevention.</li>
-          <li><strong>Pre-call email:</strong> 10 enrolled. 5-email per-closer sequence.</li>
-        </ul>
-        <div class="dep-replacement">
-          <strong>Replacement:</strong> Phase 4B (SendBlue adapter built, env not wired) + Phase 4A (Resend adapter built, account not set up) + Phase 5 orchestration (sequence engine). The SendBlue adapter exists but has never sent a message.
-        </div>
-      </div>
-    </div>
+<!-- 4. HPFHQ Webhooks → HPFHQ leads -->
+<path class="arrow arrow-hpf" d="M1020,160 L1020,210" marker-end="url(#ah-green)" />
 
-    <div class="card dep-card" onclick="toggleDep(this)">
-      <div class="direction in">GHL &rarr; HPFHQ (webhook)</div>
-      <div class="card-title">8. NPS Webhook <span class="badge badge-blue">LOW</span></div>
-      <div class="card-meta">NPS survey form &rarr; nps_responses &middot; Workflows still Draft</div>
-      <div class="dep-detail">
-        <p><strong>What:</strong> GHL fires webhook on NPS survey submission. Handler at <code>app/api/ghl/nps-webhook/</code>. NPS workflows are still in Draft status in GHL &mdash; not live yet.</p>
-        <div class="dep-replacement">
-          <strong>Replacement:</strong> HPFHQ forms engine (Phase 1) can host NPS. Handler is already format-agnostic. Low priority.
-        </div>
-      </div>
-    </div>
+<!-- 5. Email → GHL Calendar (booking) -->
+<path class="arrow arrow-ext" d="M220,370 L500,140" marker-end="url(#ah-blue)" />
+<text x="330" y="240" class="arrow-label">leads book directly</text>
 
-    <div class="card dep-card" onclick="toggleDep(this)">
-      <div class="direction dead">HPFHQ &rarr; GHL (monitoring)</div>
-      <div class="card-title">9. Monitoring / Maintenance <span class="badge badge-green">DELETE</span></div>
-      <div class="card-meta">Config drift cron, pipeline admin, activity sync</div>
-      <div class="dep-detail">
-        <p><strong>What:</strong> Daily cron validates calendar IDs, checks pipeline ID, monitors sync failures. Admin endpoint lists GHL pipelines. Activity sync pulls <code>dateLastActivity</code>.</p>
-        <p style="margin-top:6px;"><strong>Files:</strong> <code>app/api/cron/ghl-config-drift/</code>, <code>app/api/ghl/pipeline/</code>, <code>app/api/cron/ghl-activity-sync/</code></p>
-        <div class="dep-replacement">
-          <strong>Replacement:</strong> Delete all. These exist only to monitor GHL. No GHL = no monitoring needed.
-        </div>
-      </div>
-    </div>
+<!-- 6. Meta → GHL Contacts (copy, TO DELETE) -->
+<path class="arrow arrow-dead" d="M220,140 Q360,200 500,340" marker-end="url(#ah-grey)" />
+<text x="300" y="280" class="arrow-label" fill="#e53935">copy · TO DELETE</text>
 
-  </div>
-</div>
+<!-- 7. GHL Calendar → GHL Webhook -->
+<path class="arrow arrow-ghl" d="M600,160 L600,200" marker-end="url(#ah-red)" />
 
-<!-- TAB: Data Flows -->
-<div id="tab-flows" class="tab-panel">
-  <h2 style="font-size:18px; margin-bottom:16px;">Data Flow Map</h2>
-  <p style="color:var(--text-3); margin-bottom:20px; font-size:13px;">Every path data takes through GHL. <span class="flow-ghl" style="padding:2px 6px; font-size:11px; border-radius:3px;">Red = GHL</span> <span class="flow-hpf" style="padding:2px 6px; font-size:11px; border-radius:3px;">Green = HPFHQ</span> <span class="flow-ext" style="padding:2px 6px; font-size:11px; border-radius:3px;">Blue = External</span> <span class="flow-zap" style="padding:2px 6px; font-size:11px; border-radius:3px;">Amber = Zapier</span></p>
+<!-- 8. GHL Webhook → HPFHQ leads (via webhooks) -->
+<path class="arrow arrow-ghl" d="M700,230 L920,240" marker-end="url(#ah-red)" />
+<text x="770" y="222" class="arrow-label">book/cancel events</text>
 
-  <div class="card" style="margin-bottom:16px;">
-    <div class="card-title">Lead Intake (3 paths)</div>
-    <div class="flow-row">
-      <span class="flow-node flow-ext">Meta Lead Ad</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-hpf">HPFHQ Webhook</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-hpf">leads table</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-ghl">GHL Contact (copy)</span>
-    </div>
-    <div class="flow-row">
-      <span class="flow-node flow-ext">Typeform</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-hpf">HPFHQ Webhook</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-hpf">leads table</span>
-    </div>
-    <div class="flow-row">
-      <span class="flow-node flow-ext">ManyChat</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-hpf">HPFHQ Webhook</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-hpf">leads table</span>
-    </div>
-  </div>
+<!-- 9. GHL Calendar → Closer Workstation -->
+<path class="arrow arrow-ghl" d="M700,130 Q810,130 920,460" marker-end="url(#ah-red)" />
+<text x="810" y="280" class="arrow-label">polls daily</text>
 
-  <div class="card" style="margin-bottom:16px;">
-    <div class="card-title">Booking Flow</div>
-    <div class="flow-row">
-      <span class="flow-node flow-ext">Lead books</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-ghl">GHL Calendar</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-ghl">GHL Webhook</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-hpf">HPFHQ Handler</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-hpf">leads table</span>
-    </div>
-    <div style="margin-top:4px; font-size:12px; color:var(--text-3);">Closer workstation polls GHL calendar directly for daily call list</div>
-  </div>
+<!-- 10. HPFHQ leads → HPFHQ Pipelines -->
+<path class="arrow arrow-hpf" d="M1020,290 L1020,340" marker-end="url(#ah-green)" />
 
-  <div class="card" style="margin-bottom:16px;">
-    <div class="card-title">Post-Purchase Chain <span class="new-tag">TRAINERIZE API UNLOCKED</span></div>
-    <div class="flow-row">
-      <span class="flow-node flow-ext">Fanbasis Payment</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-zap">Zapier (10 paths)</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-ghl">GHL Tag</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-ghl">GHL Workflow</span>
-    </div>
-    <div class="flow-row" style="margin-left: 40px;">
-      <span class="flow-arrow">&darr;</span>
-    </div>
-    <div class="flow-row" style="margin-left: 40px;">
-      <span class="flow-node flow-ghl">Contract Email</span>
-      <span style="padding: 0 12px; color: var(--text-3);">+</span>
-      <span class="flow-node flow-ghl">Trainerize Invite</span>
-      <span style="padding: 0 12px; color: var(--text-3);">+</span>
-      <span class="flow-node flow-ghl">Welcome Sequence</span>
-    </div>
-    <div style="margin-top:12px; padding:8px 12px; background:rgba(46,212,122,0.04); border:1px solid rgba(46,212,122,0.12); border-radius:6px; font-size:12px;">
-      <strong style="color:var(--green);">Target replacement:</strong> Fanbasis &rarr; HPFHQ handler &rarr; Resend (contract) + Trainerize API (onboarding) + Resend (welcome). Zapier + GHL both eliminated.
-    </div>
-  </div>
+<!-- 11. HPFHQ Pipelines → GHL Pipelines (OFF) -->
+<path class="arrow arrow-dead" d="M920,370 L700,555" marker-end="url(#ah-grey)" />
+<text x="750" y="470" class="arrow-label">reflection = OFF</text>
 
-  <div class="card" style="margin-bottom:16px;">
-    <div class="card-title">Outbound Messaging (GHL-only, no HPFHQ code)</div>
-    <div class="flow-row">
-      <span class="flow-node flow-ghl">GHL Workflow</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-ext">SendBlue iMessage</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-dead">1,851 leads in recovery sequence</span>
-    </div>
-    <div class="flow-row">
-      <span class="flow-node flow-ghl">GHL Workflow</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-ext">SendBlue SMS</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-dead">Pre-call (6 branches x gender x goal)</span>
-    </div>
-    <div class="flow-row">
-      <span class="flow-node flow-ghl">GHL Workflow</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-ghl">GHL Email</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-dead">Pre-call email (5 per closer x 2 gender)</span>
-    </div>
-  </div>
+<!-- 12. Fanbasis → HPFHQ Webhooks (direct) -->
+<path class="arrow arrow-hpf" d="M220,460 Q600,400 920,150" marker-end="url(#ah-green)" />
+<text x="500" y="390" class="arrow-label" fill="#2ed47a">direct webhook · LIVE</text>
 
-  <div class="card">
-    <div class="card-title">Dialer Pipeline (GHL this week, HPFHQ next) <span class="new-tag">FROM TODAY'S MEETING</span></div>
-    <div class="flow-row">
-      <span class="flow-node flow-hpf">HPFHQ meta_lead_ad tag</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-ghl">GHL Automation</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-ghl">GHL Dialer Pipeline</span>
-    </div>
-    <div class="flow-row">
-      <span class="flow-node flow-ghl">GHL "Appointment Set"</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-ghl">GHL Automation</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-ghl">meta_qualified tag</span><span class="flow-arrow">&rarr;</span>
-      <span class="flow-node flow-hpf">HPFHQ CAPI</span>
-    </div>
-    <div style="margin-top:8px; font-size:12px; color:var(--text-3);">Brandon built both automations during the call. Riley works GHL this week; HPFHQ dialer migration after workflow is established.</div>
-  </div>
-</div>
+<!-- 13. Fanbasis → Zapier -->
+<path class="arrow arrow-zap" d="M130,500 L130,780 L280,810" marker-end="url(#ah-orange)" />
 
-<!-- TAB: Phase Tracker -->
-<div id="tab-phases" class="tab-panel">
-  <h2 style="font-size:18px; margin-bottom:16px;">7-Phase Migration Tracker</h2>
-  <p style="color:var(--text-3); margin-bottom:16px; font-size:13px;">Based on <code>docs/plans/co-op/2026-05-07-ghl-full-replacement.md</code>. Click any phase to expand.</p>
+<!-- 14. Zapier → GHL Contacts (adds product tag) -->
+<path class="arrow arrow-zap" d="M370,790 Q450,600 530,340" marker-end="url(#ah-orange)" />
+<text x="400" y="570" class="arrow-label" fill="#fb8c00">adds product tag</text>
 
-  <div class="phase">
-    <div class="phase-header expanded" onclick="togglePhase(this)">
-      <span class="phase-num">P0</span>
-      <span class="phase-title">Inventory & System Contract</span>
-      <span class="phase-status" style="color:var(--green)">DONE</span>
-      <div class="phase-bar" style="width:80px;"><div class="phase-bar-fill" style="width:100%;background:var(--green)"></div></div>
-      <span class="phase-chevron">&#9654;</span>
-    </div>
-    <div class="phase-body" style="display:block;">
-      <div class="step"><span class="step-check done">&#10003;</span><span class="step-label"><strong>0.1</strong> GHL workflow inventory (23 workflows) <span class="note">6 replace / 13 kill / 4 defer</span></span></div>
-      <div class="step"><span class="step-check done">&#10003;</span><span class="step-label"><strong>0.2</strong> Classify each workflow <span class="note">All 23 classified with rationale</span></span></div>
-      <div class="step"><span class="step-check done">&#10003;</span><span class="step-label"><strong>0.3</strong> HPFHQ messaging audit <span class="note">GHL owns 100% of outbound messaging</span></span></div>
-      <div class="step"><span class="step-check done">&#10003;</span><span class="step-label"><strong>0.4</strong> System contract locked <span class="note">7 decisions: identity anchor, resolution, event tables, column cleanup, field ownership</span></span></div>
-      <div class="step"><span class="step-check partial">~</span><span class="step-label"><strong>0.5</strong> DJ + Brandon consultation <span class="note">Questions page sent. Scheduled for May 13 call</span></span></div>
-      <div class="step"><span class="step-check done">&#10003;</span><span class="step-label"><strong>0.6</strong> Flag flip status verified <span class="note">2/6 done, 4 pending (non-blocking)</span></span></div>
-    </div>
-  </div>
+<!-- 15. GHL Contacts → GHL Workflows (tag triggers) -->
+<path class="arrow arrow-ghl" d="M600,370 L600,420" marker-end="url(#ah-red)" />
+<text x="610" y="400" class="arrow-label">tag triggers</text>
 
-  <div class="phase">
-    <div class="phase-header" onclick="togglePhase(this)">
-      <span class="phase-num">P1</span>
-      <span class="phase-title">Forms (Typeform Replacement)</span>
-      <span class="phase-status" style="color:var(--amber)">5/7</span>
-      <div class="phase-bar" style="width:80px;"><div class="phase-bar-fill" style="width:71%;background:var(--amber)"></div></div>
-      <span class="phase-chevron">&#9654;</span>
-    </div>
-    <div class="phase-body">
-      <div class="step"><span class="step-check done">&#10003;</span><span class="step-label"><strong>1.1</strong> Schema (forms, form_questions, form_endings, form_responses)</span></div>
-      <div class="step"><span class="step-check done">&#10003;</span><span class="step-label"><strong>1.2</strong> Form builder admin UI (Codex)</span></div>
-      <div class="step"><span class="step-check done">&#10003;</span><span class="step-label"><strong>1.3</strong> Public form route /f/[slug]</span></div>
-      <div class="step"><span class="step-check partial">~</span><span class="step-label"><strong>1.4</strong> Webhook delivery on completion <span class="note">Partial &mdash; writes form_responses + fires webhook. Resend confirmation blocked by 4A</span></span></div>
-      <div class="step"><span class="step-check done">&#10003;</span><span class="step-label"><strong>1.5</strong> Identity resolution (form &rarr; leads.lead_id)</span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>1.6</strong> Dry run &mdash; migrate one low-stakes Typeform</span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>1.7</strong> Cutover &mdash; main qualification Typeform &rarr; HPFHQ</span></div>
-    </div>
-  </div>
+<!-- 16. GHL Workflows → Trainerize (onboarding) -->
+<path class="arrow arrow-ghl" d="M600,480 L620,780" marker-end="url(#ah-red)" />
+<text x="560" y="630" class="arrow-label">onboarding invite</text>
 
-  <div class="phase">
-    <div class="phase-header" onclick="togglePhase(this)">
-      <span class="phase-num">P2</span>
-      <span class="phase-title">Booking (Calendly Replacement)</span>
-      <span class="phase-status" style="color:var(--text-3)">0/8</span>
-      <div class="phase-bar" style="width:80px;"><div class="phase-bar-fill" style="width:5%;background:var(--text-3)"></div></div>
-      <span class="phase-chevron">&#9654;</span>
-    </div>
-    <div class="phase-body">
-      <div class="step"><span class="step-check partial">~</span><span class="step-label"><strong>2.1</strong> Schema (booking_pages, bookings, availability_rules) <span class="note">Schema exists, routes exist, BOOKING_ENGINE_MODE=off</span></span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>2.2</strong> GCal integration (real-time free/busy)</span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>2.3</strong> Public booking page /book/[slug]</span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>2.4</strong> Color-coded GCal events on book</span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>2.5</strong> Confirmation + reminder messages (Resend + SendBlue)</span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>2.6</strong> Cancel/reschedule flow</span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>2.7</strong> Admin reschedule + override</span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>2.8</strong> Typeform redirect switch (link swap)</span></div>
-    </div>
-  </div>
+<!-- 17. GHL Workflows → Resend (contract email — TO BUILD) -->
+<path class="arrow arrow-dead" d="M680,450 Q900,600 1120,780" marker-end="url(#ah-grey)" />
+<text x="870" y="620" class="arrow-label" fill="#fb8c00">contract email · TO BUILD</text>
 
-  <div class="phase">
-    <div class="phase-header" onclick="togglePhase(this)">
-      <span class="phase-num">P3</span>
-      <span class="phase-title">Async Video (Loom Replacement)</span>
-      <span class="phase-status" style="color:var(--amber)">SHIPPED</span>
-      <div class="phase-bar" style="width:80px;"><div class="phase-bar-fill" style="width:75%;background:var(--amber)"></div></div>
-      <span class="phase-chevron">&#9654;</span>
-    </div>
-    <div class="phase-body">
-      <div class="step"><span class="step-check done">&#10003;</span><span class="step-label"><strong>3.1-3.6</strong> Tables, Storage, recorder, viewer, tracking <span class="note">All shipped. Public viewer live. Recorder gated.</span></span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>3.7</strong> Whisper transcription</span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>3.8</strong> Closer adoption + library smoke</span></div>
-    </div>
-  </div>
+<!-- 18. GHL Workflows → SendBlue (messaging) -->
+<path class="arrow arrow-ghl" d="M650,480 Q750,650 870,800" marker-end="url(#ah-red)" />
+<text x="720" y="660" class="arrow-label">1,851 in recovery seq</text>
 
-  <div class="phase">
-    <div class="phase-header" onclick="togglePhase(this)">
-      <span class="phase-num">P4</span>
-      <span class="phase-title">Messaging (Resend + SendBlue)</span>
-      <span class="phase-status" style="color:var(--amber)">ADAPTERS ONLY</span>
-      <div class="phase-bar" style="width:80px;"><div class="phase-bar-fill" style="width:30%;background:var(--amber)"></div></div>
-      <span class="phase-chevron">&#9654;</span>
-    </div>
-    <div class="phase-body">
-      <div class="step"><span class="step-check done">&#10003;</span><span class="step-label"><strong>4A.1-4A.3</strong> Resend adapter + guard + types <span class="note">Built. Account not set up. Zero emails sent.</span></span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>4A.4</strong> Resend signup + DNS verification + API key</span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>4A.5</strong> Email templates (booking-confirm, reminder, no-show, digest)</span></div>
-      <div class="step"><span class="step-check done">&#10003;</span><span class="step-label"><strong>4B.1-4B.2</strong> SendBlue adapter + guard + types <span class="note">Built. Env not wired.</span></span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>4B.3</strong> SendBlue inbound webhook handler</span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>4B.4</strong> Setter thread UI</span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>4B.5</strong> Wire SendBlue + Resend env vars on Vercel</span></div>
-    </div>
-  </div>
+<!-- 19. HPFHQ leads → GHL Dialer Pipeline -->
+<path class="arrow arrow-zap" d="M920,270 Q750,450 600,640" marker-end="url(#ah-orange)" />
+<text x="720" y="500" class="arrow-label" fill="#fb8c00">meta tag → GHL auto</text>
 
-  <div class="phase">
-    <div class="phase-header" onclick="togglePhase(this)">
-      <span class="phase-num">P5</span>
-      <span class="phase-title">Orchestration (Sequence Engine) <span class="new-tag">TRAINERIZE + KAJABI API</span></span>
-      <span class="phase-status" style="color:var(--text-3)">NOT STARTED</span>
-      <div class="phase-bar" style="width:80px;"><div class="phase-bar-fill" style="width:0%;background:var(--text-3)"></div></div>
-      <span class="phase-chevron">&#9654;</span>
-    </div>
-    <div class="phase-body">
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>5.1</strong> Sequence engine (cron-driven, lead-card state machine)</span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>5.2</strong> Post-purchase orchestration (replicate 10 Zapier product paths) <span class="note">Fanbasis &rarr; Resend (contract) + Trainerize API (onboarding). KILLS Zapier + GHL.</span></span></div>
-      <div class="step"><span class="step-check new">NEW</span><span class="step-label"><strong>5.2a</strong> Trainerize API integration (Studio Plus, $275/mo) <span class="note">Upgraded live on 2026-05-12 call with Brandon. API key not yet generated.</span></span></div>
-      <div class="step"><span class="step-check new">NEW</span><span class="step-label"><strong>5.2b</strong> Kajabi API integration ($25/mo add-on) <span class="note">Emil can enable. Unblocks kajabi-lb90-sync cron.</span></span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>5.3</strong> GHL workflow deprecation (6 replace workflows)</span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>5.4</strong> Incomplete app recovery sequence (1,851 leads) &rarr; HPFHQ SendBlue</span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>5.5</strong> Pre-call SMS + email sequences &rarr; HPFHQ orchestration</span></div>
-    </div>
-  </div>
+<!-- 20. Kajabi → HPFHQ leads -->
+<path class="arrow arrow-dead" d="M220,570 Q600,570 920,280" marker-end="url(#ah-grey)" />
+<text x="500" y="555" class="arrow-label">API · NOT YET LIVE</text>
 
-  <div class="phase">
-    <div class="phase-header" onclick="togglePhase(this)">
-      <span class="phase-num">P6</span>
-      <span class="phase-title">Unified Timeline</span>
-      <span class="phase-status" style="color:var(--text-3)">NOT STARTED</span>
-      <div class="phase-bar" style="width:80px;"><div class="phase-bar-fill" style="width:0%;background:var(--text-3)"></div></div>
-      <span class="phase-chevron">&#9654;</span>
-    </div>
-    <div class="phase-body">
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>6.1</strong> Prospect timeline view (form_responses + bookings + message_events + video_views)</span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>6.2</strong> Contact card replacement (full lead profile in HPFHQ)</span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>6.3</strong> Activity feed + search</span></div>
-    </div>
-  </div>
+<!-- 21. HPFHQ leads → Slack -->
+<path class="arrow arrow-hpf" d="M1080,290 Q1120,500 1020,640" marker-end="url(#ah-green)" />
 
-  <div class="phase">
-    <div class="phase-header" onclick="togglePhase(this)">
-      <span class="phase-num">P7</span>
-      <span class="phase-title">Cutover & Deprecation</span>
-      <span class="phase-status" style="color:var(--text-3)">NOT STARTED</span>
-      <div class="phase-bar" style="width:80px;"><div class="phase-bar-fill" style="width:0%;background:var(--text-3)"></div></div>
-      <span class="phase-chevron">&#9654;</span>
-    </div>
-    <div class="phase-body">
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>7.1</strong> Shadow mode (HPFHQ + GHL running in parallel)</span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>7.2</strong> Flag-flip cutover (GHL off, HPFHQ primary)</span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>7.3</strong> 7-day monitor period</span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>7.4</strong> Delete GHL code (reflection, pipeline, monitoring, contact write)</span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>7.5</strong> Cancel GHL subscription</span></div>
-      <div class="step"><span class="step-check"></span><span class="step-label"><strong>7.6</strong> Cancel Zapier subscription</span></div>
-    </div>
-  </div>
-</div>
+<!-- ============ LEGEND ============ -->
+<g transform="translate(40,950)">
+  <text class="legend" x="0" y="0" style="font-weight:700;">LEGEND:</text>
+  <line x1="70" y1="-4" x2="110" y2="-4" stroke="#2ed47a" stroke-width="2" />
+  <text class="legend" x="115" y="0">HPFHQ (live)</text>
+  <line x1="210" y1="-4" x2="250" y2="-4" stroke="#e53935" stroke-width="2" />
+  <text class="legend" x="255" y="0">Through GHL (to eliminate)</text>
+  <line x1="430" y1="-4" x2="470" y2="-4" stroke="#fb8c00" stroke-width="2" />
+  <text class="legend" x="475" y="0">Transitional / Zapier</text>
+  <line x1="620" y1="-4" x2="660" y2="-4" stroke="#5c6370" stroke-width="2" stroke-dasharray="6 3" />
+  <text class="legend" x="665" y="0">Dead / not yet live</text>
+  <text class="legend" x="830" y="0" fill="#fb8c00" style="font-weight:700;">CRITICAL PATH: Booking engine → Post-purchase orchestration → Messaging sequences → Cutover</text>
+</g>
 
-<!-- TAB: Meeting Lock-In -->
-<div id="tab-meeting" class="tab-panel">
-  <h2 style="font-size:18px; margin-bottom:16px;">Brandon / Emil Lock-In &mdash; May 12, 2026</h2>
-
-  <h3 style="font-size:14px; color:var(--green); margin-bottom:12px; text-transform:uppercase; letter-spacing:0.5px;">Decisions</h3>
-
-  <div class="card decision-card">
-    <div class="card-title">Angelica returns to confirming calls</div>
-    <div style="font-size:13px; color:var(--text-2);">DJ's call. Cole takes traditional setting (numbers game). Angelica calls leads that haven't been touched by a setter &mdash; especially email/IG leads.</div>
-  </div>
-  <div class="card decision-card">
-    <div class="card-title">Riley works GHL this week</div>
-    <div style="font-size:13px; color:var(--text-2);">HPFHQ dialer looks good but lacks workflow integration (calling, automations). Once Riley establishes workflow in GHL, Emil replicates in HPFHQ.</div>
-  </div>
-  <div class="card decision-card">
-    <div class="card-title">Trainerize &rarr; Studio Plus ($275/mo) <span class="badge badge-green">DONE</span></div>
-    <div style="font-size:13px; color:var(--text-2);">Upgraded live on call. Was 194/200 clients ($280/mo). Now 500 client cap + API + custom app. Cost-neutral.</div>
-  </div>
-  <div class="card decision-card">
-    <div class="card-title">GHL exit accelerated (intent, not timeline)</div>
-    <div style="font-size:13px; color:var(--text-2);">Emil: "GHL is a fucking mess, I want to get off it." Strategy: map all flows on whiteboard, move everything in one go. Don't break GHL while leads are critical.</div>
-  </div>
-
-  <h3 style="font-size:14px; color:var(--blue); margin:20px 0 12px; text-transform:uppercase; letter-spacing:0.5px;">Dialer Build Requests (Brandon + Riley)</h3>
-
-  <div class="card meeting-card">
-    <div class="card-title">Dialer EOD Summary Tab <span class="badge badge-amber">BUILD</span></div>
-    <div style="font-size:13px; color:var(--text-2);">Simple text box at <code>/app/dialer/[name]</code> EOD tab (placeholder already exists). Submits to Supabase, posts to #dialer Slack channel. "Make it fancier as we go."</div>
-  </div>
-  <div class="card meeting-card">
-    <div class="card-title">Invalid Number Pipeline Stage <span class="badge badge-amber">BUILD</span></div>
-    <div style="font-size:13px; color:var(--text-2);">Add to <code>lib/dialer/stages.ts</code> DIALER_STAGES. Riley had one yesterday.</div>
-  </div>
-  <div class="card meeting-card">
-    <div class="card-title">Hide LB90 Context on Meta Lead Cards <span class="badge badge-blue">LOW</span></div>
-    <div style="font-size:13px; color:var(--text-2);">Currently shows for all <code>role === "dialer"</code> in UnifiedLeadCard.tsx:439. Should only show for LB90 leads, not meta leads.</div>
-  </div>
-
-  <h3 style="font-size:14px; color:var(--purple); margin:20px 0 12px; text-transform:uppercase; letter-spacing:0.5px;">Key Quotes</h3>
-
-  <div class="card quote-card">
-    <div class="speaker">Brandon on email leads</div>
-    "Most of them have been on the email list for six months to a year... they usually followed him on social media for a year before they joined the email list."
-    <div style="font-style:normal; font-size:12px; color:var(--text-3); margin-top:6px;">Hottest leads. Convert without setter nurture. Explains why email CTAs drive half the calendar.</div>
-  </div>
-  <div class="card quote-card">
-    <div class="speaker">Emil on GHL exit</div>
-    "I literally brought my whiteboard down because I just need to map everything out to where all the information flows. And then I just need to move everything in one go."
-    <div style="font-style:normal; font-size:12px; color:var(--text-3); margin-top:6px;">Big-bang migration. Not incremental.</div>
-  </div>
-  <div class="card quote-card">
-    <div class="speaker">Emil on timing</div>
-    "I don't want to break GHL when everything is so critical. It's working right now. It's janky but it's working."
-    <div style="font-style:normal; font-size:12px; color:var(--text-3); margin-top:6px;">Leads pipeline must stabilize before migration starts.</div>
-  </div>
-</div>
-
-<!-- TAB: Critical Path -->
-<div id="tab-critical" class="tab-panel">
-  <h2 style="font-size:18px; margin-bottom:16px;">Critical Path to GHL Off-Switch</h2>
-  <p style="color:var(--text-3); margin-bottom:20px; font-size:13px;">These must complete in sequence. Everything else is parallel.</p>
-
-  <div class="crit">
-    <div class="crit-step">
-      <div class="num">1</div>
-      <div class="label">Wire SendBlue + Resend env vars</div>
-      <div class="est">Emil action &middot; 1 hour</div>
-    </div>
-    <div class="crit-step">
-      <div class="num">2</div>
-      <div class="label">Booking engine live (P2)</div>
-      <div class="est">GCal + slots + confirm &middot; ~1 week</div>
-    </div>
-    <div class="crit-step">
-      <div class="num">3</div>
-      <div class="label">Post-purchase orchestration (P5.2)</div>
-      <div class="est">10 Zapier paths &rarr; HPFHQ &middot; ~3 days</div>
-    </div>
-    <div class="crit-step">
-      <div class="num">4</div>
-      <div class="label">Messaging sequences (P5.4-5.5)</div>
-      <div class="est">1,851 recovery + pre-call &middot; ~3 days</div>
-    </div>
-    <div class="crit-step">
-      <div class="num">5</div>
-      <div class="label">Shadow + Cutover (P7)</div>
-      <div class="est">Parallel run + 7-day monitor</div>
-    </div>
-  </div>
-
-  <h3 style="font-size:14px; margin:24px 0 12px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-2);">Delete on Day 1 (zero build required)</h3>
-  <div class="card" style="border-left:3px solid var(--green);">
-    <ul style="list-style:none; font-size:13px;">
-      <li style="padding:4px 0;">&check; <code>lib/ghl/reflection.ts</code> + <code>lib/ghl/pipeline.ts</code> + all 5 <code>reflectLeadStage</code> call sites</li>
-      <li style="padding:4px 0;">&check; <code>ghl_opportunity_sync</code> table</li>
-      <li style="padding:4px 0;">&check; <code>app/api/cron/ghl-config-drift/</code> (monitoring cron)</li>
-      <li style="padding:4px 0;">&check; <code>app/api/cron/ghl-activity-sync/</code> (activity sync cron)</li>
-      <li style="padding:4px 0;">&check; <code>app/api/ghl/pipeline/</code> (admin endpoint)</li>
-      <li style="padding:4px 0;">&check; <code>app/api/ghl/backfill-dates/</code> + <code>app/api/dialer/backfill-ghl/</code></li>
-      <li style="padding:4px 0;">&check; <code>createOrUpdateGhlContact()</code> calls in Meta leads webhook</li>
-      <li style="padding:4px 0;">&check; All GHL env vars (<code>GHL_API_KEY</code>, <code>GHL_LOCATION_ID</code>, <code>GHL_WEBHOOK_SECRET</code>, etc.)</li>
-    </ul>
-  </div>
-
-  <h3 style="font-size:14px; margin:24px 0 12px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-2);">New Unlockers (from today's meeting)</h3>
-  <div class="card" style="border-left:3px solid var(--blue);">
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-      <div>
-        <div style="font-weight:700; margin-bottom:4px;">Trainerize API <span class="badge badge-green">UNLOCKED</span></div>
-        <div style="font-size:12px; color:var(--text-2);">Studio Plus active ($275/mo). API key not yet generated. Replaces: Zapier &rarr; GHL tag &rarr; Trainerize workflow chain. Direct HPFHQ &rarr; Trainerize API.</div>
-      </div>
-      <div>
-        <div style="font-weight:700; margin-bottom:4px;">Kajabi API <span class="badge badge-amber">AVAILABLE</span></div>
-        <div style="font-size:12px; color:var(--text-2);">$25/mo add-on or Pro plan. Unblocks: kajabi-lb90-sync cron (currently non-functional), LB90 lead enrichment, Kajabi &rarr; HPFHQ direct sync.</div>
-      </div>
-      <div>
-        <div style="font-weight:700; margin-bottom:4px;">GHL Whiteboard Map <span class="badge badge-purple">PLANNED</span></div>
-        <div style="font-size:12px; color:var(--text-2);">Emil will map all GHL data flows on physical whiteboard. This interactive page IS the digital version of that map.</div>
-      </div>
-      <div>
-        <div style="font-weight:700; margin-bottom:4px;">Dialer Workflow (GHL &rarr; HPFHQ) <span class="badge badge-amber">THIS WEEK</span></div>
-        <div style="font-size:12px; color:var(--text-2);">Riley establishes workflow in GHL. Brandon built automations (tag &rarr; pipeline, appointment set &rarr; meta_qualified). Emil replicates in HPFHQ after.</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-</div><!-- container -->
-
-<script>
-function switchTab(name) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelector(`#tab-${name}`).classList.add('active');
-  event.target.classList.add('active');
-}
-
-function toggleDep(el) {
-  el.classList.toggle('expanded');
-}
-
-function togglePhase(el) {
-  el.classList.toggle('expanded');
-}
-</script>
+</svg>
 </body>
 </html>
