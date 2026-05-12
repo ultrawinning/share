@@ -96,6 +96,7 @@
   .delta-up { color: var(--green); background: var(--green-faint); }
   .delta-down { color: var(--error); background: rgba(229, 57, 53, 0.1); }
   .delta-flat { color: var(--text-tertiary); background: rgba(255,255,255,0.04); }
+  .yesterday-badge { font-size: 11px; font-weight: 600; color: var(--blue); background: rgba(30,136,229,0.12); padding: 1px 6px; border-radius: 4px; }
   .source-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
   .tooltip-trigger { cursor: help; border-bottom: 1px dotted var(--text-tertiary); }
 
@@ -347,6 +348,7 @@
       <span class="subtitle" contenteditable>closer_eod_entries &middot; May 2026</span>
     </div>
     <div style="display:flex;align-items:center;gap:16px;">
+      <a href="marketing.html" style="font-size:12px;color:var(--text-tertiary);text-decoration:none;padding:6px 12px;border:1px solid var(--border);border-radius:6px;">Marketing Cockpit &rarr;</a>
       <div class="period-tabs">
         <div class="period-tab active">MTD</div>
         <div class="period-tab">WTD</div>
@@ -362,12 +364,12 @@
     <div class="kpi-strip">
       <div class="kpi-card">
         <div class="kpi-label"><span class="source-dot" style="background:var(--blue)"></span><span class="tooltip-trigger">Scheduled</span></div>
-        <div class="kpi-value">40</div>
+        <div class="kpi-value">40 <span class="yesterday-badge">+4 yday</span></div>
         <div class="kpi-sub"><span class="kpi-target">excl. 1 rescheduled</span></div>
       </div>
       <div class="kpi-card">
         <div class="kpi-label"><span class="source-dot" style="background:var(--green)"></span><span class="tooltip-trigger">Calls Taken</span></div>
-        <div class="kpi-value">24</div>
+        <div class="kpi-value">24 <span class="yesterday-badge">+3 yday</span></div>
         <div class="kpi-sub"><span class="kpi-delta delta-flat">10 cxl &middot; 4 NS &middot; 2 DQ</span></div>
       </div>
       <div class="kpi-card">
@@ -382,7 +384,7 @@
       </div>
       <div class="kpi-card highlight">
         <div class="kpi-label"><span class="source-dot" style="background:var(--green)"></span><span class="tooltip-trigger">Cash Collected</span></div>
-        <div class="kpi-value" style="color:var(--green)">$27,750</div>
+        <div class="kpi-value" style="color:var(--green)">$27,750 <span class="yesterday-badge">+$4,500 yday</span></div>
         <div class="kpi-sub"><span class="kpi-target">contracted: $39,000</span></div>
       </div>
     </div>

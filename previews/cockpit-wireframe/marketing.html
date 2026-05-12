@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HPF Cockpit — Marketing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --base: #08090B; --section: #111318; --card: #16181F; --card-hover: #1A1D25;
+    --card-deep: #1C2128; --green: #2ED47A; --green-deep: #1BB864;
+    --green-glow: rgba(46,212,122,0.15); --green-faint: rgba(46,212,122,0.06);
+    --text: #F0F2F5; --text-secondary: #A0A8B4; --text-tertiary: #5C6370;
+    --border: rgba(255,255,255,0.06); --border-strong: rgba(255,255,255,0.12);
+    --border-hover: rgba(255,255,255,0.18);
+    --error: #E53935; --warn: #FB8C00; --blue: #1E88E5; --purple: #9C27B0; --teal: #00897B;
+    --shadow-card: 0 1px 0 rgba(255,255,255,0.02) inset, 0 1px 2px rgba(0,0,0,0.4);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--base); color:var(--text); font-family:'Inter',sans-serif; font-size:15px; line-height:1.5; }
+  .cockpit { max-width:1320px; margin:0 auto; padding:24px 32px 80px; }
+
+  /* Header */
+  .header { display:flex; align-items:baseline; justify-content:space-between; padding-bottom:20px; border-bottom:1px solid var(--border); margin-bottom:24px; }
+  .header-left { display:flex; align-items:baseline; gap:16px; }
+  .header h1 { font-family:'Space Grotesk',sans-serif; font-size:24px; font-weight:700; letter-spacing:-0.02em; }
+  .header .subtitle { font-size:13px; color:var(--text-tertiary); }
+  .nav-link { font-size:12px; color:var(--text-tertiary); text-decoration:none; padding:6px 12px; border:1px solid var(--border); border-radius:6px; }
+  .nav-link:hover { color:var(--green); border-color:var(--green); }
+
+  /* Period selector (gold standard) */
+  .period-bar { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; }
+  .period-tabs { display:flex; gap:2px; background:var(--section); border-radius:8px; padding:3px; }
+  .period-tab { padding:6px 12px; border-radius:6px; font-size:12px; font-weight:500; color:var(--text-secondary); cursor:pointer; transition:all 0.15s; }
+  .period-tab.active { background:var(--card); color:var(--text); box-shadow:var(--shadow-card); }
+  .period-tab:hover:not(.active) { color:var(--text); }
+
+  /* Section */
+  .section { margin-bottom:24px; }
+  .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+  .section-title { font-family:'Space Grotesk',sans-serif; font-size:13px; font-weight:600; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.08em; }
+  .section-meta { font-size:11px; color:var(--text-tertiary); font-family:'JetBrains Mono',monospace; }
+
+  /* KPI Strip */
+  .kpi-strip { display:grid; grid-template-columns:repeat(7,1fr); gap:10px; margin-bottom:24px; }
+  .kpi-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px 16px; box-shadow:var(--shadow-card); }
+  .kpi-card.highlight { border-color:rgba(46,212,122,0.2); background:linear-gradient(135deg,var(--card) 0%,rgba(46,212,122,0.04) 100%); }
+  .kpi-label { font-size:11px; font-weight:500; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px; display:flex; align-items:center; gap:6px; }
+  .kpi-value { font-family:'Space Grotesk',sans-serif; font-size:26px; font-weight:700; letter-spacing:-0.02em; line-height:1.1; margin-bottom:3px; }
+  .kpi-sub { font-size:12px; color:var(--text-tertiary); display:flex; align-items:center; gap:6px; }
+  .source-dot { width:6px; height:6px; border-radius:50%; display:inline-block; }
+  .delta { font-size:11px; font-weight:600; padding:1px 6px; border-radius:4px; }
+  .delta-up { color:var(--green); background:var(--green-faint); }
+  .delta-down { color:var(--error); background:rgba(229,57,53,0.1); }
+  .delta-neutral { color:var(--text-tertiary); background:rgba(255,255,255,0.04); }
+  .yesterday-badge { font-size:11px; font-weight:600; color:var(--blue); background:rgba(30,136,229,0.12); padding:1px 6px; border-radius:4px; }
+
+  /* Funnel */
+  .funnel-row { display:grid; grid-template-columns:repeat(6,1fr); gap:8px; margin-bottom:4px; }
+  .funnel-step { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:12px 14px; text-align:center; cursor:pointer; transition:all 0.15s; position:relative; }
+  .funnel-step:hover { border-color:var(--border-hover); background:var(--card-hover); }
+  .funnel-step.selected { border-color:var(--green); background:var(--green-faint); box-shadow:0 0 0 1px var(--green-deep); }
+  .funnel-step::after { content:''; position:absolute; right:-6px; top:50%; transform:translateY(-50%); width:0; height:0; border-top:5px solid transparent; border-bottom:5px solid transparent; border-left:5px solid var(--text-tertiary); }
+  .funnel-step:last-child::after { display:none; }
+  .funnel-num { font-family:'Space Grotesk',sans-serif; font-size:20px; font-weight:700; line-height:1.2; }
+  .funnel-label { font-size:10px; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:0.06em; margin-top:2px; }
+  .funnel-pct { font-size:10px; color:var(--text-secondary); font-family:'JetBrains Mono',monospace; margin-top:4px; }
+
+  /* Detail panel */
+  .detail-panel { background:var(--card); border:1px solid var(--border); border-radius:10px; box-shadow:var(--shadow-card); overflow:hidden; min-height:240px; }
+  .detail-header { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; background:var(--section); border-bottom:1px solid var(--border); }
+  .detail-title { font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:600; display:flex; align-items:center; gap:10px; }
+  .detail-count { font-size:11px; font-weight:600; padding:2px 8px; border-radius:10px; background:rgba(255,255,255,0.06); color:var(--text-secondary); }
+
+  /* Lead row */
+  .lead-row { display:grid; grid-template-columns:36px 1fr 100px 100px 80px 100px 50px; gap:10px; padding:10px 18px; border-bottom:1px solid var(--border); align-items:center; cursor:pointer; transition:background 0.1s; font-size:13px; }
+  .lead-row:hover { background:var(--card-hover); }
+  .lead-row:last-child { border-bottom:none; }
+  .lead-avatar { width:32px; height:32px; border-radius:50%; background:var(--section); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; color:var(--text-secondary); }
+  .lead-info { min-width:0; }
+  .lead-name { font-weight:600; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .lead-meta { font-size:11px; color:var(--text-tertiary); }
+  .lead-source { font-size:12px; }
+  .lead-date { font-size:12px; color:var(--text-tertiary); font-family:'JetBrains Mono',monospace; }
+  .lead-chevron { color:var(--text-tertiary); font-size:16px; text-align:right; }
+
+  /* Status pills */
+  .pill { display:inline-flex; align-items:center; gap:4px; font-size:10px; font-weight:600; padding:2px 8px; border-radius:4px; text-transform:uppercase; letter-spacing:0.04em; }
+  .pill-paid { color:var(--blue); background:rgba(30,136,229,0.12); }
+  .pill-organic { color:var(--green); background:var(--green-faint); }
+  .pill-email { color:var(--warn); background:rgba(251,140,0,0.12); }
+  .pill-ig { color:#E4405F; background:rgba(228,64,95,0.12); }
+  .pill-newsletter { color:var(--blue); background:rgba(30,136,229,0.12); }
+  .pill-manychat { color:var(--purple); background:rgba(156,39,176,0.12); }
+  .pill-referral { color:var(--teal); background:rgba(0,137,123,0.12); }
+  .pill-unknown { color:var(--text-tertiary); background:rgba(255,255,255,0.04); }
+  .pill-qualified { color:var(--green); background:var(--green-faint); }
+  .pill-booked { color:var(--blue); background:rgba(30,136,229,0.12); }
+  .pill-closed { color:var(--green); background:rgba(46,212,122,0.2); }
+
+  /* Source breakdown */
+  .source-section { background:var(--card); border:1px solid var(--border); border-radius:10px; box-shadow:var(--shadow-card); overflow:hidden; }
+  .source-header { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; cursor:pointer; transition:background 0.1s; }
+  .source-header:hover { background:var(--card-hover); }
+  .source-left { display:flex; align-items:center; gap:12px; }
+  .source-name { font-weight:600; font-size:14px; }
+  .source-stats { display:flex; gap:16px; font-size:12px; color:var(--text-secondary); font-family:'JetBrains Mono',monospace; }
+  .source-chevron { color:var(--text-tertiary); font-size:18px; transition:transform 0.2s; }
+  .source-chevron.open { transform:rotate(90deg); }
+  .source-body { display:none; border-top:1px solid var(--border); padding:16px 18px; }
+  .source-body.open { display:block; }
+  .source-funnel { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; }
+  .source-funnel-step { text-align:center; padding:8px; }
+  .source-funnel-num { font-family:'Space Grotesk',sans-serif; font-size:16px; font-weight:700; }
+  .source-funnel-label { font-size:9px; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:0.06em; }
+  .source-funnel-pct { font-size:10px; color:var(--text-secondary); font-family:'JetBrains Mono',monospace; }
+
+  /* Campaign section */
+  .campaign-card { background:var(--card); border:1px solid var(--border); border-radius:10px; box-shadow:var(--shadow-card); overflow:hidden; }
+  .campaign-header { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; cursor:pointer; }
+  .campaign-header:hover { background:var(--card-hover); }
+  .campaign-body { display:none; border-top:1px solid var(--border); }
+  .campaign-body.open { display:block; }
+  .ad-row { display:grid; grid-template-columns:1fr 80px 80px 80px 80px 80px; gap:8px; padding:10px 18px; border-bottom:1px solid var(--border); font-size:12px; align-items:center; }
+  .ad-row:last-child { border-bottom:none; }
+  .ad-name { font-weight:500; }
+  .ad-num { text-align:right; font-family:'JetBrains Mono',monospace; }
+
+  /* Audit strip */
+  .audit-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  .audit-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px 16px; box-shadow:var(--shadow-card); }
+  .audit-title { font-size:11px; font-weight:600; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+  .audit-metric { font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; margin-bottom:2px; }
+  .audit-sub { font-size:11px; color:var(--text-tertiary); }
+  .match { color:var(--green); } .mismatch { color:var(--warn); } .flag { color:var(--error); }
+
+  /* Pacing */
+  .pacing-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:18px 20px; box-shadow:var(--shadow-card); }
+  .pacing-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+  .pacing-track { background:rgba(255,255,255,0.04); border-radius:4px; height:10px; position:relative; overflow:hidden; }
+  .pacing-fill { height:100%; border-radius:4px; background:var(--green); position:relative; }
+  .pacing-projection { position:absolute; top:0; bottom:0; background:repeating-linear-gradient(-45deg,transparent,transparent 3px,rgba(46,212,122,0.3) 3px,rgba(46,212,122,0.3) 6px); border-radius:0 4px 4px 0; }
+  .pacing-marker { position:absolute; top:-4px; width:2px; height:18px; background:var(--text-tertiary); }
+  .pacing-sub { display:flex; justify-content:space-between; margin-top:8px; font-size:11px; color:var(--text-tertiary); }
+
+  /* Controls */
+  .controls { position:fixed; bottom:0; left:0; right:0; background:var(--section); border-top:1px solid var(--border-strong); padding:10px 32px; display:flex; align-items:center; justify-content:space-between; z-index:100; font-size:12px; }
+  .controls button { padding:6px 14px; border-radius:6px; border:1px solid var(--border-strong); background:var(--card); color:var(--text); font-size:12px; font-weight:500; cursor:pointer; }
+  .controls button:hover { border-color:var(--green); color:var(--green); }
+  .edit-hint { position:fixed; top:12px; right:32px; font-size:11px; color:var(--text-tertiary); background:var(--section); padding:6px 12px; border-radius:6px; border:1px solid var(--border); z-index:100; }
+  [contenteditable] { outline:none; border-radius:3px; }
+  [contenteditable]:hover { background:rgba(255,255,255,0.04); }
+  [contenteditable]:focus { background:rgba(46,212,122,0.08); box-shadow:0 0 0 1px var(--green-deep); }
+
+  @media (max-width:1200px) { .kpi-strip { grid-template-columns:repeat(4,1fr); } }
+</style>
+</head>
+<body>
+
+<div class="edit-hint">Click text to edit &middot; Click funnel to filter &middot; Expand sources &amp; campaigns</div>
+
+<div class="cockpit" id="cockpit">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <h1 contenteditable>Marketing Cockpit</h1>
+      <span class="subtitle" contenteditable>all sources &middot; May 2026</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <a href="index.html" class="nav-link">Sales Cockpit &rarr;</a>
+      <span class="section-meta">12 May 09:42</span>
+    </div>
+  </div>
+
+  <!-- PERIOD SELECTOR (gold standard) -->
+  <div class="period-bar">
+    <div class="period-tabs">
+      <div class="period-tab">Today</div>
+      <div class="period-tab">L7</div>
+      <div class="period-tab">L14</div>
+      <div class="period-tab active">L30</div>
+      <div class="period-tab">MTD</div>
+      <div class="period-tab">WTD</div>
+      <div class="period-tab">Last Week</div>
+      <div class="period-tab">Custom</div>
+    </div>
+    <span class="section-meta">Apr 12 – May 12</span>
+  </div>
+
+  <!-- KPI STRIP (7 cards) -->
+  <div class="section">
+    <div class="kpi-strip">
+      <div class="kpi-card">
+        <div class="kpi-label"><span class="source-dot" style="background:var(--warn)"></span> Ad Spend</div>
+        <div class="kpi-value">$4,280</div>
+        <div class="kpi-sub"><span class="yesterday-badge">+$142 yday</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label"><span class="source-dot" style="background:var(--blue)"></span> CPL</div>
+        <div class="kpi-value">$78</div>
+        <div class="kpi-sub"><span class="delta delta-down">+$6 vs L30</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label"><span class="source-dot" style="background:var(--purple)"></span> Total Leads</div>
+        <div class="kpi-value">142</div>
+        <div class="kpi-sub"><span class="yesterday-badge">+6 yday</span> <span style="font-size:11px;color:var(--text-tertiary)">55 paid</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label"><span class="source-dot" style="background:var(--green)"></span> Qualified</div>
+        <div class="kpi-value">98</div>
+        <div class="kpi-sub"><span class="delta delta-neutral">69% qual rate</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label"><span class="source-dot" style="background:var(--blue)"></span> Booked</div>
+        <div class="kpi-value">52</div>
+        <div class="kpi-sub"><span class="yesterday-badge">+3 yday</span> <span style="font-size:11px;color:var(--text-tertiary)">53% book rate</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label"><span class="source-dot" style="background:var(--green)"></span> Closes</div>
+        <div class="kpi-value" style="color:var(--green)">7</div>
+        <div class="kpi-sub"><span class="delta delta-up">13.5% close rate</span></div>
+      </div>
+      <div class="kpi-card highlight">
+        <div class="kpi-label"><span class="source-dot" style="background:var(--green)"></span> ROAS</div>
+        <div class="kpi-value" style="color:var(--green)">6.5x</div>
+        <div class="kpi-sub"><span style="font-size:11px;color:var(--text-tertiary)">$27,750 / $4,280</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FUNNEL (clickable) -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">Paid Funnel</span>
+      <span class="section-meta">Meta Ads &middot; click to filter</span>
+    </div>
+    <div class="funnel-row">
+      <div class="funnel-step" onclick="selectFunnel(this,'spend')">
+        <div class="funnel-num" style="color:var(--warn)">$4,280</div>
+        <div class="funnel-label">Spend</div>
+      </div>
+      <div class="funnel-step selected" onclick="selectFunnel(this,'leads')">
+        <div class="funnel-num">55</div>
+        <div class="funnel-label">Paid Leads</div>
+        <div class="funnel-pct">$78 CPL</div>
+      </div>
+      <div class="funnel-step" onclick="selectFunnel(this,'qualified')">
+        <div class="funnel-num" style="color:var(--green)">38</div>
+        <div class="funnel-label">Qualified</div>
+        <div class="funnel-pct">69%</div>
+      </div>
+      <div class="funnel-step" onclick="selectFunnel(this,'booked')">
+        <div class="funnel-num" style="color:var(--blue)">22</div>
+        <div class="funnel-label">Booked</div>
+        <div class="funnel-pct">58%</div>
+      </div>
+      <div class="funnel-step" onclick="selectFunnel(this,'showed')">
+        <div class="funnel-num">16</div>
+        <div class="funnel-label">Showed</div>
+        <div class="funnel-pct">73% SR</div>
+      </div>
+      <div class="funnel-step" onclick="selectFunnel(this,'closed')" style="border-color:rgba(46,212,122,0.15)">
+        <div class="funnel-num" style="color:var(--green)">4</div>
+        <div class="funnel-label">Closed</div>
+        <div class="funnel-pct">$19,200</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DETAIL PANEL -->
+  <div class="section">
+    <div class="detail-panel">
+      <div class="detail-header">
+        <div class="detail-title">
+          <span id="detail-title">Paid Leads</span>
+          <span class="detail-count" id="detail-count">55 leads</span>
+        </div>
+        <span class="section-meta">Source &middot; Qual &middot; Date &middot; Status</span>
+      </div>
+      <div id="detail-list">
+        <div class="lead-row">
+          <div class="lead-avatar">SM</div>
+          <div class="lead-info"><div class="lead-name">Sarah Mitchell</div><div class="lead-meta"><span class="pill pill-paid">Meta Ad</span></div></div>
+          <div class="lead-source"><span class="pill pill-qualified">Qualified</span></div>
+          <div class="lead-date">May 11</div>
+          <div><span class="pill pill-booked">Booked</span></div>
+          <div class="lead-date">May 14</div>
+          <div class="lead-chevron">&rsaquo;</div>
+        </div>
+        <div class="lead-row">
+          <div class="lead-avatar">JP</div>
+          <div class="lead-info"><div class="lead-name">James Park</div><div class="lead-meta"><span class="pill pill-paid">Meta Lead Ad</span></div></div>
+          <div class="lead-source"><span class="pill pill-qualified">Qualified</span></div>
+          <div class="lead-date">May 10</div>
+          <div><span class="pill pill-booked">Booked</span></div>
+          <div class="lead-date">May 13</div>
+          <div class="lead-chevron">&rsaquo;</div>
+        </div>
+        <div class="lead-row">
+          <div class="lead-avatar">ML</div>
+          <div class="lead-info"><div class="lead-name">Maria Lopez</div><div class="lead-meta"><span class="pill pill-paid">Meta Ad</span></div></div>
+          <div class="lead-source"><span class="pill pill-qualified">Qualified</span></div>
+          <div class="lead-date">May 8</div>
+          <div><span class="pill pill-closed" style="color:var(--green)">Closed $4,500</span></div>
+          <div class="lead-date">May 11</div>
+          <div class="lead-chevron">&rsaquo;</div>
+        </div>
+        <div class="lead-row">
+          <div class="lead-avatar">RK</div>
+          <div class="lead-info"><div class="lead-name">Robert Kim</div><div class="lead-meta"><span class="pill pill-paid">Meta Ad</span></div></div>
+          <div class="lead-source"><span class="pill pill-unknown">Not qual</span></div>
+          <div class="lead-date">May 9</div>
+          <div><span style="font-size:12px;color:var(--text-tertiary)">—</span></div>
+          <div class="lead-date">—</div>
+          <div class="lead-chevron">&rsaquo;</div>
+        </div>
+        <div class="lead-row" style="opacity:0.5">
+          <div class="lead-avatar">+</div>
+          <div class="lead-info"><div class="lead-name" style="color:var(--text-tertiary)">51 more leads...</div></div>
+          <div></div><div></div><div></div><div></div><div class="lead-chevron">&rsaquo;</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOURCE BREAKDOWN (collapsible) -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">Source Breakdown</span>
+      <span class="section-meta">full funnel per source &middot; click to expand</span>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <!-- Paid (Meta) -->
+      <div class="source-section">
+        <div class="source-header" onclick="toggleSource(this)">
+          <div class="source-left">
+            <span class="pill pill-paid">Paid</span>
+            <span class="source-name">Meta Ads</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:20px">
+            <div class="source-stats"><span>55 leads</span><span>22 booked</span><span>4 closed</span><span style="color:var(--green)">$19,200</span></div>
+            <span class="source-chevron">&rsaquo;</span>
+          </div>
+        </div>
+        <div class="source-body">
+          <div class="source-funnel">
+            <div class="source-funnel-step"><div class="source-funnel-num">55</div><div class="source-funnel-label">Leads</div></div>
+            <div class="source-funnel-step"><div class="source-funnel-num" style="color:var(--green)">38</div><div class="source-funnel-label">Qualified</div><div class="source-funnel-pct">69%</div></div>
+            <div class="source-funnel-step"><div class="source-funnel-num" style="color:var(--blue)">22</div><div class="source-funnel-label">Booked</div><div class="source-funnel-pct">58%</div></div>
+            <div class="source-funnel-step"><div class="source-funnel-num">16</div><div class="source-funnel-label">Showed</div><div class="source-funnel-pct">73%</div></div>
+            <div class="source-funnel-step"><div class="source-funnel-num" style="color:var(--green)">4</div><div class="source-funnel-label">Closed</div><div class="source-funnel-pct">$19.2K</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="source-section">
+        <div class="source-header" onclick="toggleSource(this)">
+          <div class="source-left"><span class="pill pill-email">Email</span><span class="source-name">Email Blasts</span></div>
+          <div style="display:flex;align-items:center;gap:20px">
+            <div class="source-stats"><span>39 leads</span><span>18 booked</span><span>2 closed</span><span style="color:var(--green)">$5,300</span></div>
+            <span class="source-chevron">&rsaquo;</span>
+          </div>
+        </div>
+        <div class="source-body">
+          <div class="source-funnel">
+            <div class="source-funnel-step"><div class="source-funnel-num">39</div><div class="source-funnel-label">Leads</div></div>
+            <div class="source-funnel-step"><div class="source-funnel-num" style="color:var(--green)">32</div><div class="source-funnel-label">Qualified</div><div class="source-funnel-pct">82%</div></div>
+            <div class="source-funnel-step"><div class="source-funnel-num" style="color:var(--blue)">18</div><div class="source-funnel-label">Booked</div><div class="source-funnel-pct">56%</div></div>
+            <div class="source-funnel-step"><div class="source-funnel-num">14</div><div class="source-funnel-label">Showed</div><div class="source-funnel-pct">78%</div></div>
+            <div class="source-funnel-step"><div class="source-funnel-num" style="color:var(--green)">2</div><div class="source-funnel-label">Closed</div><div class="source-funnel-pct">$5.3K</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Instagram -->
+      <div class="source-section">
+        <div class="source-header" onclick="toggleSource(this)">
+          <div class="source-left"><span class="pill pill-ig">IG</span><span class="source-name">Instagram</span></div>
+          <div style="display:flex;align-items:center;gap:20px">
+            <div class="source-stats"><span>18 leads</span><span>8 booked</span><span>1 closed</span><span style="color:var(--green)">$3,250</span></div>
+            <span class="source-chevron">&rsaquo;</span>
+          </div>
+        </div>
+        <div class="source-body"><div class="source-funnel">
+          <div class="source-funnel-step"><div class="source-funnel-num">18</div><div class="source-funnel-label">Leads</div></div>
+          <div class="source-funnel-step"><div class="source-funnel-num">14</div><div class="source-funnel-label">Qualified</div><div class="source-funnel-pct">78%</div></div>
+          <div class="source-funnel-step"><div class="source-funnel-num">8</div><div class="source-funnel-label">Booked</div><div class="source-funnel-pct">57%</div></div>
+          <div class="source-funnel-step"><div class="source-funnel-num">6</div><div class="source-funnel-label">Showed</div><div class="source-funnel-pct">75%</div></div>
+          <div class="source-funnel-step"><div class="source-funnel-num" style="color:var(--green)">1</div><div class="source-funnel-label">Closed</div><div class="source-funnel-pct">$3.3K</div></div>
+        </div></div>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="source-section">
+        <div class="source-header" onclick="toggleSource(this)">
+          <div class="source-left"><span class="pill pill-newsletter">Newsletter</span><span class="source-name">Newsletter</span></div>
+          <div style="display:flex;align-items:center;gap:20px">
+            <div class="source-stats"><span>15 leads</span><span>4 booked</span><span>0 closed</span></div>
+            <span class="source-chevron">&rsaquo;</span>
+          </div>
+        </div>
+        <div class="source-body"><div class="source-funnel">
+          <div class="source-funnel-step"><div class="source-funnel-num">15</div><div class="source-funnel-label">Leads</div></div>
+          <div class="source-funnel-step"><div class="source-funnel-num">10</div><div class="source-funnel-label">Qualified</div><div class="source-funnel-pct">67%</div></div>
+          <div class="source-funnel-step"><div class="source-funnel-num">4</div><div class="source-funnel-label">Booked</div><div class="source-funnel-pct">40%</div></div>
+          <div class="source-funnel-step"><div class="source-funnel-num">3</div><div class="source-funnel-label">Showed</div><div class="source-funnel-pct">75%</div></div>
+          <div class="source-funnel-step"><div class="source-funnel-num">0</div><div class="source-funnel-label">Closed</div><div class="source-funnel-pct">—</div></div>
+        </div></div>
+      </div>
+
+      <!-- ManyChat -->
+      <div class="source-section">
+        <div class="source-header" onclick="toggleSource(this)">
+          <div class="source-left"><span class="pill pill-manychat">ManyChat</span><span class="source-name">ManyChat DM</span></div>
+          <div style="display:flex;align-items:center;gap:20px">
+            <div class="source-stats"><span>8 leads</span><span>0 booked</span></div>
+            <span class="source-chevron">&rsaquo;</span>
+          </div>
+        </div>
+        <div class="source-body"><div class="source-funnel">
+          <div class="source-funnel-step"><div class="source-funnel-num">8</div><div class="source-funnel-label">Leads</div></div>
+          <div class="source-funnel-step"><div class="source-funnel-num">4</div><div class="source-funnel-label">Qualified</div><div class="source-funnel-pct">50%</div></div>
+          <div class="source-funnel-step"><div class="source-funnel-num">0</div><div class="source-funnel-label">Booked</div><div class="source-funnel-pct">0%</div></div>
+          <div class="source-funnel-step"><div class="source-funnel-num">0</div><div class="source-funnel-label">Showed</div><div class="source-funnel-pct">—</div></div>
+          <div class="source-funnel-step"><div class="source-funnel-num">0</div><div class="source-funnel-label">Closed</div><div class="source-funnel-pct">—</div></div>
+        </div></div>
+      </div>
+
+      <!-- Unknown / Unattributed -->
+      <div class="source-section" style="border-color:rgba(229,57,53,0.15)">
+        <div class="source-header" onclick="toggleSource(this)">
+          <div class="source-left"><span class="pill pill-unknown">Unknown</span><span class="source-name" style="color:var(--warn)">Unattributed</span></div>
+          <div style="display:flex;align-items:center;gap:20px">
+            <div class="source-stats"><span style="color:var(--warn)">7 leads</span><span>0 booked</span></div>
+            <span class="source-chevron">&rsaquo;</span>
+          </div>
+        </div>
+        <div class="source-body"><p style="font-size:13px;color:var(--text-secondary);margin-bottom:8px" contenteditable>7 leads with no UTM or self-reported source. Likely: setter Typeform bypass (3), ManyChat channel-blind (2), direct unknown (2).</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAMPAIGN (collapsible with ads) -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-title">Campaigns</span>
+      <span class="section-meta">Meta Ads &middot; click to expand ads</span>
+    </div>
+    <div class="campaign-card">
+      <div class="campaign-header" onclick="toggleCampaign(this)">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="source-chevron">&rsaquo;</span>
+          <span style="font-weight:600" contenteditable>HP Coaching — Core Retargeting</span>
+          <span class="pill pill-paid">Active</span>
+        </div>
+        <div class="source-stats">
+          <span>$4,280 spent</span>
+          <span>55 leads</span>
+          <span>$78 CPL</span>
+          <span style="color:var(--green)">4 closes</span>
+          <span style="color:var(--green)">6.5x ROAS</span>
+        </div>
+      </div>
+      <div class="campaign-body">
+        <div class="ad-row" style="background:var(--section);font-size:10px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.08em">
+          <div>Ad Creative</div><div class="ad-num">Spend</div><div class="ad-num">Leads</div><div class="ad-num">CPL</div><div class="ad-num">Booked</div><div class="ad-num">Closed</div>
+        </div>
+        <div class="ad-row">
+          <div class="ad-name" contenteditable>Dan — "Your wife noticed" (video)</div>
+          <div class="ad-num">$1,420</div><div class="ad-num">22</div><div class="ad-num" style="color:var(--green)">$65</div><div class="ad-num">10</div><div class="ad-num" style="color:var(--green)">2</div>
+        </div>
+        <div class="ad-row">
+          <div class="ad-name" contenteditable>Dan — Testimonial montage (video)</div>
+          <div class="ad-num">$1,180</div><div class="ad-num">15</div><div class="ad-num">$79</div><div class="ad-num">7</div><div class="ad-num" style="color:var(--green)">1</div>
+        </div>
+        <div class="ad-row">
+          <div class="ad-name" contenteditable>Static — Before/After grid</div>
+          <div class="ad-num">$890</div><div class="ad-num">10</div><div class="ad-num">$89</div><div class="ad-num">3</div><div class="ad-num" style="color:var(--green)">1</div>
+        </div>
+        <div class="ad-row">
+          <div class="ad-name" contenteditable>Dan — Car rant "at 42..." (video)</div>
+          <div class="ad-num">$520</div><div class="ad-num">5</div><div class="ad-num" style="color:var(--warn)">$104</div><div class="ad-num">2</div><div class="ad-num">0</div>
+        </div>
+        <div class="ad-row">
+          <div class="ad-name" contenteditable>Emil — Direct pitch (video)</div>
+          <div class="ad-num">$270</div><div class="ad-num">3</div><div class="ad-num">$90</div><div class="ad-num">0</div><div class="ad-num">0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PACING -->
+  <div class="section">
+    <div class="pacing-card">
+      <div class="pacing-header">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="font-size:13px;font-weight:500">Pacing</span>
+          <div class="period-tabs">
+            <div class="period-tab active">Spend</div>
+            <div class="period-tab">Leads</div>
+            <div class="period-tab">ROAS</div>
+            <div class="period-tab">Booked</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="period-tabs">
+            <div class="period-tab active">vs Goal</div>
+            <div class="period-tab">vs Last Month</div>
+            <div class="period-tab">vs 3M Avg</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600">$4,280</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text-secondary)">/ $8,000 (May Budget)</span>
+      </div>
+      <div class="pacing-track">
+        <div class="pacing-fill" style="width:53.5%">
+          <div class="pacing-projection" style="left:100%;width:84%"></div>
+        </div>
+        <div class="pacing-marker" style="left:38.7%"></div>
+      </div>
+      <div class="pacing-sub">
+        <span>Day 12 of 31 (38.7%)</span>
+        <span>Projection: <strong style="color:var(--warn)">$11,026</strong> (38% over budget)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUDIT STRIP -->
+  <div class="section">
+    <div class="section-header"><span class="section-title">Data Audit</span></div>
+    <div class="audit-grid">
+      <div class="audit-card">
+        <div class="audit-title"><span class="source-dot" style="background:var(--warn)"></span> Attribution</div>
+        <div class="audit-metric match">95.1%</div>
+        <div class="audit-sub" contenteditable>7 unattributed of 142 total</div>
+      </div>
+      <div class="audit-card">
+        <div class="audit-title"><span class="source-dot" style="background:var(--blue)"></span> CAPI Match</div>
+        <div class="audit-metric match">8.2/10</div>
+        <div class="audit-sub" contenteditable>Meta event match quality score</div>
+      </div>
+      <div class="audit-card">
+        <div class="audit-title"><span class="source-dot" style="background:var(--green)"></span> Pixel Health</div>
+        <div class="audit-metric match">Firing</div>
+        <div class="audit-sub" contenteditable>Lead + Schedule events &middot; last: 2h ago</div>
+      </div>
+      <div class="audit-card">
+        <div class="audit-title"><span class="source-dot" style="background:var(--error)"></span> Token Expiry</div>
+        <div class="audit-metric mismatch">22 days</div>
+        <div class="audit-sub" contenteditable>Meta token expires Jun 3 &middot; owner: Natasha</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <div style="display:flex;align-items:center;gap:16px;color:var(--text-secondary);font-size:12px">
+    <span>Marketing Cockpit Wireframe &middot; Click to edit &middot; Expand sources &amp; campaigns</span>
+  </div>
+  <div style="display:flex;gap:8px">
+    <button onclick="location.href='index.html'">Sales Cockpit</button>
+  </div>
+</div>
+
+<script>
+function selectFunnel(el, filter) {
+  document.querySelectorAll('.funnel-step').forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('detail-title').textContent = filter.charAt(0).toUpperCase() + filter.slice(1);
+}
+
+function toggleSource(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.source-chevron');
+  body.classList.toggle('open');
+  chevron.classList.toggle('open');
+}
+
+function toggleCampaign(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('.source-chevron');
+  body.classList.toggle('open');
+  chevron.classList.toggle('open');
+}
+
+document.querySelectorAll('.period-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const group = tab.parentElement;
+    group.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
