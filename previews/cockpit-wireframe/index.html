@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HPF Cockpit — Sales Island Wireframe</title>
+<title>HPF Cockpit — Sales Island Wireframe v2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -22,15 +22,16 @@
     --text-tertiary: #5C6370;
     --border: rgba(255, 255, 255, 0.06);
     --border-strong: rgba(255, 255, 255, 0.12);
+    --border-hover: rgba(255, 255, 255, 0.18);
     --error: #E53935;
     --warn: #FB8C00;
     --blue: #1E88E5;
     --purple: #9C27B0;
+    --teal: #00897B;
     --shadow-card: 0 1px 0 rgba(255,255,255,0.02) inset, 0 1px 2px rgba(0,0,0,0.4);
+    --shadow-pop: 0 8px 24px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.04) inset;
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   body {
     background: var(--base);
     color: var(--text);
@@ -38,489 +39,308 @@
     font-size: 14px;
     line-height: 1.5;
     min-height: 100vh;
+    overflow-x: hidden;
   }
-
-  .cockpit {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 24px 32px 80px;
-  }
+  .cockpit { max-width: 1280px; margin: 0 auto; padding: 24px 32px 80px; }
 
   /* ── Header ── */
   .header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 24px;
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding-bottom: 20px; border-bottom: 1px solid var(--border); margin-bottom: 24px;
   }
   .header-left { display: flex; align-items: baseline; gap: 16px; }
   .header h1 {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 22px;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: -0.02em;
+    font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700;
+    color: var(--text); letter-spacing: -0.02em;
   }
-  .header .subtitle {
-    font-size: 13px;
-    color: var(--text-tertiary);
-    font-weight: 400;
-  }
-  .period-tabs {
-    display: flex;
-    gap: 2px;
-    background: var(--section);
-    border-radius: 8px;
-    padding: 3px;
-  }
+  .header .subtitle { font-size: 13px; color: var(--text-tertiary); }
+  .period-tabs { display: flex; gap: 2px; background: var(--section); border-radius: 8px; padding: 3px; }
   .period-tab {
-    padding: 6px 14px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all 0.15s;
+    padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 500;
+    color: var(--text-secondary); cursor: pointer; transition: all 0.15s;
   }
-  .period-tab.active {
-    background: var(--card);
-    color: var(--text);
-    box-shadow: var(--shadow-card);
-  }
+  .period-tab.active { background: var(--card); color: var(--text); box-shadow: var(--shadow-card); }
   .period-tab:hover:not(.active) { color: var(--text); }
 
   /* ── Section ── */
   .section { margin-bottom: 24px; }
-  .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-  }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
   .section-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
+    font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600;
+    color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.08em;
   }
-  .section-meta {
-    font-size: 11px;
-    color: var(--text-tertiary);
-    font-family: 'JetBrains Mono', monospace;
-  }
+  .section-meta { font-size: 11px; color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace; }
 
   /* ── KPI Strip ── */
-  .kpi-strip {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
-    margin-bottom: 24px;
-  }
+  .kpi-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 24px; }
   .kpi-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px 18px;
-    box-shadow: var(--shadow-card);
-    position: relative;
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px 18px; box-shadow: var(--shadow-card);
   }
   .kpi-card.highlight {
     border-color: rgba(46, 212, 122, 0.2);
     background: linear-gradient(135deg, var(--card) 0%, rgba(46, 212, 122, 0.04) 100%);
   }
   .kpi-label {
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--text-tertiary);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    margin-bottom: 6px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    font-size: 11px; font-weight: 500; color: var(--text-tertiary);
+    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px;
   }
   .kpi-value {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 28px;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-bottom: 4px;
+    font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700;
+    letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 4px;
   }
-  .kpi-sub {
-    font-size: 12px;
-    color: var(--text-tertiary);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .kpi-target {
-    font-size: 11px;
-    color: var(--text-tertiary);
-    font-family: 'JetBrains Mono', monospace;
-  }
-  .kpi-delta {
-    font-size: 11px;
-    font-weight: 600;
-    padding: 1px 6px;
-    border-radius: 4px;
-  }
+  .kpi-sub { font-size: 12px; color: var(--text-tertiary); display: flex; align-items: center; gap: 8px; }
+  .kpi-target { font-size: 11px; color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace; }
+  .kpi-delta { font-size: 11px; font-weight: 600; padding: 1px 6px; border-radius: 4px; }
   .delta-up { color: var(--green); background: var(--green-faint); }
   .delta-down { color: var(--error); background: rgba(229, 57, 53, 0.1); }
   .delta-flat { color: var(--text-tertiary); background: rgba(255,255,255,0.04); }
-  .source-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    display: inline-block;
-  }
-  .tooltip-trigger {
-    cursor: help;
-    border-bottom: 1px dotted var(--text-tertiary);
-  }
+  .source-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+  .tooltip-trigger { cursor: help; border-bottom: 1px dotted var(--text-tertiary); }
 
   /* ── Funnel ── */
-  .funnel-row {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
-    margin-bottom: 16px;
-  }
+  .funnel-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-bottom: 4px; }
   .funnel-step {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px 14px;
-    text-align: center;
-    position: relative;
+    background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+    padding: 12px 14px; text-align: center; position: relative; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .funnel-step:hover { border-color: var(--border-hover); background: var(--card-hover); }
+  .funnel-step.selected {
+    border-color: var(--green); background: var(--green-faint);
+    box-shadow: 0 0 0 1px var(--green-deep);
   }
   .funnel-step::after {
-    content: '';
-    position: absolute;
-    right: -6px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 0; height: 0;
-    border-top: 5px solid transparent;
-    border-bottom: 5px solid transparent;
-    border-left: 5px solid var(--text-tertiary);
+    content: ''; position: absolute; right: -6px; top: 50%; transform: translateY(-50%);
+    width: 0; height: 0; border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent; border-left: 5px solid var(--text-tertiary);
   }
   .funnel-step:last-child::after { display: none; }
-  .funnel-num {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    line-height: 1.2;
+  .funnel-num { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; line-height: 1.2; }
+  .funnel-label { font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+  .funnel-pct { font-size: 10px; color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; margin-top: 4px; }
+  .funnel-hint { text-align: center; font-size: 11px; color: var(--text-tertiary); margin-bottom: 16px; }
+
+  /* ── Pacing Bar ── */
+  .pacing-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; box-shadow: var(--shadow-card); }
+  .pacing-header { display: flex; justify-content: space-between; margin-bottom: 12px; }
+  .pacing-label { font-size: 13px; font-weight: 500; }
+  .pacing-numbers { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text-secondary); }
+  .pacing-track { background: rgba(255,255,255,0.04); border-radius: 4px; height: 10px; position: relative; overflow: hidden; }
+  .pacing-fill { height: 100%; border-radius: 4px; background: var(--green); position: relative; }
+  .pacing-projection {
+    position: absolute; top: 0; bottom: 0;
+    background: repeating-linear-gradient(-45deg, transparent, transparent 3px, rgba(46,212,122,0.3) 3px, rgba(46,212,122,0.3) 6px);
+    border-radius: 0 4px 4px 0;
   }
-  .funnel-label {
-    font-size: 10px;
-    color: var(--text-tertiary);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    margin-top: 2px;
+  .pacing-marker { position: absolute; top: -4px; width: 2px; height: 18px; background: var(--text-tertiary); }
+  .pacing-sub { display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; color: var(--text-tertiary); }
+
+  /* ── Detail Panel (funnel-driven) ── */
+  .detail-panel {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    box-shadow: var(--shadow-card); overflow: hidden; min-height: 300px;
   }
-  .funnel-pct {
-    font-size: 10px;
-    color: var(--text-secondary);
-    font-family: 'JetBrains Mono', monospace;
-    margin-top: 4px;
+  .detail-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px; background: var(--section); border-bottom: 1px solid var(--border);
+  }
+  .detail-title {
+    font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .detail-count {
+    font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px;
+    background: rgba(255,255,255,0.06); color: var(--text-secondary);
+  }
+  .detail-empty {
+    display: flex; align-items: center; justify-content: center;
+    height: 200px; color: var(--text-tertiary); font-size: 13px;
   }
 
-  /* ── Closer Table ── */
-  .table-wrap {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: var(--shadow-card);
+  /* ── Lead Row ── */
+  .lead-row {
+    display: grid; grid-template-columns: 36px 1fr 120px 100px 140px 60px;
+    gap: 12px; padding: 11px 18px; border-bottom: 1px solid var(--border);
+    align-items: center; cursor: pointer; transition: background 0.1s;
   }
-  table {
-    width: 100%;
-    border-collapse: collapse;
+  .lead-row:hover { background: var(--card-hover); }
+  .lead-row:last-child { border-bottom: none; }
+  .lead-avatar {
+    width: 32px; height: 32px; border-radius: 50%; background: var(--section);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; color: var(--text-secondary);
   }
-  th {
-    text-align: left;
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--text-tertiary);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 10px 16px;
-    background: var(--section);
-    border-bottom: 1px solid var(--border);
-  }
-  th.num { text-align: right; }
-  td {
-    padding: 12px 16px;
-    font-size: 13px;
-    border-bottom: 1px solid var(--border);
-  }
-  td.num {
-    text-align: right;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-  }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: var(--card-hover); }
-  .closer-name { font-weight: 600; }
-  .bar-cell { padding: 12px 16px; }
-  .bar-bg {
-    background: rgba(255,255,255,0.04);
-    border-radius: 3px;
-    height: 6px;
-    overflow: hidden;
-  }
-  .bar-fill {
-    height: 100%;
-    border-radius: 3px;
-    transition: width 0.3s;
-  }
+  .lead-info { min-width: 0; }
+  .lead-name { font-weight: 600; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lead-meta { font-size: 11px; color: var(--text-tertiary); display: flex; gap: 8px; }
+  .lead-closer { font-size: 12px; color: var(--text-secondary); }
+  .lead-date { font-size: 12px; color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace; }
+  .lead-detail-col { font-size: 12px; color: var(--text-secondary); }
+  .lead-chevron { color: var(--text-tertiary); font-size: 16px; text-align: right; }
 
-  /* ── Closes List ── */
-  .close-row {
-    display: grid;
-    grid-template-columns: 100px 1fr 120px 100px 100px;
-    gap: 12px;
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-    align-items: center;
+  /* Status pills */
+  .status-pill {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: 0.04em;
   }
-  .close-row:last-child { border-bottom: none; }
-  .close-row:hover { background: var(--card-hover); }
-  .close-date {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--text-secondary);
+  .pill-showed { color: var(--green); background: var(--green-faint); }
+  .pill-closed { color: var(--green); background: rgba(46,212,122,0.2); }
+  .pill-cancelled { color: var(--warn); background: rgba(251,140,0,0.12); }
+  .pill-no-show { color: var(--error); background: rgba(229,57,53,0.1); }
+  .pill-dq { color: var(--error); background: rgba(229,57,53,0.15); }
+  .pill-scheduled { color: var(--blue); background: rgba(30,136,229,0.12); }
+  .pill-fu { color: var(--warn); background: rgba(251,140,0,0.12); }
+
+  /* ── Lead Card Slide-out ── */
+  .card-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 200;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
   }
-  .close-name { font-weight: 500; }
-  .close-closer { color: var(--text-secondary); }
-  .close-cash {
-    text-align: right;
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 600;
-    color: var(--green);
+  .card-overlay.open { opacity: 1; pointer-events: all; }
+  .lead-card {
+    position: fixed; top: 0; right: -520px; bottom: 0; width: 520px; z-index: 201;
+    background: var(--section); border-left: 1px solid var(--border-strong);
+    box-shadow: -8px 0 32px rgba(0,0,0,0.5);
+    transition: right 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    overflow-y: auto;
   }
-  .close-contracted {
-    text-align: right;
-    font-family: 'JetBrains Mono', monospace;
-    color: var(--text-secondary);
+  .lead-card.open { right: 0; }
+  .card-close {
+    position: absolute; top: 16px; right: 16px; background: none; border: none;
+    color: var(--text-tertiary); font-size: 20px; cursor: pointer; padding: 4px 8px;
+    border-radius: 4px;
   }
+  .card-close:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+  .card-top {
+    padding: 24px 24px 20px; border-bottom: 1px solid var(--border);
+  }
+  .card-name {
+    font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .card-subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; }
+  .card-status-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .card-section { padding: 16px 24px; border-bottom: 1px solid var(--border); }
+  .card-section-title {
+    font-size: 10px; font-weight: 600; color: var(--text-tertiary);
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px;
+  }
+  .card-field {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding: 6px 0; font-size: 13px;
+  }
+  .card-field + .card-field { border-top: 1px solid var(--border); }
+  .card-field-label { color: var(--text-tertiary); min-width: 120px; }
+  .card-field-value { text-align: right; font-weight: 500; }
+  .card-field-value.mono { font-family: 'JetBrains Mono', monospace; }
+  .card-link {
+    color: var(--blue); text-decoration: none; font-size: 12px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .card-link:hover { text-decoration: underline; }
+  .card-timeline { padding: 16px 24px 24px; }
+  .timeline-item {
+    display: flex; gap: 12px; padding: 8px 0; font-size: 12px;
+    border-left: 2px solid var(--border); margin-left: 6px; padding-left: 16px;
+    position: relative;
+  }
+  .timeline-item::before {
+    content: ''; position: absolute; left: -5px; top: 12px;
+    width: 8px; height: 8px; border-radius: 50%; background: var(--card);
+    border: 2px solid var(--text-tertiary);
+  }
+  .timeline-item.active::before { border-color: var(--green); background: var(--green-faint); }
+  .timeline-date { color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace; min-width: 70px; }
+  .timeline-text { color: var(--text-secondary); }
+
+  /* ── Per-closer strip ── */
+  .closer-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .closer-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px 18px; box-shadow: var(--shadow-card);
+  }
+  .closer-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .closer-name-big { font-weight: 700; font-size: 15px; }
+  .closer-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .closer-stat-label { font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; }
+  .closer-stat-value { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; }
 
   /* ── Audit Panel ── */
-  .audit-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
+  .audit-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
   .audit-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px 18px;
-    box-shadow: var(--shadow-card);
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 14px 16px; box-shadow: var(--shadow-card);
   }
   .audit-title {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    font-size: 11px; font-weight: 600; color: var(--text-tertiary);
+    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
   }
-  .audit-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 0;
-    font-size: 13px;
+  .audit-metric {
+    font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700;
+    margin-bottom: 2px;
   }
-  .audit-row + .audit-row {
-    border-top: 1px solid var(--border);
-  }
-  .audit-label { color: var(--text-secondary); }
-  .audit-value {
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 500;
-  }
+  .audit-sub { font-size: 11px; color: var(--text-tertiary); }
   .match { color: var(--green); }
   .mismatch { color: var(--warn); }
   .flag { color: var(--error); }
 
-  /* ── Pacing Bar ── */
-  .pacing-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 18px 20px;
-    box-shadow: var(--shadow-card);
-  }
-  .pacing-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 12px;
-  }
-  .pacing-label { font-size: 13px; font-weight: 500; }
-  .pacing-numbers {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13px;
-    color: var(--text-secondary);
-  }
-  .pacing-track {
-    background: rgba(255,255,255,0.04);
-    border-radius: 4px;
-    height: 10px;
-    position: relative;
-    overflow: hidden;
-  }
-  .pacing-fill {
-    height: 100%;
-    border-radius: 4px;
-    background: var(--green);
-    position: relative;
-  }
-  .pacing-projection {
-    position: absolute;
-    top: 0; bottom: 0;
-    background: repeating-linear-gradient(
-      -45deg,
-      transparent, transparent 3px,
-      rgba(46, 212, 122, 0.3) 3px, rgba(46, 212, 122, 0.3) 6px
-    );
-    border-radius: 0 4px 4px 0;
-  }
-  .pacing-marker {
-    position: absolute;
-    top: -4px;
-    width: 2px;
-    height: 18px;
-    background: var(--text-tertiary);
-  }
-  .pacing-sub {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 8px;
-    font-size: 11px;
-    color: var(--text-tertiary);
-  }
-
-  /* ── Annotations ── */
-  .annotation-layer { position: relative; }
-  .annotation {
-    position: absolute;
-    background: rgba(251, 140, 0, 0.12);
-    border: 1px solid rgba(251, 140, 0, 0.3);
-    border-radius: 6px;
-    padding: 8px 12px;
-    font-size: 12px;
-    color: var(--warn);
-    max-width: 260px;
-    cursor: move;
-    z-index: 10;
-  }
-  .annotation::before {
-    content: 'NOTE';
-    display: block;
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    margin-bottom: 4px;
-    opacity: 0.7;
-  }
-
   /* ── Controls ── */
   .controls {
-    position: fixed;
-    bottom: 0;
-    left: 0; right: 0;
-    background: var(--section);
-    border-top: 1px solid var(--border-strong);
-    padding: 10px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 100;
+    position: fixed; bottom: 0; left: 0; right: 0; background: var(--section);
+    border-top: 1px solid var(--border-strong); padding: 10px 32px;
+    display: flex; align-items: center; justify-content: space-between; z-index: 100;
     font-size: 12px;
   }
-  .controls-left {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    color: var(--text-secondary);
-  }
+  .controls-left { display: flex; align-items: center; gap: 16px; color: var(--text-secondary); }
   .controls button {
-    padding: 6px 14px;
-    border-radius: 6px;
-    border: 1px solid var(--border-strong);
-    background: var(--card);
-    color: var(--text);
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.15s;
+    padding: 6px 14px; border-radius: 6px; border: 1px solid var(--border-strong);
+    background: var(--card); color: var(--text); font-size: 12px; font-weight: 500;
+    cursor: pointer; transition: all 0.15s;
   }
-  .controls button:hover {
-    background: var(--card-hover);
-    border-color: var(--green);
-    color: var(--green);
-  }
-  .controls button.primary {
-    background: var(--green);
-    color: var(--base);
-    border-color: var(--green);
-  }
+  .controls button:hover { background: var(--card-hover); border-color: var(--green); color: var(--green); }
+  .controls button.primary { background: var(--green); color: var(--base); border-color: var(--green); }
 
   /* ── Editable ── */
-  [contenteditable] {
-    outline: none;
-    transition: background 0.15s;
-    border-radius: 3px;
-  }
-  [contenteditable]:hover {
-    background: rgba(255,255,255,0.04);
-  }
-  [contenteditable]:focus {
-    background: rgba(46, 212, 122, 0.08);
-    box-shadow: 0 0 0 1px var(--green-deep);
-  }
-
+  [contenteditable] { outline: none; transition: background 0.15s; border-radius: 3px; }
+  [contenteditable]:hover { background: rgba(255,255,255,0.04); }
+  [contenteditable]:focus { background: rgba(46, 212, 122, 0.08); box-shadow: 0 0 0 1px var(--green-deep); }
   .edit-hint {
-    position: fixed;
-    top: 12px;
-    right: 32px;
-    font-size: 11px;
-    color: var(--text-tertiary);
-    background: var(--section);
-    padding: 6px 12px;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    z-index: 100;
+    position: fixed; top: 12px; right: 32px; font-size: 11px; color: var(--text-tertiary);
+    background: var(--section); padding: 6px 12px; border-radius: 6px;
+    border: 1px solid var(--border); z-index: 100;
   }
 
-  /* ── Two-col layout ── */
-  .split {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
+  /* ── Annotation ── */
+  .annotation {
+    position: absolute; background: rgba(251, 140, 0, 0.12);
+    border: 1px solid rgba(251, 140, 0, 0.3); border-radius: 6px;
+    padding: 8px 12px; font-size: 12px; color: var(--warn); max-width: 260px;
+    cursor: move; z-index: 10;
+  }
+  .annotation::before {
+    content: 'NOTE'; display: block; font-size: 9px; font-weight: 700;
+    letter-spacing: 0.1em; margin-bottom: 4px; opacity: 0.7;
   }
 
   @media (max-width: 1024px) {
     .kpi-strip { grid-template-columns: repeat(3, 1fr); }
     .funnel-row { grid-template-columns: repeat(4, 1fr); }
-    .split { grid-template-columns: 1fr; }
+    .closer-strip { grid-template-columns: 1fr; }
+    .audit-grid { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 </head>
 <body>
 
-<div class="edit-hint">Click any text to edit &middot; Changes save to localStorage</div>
+<div class="edit-hint">Click any text to edit &middot; Click funnel steps to filter &middot; Click leads to open card</div>
 
 <div class="cockpit" id="cockpit">
 
-  <!-- ── HEADER ── -->
+  <!-- HEADER -->
   <div class="header">
     <div class="header-left">
       <h1 contenteditable>Sales Cockpit</h1>
@@ -537,432 +357,486 @@
     </div>
   </div>
 
-  <!-- ── KPI STRIP ── -->
+  <!-- KPI STRIP -->
   <div class="section">
     <div class="kpi-strip">
       <div class="kpi-card">
-        <div class="kpi-label">
-          <span class="source-dot" style="background:var(--blue)"></span>
-          <span class="tooltip-trigger" contenteditable>Scheduled</span>
-        </div>
-        <div class="kpi-value" contenteditable>40</div>
-        <div class="kpi-sub">
-          <span class="kpi-target">vs 1 rescheduled</span>
-        </div>
+        <div class="kpi-label"><span class="source-dot" style="background:var(--blue)"></span><span class="tooltip-trigger">Scheduled</span></div>
+        <div class="kpi-value">40</div>
+        <div class="kpi-sub"><span class="kpi-target">excl. 1 rescheduled</span></div>
       </div>
-
       <div class="kpi-card">
-        <div class="kpi-label">
-          <span class="source-dot" style="background:var(--green)"></span>
-          <span class="tooltip-trigger" contenteditable>Calls Taken</span>
-        </div>
-        <div class="kpi-value" contenteditable>24</div>
-        <div class="kpi-sub">
-          <span class="kpi-delta delta-flat">10 cancelled &middot; 4 NS &middot; 2 DQ</span>
-        </div>
+        <div class="kpi-label"><span class="source-dot" style="background:var(--green)"></span><span class="tooltip-trigger">Calls Taken</span></div>
+        <div class="kpi-value">24</div>
+        <div class="kpi-sub"><span class="kpi-delta delta-flat">10 cxl &middot; 4 NS &middot; 2 DQ</span></div>
       </div>
-
       <div class="kpi-card">
-        <div class="kpi-label">
-          <span class="source-dot" style="background:var(--purple)"></span>
-          <span class="tooltip-trigger" contenteditable>Net Show Rate</span>
-        </div>
-        <div class="kpi-value" contenteditable>80%</div>
-        <div class="kpi-sub">
-          <span class="kpi-target">target: 70%</span>
-          <span class="kpi-delta delta-up">+10pts</span>
-        </div>
+        <div class="kpi-label"><span class="source-dot" style="background:var(--purple)"></span><span class="tooltip-trigger">Net Show Rate</span></div>
+        <div class="kpi-value">80%</div>
+        <div class="kpi-sub"><span class="kpi-target">target: 70%</span><span class="kpi-delta delta-up">+10pts</span></div>
       </div>
-
       <div class="kpi-card">
-        <div class="kpi-label">
-          <span class="source-dot" style="background:var(--green)"></span>
-          <span class="tooltip-trigger" contenteditable>Close Rate</span>
-        </div>
-        <div class="kpi-value" contenteditable>29.2%</div>
-        <div class="kpi-sub">
-          <span class="kpi-target">target: 30%</span>
-          <span class="kpi-delta delta-flat">-0.8pts</span>
-        </div>
+        <div class="kpi-label"><span class="source-dot" style="background:var(--green)"></span><span class="tooltip-trigger">Close Rate</span></div>
+        <div class="kpi-value">29.2%</div>
+        <div class="kpi-sub"><span class="kpi-target">target: 30%</span><span class="kpi-delta delta-flat">-0.8pts</span></div>
       </div>
-
       <div class="kpi-card highlight">
-        <div class="kpi-label">
-          <span class="source-dot" style="background:var(--green)"></span>
-          <span class="tooltip-trigger" contenteditable>Cash Collected</span>
-        </div>
-        <div class="kpi-value" style="color:var(--green)" contenteditable>$27,750</div>
-        <div class="kpi-sub">
-          <span class="kpi-target">contracted: $39,000</span>
-        </div>
+        <div class="kpi-label"><span class="source-dot" style="background:var(--green)"></span><span class="tooltip-trigger">Cash Collected</span></div>
+        <div class="kpi-value" style="color:var(--green)">$27,750</div>
+        <div class="kpi-sub"><span class="kpi-target">contracted: $39,000</span></div>
       </div>
     </div>
   </div>
 
-  <!-- ── FUNNEL ── -->
+  <!-- FUNNEL (clickable) -->
   <div class="section">
     <div class="section-header">
-      <span class="section-title" contenteditable>Funnel</span>
-      <span class="section-meta">7 closes from 40 scheduled</span>
+      <span class="section-title">Funnel</span>
+      <span class="section-meta">click a step to filter the detail panel below</span>
     </div>
     <div class="funnel-row">
-      <div class="funnel-step">
+      <div class="funnel-step selected" data-filter="scheduled" onclick="selectFunnel(this)">
         <div class="funnel-num">40</div>
-        <div class="funnel-label" contenteditable>Scheduled</div>
+        <div class="funnel-label">Scheduled</div>
       </div>
-      <div class="funnel-step">
+      <div class="funnel-step" data-filter="cancelled" onclick="selectFunnel(this)">
         <div class="funnel-num" style="color:var(--warn)">10</div>
-        <div class="funnel-label" contenteditable>Cancelled</div>
+        <div class="funnel-label">Cancelled</div>
         <div class="funnel-pct">25%</div>
       </div>
-      <div class="funnel-step">
+      <div class="funnel-step" data-filter="no_show" onclick="selectFunnel(this)">
         <div class="funnel-num" style="color:var(--text-secondary)">4</div>
-        <div class="funnel-label" contenteditable>No Shows</div>
+        <div class="funnel-label">No Shows</div>
         <div class="funnel-pct">13%</div>
       </div>
-      <div class="funnel-step">
+      <div class="funnel-step" data-filter="quick_dq" onclick="selectFunnel(this)">
         <div class="funnel-num" style="color:var(--error)">2</div>
-        <div class="funnel-label" contenteditable>Quick DQ</div>
+        <div class="funnel-label">Quick DQ</div>
         <div class="funnel-pct">7%</div>
       </div>
-      <div class="funnel-step">
+      <div class="funnel-step" data-filter="showed" onclick="selectFunnel(this)">
         <div class="funnel-num" style="color:var(--green)">24</div>
-        <div class="funnel-label" contenteditable>Showed</div>
+        <div class="funnel-label">Showed</div>
         <div class="funnel-pct">80% NSR</div>
       </div>
-      <div class="funnel-step">
+      <div class="funnel-step" data-filter="closed" onclick="selectFunnel(this)">
         <div class="funnel-num" style="color:var(--green)">7</div>
-        <div class="funnel-label" contenteditable>Closed</div>
+        <div class="funnel-label">Closed</div>
         <div class="funnel-pct">29.2% CR</div>
       </div>
-      <div class="funnel-step" style="border-color:rgba(46,212,122,0.2)">
+      <div class="funnel-step" data-filter="cash" onclick="selectFunnel(this)" style="border-color:rgba(46,212,122,0.15)">
         <div class="funnel-num" style="color:var(--green)">$27.8K</div>
-        <div class="funnel-label" contenteditable>Cash</div>
-        <div class="funnel-pct">$39K contracted</div>
+        <div class="funnel-label">Cash</div>
+        <div class="funnel-pct">$39K ctd</div>
       </div>
     </div>
   </div>
 
-  <!-- ── PACING ── -->
+  <!-- DETAIL PANEL (changes based on funnel selection) -->
+  <div class="section">
+    <div class="detail-panel">
+      <div class="detail-header">
+        <div class="detail-title">
+          <span id="detail-title-text">All Scheduled</span>
+          <span class="detail-count" id="detail-count">40 leads</span>
+        </div>
+        <span class="section-meta" id="detail-columns">Name &middot; Closer &middot; Date &middot; Status &middot; Detail</span>
+      </div>
+      <div id="detail-list">
+        <!-- Populated by JS based on funnel selection -->
+      </div>
+    </div>
+  </div>
+
+  <!-- PACING -->
   <div class="section">
     <div class="pacing-card">
       <div class="pacing-header">
-        <span class="pacing-label" contenteditable>Cash Pacing — May 2026</span>
-        <span class="pacing-numbers">$27,750 / $100,000 &middot; pace: $71,452</span>
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="pacing-label">Pacing</span>
+          <div class="period-tabs" id="pacingMetricTabs">
+            <div class="period-tab active" onclick="setPacingMetric(this,'cash')">Cash</div>
+            <div class="period-tab" onclick="setPacingMetric(this,'contracted')">Contracted</div>
+            <div class="period-tab" onclick="setPacingMetric(this,'scheduled')">Scheduled</div>
+            <div class="period-tab" onclick="setPacingMetric(this,'taken')">Taken</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="period-tabs" id="pacingCompareTabs">
+            <div class="period-tab active" onclick="setPacingCompare(this,'goal')">vs Goal</div>
+            <div class="period-tab" onclick="setPacingCompare(this,'last_month')">vs Last Month</div>
+            <div class="period-tab" onclick="setPacingCompare(this,'3m_avg')">vs 3M Avg</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span id="pacingActual" class="pacing-numbers" style="font-size:16px;font-weight:600;color:var(--text)">$27,750</span>
+        <span id="pacingTarget" class="pacing-numbers">/ $100,000 (May Goal)</span>
       </div>
       <div class="pacing-track">
-        <div class="pacing-fill" style="width:27.75%">
-          <div class="pacing-projection" style="left:100%;width:43.7%"></div>
+        <div class="pacing-fill" id="pacingFill" style="width:27.75%">
+          <div class="pacing-projection" id="pacingProjection" style="left:100%;width:43.7%"></div>
         </div>
         <div class="pacing-marker" style="left:38.7%" title="Day 12 of 31"></div>
       </div>
       <div class="pacing-sub">
         <span>Day 12 of 31 (38.7%)</span>
-        <span>Projection at current pace: <strong style="color:var(--warn)">$71,452</strong></span>
+        <span>Projection: <strong id="pacingProjectionNum" style="color:var(--warn)">$71,452</strong></span>
       </div>
     </div>
   </div>
 
-  <!-- ── SPLIT: Closers + Closes ── -->
-  <div class="split">
-
-    <!-- Per-Closer Table -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-title" contenteditable>Per Closer</span>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Closer</th>
-              <th class="num">Showed</th>
-              <th class="num">Closes</th>
-              <th class="num">CR</th>
-              <th class="num">Cash</th>
-              <th style="width:100px">Share</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="closer-name" contenteditable>Joel</td>
-              <td class="num">11</td>
-              <td class="num" style="font-weight:600">5</td>
-              <td class="num" style="color:var(--green)">45.5%</td>
-              <td class="num" style="color:var(--green);font-weight:600">$20,450</td>
-              <td class="bar-cell">
-                <div class="bar-bg"><div class="bar-fill" style="width:73.7%;background:var(--green)"></div></div>
-              </td>
-            </tr>
-            <tr>
-              <td class="closer-name" contenteditable>Brandon</td>
-              <td class="num">13</td>
-              <td class="num" style="font-weight:600">2</td>
-              <td class="num" style="color:var(--warn)">15.4%</td>
-              <td class="num" style="color:var(--green);font-weight:600">$7,300</td>
-              <td class="bar-cell">
-                <div class="bar-bg"><div class="bar-fill" style="width:26.3%;background:var(--warn)"></div></div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Recent Closes -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-title" contenteditable>Recent Closes</span>
-        <span class="section-meta">7 this period</span>
-      </div>
-      <div class="table-wrap">
-        <div class="close-row" style="background:var(--section);font-size:10px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.08em">
-          <div>Date</div>
-          <div>Lead</div>
-          <div>Closer</div>
-          <div style="text-align:right">Cash</div>
-          <div style="text-align:right">Contract</div>
-        </div>
-        <div class="close-row">
-          <div class="close-date">May 10</div>
-          <div class="close-name" contenteditable>Lead Name</div>
-          <div class="close-closer">Joel</div>
-          <div class="close-cash">$4,500</div>
-          <div class="close-contracted">$7,500</div>
-        </div>
-        <div class="close-row">
-          <div class="close-date">May 9</div>
-          <div class="close-name" contenteditable>Lead Name</div>
-          <div class="close-closer">Brandon</div>
-          <div class="close-cash">$4,800</div>
-          <div class="close-contracted">$4,800</div>
-        </div>
-        <div class="close-row">
-          <div class="close-date">May 8</div>
-          <div class="close-name" contenteditable>Lead Name</div>
-          <div class="close-closer">Joel</div>
-          <div class="close-cash">$5,250</div>
-          <div class="close-contracted">$7,500</div>
-        </div>
-        <div class="close-row">
-          <div class="close-date">May 7</div>
-          <div class="close-name" contenteditable>Lead Name</div>
-          <div class="close-closer">Joel</div>
-          <div class="close-cash">$3,500</div>
-          <div class="close-contracted">$5,500</div>
-        </div>
-        <div class="close-row">
-          <div class="close-date">May 5</div>
-          <div class="close-name" contenteditable>Lead Name</div>
-          <div class="close-closer">Joel</div>
-          <div class="close-cash">$4,700</div>
-          <div class="close-contracted">$6,200</div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ── AUDIT PANEL ── -->
+  <!-- PER CLOSER -->
   <div class="section">
-    <div class="section-header">
-      <span class="section-title" contenteditable>Data Audit</span>
-      <span class="section-meta">cross-reference checks</span>
+    <div class="section-header"><span class="section-title">Per Closer</span></div>
+    <div class="closer-strip">
+      <div class="closer-card">
+        <div class="closer-header">
+          <span class="closer-name-big">Joel</span>
+          <span class="status-pill pill-closed">5 closes</span>
+        </div>
+        <div class="closer-stats">
+          <div><div class="closer-stat-label">Showed</div><div class="closer-stat-value">11</div></div>
+          <div><div class="closer-stat-label">CR</div><div class="closer-stat-value" style="color:var(--green)">45.5%</div></div>
+          <div><div class="closer-stat-label">Cash</div><div class="closer-stat-value" style="color:var(--green)">$20.5K</div></div>
+          <div><div class="closer-stat-label">Contracted</div><div class="closer-stat-value">$27.5K</div></div>
+        </div>
+      </div>
+      <div class="closer-card">
+        <div class="closer-header">
+          <span class="closer-name-big">Brandon</span>
+          <span class="status-pill pill-fu">2 closes</span>
+        </div>
+        <div class="closer-stats">
+          <div><div class="closer-stat-label">Showed</div><div class="closer-stat-value">13</div></div>
+          <div><div class="closer-stat-label">CR</div><div class="closer-stat-value" style="color:var(--warn)">15.4%</div></div>
+          <div><div class="closer-stat-label">Cash</div><div class="closer-stat-value" style="color:var(--green)">$7.3K</div></div>
+          <div><div class="closer-stat-label">Contracted</div><div class="closer-stat-value">$11.5K</div></div>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <!-- AUDIT STRIP -->
+  <div class="section">
+    <div class="section-header"><span class="section-title">Data Audit</span></div>
     <div class="audit-grid">
-
-      <!-- Sheet Cross-Reference -->
       <div class="audit-card">
-        <div class="audit-title">
-          <span class="source-dot" style="background:#2E7D32"></span>
-          <span contenteditable>Closer Sheet Cross-Reference</span>
-        </div>
-        <div class="audit-row">
-          <span class="audit-label">Sheet Cash</span>
-          <span class="audit-value mismatch">$29,000</span>
-        </div>
-        <div class="audit-row">
-          <span class="audit-label">EOD Cash</span>
-          <span class="audit-value">$27,750</span>
-        </div>
-        <div class="audit-row">
-          <span class="audit-label">Delta</span>
-          <span class="audit-value mismatch" contenteditable>+$1,250 (1 follow-up close)</span>
-        </div>
-        <div class="audit-row">
-          <span class="audit-label">Sheet Closes</span>
-          <span class="audit-value mismatch">8</span>
-        </div>
-        <div class="audit-row">
-          <span class="audit-label">EOD Closes</span>
-          <span class="audit-value">7</span>
-        </div>
+        <div class="audit-title"><span class="source-dot" style="background:#2E7D32"></span> Sheet X-Ref</div>
+        <div class="audit-metric mismatch">+$1,250</div>
+        <div class="audit-sub" contenteditable>1 follow-up close not in EOD</div>
       </div>
-
-      <!-- Payment Verification -->
       <div class="audit-card">
-        <div class="audit-title">
-          <span class="source-dot" style="background:var(--blue)"></span>
-          <span contenteditable>Payment Verification</span>
-        </div>
-        <div class="audit-row">
-          <span class="audit-label">Fanbasis receipts</span>
-          <span class="audit-value match">5 matched</span>
-        </div>
-        <div class="audit-row">
-          <span class="audit-label">Stripe receipts</span>
-          <span class="audit-value match">2 matched</span>
-        </div>
-        <div class="audit-row">
-          <span class="audit-label">Amount match</span>
-          <span class="audit-value match" contenteditable>100% exact</span>
-        </div>
-        <div class="audit-row">
-          <span class="audit-label">Unmatched payments</span>
-          <span class="audit-value flag" contenteditable>1 ($1,250 — no EOD)</span>
-        </div>
+        <div class="audit-title"><span class="source-dot" style="background:var(--blue)"></span> Payment Match</div>
+        <div class="audit-metric match">7/7</div>
+        <div class="audit-sub" contenteditable>all cash verified by processor</div>
       </div>
-
-      <!-- Booking Coverage -->
       <div class="audit-card">
-        <div class="audit-title">
-          <span class="source-dot" style="background:var(--warn)"></span>
-          <span contenteditable>Booking Coverage</span>
-        </div>
-        <div class="audit-row">
-          <span class="audit-label">GHL bookings</span>
-          <span class="audit-value">42</span>
-        </div>
-        <div class="audit-row">
-          <span class="audit-label">EOD entries</span>
-          <span class="audit-value">41</span>
-        </div>
-        <div class="audit-row">
-          <span class="audit-label">Missing EOD</span>
-          <span class="audit-value mismatch" contenteditable>1 (May 3, rescheduled)</span>
-        </div>
-        <div class="audit-row">
-          <span class="audit-label">Coverage</span>
-          <span class="audit-value match">97.6%</span>
-        </div>
+        <div class="audit-title"><span class="source-dot" style="background:var(--warn)"></span> Booking Coverage</div>
+        <div class="audit-metric match">97.6%</div>
+        <div class="audit-sub" contenteditable>1 missing EOD (rescheduled)</div>
       </div>
-
-      <!-- Data Health -->
       <div class="audit-card">
-        <div class="audit-title">
-          <span class="source-dot" style="background:var(--green)"></span>
-          <span contenteditable>Data Health</span>
-        </div>
-        <div class="audit-row">
-          <span class="audit-label">DQ audit queue</span>
-          <span class="audit-value match">0 pending</span>
-        </div>
-        <div class="audit-row">
-          <span class="audit-label">Missing revenue</span>
-          <span class="audit-value match">0 closed w/o $</span>
-        </div>
-        <div class="audit-row">
-          <span class="audit-label">EOD staleness</span>
-          <span class="audit-value match" contenteditable>all within 24h</span>
-        </div>
-        <div class="audit-row">
-          <span class="audit-label">Last EOD sync</span>
-          <span class="audit-value" style="color:var(--text-secondary)">May 11, 18:42</span>
-        </div>
+        <div class="audit-title"><span class="source-dot" style="background:var(--green)"></span> Data Health</div>
+        <div class="audit-metric match">Clean</div>
+        <div class="audit-sub" contenteditable>0 DQ queue &middot; 0 missing $ &middot; all &lt;24h</div>
       </div>
-
     </div>
   </div>
 
 </div>
 
-<!-- ── BOTTOM CONTROLS ── -->
+<!-- LEAD CARD SLIDE-OUT -->
+<div class="card-overlay" id="cardOverlay" onclick="closeCard()"></div>
+<div class="lead-card" id="leadCard">
+  <button class="card-close" onclick="closeCard()">&times;</button>
+  <div class="card-top">
+    <div class="card-name" id="cardName">Lead Name</div>
+    <div class="card-subtitle" id="cardSubtitle">Closer: Joel &middot; May 10, 2026</div>
+    <div class="card-status-row" id="cardStatusRow">
+      <span class="status-pill pill-showed">Showed</span>
+      <span class="status-pill pill-closed">Closed</span>
+    </div>
+  </div>
+  <div class="card-section">
+    <div class="card-section-title">Call Details</div>
+    <div class="card-field"><span class="card-field-label">Call Date</span><span class="card-field-value mono" id="cardDate">May 10</span></div>
+    <div class="card-field"><span class="card-field-label">Closer</span><span class="card-field-value" id="cardCloser">Joel</span></div>
+    <div class="card-field"><span class="card-field-label">Duration</span><span class="card-field-value mono" id="cardDuration">42 min</span></div>
+    <div class="card-field"><span class="card-field-label">Status</span><span class="card-field-value" id="cardStatus">Showed</span></div>
+    <div class="card-field"><span class="card-field-label">Outcome</span><span class="card-field-value" id="cardOutcome">Closed</span></div>
+  </div>
+  <div class="card-section" id="cardFinancialSection">
+    <div class="card-section-title">Financial</div>
+    <div class="card-field"><span class="card-field-label">Cash Collected</span><span class="card-field-value mono" style="color:var(--green)" id="cardCash">$4,500</span></div>
+    <div class="card-field"><span class="card-field-label">Contracted</span><span class="card-field-value mono" id="cardContracted">$7,500</span></div>
+    <div class="card-field"><span class="card-field-label">Payment Type</span><span class="card-field-value" id="cardPayment">Payment Plan</span></div>
+    <div class="card-field"><span class="card-field-label">Product</span><span class="card-field-value" id="cardProduct">HP Coaching</span></div>
+  </div>
+  <div class="card-section" id="cardQualSection">
+    <div class="card-section-title">Qualification</div>
+    <div class="card-field"><span class="card-field-label">Income Tier</span><span class="card-field-value" id="cardIncome">$100K+</span></div>
+    <div class="card-field"><span class="card-field-label">Goal</span><span class="card-field-value" id="cardGoal">Lose fat, build muscle</span></div>
+    <div class="card-field"><span class="card-field-label">Source</span><span class="card-field-value" id="cardSource">Meta Ad &middot; Website TF</span></div>
+  </div>
+  <div class="card-section">
+    <div class="card-section-title">Links</div>
+    <div style="display:flex;flex-direction:column;gap:8px;padding:4px 0">
+      <a href="#" class="card-link" id="cardFathom">&#9654; Fathom Recording</a>
+      <a href="#" class="card-link" id="cardGHL">&#8594; GHL Contact</a>
+      <a href="#" class="card-link" id="cardTypeform">&#8594; Typeform Submission</a>
+    </div>
+  </div>
+  <div class="card-timeline">
+    <div class="card-section-title">Timeline</div>
+    <div id="cardTimeline">
+      <div class="timeline-item active"><span class="timeline-date">May 10</span><span class="timeline-text">Call taken &middot; 42min &middot; Closed $4,500</span></div>
+      <div class="timeline-item"><span class="timeline-date">May 9</span><span class="timeline-text">Pre-call SMS sent (GHL wf #4)</span></div>
+      <div class="timeline-item"><span class="timeline-date">May 7</span><span class="timeline-text">Booked via website Typeform</span></div>
+      <div class="timeline-item"><span class="timeline-date">May 5</span><span class="timeline-text">Application submitted</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM CONTROLS -->
 <div class="controls">
   <div class="controls-left">
-    <span>Wireframe v1 &middot; Click any text to edit</span>
+    <span>Wireframe v2 &middot; Click funnel steps &middot; Click lead rows &middot; Edit any text</span>
     <span id="save-status" style="color:var(--green)"></span>
   </div>
   <div style="display:flex;gap:8px;">
-    <button onclick="addAnnotation()">+ Add Note</button>
+    <button onclick="addAnnotation()">+ Note</button>
     <button onclick="resetEdits()">Reset</button>
-    <button onclick="saveState()" class="primary">Save</button>
   </div>
 </div>
 
 <script>
-  // Auto-save editable content to localStorage
-  const STORAGE_KEY = 'cockpit-wireframe-v1';
+// Mock lead data for each funnel step
+const LEADS = {
+  scheduled: [
+    { name: "Sarah Mitchell", closer: "Joel", date: "May 12", status: "Booked", detail: "HP Coaching", duration: null, cash: null, contracted: null, outcome: null, goal: "Lose fat", income: "$100K+", source: "Website TF" },
+    { name: "James Park", closer: "Brandon", date: "May 12", status: "Booked", detail: "HP Coaching", duration: null, cash: null, contracted: null, outcome: null, goal: "Build muscle", income: "$150K+", source: "Meta Ad" },
+    { name: "Maria Lopez", closer: "Joel", date: "May 11", status: "Showed", detail: "42 min", duration: "42 min", cash: "$4,500", contracted: "$7,500", outcome: "Closed", goal: "Body recomp", income: "$200K+", source: "ManyChat" },
+    { name: "David Chen", closer: "Brandon", date: "May 11", status: "Showed", detail: "38 min", duration: "38 min", cash: null, contracted: null, outcome: "Follow-up", goal: "Get healthy", income: "$75K+", source: "Website TF" },
+    { name: "Amy Torres", closer: "Joel", date: "May 10", status: "Cancelled", detail: "Pre-call", duration: null, cash: null, contracted: null, outcome: null, goal: "Lose fat", income: "$100K+", source: "Meta Ad" },
+    { name: "Robert Kim", closer: "Brandon", date: "May 10", status: "No Show", detail: "—", duration: null, cash: null, contracted: null, outcome: null, goal: "Build muscle", income: "$50K+", source: "Website TF" },
+    { name: "Lisa Wang", closer: "Joel", date: "May 9", status: "Showed", detail: "55 min", duration: "55 min", cash: "$5,250", contracted: "$7,500", outcome: "Closed", goal: "Lose fat", income: "$150K+", source: "Meta Ad" },
+    { name: "Mike Johnson", closer: "Brandon", date: "May 8", status: "Showed", detail: "25 min", duration: "25 min", cash: null, contracted: null, outcome: "Not interested", goal: "Get lean", income: "$100K+", source: "Website TF" },
+  ],
+  cancelled: [
+    { name: "Amy Torres", closer: "Joel", date: "May 10", status: "Cancelled", detail: "Pre-call cancel", duration: null, cash: null, contracted: null, outcome: null, reason: "Schedule conflict", goal: "Lose fat", income: "$100K+", source: "Meta Ad" },
+    { name: "Kevin O'Brien", closer: "Brandon", date: "May 9", status: "Cancelled", detail: "24h before", duration: null, cash: null, contracted: null, outcome: null, reason: "Family emergency", goal: "Build muscle", income: "$75K+", source: "Website TF" },
+    { name: "Rachel Adams", closer: "Joel", date: "May 8", status: "Cancelled", detail: "Same day", duration: null, cash: null, contracted: null, outcome: null, reason: "No reason given", goal: "Get healthy", income: "$100K+", source: "ManyChat" },
+  ],
+  no_show: [
+    { name: "Robert Kim", closer: "Brandon", date: "May 10", status: "No Show", detail: "No contact", duration: null, cash: null, contracted: null, outcome: null, goal: "Build muscle", income: "$50K+", source: "Website TF" },
+    { name: "Tom Harris", closer: "Joel", date: "May 7", status: "No Show", detail: "Rebook sent", duration: null, cash: null, contracted: null, outcome: null, goal: "Lose fat", income: "$100K+", source: "Meta Ad" },
+  ],
+  quick_dq: [
+    { name: "Chris Lee", closer: "Brandon", date: "May 6", status: "Quick DQ", detail: "4 min &middot; Wrong fit", duration: "4 min", cash: null, contracted: null, outcome: null, reason: "Not ready to invest", goal: "Curious", income: "<$50K", source: "Meta Ad" },
+    { name: "Pat Morgan", closer: "Joel", date: "May 3", status: "Quick DQ", detail: "8 min &middot; Under 18", duration: "8 min", cash: null, contracted: null, outcome: null, reason: "Age DQ", goal: "Build muscle", income: "N/A", source: "Website TF" },
+  ],
+  showed: [
+    { name: "Maria Lopez", closer: "Joel", date: "May 11", status: "Showed", detail: "42 min &middot; Closed", duration: "42 min", cash: "$4,500", contracted: "$7,500", outcome: "Closed", goal: "Body recomp", income: "$200K+", source: "ManyChat" },
+    { name: "David Chen", closer: "Brandon", date: "May 11", status: "Showed", detail: "38 min &middot; Follow-up", duration: "38 min", cash: null, contracted: null, outcome: "Follow-up", goal: "Get healthy", income: "$75K+", source: "Website TF" },
+    { name: "Lisa Wang", closer: "Joel", date: "May 9", status: "Showed", detail: "55 min &middot; Closed", duration: "55 min", cash: "$5,250", contracted: "$7,500", outcome: "Closed", goal: "Lose fat", income: "$150K+", source: "Meta Ad" },
+    { name: "Mike Johnson", closer: "Brandon", date: "May 8", status: "Showed", detail: "25 min &middot; Not interested", duration: "25 min", cash: null, contracted: null, outcome: "Not interested", goal: "Get lean", income: "$100K+", source: "Website TF" },
+    { name: "Nina Patel", closer: "Joel", date: "May 7", status: "Showed", detail: "48 min &middot; Closed", duration: "48 min", cash: "$3,500", contracted: "$5,500", outcome: "Closed", goal: "Lose fat", income: "$100K+", source: "Meta Ad" },
+  ],
+  closed: [
+    { name: "Maria Lopez", closer: "Joel", date: "May 11", status: "Closed", detail: "$4,500 PIF", duration: "42 min", cash: "$4,500", contracted: "$7,500", outcome: "Closed", payment: "PIF", product: "HP Coaching", goal: "Body recomp", income: "$200K+", source: "ManyChat" },
+    { name: "Lisa Wang", closer: "Joel", date: "May 9", status: "Closed", detail: "$5,250 Plan", duration: "55 min", cash: "$5,250", contracted: "$7,500", outcome: "Closed", payment: "Payment Plan", product: "HP Coaching", goal: "Lose fat", income: "$150K+", source: "Meta Ad" },
+    { name: "Brian Sellers", closer: "Brandon", date: "May 8", status: "Closed", detail: "$4,800 PIF", duration: "35 min", cash: "$4,800", contracted: "$4,800", outcome: "Closed", payment: "PIF", product: "HP Coaching", goal: "Build muscle", income: "$100K+", source: "Website TF" },
+    { name: "Nina Patel", closer: "Joel", date: "May 7", status: "Closed", detail: "$3,500 Plan", duration: "48 min", cash: "$3,500", contracted: "$5,500", outcome: "Closed", payment: "Payment Plan", product: "HP Coaching", goal: "Lose fat", income: "$100K+", source: "Meta Ad" },
+    { name: "Priyal Sheth", closer: "Joel", date: "May 5", status: "Closed", detail: "$2,500 Plan", duration: "40 min", cash: "$2,500", contracted: "$6,200", outcome: "Closed", payment: "Payment Plan", product: "HP Coaching", goal: "Get healthy", income: "$150K+", source: "Website TF" },
+    { name: "Sam Green", closer: "Joel", date: "May 2", status: "Closed", detail: "$4,700 PIF", duration: "52 min", cash: "$4,700", contracted: "$4,700", outcome: "Closed", payment: "PIF", product: "HP Coaching", goal: "Build muscle", income: "$200K+", source: "Meta Ad" },
+    { name: "Tyler Brown", closer: "Brandon", date: "May 1", status: "Closed", detail: "$2,500 Plan", duration: "30 min", cash: "$2,500", contracted: "$2,800", outcome: "Closed", payment: "Payment Plan", product: "HP Coaching", goal: "Lose fat", income: "$75K+", source: "Website TF" },
+  ],
+  cash: [
+    { name: "Maria Lopez", closer: "Joel", date: "May 11", status: "Closed", detail: "$4,500", duration: "42 min", cash: "$4,500", contracted: "$7,500", outcome: "Closed", payment: "PIF", product: "HP Coaching", goal: "Body recomp", income: "$200K+", source: "ManyChat" },
+    { name: "Lisa Wang", closer: "Joel", date: "May 9", status: "Closed", detail: "$5,250", duration: "55 min", cash: "$5,250", contracted: "$7,500", outcome: "Closed", payment: "Payment Plan", product: "HP Coaching", goal: "Lose fat", income: "$150K+", source: "Meta Ad" },
+    { name: "Brian Sellers", closer: "Brandon", date: "May 8", status: "Closed", detail: "$4,800", duration: "35 min", cash: "$4,800", contracted: "$4,800", outcome: "Closed", payment: "PIF", product: "HP Coaching", goal: "Build muscle", income: "$100K+", source: "Website TF" },
+    { name: "Nina Patel", closer: "Joel", date: "May 7", status: "Closed", detail: "$3,500", duration: "48 min", cash: "$3,500", contracted: "$5,500", outcome: "Closed", payment: "Payment Plan", product: "HP Coaching", goal: "Lose fat", income: "$100K+", source: "Meta Ad" },
+    { name: "Priyal Sheth", closer: "Joel", date: "May 5", status: "Closed", detail: "$2,500", duration: "40 min", cash: "$2,500", contracted: "$6,200", outcome: "Closed", payment: "Payment Plan", product: "HP Coaching", goal: "Get healthy", income: "$150K+", source: "Website TF" },
+    { name: "Sam Green", closer: "Joel", date: "May 2", status: "Closed", detail: "$4,700", duration: "52 min", cash: "$4,700", contracted: "$4,700", outcome: "Closed", payment: "PIF", product: "HP Coaching", goal: "Build muscle", income: "$200K+", source: "Meta Ad" },
+    { name: "Tyler Brown", closer: "Brandon", date: "May 1", status: "Closed", detail: "$2,500", duration: "30 min", cash: "$2,500", contracted: "$2,800", outcome: "Closed", payment: "Payment Plan", product: "HP Coaching", goal: "Lose fat", income: "$75K+", source: "Website TF" },
+  ],
+};
 
-  function saveState() {
-    const html = document.getElementById('cockpit').innerHTML;
-    localStorage.setItem(STORAGE_KEY, html);
-    document.getElementById('save-status').textContent = 'Saved ' + new Date().toLocaleTimeString();
-    setTimeout(() => {
-      document.getElementById('save-status').textContent = '';
-    }, 3000);
+const FILTER_LABELS = {
+  scheduled: "All Scheduled",
+  cancelled: "Cancelled",
+  no_show: "No Shows",
+  quick_dq: "Quick DQs",
+  showed: "Showed (Calls Taken)",
+  closed: "Closes",
+  cash: "Cash Collected",
+};
+
+const PILL_CLASS = {
+  Booked: "pill-scheduled",
+  Showed: "pill-showed",
+  Closed: "pill-closed",
+  Cancelled: "pill-cancelled",
+  "No Show": "pill-no-show",
+  "Quick DQ": "pill-dq",
+};
+
+function selectFunnel(el) {
+  document.querySelectorAll('.funnel-step').forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+  const filter = el.dataset.filter;
+  renderDetailList(filter);
+}
+
+function renderDetailList(filter) {
+  const leads = LEADS[filter] || [];
+  const title = FILTER_LABELS[filter] || filter;
+  document.getElementById('detail-title-text').textContent = title;
+  document.getElementById('detail-count').textContent = leads.length + ' leads';
+
+  const list = document.getElementById('detail-list');
+  if (!leads.length) {
+    list.innerHTML = '<div class="detail-empty">No leads in this category</div>';
+    return;
   }
 
-  function loadState() {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      document.getElementById('cockpit').innerHTML = saved;
-    }
+  list.innerHTML = leads.map((lead, i) => {
+    const initials = lead.name.split(' ').map(w => w[0]).join('');
+    const pillClass = PILL_CLASS[lead.status] || 'pill-scheduled';
+    return `
+      <div class="lead-row" onclick="openCard(${JSON.stringify(lead).replace(/"/g, '&quot;')})">
+        <div class="lead-avatar">${initials}</div>
+        <div class="lead-info">
+          <div class="lead-name">${lead.name}</div>
+          <div class="lead-meta">
+            <span class="status-pill ${pillClass}">${lead.status}</span>
+            ${lead.outcome && lead.outcome !== lead.status ? `<span style="color:var(--text-tertiary)">${lead.outcome}</span>` : ''}
+          </div>
+        </div>
+        <div class="lead-closer">${lead.closer}</div>
+        <div class="lead-date">${lead.date}</div>
+        <div class="lead-detail-col">${lead.detail}</div>
+        <div class="lead-chevron">&rsaquo;</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openCard(lead) {
+  document.getElementById('cardName').textContent = lead.name;
+  document.getElementById('cardSubtitle').textContent = `Closer: ${lead.closer} · ${lead.date}`;
+
+  const statusRow = document.getElementById('cardStatusRow');
+  const pillClass = PILL_CLASS[lead.status] || 'pill-scheduled';
+  let pills = `<span class="status-pill ${pillClass}">${lead.status}</span>`;
+  if (lead.outcome && lead.outcome !== lead.status) {
+    const oPill = lead.outcome === 'Closed' ? 'pill-closed' : lead.outcome === 'Follow-up' ? 'pill-fu' : 'pill-dq';
+    pills += `<span class="status-pill ${oPill}">${lead.outcome}</span>`;
+  }
+  statusRow.innerHTML = pills;
+
+  document.getElementById('cardDate').textContent = lead.date;
+  document.getElementById('cardCloser').textContent = lead.closer;
+  document.getElementById('cardDuration').textContent = lead.duration || '—';
+  document.getElementById('cardStatus').textContent = lead.status;
+  document.getElementById('cardOutcome').textContent = lead.outcome || '—';
+
+  const fin = document.getElementById('cardFinancialSection');
+  if (lead.cash) {
+    fin.style.display = '';
+    document.getElementById('cardCash').textContent = lead.cash;
+    document.getElementById('cardContracted').textContent = lead.contracted || '—';
+    document.getElementById('cardPayment').textContent = lead.payment || '—';
+    document.getElementById('cardProduct').textContent = lead.product || 'HP Coaching';
+  } else {
+    fin.style.display = 'none';
   }
 
-  function resetEdits() {
-    if (confirm('Reset all edits to original wireframe?')) {
-      localStorage.removeItem(STORAGE_KEY);
-      location.reload();
-    }
-  }
+  document.getElementById('cardGoal').textContent = lead.goal || '—';
+  document.getElementById('cardIncome').textContent = lead.income || '—';
+  document.getElementById('cardSource').textContent = lead.source || '—';
 
-  let noteCount = 0;
-  function addAnnotation() {
-    noteCount++;
-    const note = document.createElement('div');
-    note.className = 'annotation';
-    note.style.top = (100 + noteCount * 60) + 'px';
-    note.style.right = '32px';
-    note.contentEditable = true;
-    note.textContent = 'Your note here...';
-    note.addEventListener('mousedown', startDrag);
-    document.getElementById('cockpit').appendChild(note);
-  }
+  document.getElementById('cardOverlay').classList.add('open');
+  document.getElementById('leadCard').classList.add('open');
+}
 
-  function startDrag(e) {
-    if (e.target.isContentEditable && document.activeElement === e.target) return;
-    const el = e.currentTarget;
-    const startX = e.clientX - el.offsetLeft;
-    const startY = e.clientY - el.offsetTop;
-    function onMove(e) {
-      el.style.left = (e.clientX - startX) + 'px';
-      el.style.top = (e.clientY - startY) + 'px';
-      el.style.right = 'auto';
-    }
-    function onUp() {
-      document.removeEventListener('mousemove', onMove);
-      document.removeEventListener('mouseup', onUp);
-    }
-    document.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseup', onUp);
-  }
+function closeCard() {
+  document.getElementById('cardOverlay').classList.remove('open');
+  document.getElementById('leadCard').classList.remove('open');
+}
 
-  // Auto-save on edit
-  document.addEventListener('input', () => {
-    clearTimeout(window._saveTimeout);
-    window._saveTimeout = setTimeout(saveState, 1500);
+// Init
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCard(); });
+document.querySelectorAll('.period-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
   });
+});
 
-  // Period tab switching (visual only)
-  document.querySelectorAll('.period-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-    });
-  });
+let noteCount = 0;
+function addAnnotation() {
+  noteCount++;
+  const note = document.createElement('div');
+  note.className = 'annotation';
+  note.style.top = (100 + noteCount * 60) + 'px';
+  note.style.right = '32px';
+  note.contentEditable = true;
+  note.textContent = 'Your note here...';
+  document.getElementById('cockpit').appendChild(note);
+}
 
-  // Load saved state on page load
-  loadState();
+function resetEdits() {
+  if (confirm('Reset all edits?')) location.reload();
+}
+
+// Pacing metric/compare switcher
+const PACING_DATA = {
+  cash:       { goal: { actual: '$27,750', target: '/ $100,000 (May Goal)', fill: 27.75, proj: 43.7, projNum: '$71,452', projColor: 'var(--warn)' },
+                last_month: { actual: '$27,750', target: '/ $92,400 (Apr Actual)', fill: 30.0, proj: 47.4, projNum: '$71,452', projColor: 'var(--warn)' },
+                '3m_avg': { actual: '$27,750', target: '/ $88,200 (3M Avg)', fill: 31.5, proj: 49.4, projNum: '$71,452', projColor: 'var(--warn)' } },
+  contracted: { goal: { actual: '$39,000', target: '/ $150,000 (May Goal)', fill: 26.0, proj: 41.1, projNum: '$100,645', projColor: 'var(--warn)' },
+                last_month: { actual: '$39,000', target: '/ $124,000 (Apr Actual)', fill: 31.5, proj: 49.8, projNum: '$100,645', projColor: 'var(--warn)' },
+                '3m_avg': { actual: '$39,000', target: '/ $118,600 (3M Avg)', fill: 32.9, proj: 52.0, projNum: '$100,645', projColor: 'var(--warn)' } },
+  scheduled:  { goal: { actual: '40', target: '/ 90 (May Goal)', fill: 44.4, proj: 70.3, projNum: '103', projColor: 'var(--green)' },
+                last_month: { actual: '40', target: '/ 88 (Apr Actual)', fill: 45.5, proj: 71.9, projNum: '103', projColor: 'var(--green)' },
+                '3m_avg': { actual: '40', target: '/ 82 (3M Avg)', fill: 48.8, proj: 77.1, projNum: '103', projColor: 'var(--green)' } },
+  taken:      { goal: { actual: '24', target: '/ 60 (May Goal)', fill: 40.0, proj: 63.2, projNum: '62', projColor: 'var(--green)' },
+                last_month: { actual: '24', target: '/ 54 (Apr Actual)', fill: 44.4, proj: 70.3, projNum: '62', projColor: 'var(--green)' },
+                '3m_avg': { actual: '24', target: '/ 51 (3M Avg)', fill: 47.1, proj: 74.4, projNum: '62', projColor: 'var(--green)' } },
+};
+
+let currentPacingMetric = 'cash';
+let currentPacingCompare = 'goal';
+
+function setPacingMetric(el, metric) {
+  document.querySelectorAll('#pacingMetricTabs .period-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  currentPacingMetric = metric;
+  updatePacing();
+}
+
+function setPacingCompare(el, compare) {
+  document.querySelectorAll('#pacingCompareTabs .period-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  currentPacingCompare = compare;
+  updatePacing();
+}
+
+function updatePacing() {
+  const d = PACING_DATA[currentPacingMetric]?.[currentPacingCompare];
+  if (!d) return;
+  document.getElementById('pacingActual').textContent = d.actual;
+  document.getElementById('pacingTarget').textContent = d.target;
+  document.getElementById('pacingFill').style.width = d.fill + '%';
+  document.getElementById('pacingProjection').style.width = d.proj + '%';
+  document.getElementById('pacingProjectionNum').textContent = d.projNum;
+  document.getElementById('pacingProjectionNum').style.color = d.projColor;
+}
+
+// Render initial state
+renderDetailList('scheduled');
 </script>
 
 </body>
