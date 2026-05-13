@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial Ops — Co-op Plan</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --border: #2a2a3a;
+    --text: #e4e4ef;
+    --text-dim: #8888a0;
+    --green: #2ed47a;
+    --yellow: #f5a623;
+    --red: #ff4757;
+    --blue: #4a9eff;
+    --purple: #a78bfa;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    padding: 24px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: var(--text-dim); font-size: 0.85rem; margin-bottom: 24px; }
+
+  /* Key findings banner */
+  .findings {
+    background: linear-gradient(135deg, #1a2a1a, #12121a);
+    border: 1px solid #2a4a2a;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+  .findings h2 { font-size: 0.85rem; color: var(--green); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
+  .findings ul { list-style: none; font-size: 0.85rem; }
+  .findings li { padding: 3px 0; }
+  .findings li::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--green); margin-right: 8px; vertical-align: middle; }
+
+  /* Blockers */
+  .blockers {
+    background: linear-gradient(135deg, #2a1a1a, #12121a);
+    border: 1px solid #4a2a2a;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+  .blockers h2 { font-size: 0.85rem; color: var(--red); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
+  .blockers ul { list-style: none; font-size: 0.85rem; }
+  .blockers li { padding: 3px 0; color: var(--text-dim); }
+  .blockers li::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--red); margin-right: 8px; vertical-align: middle; }
+  .blockers .owner { color: var(--yellow); font-weight: 600; font-size: 0.75rem; }
+
+  /* Revenue table */
+  .rev-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+    margin-bottom: 24px;
+  }
+  .rev-table th {
+    text-align: left;
+    color: var(--text-dim);
+    font-weight: 500;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .rev-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    font-variant-numeric: tabular-nums;
+  }
+  .rev-table tr:hover { background: var(--surface2); }
+  .resolved { color: var(--green); }
+  .anomalous { color: var(--red); }
+  .close { color: var(--yellow); }
+  .gap-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .gap-green { background: rgba(46,212,122,0.15); color: var(--green); }
+  .gap-yellow { background: rgba(245,166,35,0.15); color: var(--yellow); }
+  .gap-red { background: rgba(255,71,87,0.15); color: var(--red); }
+
+  /* Phase cards */
+  .phase {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .phase:hover { border-color: #3a3a4a; }
+  .phase-header {
+    display: flex;
+    align-items: center;
+    padding: 14px 18px;
+    cursor: pointer;
+    user-select: none;
+    gap: 12px;
+  }
+  .phase-header:hover { background: var(--surface2); }
+  .phase-num {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-dim);
+    background: var(--surface2);
+    border-radius: 4px;
+    padding: 2px 8px;
+    white-space: nowrap;
+  }
+  .phase-title { font-weight: 600; font-size: 0.95rem; flex: 1; }
+  .phase-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+  .progress-bar {
+    width: 60px;
+    height: 4px;
+    background: var(--surface2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+  .chevron {
+    color: var(--text-dim);
+    transition: transform 0.2s;
+    font-size: 0.8rem;
+  }
+  .phase.open .chevron { transform: rotate(180deg); }
+
+  .phase-body {
+    display: none;
+    padding: 0 18px 14px;
+  }
+  .phase.open .phase-body { display: block; }
+
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(42,42,58,0.5);
+    font-size: 0.85rem;
+  }
+  .step:last-child { border-bottom: none; }
+  .step-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .step-done .step-icon { background: rgba(46,212,122,0.2); color: var(--green); }
+  .step-blocked .step-icon { background: rgba(255,71,87,0.2); color: var(--red); }
+  .step-ready .step-icon { background: rgba(74,158,255,0.2); color: var(--blue); }
+  .step-pending .step-icon { background: rgba(42,42,58,0.5); color: var(--text-dim); }
+  .step-content { flex: 1; }
+  .step-label { font-weight: 500; }
+  .step-detail { color: var(--text-dim); font-size: 0.78rem; margin-top: 2px; }
+  .step-owner {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .owner-claude { background: rgba(167,139,250,0.15); color: var(--purple); }
+  .owner-emil { background: rgba(245,166,35,0.15); color: var(--yellow); }
+  .owner-patricia { background: rgba(74,158,255,0.15); color: var(--blue); }
+  .owner-both { background: rgba(46,212,122,0.15); color: var(--green); }
+
+  .legend {
+    display: flex;
+    gap: 16px;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  .timestamp {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.7rem;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 12px; }
+    .phase-header { padding: 12px 14px; }
+    .progress-bar { width: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Financial Operations</h1>
+<p class="subtitle">P&L Reconciliation, Payment Processors, Contract &mdash; Co-op Plan</p>
+
+<div class="findings">
+  <h2>Key Discoveries (May 13)</h2>
+  <ul>
+    <li><strong>QB reports in CAD</strong> &mdash; Body Transformation Mastermind Inc is Canadian. All QB figures are Canadian dollars, internal ledger is USD</li>
+    <li><strong>January closes to 2.2%</strong> after CAD&rarr;USD conversion ($125K est. vs $122K internal)</li>
+    <li><strong>April fully reconciled</strong> &mdash; Patricia $101,790 USD = internal $102,683 (0.9% gap)</li>
+    <li><strong>"TT 1/DIVISIBLE" = Fanbasis</strong> &mdash; QB bank deposits from DIVISIBLE are Fanbasis payouts</li>
+    <li><strong>QB token refresh bug fixed</strong> &mdash; multi-month sync now works (was breaking after 1st month)</li>
+  </ul>
+</div>
+
+<div class="blockers">
+  <h2>Blockers</h2>
+  <ul>
+    <li><strong>Patricia's Jan-Mar P&L not received</strong> &mdash; Dan committed to forwarding. Blocks Phase 1-3. <span class="owner">OWNER: Dan/Emil</span></li>
+    <li><strong>Feb $133K gap</strong> &mdash; QB shows $247K USD (est.), internal shows $113K. Needs transaction detail. <span class="owner">NEEDS: Patricia data</span></li>
+    <li><strong>US Visa account number</strong> &mdash; Patricia couldn't recall. Needed for expense classification. <span class="owner">OWNER: Emil &rarr; Patricia</span></li>
+    <li><strong>Fanbasis $6K stuck wire</strong> &mdash; Emil needs to chase before May 19. <span class="owner">OWNER: Emil</span></li>
+  </ul>
+</div>
+
+<h2 style="font-size: 0.85rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px;">Revenue Reconciliation Snapshot</h2>
+
+<table class="rev-table">
+  <thead>
+    <tr>
+      <th>Month</th>
+      <th>QB (CAD)</th>
+      <th>Est. USD</th>
+      <th>Internal USD</th>
+      <th>Gap</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Jan 2026</td>
+      <td>$172,236</td>
+      <td>~$125,171</td>
+      <td>$122,483</td>
+      <td><span class="gap-badge gap-green">2.2%</span></td>
+      <td class="resolved">Nearly closed</td>
+    </tr>
+    <tr>
+      <td>Feb 2026</td>
+      <td>$339,226</td>
+      <td>~$246,530</td>
+      <td>$113,466</td>
+      <td><span class="gap-badge gap-red">117%</span></td>
+      <td class="anomalous">Anomalous</td>
+    </tr>
+    <tr>
+      <td>Mar 2026</td>
+      <td>$168,943</td>
+      <td>~$122,779</td>
+      <td>$103,923</td>
+      <td><span class="gap-badge gap-yellow">18%</span></td>
+      <td class="close">Needs data</td>
+    </tr>
+    <tr>
+      <td>Apr 2026</td>
+      <td>$140,029</td>
+      <td>$101,790</td>
+      <td>$102,683</td>
+      <td><span class="gap-badge gap-green">0.9%</span></td>
+      <td class="resolved">Reconciled</td>
+    </tr>
+    <tr>
+      <td>May 2026*</td>
+      <td>$3,958</td>
+      <td>~$2,877</td>
+      <td>$35,800</td>
+      <td style="color: var(--text-dim);">&mdash;</td>
+      <td style="color: var(--text-dim);">Partial sync</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background: var(--green);"></div> Done</div>
+  <div class="legend-item"><div class="legend-dot" style="background: var(--blue);"></div> Ready (unblocked)</div>
+  <div class="legend-item"><div class="legend-dot" style="background: var(--red);"></div> Blocked</div>
+  <div class="legend-item"><div class="legend-dot" style="background: var(--text-dim);"></div> Pending (depends on prior)</div>
+</div>
+
+<!-- Phase 0 -->
+<div class="phase" id="p0">
+  <div class="phase-header" onclick="toggle('p0')">
+    <span class="phase-num">PHASE 0</span>
+    <span class="phase-title">Collect Raw Materials</span>
+    <div class="phase-progress">
+      <div class="progress-bar"><div class="progress-fill" style="width: 40%; background: var(--green);"></div></div>
+      2/5
+    </div>
+    <span class="chevron">&#9662;</span>
+  </div>
+  <div class="phase-body">
+    <div class="step step-blocked">
+      <div class="step-icon">!</div>
+      <div class="step-content">
+        <div class="step-label">0.1 &mdash; Get Patricia's P&L + transaction list from Dan</div>
+        <div class="step-detail">Dan committed in meeting to forward. Follow up if not received by Wed May 14 EOD.</div>
+      </div>
+      <span class="step-owner owner-emil">Emil</span>
+    </div>
+    <div class="step step-blocked">
+      <div class="step-icon">!</div>
+      <div class="step-content">
+        <div class="step-label">0.2 &mdash; Confirm key accounts (US Visa number)</div>
+        <div class="step-detail">US bank 2333 (income) confirmed. US Visa ending ??? &mdash; get from Patricia.</div>
+      </div>
+      <span class="step-owner owner-emil">Emil</span>
+    </div>
+    <div class="step step-done">
+      <div class="step-icon">&#10003;</div>
+      <div class="step-content">
+        <div class="step-label">0.3 &mdash; Pull current QB data via API</div>
+        <div class="step-detail">All 5 months synced. Token refresh bug fixed. QB reports in CAD (key finding).</div>
+      </div>
+      <span class="step-owner owner-claude">Claude</span>
+    </div>
+    <div class="step step-done">
+      <div class="step-icon">&#10003;</div>
+      <div class="step-content">
+        <div class="step-label">0.4 &mdash; Export internal payment ledger (Stripe + Fanbasis)</div>
+        <div class="step-detail">153 payments exported (125 Stripe + 28 Fanbasis). Jan&ndash;May 2026. CSV generated.</div>
+      </div>
+      <span class="step-owner owner-claude">Claude</span>
+    </div>
+    <div class="step step-ready">
+      <div class="step-icon">&#9654;</div>
+      <div class="step-content">
+        <div class="step-label">0.5 &mdash; Pull cost inventory current state</div>
+        <div class="step-detail">34 vendors, ~$17K/mo total, all "payer TBD". Update with May actuals.</div>
+      </div>
+      <span class="step-owner owner-claude">Claude</span>
+    </div>
+  </div>
+</div>
+
+<!-- Phase 1 -->
+<div class="phase" id="p1">
+  <div class="phase-header" onclick="toggle('p1')">
+    <span class="phase-num">PHASE 1</span>
+    <span class="phase-title">Revenue Reconciliation (Jan&ndash;May)</span>
+    <div class="phase-progress">
+      <div class="progress-bar"><div class="progress-fill" style="width: 20%; background: var(--green);"></div></div>
+      1/5
+    </div>
+    <span class="chevron">&#9662;</span>
+  </div>
+  <div class="phase-body">
+    <div class="step step-done">
+      <div class="step-icon">&#10003;</div>
+      <div class="step-content">
+        <div class="step-label">1.1 &mdash; Build the revenue master ledger</div>
+        <div class="step-detail">Every coaching payment Jan&ndash;May, source-tagged. Internal totals: $478K coaching YTD.</div>
+      </div>
+      <span class="step-owner owner-claude">Claude</span>
+    </div>
+    <div class="step step-blocked">
+      <div class="step-icon">!</div>
+      <div class="step-content">
+        <div class="step-label">1.2 &mdash; Three-way match: QB deposit &harr; Stripe &harr; Fanbasis</div>
+        <div class="step-detail">Needs QB deposit detail report (from API or Patricia). Match by amount, date, email.</div>
+      </div>
+      <span class="step-owner owner-both">Claude + Emil</span>
+    </div>
+    <div class="step step-blocked">
+      <div class="step-icon">!</div>
+      <div class="step-content">
+        <div class="step-label">1.3 &mdash; Close the gaps (esp. Feb $133K)</div>
+        <div class="step-detail">Jan nearly closed (2.2%). Feb is 117% over &mdash; $185K Bank/RBC deposits unexplained. Needs Patricia's Feb transaction detail.</div>
+      </div>
+      <span class="step-owner owner-both">Claude + Emil</span>
+    </div>
+    <div class="step step-blocked">
+      <div class="step-icon">!</div>
+      <div class="step-content">
+        <div class="step-label">1.4 &mdash; Reconcile Jan-Feb (pre-contract baseline)</div>
+        <div class="step-detail">These months establish the baseline for Emil's bonus. Feb $339K CAD anomalous.</div>
+      </div>
+      <span class="step-owner owner-claude">Claude</span>
+    </div>
+    <div class="step step-pending">
+      <div class="step-icon">&middot;</div>
+      <div class="step-content">
+        <div class="step-label">1.5 &mdash; Build monthly revenue reconciliation table</div>
+        <div class="step-detail">Final output: per-month table matching all three sources. Depends on 1.2&ndash;1.4.</div>
+      </div>
+      <span class="step-owner owner-claude">Claude</span>
+    </div>
+  </div>
+</div>
+
+<!-- Phase 2 -->
+<div class="phase" id="p2">
+  <div class="phase-header" onclick="toggle('p2')">
+    <span class="phase-num">PHASE 2</span>
+    <span class="phase-title">Expense Deep Dive (Jan&ndash;May)</span>
+    <div class="phase-progress">
+      <div class="progress-bar"><div class="progress-fill" style="width: 0%; background: var(--green);"></div></div>
+      0/7
+    </div>
+    <span class="chevron">&#9662;</span>
+  </div>
+  <div class="phase-body">
+    <div class="step step-blocked">
+      <div class="step-icon">!</div>
+      <div class="step-content">
+        <div class="step-label">2.1 &mdash; Pull US Visa transaction list (Jan&ndash;May)</div>
+        <div class="step-detail">QB API or Patricia manual export. Only Mar&ndash;Apr done so far.</div>
+      </div>
+      <span class="step-owner owner-patricia">Patricia</span>
+    </div>
+    <div class="step step-blocked">
+      <div class="step-icon">!</div>
+      <div class="step-content">
+        <div class="step-label">2.2 &mdash; Classify each expense</div>
+        <div class="step-detail">Coaching / content / shared / personal / distortion. April done, Jan&ndash;Mar pending.</div>
+      </div>
+      <span class="step-owner owner-both">Claude + Emil</span>
+    </div>
+    <div class="step step-blocked">
+      <div class="step-icon">!</div>
+      <div class="step-content">
+        <div class="step-label">2.3 &mdash; Pull Canadian credit card transactions</div>
+        <div class="step-detail">10&ndash;20% of coaching expenses still on Canadian card. Dan migrating to US card.</div>
+      </div>
+      <span class="step-owner owner-patricia">Patricia</span>
+    </div>
+    <div class="step step-pending">
+      <div class="step-icon">&middot;</div>
+      <div class="step-content"><div class="step-label">2.4 &mdash; Flag and remove P&L distortions</div></div>
+      <span class="step-owner owner-claude">Claude</span>
+    </div>
+    <div class="step step-pending">
+      <div class="step-icon">&middot;</div>
+      <div class="step-content"><div class="step-label">2.5 &mdash; Build normalized monthly expense structure</div></div>
+      <span class="step-owner owner-claude">Claude</span>
+    </div>
+    <div class="step step-pending">
+      <div class="step-icon">&middot;</div>
+      <div class="step-content"><div class="step-label">2.6 &mdash; Cross-reference against cost inventory</div></div>
+      <span class="step-owner owner-claude">Claude</span>
+    </div>
+    <div class="step step-pending">
+      <div class="step-icon">&middot;</div>
+      <div class="step-content"><div class="step-label">2.7 &mdash; Assign billing owners to all 34 vendors</div></div>
+      <span class="step-owner owner-emil">Emil</span>
+    </div>
+  </div>
+</div>
+
+<!-- Phase 3 -->
+<div class="phase" id="p3">
+  <div class="phase-header" onclick="toggle('p3')">
+    <span class="phase-num">PHASE 3</span>
+    <span class="phase-title">Normalized Coaching P&L</span>
+    <div class="phase-progress">
+      <div class="progress-bar"><div class="progress-fill" style="width: 0%; background: var(--green);"></div></div>
+      0/4
+    </div>
+    <span class="chevron">&#9662;</span>
+  </div>
+  <div class="phase-body">
+    <div class="step step-pending">
+      <div class="step-icon">&middot;</div>
+      <div class="step-content">
+        <div class="step-label">3.1 &mdash; Build the normalized coaching P&L</div>
+        <div class="step-detail">Combines reconciled revenue (Phase 1) + classified expenses (Phase 2).</div>
+      </div>
+      <span class="step-owner owner-claude">Claude</span>
+    </div>
+    <div class="step step-pending">
+      <div class="step-icon">&middot;</div>
+      <div class="step-content">
+        <div class="step-label">3.2 &mdash; Calculate EBITDA (coaching business)</div>
+        <div class="step-detail">Contract requires $500K EBITDA floor. Annualize Mar&ndash;May for bonus projection.</div>
+      </div>
+      <span class="step-owner owner-claude">Claude</span>
+    </div>
+    <div class="step step-pending">
+      <div class="step-icon">&middot;</div>
+      <div class="step-content"><div class="step-label">3.3 &mdash; Variance analysis: month-over-month</div></div>
+      <span class="step-owner owner-claude">Claude</span>
+    </div>
+    <div class="step step-pending">
+      <div class="step-icon">&middot;</div>
+      <div class="step-content">
+        <div class="step-label">3.4 &mdash; Reconcile against Patricia's version</div>
+        <div class="step-detail">Two people doing it independently, then comparing. Target: &lt;5% delta.</div>
+      </div>
+      <span class="step-owner owner-both">Claude + Emil</span>
+    </div>
+  </div>
+</div>
+
+<!-- Phase 4 -->
+<div class="phase" id="p4">
+  <div class="phase-header" onclick="toggle('p4')">
+    <span class="phase-num">PHASE 4</span>
+    <span class="phase-title">Payment Processor Decisions</span>
+    <div class="phase-progress">
+      <div class="progress-bar"><div class="progress-fill" style="width: 0%; background: var(--green);"></div></div>
+      0/5
+    </div>
+    <span class="chevron">&#9662;</span>
+  </div>
+  <div class="phase-body">
+    <div class="step step-ready">
+      <div class="step-icon">&#9654;</div>
+      <div class="step-content">
+        <div class="step-label">4.1 &mdash; Fanbasis reliability audit</div>
+        <div class="step-detail">Wire errors, $6K in limbo. Pull from Slack, contact support. Decision by May 19.</div>
+      </div>
+      <span class="step-owner owner-both">Claude + Emil</span>
+    </div>
+    <div class="step step-ready">
+      <div class="step-icon">&#9654;</div>
+      <div class="step-content">
+        <div class="step-label">4.2 &mdash; Fanbasis vs Stripe fee comparison</div>
+        <div class="step-detail">Model at $80K/mo and $140K/mo. Factor BNPL, reliability, wire issues.</div>
+      </div>
+      <span class="step-owner owner-claude">Claude</span>
+    </div>
+    <div class="step step-pending">
+      <div class="step-icon">&middot;</div>
+      <div class="step-content">
+        <div class="step-label">4.3 &mdash; Decision: Fanbasis vs Stripe routing</div>
+        <div class="step-detail">Dan suggested "Stripe is the main boo, Fanbasis for BNPL." Emil owns decision by May 19.</div>
+      </div>
+      <span class="step-owner owner-emil">Emil</span>
+    </div>
+    <div class="step step-ready">
+      <div class="step-icon">&#9654;</div>
+      <div class="step-content">
+        <div class="step-label">4.4 &mdash; Kajabi Pay vs Stripe for LB90</div>
+        <div class="step-detail">Option C (Kajabi Pay 2.7% + $0.30 CAD) likely cheapest. Needs volume data.</div>
+      </div>
+      <span class="step-owner owner-claude">Claude</span>
+    </div>
+    <div class="step step-pending">
+      <div class="step-icon">&middot;</div>
+      <div class="step-content"><div class="step-label">4.5 &mdash; Execute payment processor changes</div></div>
+      <span class="step-owner owner-both">Claude + Emil</span>
+    </div>
+  </div>
+</div>
+
+<!-- Phase 5 -->
+<div class="phase" id="p5">
+  <div class="phase-header" onclick="toggle('p5')">
+    <span class="phase-num">PHASE 5</span>
+    <span class="phase-title">Contract Finalization</span>
+    <div class="phase-progress">
+      <div class="progress-bar"><div class="progress-fill" style="width: 0%; background: var(--green);"></div></div>
+      0/6
+    </div>
+    <span class="chevron">&#9662;</span>
+  </div>
+  <div class="phase-body">
+    <div class="step step-pending">
+      <div class="step-icon">&middot;</div>
+      <div class="step-content">
+        <div class="step-label">5.1 &mdash; Calculate accurate coaching revenue (Jan&ndash;May)</div>
+        <div class="step-detail">Contract S4.4: gross coaching revenue across all processors. Exclude courses, merch, etc.</div>
+      </div>
+      <span class="step-owner owner-claude">Claude</span>
+    </div>
+    <div class="step step-pending">
+      <div class="step-icon">&middot;</div>
+      <div class="step-content">
+        <div class="step-label">5.2 &mdash; Calculate preliminary EBITDA</div>
+        <div class="step-detail">$500K EBITDA floor for bonus eligibility. Annualize Mar&ndash;May.</div>
+      </div>
+      <span class="step-owner owner-claude">Claude</span>
+    </div>
+    <div class="step step-pending">
+      <div class="step-icon">&middot;</div>
+      <div class="step-content">
+        <div class="step-label">5.3 &mdash; Prepare bonus matrix proposal</div>
+        <div class="step-detail">Schedule A not attached to signed contract. Dan verbally agreed $1.4M re-anchor.</div>
+      </div>
+      <span class="step-owner owner-emil">Emil</span>
+    </div>
+    <div class="step step-blocked">
+      <div class="step-icon">!</div>
+      <div class="step-content">
+        <div class="step-label">5.4 &mdash; Patricia creates coaching sub-accounts in QB</div>
+        <div class="step-detail">The structural fix for QB over-classification. "Advertising - Coaching", "Software - Coaching", etc.</div>
+      </div>
+      <span class="step-owner owner-patricia">Patricia</span>
+    </div>
+    <div class="step step-pending">
+      <div class="step-icon">&middot;</div>
+      <div class="step-content"><div class="step-label">5.5 &mdash; QB custom report automation</div></div>
+      <span class="step-owner owner-both">Claude + Patricia</span>
+    </div>
+    <div class="step step-pending">
+      <div class="step-icon">&middot;</div>
+      <div class="step-content">
+        <div class="step-label">5.6 &mdash; Set up ongoing monthly P&L automation</div>
+        <div class="step-detail">Goal: Emil never manually reconciles again after initial cleanup.</div>
+      </div>
+      <span class="step-owner owner-claude">Claude</span>
+    </div>
+  </div>
+</div>
+
+<div class="timestamp">
+  Updated May 13, 2026 &mdash; 3 of 32 steps complete &mdash; Next Dan call: May 19
+</div>
+
+<script>
+function toggle(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+// Open Phase 0 and 4 by default (active phases)
+document.getElementById('p0').classList.add('open');
+document.getElementById('p4').classList.add('open');
+</script>
+
+</body>
+</html>
