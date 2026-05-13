@@ -121,7 +121,7 @@
     }
 
     .label-priority { left: 13.2%; top: 3.1%; }
-    .label-live { left: 13.2%; top: 26.4%; }
+    .label-live { left: 13.2%; top: 25.2%; }
     .label-tools { left: 13.2%; top: 72%; }
     .label-nav { left: 13.2%; top: 84.3%; }
     .label-rule { right: 18.7%; top: 3.1%; text-align: right; }
@@ -166,6 +166,35 @@
       height: 4px;
       border-radius: 999px;
       background: rgba(244, 241, 232, 0.28);
+    }
+
+    .deck-grid .key:nth-child(n+9):nth-child(-n+40)::before {
+      position: absolute;
+      z-index: 2;
+      top: 7%;
+      left: 8%;
+      border-radius: 999px;
+      padding: 3px 5px;
+      color: rgba(2,2,2,0.82);
+      font: 950 clamp(5px, 0.52vw, 8px)/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .deck-grid .key:nth-child(n+9):nth-child(-n+40):nth-child(odd)::before {
+      content: "state";
+      background: var(--green);
+    }
+
+    .deck-grid .key:nth-child(n+9):nth-child(-n+40):nth-child(even)::before {
+      content: "focus";
+      background: var(--pink);
+    }
+
+    .deck-grid .key:nth-child(n+9):nth-child(-n+40):nth-child(even) {
+      background:
+        linear-gradient(180deg, rgba(255,58,166,0.13), transparent 48%),
+        var(--tile);
     }
 
     .key[data-state="work"] { border-color: rgba(43, 217, 159, 0.44); }
@@ -332,7 +361,7 @@
       <div class="group-wash wash-tools" aria-hidden="true"></div>
       <div class="group-wash wash-nav" aria-hidden="true"></div>
       <div class="faceplate-label label-priority">Priority / Global</div>
-      <div class="faceplate-label label-live">Live Windows: status key + focus key pairs</div>
+      <div class="faceplate-label label-live">Live Windows: station/status key + focus key pairs</div>
       <div class="faceplate-label label-tools">Tools</div>
       <div class="faceplate-label label-nav">Navigation / Modes</div>
       <div class="faceplate-label label-rule">Faceplate labels are fixed<br />buttons remain dynamic</div>
@@ -347,41 +376,41 @@
         <article class="key" data-state="ice"><div class="key-main"><span class="status">RADAR</span><span class="detail">open</span></div><div class="footer">app</div></article>
         <article class="key"><div class="key-main"><span class="status">RLD</span><span class="detail">deck</span></div><div class="footer">reload</div></article>
 
-        <article class="key" data-state="work"><div class="key-main"><span class="status">WORK</span><span class="detail">comsat</span></div><div class="footer">S1</div></article>
-        <article class="key" data-state="focus"><div class="key-main"><span class="status">OPEN</span><span class="detail">comsat</span></div><div class="footer">focus</div></article>
-        <article class="key" data-state="work"><div class="key-main"><span class="status">WORK</span><span class="detail">over</span></div><div class="footer">S2</div></article>
-        <article class="key" data-state="focus"><div class="key-main"><span class="status">OPEN</span><span class="detail">over</span></div><div class="footer">focus</div></article>
-        <article class="key" data-state="work"><div class="key-main"><span class="status">WORK</span><span class="detail">over2</span></div><div class="footer">S3</div></article>
-        <article class="key" data-state="focus"><div class="key-main"><span class="status">OPEN</span><span class="detail">over2</span></div><div class="footer">focus</div></article>
-        <article class="key" data-state="perm"><div class="key-main"><span class="status">PERM</span><span class="detail">hpf</span></div><div class="footer">S4</div></article>
-        <article class="key" data-state="focus"><div class="key-main"><span class="status">OPEN</span><span class="detail">hpf</span></div><div class="footer">focus</div></article>
+        <article class="key" data-state="work"><div class="key-main"><span class="status">COMSAT</span><span class="detail">WORK</span></div><div class="footer">state</div></article>
+        <article class="key" data-state="focus"><div class="key-main"><span class="status">FOCUS</span><span class="detail">COMSAT</span></div><div class="footer">open</div></article>
+        <article class="key" data-state="work"><div class="key-main"><span class="status">OVER</span><span class="detail">WORK</span></div><div class="footer">state</div></article>
+        <article class="key" data-state="focus"><div class="key-main"><span class="status">FOCUS</span><span class="detail">OVER</span></div><div class="footer">open</div></article>
+        <article class="key" data-state="work"><div class="key-main"><span class="status">OVER2</span><span class="detail">WORK</span></div><div class="footer">state</div></article>
+        <article class="key" data-state="focus"><div class="key-main"><span class="status">FOCUS</span><span class="detail">OVER2</span></div><div class="footer">open</div></article>
+        <article class="key" data-state="perm"><div class="key-main"><span class="status">HPF</span><span class="detail">PERM</span></div><div class="footer">state</div></article>
+        <article class="key" data-state="focus"><div class="key-main"><span class="status">FOCUS</span><span class="detail">HPF</span></div><div class="footer">open</div></article>
 
-        <article class="key" data-state="ice"><div class="key-main"><span class="status">ICE</span><span class="detail">ops</span></div><div class="footer">S5</div></article>
-        <article class="key" data-state="focus"><div class="key-main"><span class="status">OPEN</span><span class="detail">ops</span></div><div class="footer">focus</div></article>
-        <article class="key" data-state="ice"><div class="key-main"><span class="status">ICE</span><span class="detail">super</span></div><div class="footer">S6</div></article>
-        <article class="key" data-state="focus"><div class="key-main"><span class="status">OPEN</span><span class="detail">super</span></div><div class="footer">focus</div></article>
-        <article class="key" data-state="input"><div class="key-main"><span class="status">INPUT</span><span class="detail">nova</span></div><div class="footer">S7</div></article>
-        <article class="key" data-state="focus"><div class="key-main"><span class="status">OPEN</span><span class="detail">nova</span></div><div class="footer">focus</div></article>
-        <article class="key"><div class="key-main"><span class="status">EMPTY</span><span class="detail">slot 8</span></div><div class="footer">auto</div></article>
-        <article class="key"><div class="key-main"><span class="status">OPEN</span><span class="detail">slot 8</span></div><div class="footer">focus</div></article>
+        <article class="key" data-state="ice"><div class="key-main"><span class="status">OPS</span><span class="detail">ICE</span></div><div class="footer">state</div></article>
+        <article class="key" data-state="focus"><div class="key-main"><span class="status">FOCUS</span><span class="detail">OPS</span></div><div class="footer">open</div></article>
+        <article class="key" data-state="ice"><div class="key-main"><span class="status">SUPER</span><span class="detail">ICE</span></div><div class="footer">state</div></article>
+        <article class="key" data-state="focus"><div class="key-main"><span class="status">FOCUS</span><span class="detail">SUPER</span></div><div class="footer">open</div></article>
+        <article class="key" data-state="input"><div class="key-main"><span class="status">NOVA</span><span class="detail">INPUT</span></div><div class="footer">state</div></article>
+        <article class="key" data-state="focus"><div class="key-main"><span class="status">FOCUS</span><span class="detail">NOVA</span></div><div class="footer">open</div></article>
+        <article class="key"><div class="key-main"><span class="status">S8</span><span class="detail">EMPTY</span></div><div class="footer">state</div></article>
+        <article class="key"><div class="key-main"><span class="status">FOCUS</span><span class="detail">SLOT 8</span></div><div class="footer">open</div></article>
 
-        <article class="key"><div class="key-main"><span class="status">EMPTY</span><span class="detail">slot 9</span></div><div class="footer">auto</div></article>
-        <article class="key"><div class="key-main"><span class="status">OPEN</span><span class="detail">slot 9</span></div><div class="footer">focus</div></article>
-        <article class="key"><div class="key-main"><span class="status">EMPTY</span><span class="detail">slot 10</span></div><div class="footer">auto</div></article>
-        <article class="key"><div class="key-main"><span class="status">OPEN</span><span class="detail">slot 10</span></div><div class="footer">focus</div></article>
-        <article class="key"><div class="key-main"><span class="status">EMPTY</span><span class="detail">slot 11</span></div><div class="footer">auto</div></article>
-        <article class="key"><div class="key-main"><span class="status">OPEN</span><span class="detail">slot 11</span></div><div class="footer">focus</div></article>
-        <article class="key"><div class="key-main"><span class="status">EMPTY</span><span class="detail">slot 12</span></div><div class="footer">auto</div></article>
-        <article class="key"><div class="key-main"><span class="status">OPEN</span><span class="detail">slot 12</span></div><div class="footer">focus</div></article>
+        <article class="key"><div class="key-main"><span class="status">S9</span><span class="detail">EMPTY</span></div><div class="footer">state</div></article>
+        <article class="key"><div class="key-main"><span class="status">FOCUS</span><span class="detail">SLOT 9</span></div><div class="footer">open</div></article>
+        <article class="key"><div class="key-main"><span class="status">S10</span><span class="detail">EMPTY</span></div><div class="footer">state</div></article>
+        <article class="key"><div class="key-main"><span class="status">FOCUS</span><span class="detail">SLOT 10</span></div><div class="footer">open</div></article>
+        <article class="key"><div class="key-main"><span class="status">S11</span><span class="detail">EMPTY</span></div><div class="footer">state</div></article>
+        <article class="key"><div class="key-main"><span class="status">FOCUS</span><span class="detail">SLOT 11</span></div><div class="footer">open</div></article>
+        <article class="key"><div class="key-main"><span class="status">S12</span><span class="detail">EMPTY</span></div><div class="footer">state</div></article>
+        <article class="key"><div class="key-main"><span class="status">FOCUS</span><span class="detail">SLOT 12</span></div><div class="footer">open</div></article>
 
-        <article class="key"><div class="key-main"><span class="status">EMPTY</span><span class="detail">slot 13</span></div><div class="footer">auto</div></article>
-        <article class="key"><div class="key-main"><span class="status">OPEN</span><span class="detail">slot 13</span></div><div class="footer">focus</div></article>
-        <article class="key"><div class="key-main"><span class="status">EMPTY</span><span class="detail">slot 14</span></div><div class="footer">auto</div></article>
-        <article class="key"><div class="key-main"><span class="status">OPEN</span><span class="detail">slot 14</span></div><div class="footer">focus</div></article>
-        <article class="key"><div class="key-main"><span class="status">EMPTY</span><span class="detail">slot 15</span></div><div class="footer">auto</div></article>
-        <article class="key"><div class="key-main"><span class="status">OPEN</span><span class="detail">slot 15</span></div><div class="footer">focus</div></article>
-        <article class="key"><div class="key-main"><span class="status">EMPTY</span><span class="detail">slot 16</span></div><div class="footer">auto</div></article>
-        <article class="key"><div class="key-main"><span class="status">OPEN</span><span class="detail">slot 16</span></div><div class="footer">focus</div></article>
+        <article class="key"><div class="key-main"><span class="status">S13</span><span class="detail">EMPTY</span></div><div class="footer">state</div></article>
+        <article class="key"><div class="key-main"><span class="status">FOCUS</span><span class="detail">SLOT 13</span></div><div class="footer">open</div></article>
+        <article class="key"><div class="key-main"><span class="status">S14</span><span class="detail">EMPTY</span></div><div class="footer">state</div></article>
+        <article class="key"><div class="key-main"><span class="status">FOCUS</span><span class="detail">SLOT 14</span></div><div class="footer">open</div></article>
+        <article class="key"><div class="key-main"><span class="status">S15</span><span class="detail">EMPTY</span></div><div class="footer">state</div></article>
+        <article class="key"><div class="key-main"><span class="status">FOCUS</span><span class="detail">SLOT 15</span></div><div class="footer">open</div></article>
+        <article class="key"><div class="key-main"><span class="status">S16</span><span class="detail">EMPTY</span></div><div class="footer">state</div></article>
+        <article class="key"><div class="key-main"><span class="status">FOCUS</span><span class="detail">SLOT 16</span></div><div class="footer">open</div></article>
 
         <article class="key" data-state="ice"><div class="key-main"><span class="status">SNAP</span><span class="detail">api</span></div><div class="footer">json</div></article>
         <article class="key"><div class="key-main"><span class="status">API</span><span class="detail">47322</span></div><div class="footer">ping</div></article>
@@ -413,7 +442,7 @@
 
       <aside class="side-note" aria-label="Dashboard notes">
         <div class="note-card">Top row is action first, not workspace first.</div>
-        <div class="note-card">Rows 2-5 hold 16 workspace pairs, enough for 14 live windows.</div>
+        <div class="note-card">Rows 2-5: left key names the station and shows state; right key is focus.</div>
         <div class="note-card">Rows 6-8 stay stable so muscle memory survives churn.</div>
       </aside>
     </section>
@@ -429,7 +458,7 @@
       </article>
       <article class="plan-item">
         <h2>3. Dynamic Slots</h2>
-        <p>Workspace pairs map to COMSAT snapshot order sorted by urgency, with empty slots staying visually quiet.</p>
+        <p>Each pair has a station/state key on the left and a focus key on the right, sorted by urgency.</p>
       </article>
       <article class="plan-item">
         <h2>4. Install Safely</h2>
