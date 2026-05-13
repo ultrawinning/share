@@ -369,13 +369,13 @@
 
     .station-id .title {
       color: var(--text);
-      font-size: clamp(17px, 1.96vw, 34px);
+      font-size: clamp(16px, 1.55vw, 28px);
       line-height: 0.9;
     }
 
     .station-id .sub {
       color: color-mix(in srgb, var(--station) 38%, rgba(230, 234, 242, 0.74));
-      font-size: clamp(7px, 0.74vw, 11px);
+      font-size: clamp(6px, 0.68vw, 10px);
     }
 
     .station-id .foot {
@@ -543,7 +543,7 @@
     <div class="topline">
       <div>
         <h1>COMSAT iPad Row Dashboard</h1>
-        <p class="subhead">One live workstation per row on a centered square 8 x 8 surface. Column 1 is the oversized identity plate, column 2 is the COMSAT state glyph, column 3 is small log text, and columns 4-8 are raised controls.</p>
+        <p class="subhead">One live workstation per row on a centered square 8 x 8 surface. Column 1 is the operator-code identity plate, column 2 is the COMSAT state glyph, column 3 is small log text, and columns 4-8 are raised controls.</p>
       </div>
       <div class="spec" aria-label="Target specs">
         <div class="pill"><strong>8</strong> live rows</div>
@@ -580,7 +580,7 @@
       </div>
 
       <div class="deck-grid">
-        <article class="key readout station-id" style="--station:#09e2db"><span class="kind">id</span><div class="main"><span class="title">COMSAT</span><span class="sub">Radar</span></div><div class="foot">R01</div></article>
+        <article class="key readout station-id" style="--station:#09e2db"><span class="kind">id</span><div class="main"><span class="title">COM</span><span class="sub">Comsat Radar</span></div><div class="foot">R01</div></article>
         <article class="key readout state-readout state-run"><span class="kind">state</span><div class="main"><span class="state-symbol radar" aria-hidden="true"></span><span class="state-copy"><span class="title">RUN</span><span class="sub">cooking</span></span></div><div class="foot"><span class="lamp work"></span>0 perm</div></article>
         <article class="key readout detail"><span class="kind">read</span><div class="main"><span class="title">API 47322</span><span class="sub">COMSAT</span></div><div class="foot">local</div></article>
         <article class="key control" style="--accent:#09e2db"><span class="kind">btn</span><div class="main"><span class="title">FOCUS</span><span class="sub">window</span></div><div class="foot">press</div></article>
@@ -589,7 +589,7 @@
         <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">AUTO</span><span class="sub">off</span></div><div class="foot">guard</div></article>
         <article class="key control" style="--accent:#09e2db"><span class="kind">btn</span><div class="main"><span class="title">MORE</span><span class="sub">tools</span></div><div class="foot">open</div></article>
 
-        <article class="key readout station-id" style="--station:#460b38"><span class="kind">id</span><div class="main"><span class="title">OVER</span><span class="sub">Overmind</span></div><div class="foot">R02</div></article>
+        <article class="key readout station-id" style="--station:#460b38"><span class="kind">id</span><div class="main"><span class="title">OM1</span><span class="sub">Overmind</span></div><div class="foot">R02</div></article>
         <article class="key readout state-readout state-ice"><span class="kind">state</span><div class="main"><span class="state-symbol standby" aria-hidden="true">◌</span><span class="state-copy"><span class="title">STBY</span><span class="sub">standby</span></span></div><div class="foot"><span class="lamp ice"></span>0 perm</div></article>
         <article class="key readout detail"><span class="kind">read</span><div class="main"><span class="title">1PW MIG</span><span class="sub">Relay</span></div><div class="foot">quiet</div></article>
         <article class="key control" style="--accent:#460b38"><span class="kind">btn</span><div class="main"><span class="title">FOCUS</span><span class="sub">window</span></div><div class="foot">press</div></article>
@@ -598,7 +598,7 @@
         <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">AUTO</span><span class="sub">off</span></div><div class="foot">guard</div></article>
         <article class="key control" style="--accent:#460b38"><span class="kind">btn</span><div class="main"><span class="title">MORE</span><span class="sub">plan</span></div><div class="foot">open</div></article>
 
-        <article class="key readout station-id" style="--station:#460b38"><span class="kind">id</span><div class="main"><span class="title">OVER2</span><span class="sub">Overmind #2</span></div><div class="foot">R03</div></article>
+        <article class="key readout station-id" style="--station:#460b38"><span class="kind">id</span><div class="main"><span class="title">OM2</span><span class="sub">Overmind #2</span></div><div class="foot">R03</div></article>
         <article class="key readout state-readout state-run"><span class="kind">state</span><div class="main"><span class="state-symbol radar" aria-hidden="true"></span><span class="state-copy"><span class="title">RUN</span><span class="sub">cooking</span></span></div><div class="foot"><span class="lamp work"></span>0 perm</div></article>
         <article class="key readout detail"><span class="kind">read</span><div class="main"><span class="title">ACTIVE</span><span class="sub">coding</span></div><div class="foot">now</div></article>
         <article class="key control" style="--accent:#460b38"><span class="kind">btn</span><div class="main"><span class="title">FOCUS</span><span class="sub">window</span></div><div class="foot">press</div></article>
@@ -607,7 +607,7 @@
         <article class="key control" style="--accent:#ff3aa6"><span class="kind">btn</span><div class="main"><span class="title">AUTO</span><span class="sub">arm</span></div><div class="foot">hold</div></article>
         <article class="key control" style="--accent:#460b38"><span class="kind">btn</span><div class="main"><span class="title">MORE</span><span class="sub">log</span></div><div class="foot">open</div></article>
 
-        <article class="key readout station-id" style="--station:#e53935"><span class="kind">id</span><div class="main"><span class="title">SALES</span><span class="sub">HPF Sales</span></div><div class="foot">R04</div></article>
+        <article class="key readout station-id" style="--station:#e53935"><span class="kind">id</span><div class="main"><span class="title">H-S</span><span class="sub">HPF Sales</span></div><div class="foot">R04</div></article>
         <article class="key readout state-readout state-wait"><span class="kind">state</span><div class="main"><span class="state-symbol question" aria-hidden="true">?</span><span class="state-copy"><span class="title">INPUT</span><span class="sub">waiting</span></span></div><div class="foot"><span class="lamp warn"></span>0 perm</div></article>
         <article class="key readout detail"><span class="kind">read</span><div class="main"><span class="title">GHL + TRAIN</span><span class="sub">Hardening</span></div><div class="foot">needs eye</div></article>
         <article class="key control" style="--accent:#e53935"><span class="kind">btn</span><div class="main"><span class="title">FOCUS</span><span class="sub">answer</span></div><div class="foot">press</div></article>
@@ -616,7 +616,7 @@
         <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">AUTO</span><span class="sub">off</span></div><div class="foot">guard</div></article>
         <article class="key control" style="--accent:#e53935"><span class="kind">btn</span><div class="main"><span class="title">MORE</span><span class="sub">plan</span></div><div class="foot">open</div></article>
 
-        <article class="key readout station-id" style="--station:#1e88e5"><span class="kind">id</span><div class="main"><span class="title">OPS</span><span class="sub">HPF Ops</span></div><div class="foot">R05</div></article>
+        <article class="key readout station-id" style="--station:#1e88e5"><span class="kind">id</span><div class="main"><span class="title">H-O</span><span class="sub">HPF Ops</span></div><div class="foot">R05</div></article>
         <article class="key readout state-readout state-ice"><span class="kind">state</span><div class="main"><span class="state-symbol standby" aria-hidden="true">◌</span><span class="state-copy"><span class="title">STBY</span><span class="sub">standby</span></span></div><div class="foot"><span class="lamp ice"></span>0 perm</div></article>
         <article class="key readout detail"><span class="kind">read</span><div class="main"><span class="title">QUIET</span><span class="sub">ops</span></div><div class="foot">watch</div></article>
         <article class="key control" style="--accent:#1e88e5"><span class="kind">btn</span><div class="main"><span class="title">FOCUS</span><span class="sub">window</span></div><div class="foot">press</div></article>
@@ -625,7 +625,7 @@
         <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">AUTO</span><span class="sub">off</span></div><div class="foot">guard</div></article>
         <article class="key control" style="--accent:#1e88e5"><span class="kind">btn</span><div class="main"><span class="title">MORE</span><span class="sub">log</span></div><div class="foot">open</div></article>
 
-        <article class="key readout station-id" style="--station:#fed23b"><span class="kind">id</span><div class="main"><span class="title">SUPER</span><span class="sub">SuperNova</span></div><div class="foot">R06</div></article>
+        <article class="key readout station-id" style="--station:#fed23b"><span class="kind">id</span><div class="main"><span class="title">SN</span><span class="sub">SuperNova</span></div><div class="foot">R06</div></article>
         <article class="key readout state-readout state-ice"><span class="kind">state</span><div class="main"><span class="state-symbol standby" aria-hidden="true">◌</span><span class="state-copy"><span class="title">STBY</span><span class="sub">standby</span></span></div><div class="foot"><span class="lamp ice"></span>0 perm</div></article>
         <article class="key readout detail"><span class="kind">read</span><div class="main"><span class="title">PARKED</span><span class="sub">hpf</span></div><div class="foot">quiet</div></article>
         <article class="key control" style="--accent:#fed23b"><span class="kind">btn</span><div class="main"><span class="title">FOCUS</span><span class="sub">window</span></div><div class="foot">press</div></article>
@@ -661,7 +661,7 @@
       </article>
       <article class="plan-item">
         <h2>2. Column Grammar</h2>
-        <p>Identity is big, state is symbolic, detail is small/top-left, and actions are raised button caps. Each column has one job.</p>
+        <p>Identity uses short operator codes with the full station name below. State is symbolic, detail is small/top-left, and actions are raised button caps.</p>
       </article>
       <article class="plan-item">
         <h2>3. Two Color Channels</h2>
