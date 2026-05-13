@@ -195,13 +195,17 @@
 
     .row-rail {
       --station: #737d89;
+      position: relative;
       border: 1px solid rgba(226, 232, 240, 0.14);
       border-left: 6px solid var(--station);
       border-radius: 9px;
       background:
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03), transparent 45%),
+        linear-gradient(90deg, color-mix(in srgb, var(--station) 24%, transparent), transparent 54%),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04), transparent 45%),
         rgba(7, 9, 11, 0.48);
       box-shadow:
+        inset 0 3px 0 color-mix(in srgb, var(--station) 74%, transparent),
+        inset 0 -3px 0 color-mix(in srgb, var(--station) 56%, transparent),
         inset 0 0 0 1px rgba(255, 255, 255, 0.03),
         0 7px 18px rgba(0, 0, 0, 0.2);
     }
@@ -235,7 +239,8 @@
     .station-id {
       border-color: var(--station);
       background:
-        linear-gradient(90deg, var(--station) 0 9px, transparent 9px),
+        linear-gradient(90deg, var(--station) 0 13px, transparent 13px),
+        linear-gradient(180deg, color-mix(in srgb, var(--station) 18%, transparent), transparent 42%),
         radial-gradient(circle at 70% 10%, rgba(255, 255, 255, 0.08), transparent 34%),
         #050708;
     }
@@ -264,6 +269,17 @@
         0 4px 0 rgba(0, 0, 0, 0.54);
     }
 
+    .control::before {
+      content: "";
+      position: absolute;
+      left: 11%;
+      right: 11%;
+      top: 9%;
+      height: 3px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
     .control::after {
       content: "";
       position: absolute;
@@ -286,6 +302,7 @@
     }
 
     .control.disabled::after { background: var(--idle); }
+    .control.disabled::before { background: rgba(255, 255, 255, 0.08); }
 
     .kind {
       align-self: start;
@@ -323,12 +340,85 @@
       white-space: nowrap;
     }
 
-    .station-id .title { color: var(--text); }
+    .station-id .main {
+      align-content: center;
+      gap: 6px;
+      padding-left: 14%;
+      padding-right: 9%;
+    }
+
+    .station-id .title {
+      color: var(--text);
+      font-size: clamp(17px, 1.96vw, 34px);
+      line-height: 0.9;
+    }
+
+    .station-id .sub {
+      color: color-mix(in srgb, var(--station) 38%, rgba(230, 234, 242, 0.74));
+      font-size: clamp(7px, 0.74vw, 11px);
+    }
+
+    .station-id .foot {
+      justify-content: flex-end;
+      color: color-mix(in srgb, var(--station) 40%, rgba(230, 234, 242, 0.58));
+    }
+
     .state-run .title { color: var(--work); }
     .state-wait .title { color: var(--warn); }
     .state-perm .title { color: var(--warn); }
     .state-ice .title { color: var(--ice); }
     .state-idle .title { color: rgba(230, 234, 242, 0.58); }
+
+    .state-readout .main {
+      grid-template-columns: auto minmax(0, 1fr);
+      place-items: center start;
+      align-content: center;
+      column-gap: 8px;
+      padding: 4% 9%;
+      text-align: left;
+    }
+
+    .state-copy {
+      display: grid;
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .state-symbol {
+      display: grid;
+      place-items: center;
+      width: clamp(26px, 2.6vw, 44px);
+      height: clamp(26px, 2.6vw, 44px);
+      border: 1px solid rgba(226, 232, 240, 0.22);
+      border-radius: 50%;
+      color: var(--muted);
+      background: rgba(0, 0, 0, 0.32);
+      font: 950 clamp(19px, 2.1vw, 34px)/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    .state-symbol.radar {
+      border-color: rgba(46, 212, 122, 0.5);
+      background:
+        radial-gradient(circle, #2ed47a 0 8%, transparent 9%),
+        radial-gradient(circle, transparent 0 37%, rgba(46, 212, 122, 0.28) 38% 41%, transparent 42%),
+        conic-gradient(from -35deg, rgba(46, 212, 122, 0.68) 0 46deg, transparent 47deg 360deg),
+        rgba(0, 0, 0, 0.38);
+    }
+
+    .state-symbol.question {
+      color: var(--warn);
+      border-color: rgba(255, 184, 74, 0.52);
+    }
+
+    .state-symbol.standby {
+      color: var(--ice);
+      border-color: rgba(84, 224, 255, 0.46);
+    }
+
+    .state-symbol.empty {
+      color: var(--idle);
+      border-color: rgba(115, 125, 137, 0.42);
+    }
 
     .sub {
       max-width: 100%;
@@ -372,6 +462,25 @@
       line-height: 1.05;
     }
 
+    .detail .main {
+      place-items: start;
+      align-content: start;
+      gap: 5px;
+      padding: 12% 10%;
+      text-align: left;
+    }
+
+    .detail .title,
+    .detail .sub {
+      white-space: normal;
+      text-overflow: clip;
+    }
+
+    .detail .foot {
+      justify-content: flex-start;
+      padding-left: 10%;
+    }
+
     .plan {
       margin-top: 18px;
       display: grid;
@@ -412,7 +521,7 @@
     <div class="topline">
       <div>
         <h1>COMSAT iPad Row Dashboard</h1>
-        <p class="subhead">One live workstation per row. The first three columns are readouts, the last five are raised controls. Station color comes from COMSAT category config; state color is reserved for the lamp and status word.</p>
+        <p class="subhead">One live workstation per row. Column 1 is the oversized identity plate, column 2 is the COMSAT state glyph, column 3 is small log text, and columns 4-8 are raised controls.</p>
       </div>
       <div class="spec" aria-label="Target specs">
         <div class="pill"><strong>8</strong> live rows</div>
@@ -449,77 +558,77 @@
       </div>
 
       <div class="deck-grid">
-        <article class="key readout station-id" style="--station:#09e2db"><span class="kind">id</span><div class="main"><span class="title">COMSAT</span><span class="sub">Radar</span></div><div class="foot">#09e2db</div></article>
-        <article class="key readout state-run"><span class="kind">read</span><div class="main"><span class="title">RUN</span><span class="sub">cooking</span></div><div class="foot"><span class="lamp work"></span>0 perm</div></article>
+        <article class="key readout station-id" style="--station:#09e2db"><span class="kind">id</span><div class="main"><span class="title">COMSAT</span><span class="sub">Radar</span></div><div class="foot">R01</div></article>
+        <article class="key readout state-readout state-run"><span class="kind">state</span><div class="main"><span class="state-symbol radar" aria-hidden="true"></span><span class="state-copy"><span class="title">RUN</span><span class="sub">cooking</span></span></div><div class="foot"><span class="lamp work"></span>0 perm</div></article>
         <article class="key readout detail"><span class="kind">read</span><div class="main"><span class="title">API 47322</span><span class="sub">COMSAT</span></div><div class="foot">local</div></article>
-        <article class="key control" style="--accent:#09e2db"><span class="kind">push</span><div class="main"><span class="title">FOCUS</span><span class="sub">window</span></div><div class="foot">press</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">ALLOW</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">DENY</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">AUTO</span><span class="sub">off</span></div><div class="foot">guard</div></article>
-        <article class="key control" style="--accent:#09e2db"><span class="kind">push</span><div class="main"><span class="title">MORE</span><span class="sub">tools</span></div><div class="foot">open</div></article>
+        <article class="key control" style="--accent:#09e2db"><span class="kind">btn</span><div class="main"><span class="title">FOCUS</span><span class="sub">window</span></div><div class="foot">press</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">ALLOW</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">DENY</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">AUTO</span><span class="sub">off</span></div><div class="foot">guard</div></article>
+        <article class="key control" style="--accent:#09e2db"><span class="kind">btn</span><div class="main"><span class="title">MORE</span><span class="sub">tools</span></div><div class="foot">open</div></article>
 
-        <article class="key readout station-id" style="--station:#460b38"><span class="kind">id</span><div class="main"><span class="title">OVER</span><span class="sub">Overmind</span></div><div class="foot">#460b38</div></article>
-        <article class="key readout state-ice"><span class="kind">read</span><div class="main"><span class="title">STBY</span><span class="sub">standby</span></div><div class="foot"><span class="lamp ice"></span>0 perm</div></article>
+        <article class="key readout station-id" style="--station:#460b38"><span class="kind">id</span><div class="main"><span class="title">OVER</span><span class="sub">Overmind</span></div><div class="foot">R02</div></article>
+        <article class="key readout state-readout state-ice"><span class="kind">state</span><div class="main"><span class="state-symbol standby" aria-hidden="true">◌</span><span class="state-copy"><span class="title">STBY</span><span class="sub">standby</span></span></div><div class="foot"><span class="lamp ice"></span>0 perm</div></article>
         <article class="key readout detail"><span class="kind">read</span><div class="main"><span class="title">1PW MIG</span><span class="sub">Relay</span></div><div class="foot">quiet</div></article>
-        <article class="key control" style="--accent:#460b38"><span class="kind">push</span><div class="main"><span class="title">FOCUS</span><span class="sub">window</span></div><div class="foot">press</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">ALLOW</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">DENY</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">AUTO</span><span class="sub">off</span></div><div class="foot">guard</div></article>
-        <article class="key control" style="--accent:#460b38"><span class="kind">push</span><div class="main"><span class="title">MORE</span><span class="sub">plan</span></div><div class="foot">open</div></article>
+        <article class="key control" style="--accent:#460b38"><span class="kind">btn</span><div class="main"><span class="title">FOCUS</span><span class="sub">window</span></div><div class="foot">press</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">ALLOW</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">DENY</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">AUTO</span><span class="sub">off</span></div><div class="foot">guard</div></article>
+        <article class="key control" style="--accent:#460b38"><span class="kind">btn</span><div class="main"><span class="title">MORE</span><span class="sub">plan</span></div><div class="foot">open</div></article>
 
-        <article class="key readout station-id" style="--station:#460b38"><span class="kind">id</span><div class="main"><span class="title">OVER2</span><span class="sub">Overmind #2</span></div><div class="foot">#460b38</div></article>
-        <article class="key readout state-run"><span class="kind">read</span><div class="main"><span class="title">RUN</span><span class="sub">cooking</span></div><div class="foot"><span class="lamp work"></span>0 perm</div></article>
+        <article class="key readout station-id" style="--station:#460b38"><span class="kind">id</span><div class="main"><span class="title">OVER2</span><span class="sub">Overmind #2</span></div><div class="foot">R03</div></article>
+        <article class="key readout state-readout state-run"><span class="kind">state</span><div class="main"><span class="state-symbol radar" aria-hidden="true"></span><span class="state-copy"><span class="title">RUN</span><span class="sub">cooking</span></span></div><div class="foot"><span class="lamp work"></span>0 perm</div></article>
         <article class="key readout detail"><span class="kind">read</span><div class="main"><span class="title">ACTIVE</span><span class="sub">coding</span></div><div class="foot">now</div></article>
-        <article class="key control" style="--accent:#460b38"><span class="kind">push</span><div class="main"><span class="title">FOCUS</span><span class="sub">window</span></div><div class="foot">press</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">ALLOW</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">DENY</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
-        <article class="key control" style="--accent:#ff3aa6"><span class="kind">push</span><div class="main"><span class="title">AUTO</span><span class="sub">arm</span></div><div class="foot">hold</div></article>
-        <article class="key control" style="--accent:#460b38"><span class="kind">push</span><div class="main"><span class="title">MORE</span><span class="sub">log</span></div><div class="foot">open</div></article>
+        <article class="key control" style="--accent:#460b38"><span class="kind">btn</span><div class="main"><span class="title">FOCUS</span><span class="sub">window</span></div><div class="foot">press</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">ALLOW</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">DENY</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control" style="--accent:#ff3aa6"><span class="kind">btn</span><div class="main"><span class="title">AUTO</span><span class="sub">arm</span></div><div class="foot">hold</div></article>
+        <article class="key control" style="--accent:#460b38"><span class="kind">btn</span><div class="main"><span class="title">MORE</span><span class="sub">log</span></div><div class="foot">open</div></article>
 
-        <article class="key readout station-id" style="--station:#e53935"><span class="kind">id</span><div class="main"><span class="title">SALES</span><span class="sub">HPF Sales</span></div><div class="foot">#e53935</div></article>
-        <article class="key readout state-wait"><span class="kind">read</span><div class="main"><span class="title">INPUT</span><span class="sub">waiting</span></div><div class="foot"><span class="lamp warn"></span>0 perm</div></article>
+        <article class="key readout station-id" style="--station:#e53935"><span class="kind">id</span><div class="main"><span class="title">SALES</span><span class="sub">HPF Sales</span></div><div class="foot">R04</div></article>
+        <article class="key readout state-readout state-wait"><span class="kind">state</span><div class="main"><span class="state-symbol question" aria-hidden="true">?</span><span class="state-copy"><span class="title">INPUT</span><span class="sub">waiting</span></span></div><div class="foot"><span class="lamp warn"></span>0 perm</div></article>
         <article class="key readout detail"><span class="kind">read</span><div class="main"><span class="title">GHL + TRAIN</span><span class="sub">Hardening</span></div><div class="foot">needs eye</div></article>
-        <article class="key control" style="--accent:#e53935"><span class="kind">push</span><div class="main"><span class="title">FOCUS</span><span class="sub">answer</span></div><div class="foot">press</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">ALLOW</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">DENY</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">AUTO</span><span class="sub">off</span></div><div class="foot">guard</div></article>
-        <article class="key control" style="--accent:#e53935"><span class="kind">push</span><div class="main"><span class="title">MORE</span><span class="sub">plan</span></div><div class="foot">open</div></article>
+        <article class="key control" style="--accent:#e53935"><span class="kind">btn</span><div class="main"><span class="title">FOCUS</span><span class="sub">answer</span></div><div class="foot">press</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">ALLOW</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">DENY</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">AUTO</span><span class="sub">off</span></div><div class="foot">guard</div></article>
+        <article class="key control" style="--accent:#e53935"><span class="kind">btn</span><div class="main"><span class="title">MORE</span><span class="sub">plan</span></div><div class="foot">open</div></article>
 
-        <article class="key readout station-id" style="--station:#1e88e5"><span class="kind">id</span><div class="main"><span class="title">OPS</span><span class="sub">HPF Ops</span></div><div class="foot">#1e88e5</div></article>
-        <article class="key readout state-ice"><span class="kind">read</span><div class="main"><span class="title">STBY</span><span class="sub">standby</span></div><div class="foot"><span class="lamp ice"></span>0 perm</div></article>
+        <article class="key readout station-id" style="--station:#1e88e5"><span class="kind">id</span><div class="main"><span class="title">OPS</span><span class="sub">HPF Ops</span></div><div class="foot">R05</div></article>
+        <article class="key readout state-readout state-ice"><span class="kind">state</span><div class="main"><span class="state-symbol standby" aria-hidden="true">◌</span><span class="state-copy"><span class="title">STBY</span><span class="sub">standby</span></span></div><div class="foot"><span class="lamp ice"></span>0 perm</div></article>
         <article class="key readout detail"><span class="kind">read</span><div class="main"><span class="title">QUIET</span><span class="sub">ops</span></div><div class="foot">watch</div></article>
-        <article class="key control" style="--accent:#1e88e5"><span class="kind">push</span><div class="main"><span class="title">FOCUS</span><span class="sub">window</span></div><div class="foot">press</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">ALLOW</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">DENY</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">AUTO</span><span class="sub">off</span></div><div class="foot">guard</div></article>
-        <article class="key control" style="--accent:#1e88e5"><span class="kind">push</span><div class="main"><span class="title">MORE</span><span class="sub">log</span></div><div class="foot">open</div></article>
+        <article class="key control" style="--accent:#1e88e5"><span class="kind">btn</span><div class="main"><span class="title">FOCUS</span><span class="sub">window</span></div><div class="foot">press</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">ALLOW</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">DENY</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">AUTO</span><span class="sub">off</span></div><div class="foot">guard</div></article>
+        <article class="key control" style="--accent:#1e88e5"><span class="kind">btn</span><div class="main"><span class="title">MORE</span><span class="sub">log</span></div><div class="foot">open</div></article>
 
-        <article class="key readout station-id" style="--station:#fed23b"><span class="kind">id</span><div class="main"><span class="title">SUPER</span><span class="sub">SuperNova</span></div><div class="foot">#fed23b</div></article>
-        <article class="key readout state-ice"><span class="kind">read</span><div class="main"><span class="title">STBY</span><span class="sub">standby</span></div><div class="foot"><span class="lamp ice"></span>0 perm</div></article>
+        <article class="key readout station-id" style="--station:#fed23b"><span class="kind">id</span><div class="main"><span class="title">SUPER</span><span class="sub">SuperNova</span></div><div class="foot">R06</div></article>
+        <article class="key readout state-readout state-ice"><span class="kind">state</span><div class="main"><span class="state-symbol standby" aria-hidden="true">◌</span><span class="state-copy"><span class="title">STBY</span><span class="sub">standby</span></span></div><div class="foot"><span class="lamp ice"></span>0 perm</div></article>
         <article class="key readout detail"><span class="kind">read</span><div class="main"><span class="title">PARKED</span><span class="sub">hpf</span></div><div class="foot">quiet</div></article>
-        <article class="key control" style="--accent:#fed23b"><span class="kind">push</span><div class="main"><span class="title">FOCUS</span><span class="sub">window</span></div><div class="foot">press</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">ALLOW</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">DENY</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">AUTO</span><span class="sub">off</span></div><div class="foot">guard</div></article>
-        <article class="key control" style="--accent:#fed23b"><span class="kind">push</span><div class="main"><span class="title">MORE</span><span class="sub">plan</span></div><div class="foot">open</div></article>
+        <article class="key control" style="--accent:#fed23b"><span class="kind">btn</span><div class="main"><span class="title">FOCUS</span><span class="sub">window</span></div><div class="foot">press</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">ALLOW</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">DENY</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">AUTO</span><span class="sub">off</span></div><div class="foot">guard</div></article>
+        <article class="key control" style="--accent:#fed23b"><span class="kind">btn</span><div class="main"><span class="title">MORE</span><span class="sub">plan</span></div><div class="foot">open</div></article>
 
-        <article class="key readout station-id" style="--station:#fde589"><span class="kind">id</span><div class="main"><span class="title">NOVA</span><span class="sub">Nova</span></div><div class="foot">#fde589</div></article>
-        <article class="key readout state-wait"><span class="kind">read</span><div class="main"><span class="title">INPUT</span><span class="sub">waiting</span></div><div class="foot"><span class="lamp warn"></span>0 perm</div></article>
+        <article class="key readout station-id" style="--station:#fde589"><span class="kind">id</span><div class="main"><span class="title">NOVA</span><span class="sub">Nova</span></div><div class="foot">R07</div></article>
+        <article class="key readout state-readout state-wait"><span class="kind">state</span><div class="main"><span class="state-symbol question" aria-hidden="true">?</span><span class="state-copy"><span class="title">INPUT</span><span class="sub">waiting</span></span></div><div class="foot"><span class="lamp warn"></span>0 perm</div></article>
         <article class="key readout detail"><span class="kind">read</span><div class="main"><span class="title">AWAITING</span><span class="sub">response</span></div><div class="foot">needs eye</div></article>
-        <article class="key control" style="--accent:#fde589"><span class="kind">push</span><div class="main"><span class="title">FOCUS</span><span class="sub">answer</span></div><div class="foot">press</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">ALLOW</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">DENY</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">AUTO</span><span class="sub">off</span></div><div class="foot">guard</div></article>
-        <article class="key control" style="--accent:#fde589"><span class="kind">push</span><div class="main"><span class="title">MORE</span><span class="sub">log</span></div><div class="foot">open</div></article>
+        <article class="key control" style="--accent:#fde589"><span class="kind">btn</span><div class="main"><span class="title">FOCUS</span><span class="sub">answer</span></div><div class="foot">press</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">ALLOW</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">DENY</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">AUTO</span><span class="sub">off</span></div><div class="foot">guard</div></article>
+        <article class="key control" style="--accent:#fde589"><span class="kind">btn</span><div class="main"><span class="title">MORE</span><span class="sub">log</span></div><div class="foot">open</div></article>
 
-        <article class="key readout station-id" style="--station:#737d89"><span class="kind">id</span><div class="main"><span class="title">ROW 8</span><span class="sub">available</span></div><div class="foot">overflow</div></article>
-        <article class="key readout state-idle"><span class="kind">read</span><div class="main"><span class="title">EMPTY</span><span class="sub">no live</span></div><div class="foot"><span class="lamp"></span>ready</div></article>
+        <article class="key readout station-id" style="--station:#737d89"><span class="kind">id</span><div class="main"><span class="title">ROW 8</span><span class="sub">available</span></div><div class="foot">R08</div></article>
+        <article class="key readout state-readout state-idle"><span class="kind">state</span><div class="main"><span class="state-symbol empty" aria-hidden="true">·</span><span class="state-copy"><span class="title">EMPTY</span><span class="sub">no live</span></span></div><div class="foot"><span class="lamp"></span>ready</div></article>
         <article class="key readout detail"><span class="kind">read</span><div class="main"><span class="title">PAGE B</span><span class="sub">rows 9-16</span></div><div class="foot">if needed</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">FOCUS</span><span class="sub">empty</span></div><div class="foot">locked</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">ALLOW</span><span class="sub">empty</span></div><div class="foot">locked</div></article>
-        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">DENY</span><span class="sub">empty</span></div><div class="foot">locked</div></article>
-        <article class="key control" style="--accent:#54e0ff"><span class="kind">push</span><div class="main"><span class="title">NEXT</span><span class="sub">page b</span></div><div class="foot">nav</div></article>
-        <article class="key control" style="--accent:#737d89"><span class="kind">push</span><div class="main"><span class="title">MAP</span><span class="sub">roster</span></div><div class="foot">open</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">FOCUS</span><span class="sub">empty</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">ALLOW</span><span class="sub">empty</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">btn</span><div class="main"><span class="title">DENY</span><span class="sub">empty</span></div><div class="foot">locked</div></article>
+        <article class="key control" style="--accent:#54e0ff"><span class="kind">btn</span><div class="main"><span class="title">NEXT</span><span class="sub">page b</span></div><div class="foot">nav</div></article>
+        <article class="key control" style="--accent:#737d89"><span class="kind">btn</span><div class="main"><span class="title">MAP</span><span class="sub">roster</span></div><div class="foot">open</div></article>
       </div>
     </section>
 
@@ -529,12 +638,12 @@
         <p>Use one row per live COMSAT window. Page A covers rows 1-8; Page B repeats the same layout for rows 9-16 when the live count spikes.</p>
       </article>
       <article class="plan-item">
-        <h2>2. Readouts Vs Controls</h2>
-        <p>Flat modules are information. Raised beveled modules are pressable. Allow and Deny only light up when a row has a pending permission.</p>
+        <h2>2. Column Grammar</h2>
+        <p>Identity is big, state is symbolic, detail is small/top-left, and actions are raised button caps. Each column has one job.</p>
       </article>
       <article class="plan-item">
         <h2>3. Two Color Channels</h2>
-        <p>Station color is the row rail and identity key. State colors only appear as status lamps and state words: green, amber, red, cyan, gray.</p>
+        <p>Station color runs through the whole row as top/bottom rails and the identity plate. State colors only appear as glyphs, lamps, and state words.</p>
       </article>
       <article class="plan-item">
         <h2>4. Background Does The Grouping</h2>
