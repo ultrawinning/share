@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Chris Millard — Hypergrowth Diagnostic</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  :root {
+    --ink: #1a1d24;
+    --ink-soft: #4a4f5a;
+    --ink-mute: #8a8f99;
+    --line: #e6e7ea;
+    --bg: #ffffff;
+    --bg-soft: #fafbfc;
+    --tier-active-bg: #eaf0ff;
+    --tier-active-border: #5b7fef;
+    --where-bg: #f4f5f7;
+    --where-border: #e3e5ea;
+    --problem-bg: #fdecec;
+    --problem-border: #f4cfcf;
+    --fix-bg: #edf7e9;
+    --fix-border: #d6e9cb;
+    --next-bg: #ebeefb;
+    --next-border: #d2d8f0;
+    --founder-bg: #fbf8ee;
+    --founder-border: #ebe4c2;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    margin: 0;
+    line-height: 1.5;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .breadcrumb {
+    padding: 12px 32px;
+    color: var(--ink-mute);
+    font-size: 13px;
+    border-bottom: 1px solid var(--line);
+  }
+  .breadcrumb .sep { margin: 0 6px; }
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 40px 32px 80px;
+  }
+  h1 {
+    font-size: 24px;
+    margin: 0 0 6px;
+    color: #777;
+    font-weight: 500;
+  }
+  .subtitle {
+    color: var(--ink-mute);
+    margin-bottom: 32px;
+    font-size: 15px;
+  }
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0 16px;
+  }
+  .step-num {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: #2c4a3d;
+    color: white;
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600;
+  }
+  .section-title {
+    font-size: 17px; font-weight: 600;
+  }
+  .section-aside {
+    margin-left: auto;
+    color: var(--ink-mute);
+    font-size: 13px;
+  }
+  .tier-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .tier-card {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 14px;
+    text-align: center;
+    background: white;
+  }
+  .tier-card.active {
+    background: var(--tier-active-bg);
+    border-color: var(--tier-active-border);
+  }
+  .tier-id { color: var(--ink-mute); font-size: 13px; margin-bottom: 4px; }
+  .tier-name { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+  .tier-range { color: var(--ink-mute); font-size: 13px; }
+  .tier-active-name { font-size: 18px; font-weight: 600; margin: 8px 0 4px; }
+  .tier-active-blurb { color: var(--ink-soft); margin-bottom: 20px; font-size: 15px; }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .panel {
+    border-radius: 12px;
+    padding: 18px 20px;
+    border: 1px solid var(--line);
+  }
+  .panel-label {
+    color: var(--ink-mute);
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+  .panel ul {
+    margin: 0; padding-left: 18px;
+  }
+  .panel ul li {
+    margin-bottom: 6px;
+    font-size: 14.5px;
+    color: var(--ink);
+  }
+  .panel.where { background: var(--where-bg); border-color: var(--where-border); }
+  .panel.problem { background: var(--problem-bg); border-color: var(--problem-border); }
+  .panel.fix { background: var(--fix-bg); border-color: var(--fix-border); }
+  .panel.next { background: var(--next-bg); border-color: var(--next-border); }
+  .founder {
+    background: var(--founder-bg);
+    border: 1px solid var(--founder-border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: flex;
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  .founder-label { color: var(--ink-mute); font-size: 13px; min-width: 110px; }
+  .founder-body { color: var(--ink); font-size: 14.5px; line-height: 1.55; }
+  .bottleneck {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .bottleneck-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 180px;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--line);
+    gap: 16px;
+  }
+  .bottleneck-row:last-child { border-bottom: none; }
+  .bottleneck-pillar { font-weight: 600; font-size: 15px; }
+  .bottleneck-detail { color: var(--ink-soft); font-size: 14px; }
+  .bottleneck-verdict {
+    text-align: right;
+    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    display: inline-block;
+    justify-self: end;
+  }
+  .v-broken { background: #fbe3e3; color: #a02525; }
+  .v-leaking { background: #fff3d6; color: #7a5a13; }
+  .v-fine { background: #e2f1d9; color: #3a6428; }
+  .footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    color: var(--ink-mute);
+    font-size: 13px;
+  }
+  .footer a { color: var(--ink-soft); }
+  @media (max-width: 760px) {
+    .tier-row { grid-template-columns: repeat(2, 1fr); }
+    .grid-2 { grid-template-columns: 1fr; }
+    .bottleneck-row { grid-template-columns: 1fr; }
+    .bottleneck-verdict { justify-self: start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="breadcrumb">
+  Hypergrowth Brain &amp; Client Overview <span class="sep">/</span> Chris Millard — diagnostic
+</div>
+
+<div class="container">
+  <h1>HyperGrowth client diagnostic</h1>
+  <div class="subtitle">Place the tier, walk the funnel, get the playbook.</div>
+
+  <div class="section-head">
+    <span class="step-num">1</span>
+    <span class="section-title">Place the tier</span>
+    <span class="section-aside">T2: the plateau</span>
+  </div>
+
+  <div class="tier-row">
+    <div class="tier-card">
+      <div class="tier-id">T1</div>
+      <div class="tier-name">the build</div>
+      <div class="tier-range">5 to 10k</div>
+    </div>
+    <div class="tier-card active">
+      <div class="tier-id">T2</div>
+      <div class="tier-name">the plateau</div>
+      <div class="tier-range">10 to 20k</div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-id">T2.5</div>
+      <div class="tier-name">the crossover</div>
+      <div class="tier-range">20 to 30k</div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-id">T3</div>
+      <div class="tier-name">the sharpen</div>
+      <div class="tier-range">30 to 50k</div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-id">T4</div>
+      <div class="tier-name">the scale</div>
+      <div class="tier-range">50k+</div>
+    </div>
+  </div>
+
+  <div class="tier-active-name">Tier 2: The plateau</div>
+  <div class="tier-active-blurb">10 to 20k/mo. Has the shape of a business. None of the leverage. Chris fits the archetype cleanly — 50 active clients, sister doing outreach, founder still in DMs, sales, and delivery.</div>
+
+  <div class="grid-2">
+    <div class="panel where">
+      <div class="panel-label">where he is now</div>
+      <ul>
+        <li>~50 active clients, revenue flatlining</li>
+        <li>Sister Jasmine doing 200 outbound DMs/day, £500/mo, outreach only — no full setter</li>
+        <li>No coach. Chris delivers all clients personally</li>
+        <li>Chris running: coaching, sales calls, DMs, ops</li>
+        <li>Has consumed a lot of training, lacks clarity on execution</li>
+      </ul>
+    </div>
+    <div class="panel problem">
+      <div class="panel-label">the problem</div>
+      <ul>
+        <li>Sales close rate ~30%, Chris uncomfortable with sales</li>
+        <li>DM system not tracked — no response rate, no KPIs, no consequences</li>
+        <li>Ads = boosted posts only, no system, no creative testing</li>
+        <li>Cannot fill a coach predictably — capped at his own delivery time</li>
+        <li>Under-tracks every department, fulfilment ceiling at 50 clients</li>
+      </ul>
+    </div>
+    <div class="panel fix">
+      <div class="panel-label">the fix</div>
+      <ul>
+        <li>Rebuild DM system + progress Jasmine into full setter (track msgs, replies, offers, booked, showed, closed)</li>
+        <li>Ad strategy: 4 structured boosted-post ads, £15/day → £100/day</li>
+        <li>Transformational sales: fear/objection/belief handling → close rate 50-60%</li>
+        <li>Systemize coach hiring — first delivery coach so Chris stops being the ceiling</li>
+        <li>Department-wide tracking + weekly review with Sam</li>
+      </ul>
+    </div>
+    <div class="panel next">
+      <div class="panel-label">next level (T2.5 the crossover)</div>
+      <ul>
+        <li>20 to 30k consistently</li>
+        <li>First delivery coach filled and profitable</li>
+        <li>Chris fully out of DMs and sales</li>
+        <li>Jasmine running setter function autonomously</li>
+        <li>Real KPI rhythm — ads → DMs → calls → close → delivery, all measured weekly</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="founder">
+    <div class="founder-label">founder pathway</div>
+    <div class="founder-body">
+      Burnt-out coach trying to do everything. Identity: "I do, therefore the business runs." Goal: hand off DMs, sales, and delivery in that priority order. The shift is <em>I do</em>, to <em>I oversee</em>. Specific resistance flagged: Chris believes operational tracking is hard "because of how his brain works" — delegate tracking to Jasmine early, do not put it on him.
+    </div>
+  </div>
+
+  <div class="section-head">
+    <span class="step-num">2</span>
+    <span class="section-title">Find the bottleneck</span>
+    <span class="section-aside">Walk top to bottom</span>
+  </div>
+
+  <div class="bottleneck">
+    <div class="bottleneck-row">
+      <div class="bottleneck-pillar">Traffic</div>
+      <div class="bottleneck-detail">Boosted posts only, no system. No creative testing, no follower-cost tracking.</div>
+      <div class="bottleneck-verdict v-broken">broken — fix first</div>
+    </div>
+    <div class="bottleneck-row">
+      <div class="bottleneck-pillar">DM → Call</div>
+      <div class="bottleneck-detail">Jasmine on outbound, 200/day. Conversations + booking not yet hers. No KPI tracking.</div>
+      <div class="bottleneck-verdict v-broken">broken — fix second</div>
+    </div>
+    <div class="bottleneck-row">
+      <div class="bottleneck-pillar">Sales</div>
+      <div class="bottleneck-detail">~30% close rate, Chris running sales calls. No transformational sales framework.</div>
+      <div class="bottleneck-verdict v-broken">broken — fix third</div>
+    </div>
+    <div class="bottleneck-row">
+      <div class="bottleneck-pillar">Delivery</div>
+      <div class="bottleneck-detail">Chris coaches all ~50 clients personally. No delivery coach. Hard ceiling on growth.</div>
+      <div class="bottleneck-verdict v-leaking">leaking — fix fourth</div>
+    </div>
+    <div class="bottleneck-row">
+      <div class="bottleneck-pillar">Ops / Data</div>
+      <div class="bottleneck-detail">Nothing tracked across any department. Reactive, not measured.</div>
+      <div class="bottleneck-verdict v-broken">broken — runs in parallel</div>
+    </div>
+    <div class="bottleneck-row">
+      <div class="bottleneck-pillar">Content</div>
+      <div class="bottleneck-detail">Active organic presence, sufficient to drive boosted posts. Not the constraint.</div>
+      <div class="bottleneck-verdict v-fine">fine for now</div>
+    </div>
+    <div class="bottleneck-row">
+      <div class="bottleneck-pillar">Founder mindset</div>
+      <div class="bottleneck-detail">Self-aware, motivated, open to feedback. But overwhelmed and tries too many things at once. Resistance to manual tracking.</div>
+      <div class="bottleneck-verdict v-leaking">monitor — risk factor</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Source: James's CSM handover for Chris Millard, March 2026. Cross-mapped to T2 archetype.<br>
+    Refund risk if not addressed: lead flow stays unpredictable, Chris stays in DMs/sales, hiring delayed → burnout escalates.
+  </div>
+</div>
+</body>
+</html>
