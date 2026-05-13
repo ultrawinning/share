@@ -3,23 +3,24 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>COMSAT iPad 8 x 8 Dashboard Mock-up</title>
+  <title>COMSAT iPad 8 x 8 Row Dashboard Mock-up</title>
   <style>
     :root {
-      --bg: #050607;
-      --ink: #f4f1e8;
-      --muted: rgba(244, 241, 232, 0.66);
-      --faint: rgba(244, 241, 232, 0.15);
-      --line: rgba(244, 241, 232, 0.28);
-      --panel: rgba(12, 12, 12, 0.86);
-      --tile: #020202;
-      --green: #2bd99f;
-      --cyan: #38d8f4;
-      --amber: #ffb52e;
-      --red: #ff3e57;
-      --pink: #ff3aa6;
-      --blue: #314584;
-      --paper: #f4eadc;
+      --bg: #07090b;
+      --panel: #11151a;
+      --plate: #20262c;
+      --plate-2: #2a3138;
+      --line: rgba(226, 232, 240, 0.16);
+      --line-strong: rgba(226, 232, 240, 0.34);
+      --text: #e6eaf2;
+      --muted: #8c96a3;
+      --faint: #58616d;
+      --work: #2ed47a;
+      --warn: #ffb84a;
+      --danger: #ff4d4f;
+      --ice: #54e0ff;
+      --idle: #737d89;
+      --gap: 1.05%;
     }
 
     * { box-sizing: border-box; }
@@ -27,37 +28,37 @@
     body {
       margin: 0;
       min-height: 100vh;
-      color: var(--ink);
+      color: var(--text);
       background:
-        radial-gradient(circle at 9% 20%, rgba(56, 216, 244, 0.14), transparent 22%),
-        radial-gradient(circle at 90% 72%, rgba(255, 58, 166, 0.12), transparent 21%),
-        #050607;
-      font: 15px/1.45 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        radial-gradient(circle at 10% 12%, rgba(84, 224, 255, 0.09), transparent 22%),
+        radial-gradient(circle at 84% 90%, rgba(255, 184, 74, 0.07), transparent 26%),
+        var(--bg);
+      font: 15px/1.45 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
     }
 
     .page {
-      width: min(1500px, calc(100vw - 32px));
+      width: min(1540px, calc(100vw - 32px));
       margin: 0 auto;
-      padding: 24px 0 44px;
+      padding: 22px 0 44px;
     }
 
     .topline {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
-      gap: 18px;
       align-items: end;
-      margin-bottom: 16px;
+      gap: 18px;
+      margin-bottom: 14px;
     }
 
     h1 {
       margin: 0;
-      font-size: clamp(28px, 3.8vw, 48px);
+      font-size: clamp(28px, 3.6vw, 46px);
       line-height: 1.02;
       letter-spacing: 0;
     }
 
     .subhead {
-      max-width: 780px;
+      max-width: 870px;
       margin: 8px 0 0;
       color: var(--muted);
       font-size: 14px;
@@ -67,233 +68,308 @@
       display: grid;
       grid-auto-flow: column;
       gap: 8px;
-      align-items: center;
     }
 
     .pill {
       border: 1px solid var(--line);
-      border-radius: 8px;
+      border-radius: 6px;
       padding: 9px 11px;
+      background: rgba(255, 255, 255, 0.045);
       color: var(--muted);
-      background: rgba(255,255,255,0.05);
-      font: 800 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      font: 850 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
       text-transform: uppercase;
       white-space: nowrap;
     }
 
-    .pill strong { color: var(--ink); }
+    .pill strong { color: var(--text); }
 
     .ipad {
       position: relative;
       overflow: hidden;
       aspect-ratio: 4 / 3;
-      min-height: 760px;
-      border: 1px solid rgba(244, 241, 232, 0.28);
+      min-height: 780px;
+      border: 1px solid var(--line-strong);
       border-radius: 10px;
       background:
-        linear-gradient(rgba(49, 69, 132, 0.28) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(49, 69, 132, 0.28) 1px, transparent 1px),
-        var(--paper);
-      background-size: 37px 37px;
-      box-shadow: 0 34px 90px rgba(0,0,0,0.44);
+        linear-gradient(rgba(226, 232, 240, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(226, 232, 240, 0.04) 1px, transparent 1px),
+        linear-gradient(180deg, #252b31, #171c21);
+      background-size: 38px 38px, 38px 38px, 100% 100%;
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+        0 34px 90px rgba(0, 0, 0, 0.44);
     }
 
-    .scribble {
+    .faceplate-title,
+    .band-label,
+    .column-label {
       position: absolute;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.36;
-      background:
-        radial-gradient(ellipse at 1% 18%, transparent 0 9%, var(--blue) 9.4% 9.7%, transparent 10%),
-        radial-gradient(ellipse at 92% 33%, transparent 0 11%, var(--blue) 11.4% 11.7%, transparent 12%),
-        radial-gradient(ellipse at 7% 77%, transparent 0 13%, var(--blue) 13.4% 13.7%, transparent 14%),
-        radial-gradient(ellipse at 82% 93%, transparent 0 9%, var(--blue) 9.4% 9.7%, transparent 10%);
-    }
-
-    .faceplate-label {
-      position: absolute;
-      z-index: 1;
-      color: rgba(49, 69, 132, 0.92);
-      font: 900 clamp(12px, 1.1vw, 16px)/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      z-index: 4;
+      color: rgba(230, 234, 242, 0.78);
+      font: 950 clamp(8px, 0.82vw, 13px)/1 ui-monospace, SFMono-Regular, Menlo, monospace;
       letter-spacing: 0;
       text-transform: uppercase;
       pointer-events: none;
     }
 
-    .label-priority { left: 13.2%; top: 3.1%; }
-    .label-live { left: 13.2%; top: 25.2%; }
-    .label-tools { left: 13.2%; top: 72%; }
-    .label-nav { left: 13.2%; top: 84.3%; }
-    .label-rule { right: 18.7%; top: 3.1%; text-align: right; }
+    .faceplate-title {
+      left: 3.4%;
+      top: 2.3%;
+      color: #e6eaf2;
+    }
 
+    .page-label {
+      position: absolute;
+      right: 3.4%;
+      top: 2.2%;
+      z-index: 4;
+      display: flex;
+      gap: 8px;
+      color: var(--muted);
+      font: 900 clamp(8px, 0.78vw, 12px)/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      text-transform: uppercase;
+    }
+
+    .page-label span {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 8px;
+      background: rgba(7, 9, 11, 0.82);
+    }
+
+    .band-label {
+      top: 5.4%;
+      padding: 0 8px;
+      border-left: 3px solid var(--line-strong);
+      color: var(--muted);
+    }
+
+    .band-label.readouts { left: 3.4%; width: 34.2%; }
+    .band-label.controls { left: 38.4%; width: 58.2%; border-left-color: var(--work); }
+
+    .column-labels {
+      position: absolute;
+      z-index: 4;
+      left: 3.2%;
+      top: 7.5%;
+      width: 93.6%;
+      height: 2.3%;
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      gap: var(--gap);
+      pointer-events: none;
+    }
+
+    .column-label {
+      position: static;
+      display: grid;
+      place-items: center;
+      border-radius: 4px;
+      background: rgba(7, 9, 11, 0.54);
+      color: var(--muted);
+    }
+
+    .column-label.ctrl {
+      color: rgba(230, 234, 242, 0.86);
+      background: rgba(46, 212, 122, 0.1);
+    }
+
+    .row-rails,
     .deck-grid {
       position: absolute;
-      z-index: 2;
-      left: 12.8%;
-      top: 4.6%;
-      width: 70.3%;
-      height: 91.9%;
+      left: 3.2%;
+      top: 10.4%;
+      width: 93.6%;
+      height: 86.2%;
       display: grid;
       grid-template-columns: repeat(8, minmax(0, 1fr));
       grid-template-rows: repeat(8, minmax(0, 1fr));
-      gap: 1.25%;
+      gap: var(--gap);
     }
 
+    .row-rails {
+      z-index: 1;
+      grid-template-columns: 1fr;
+      pointer-events: none;
+    }
+
+    .row-rail {
+      --station: #737d89;
+      border: 1px solid rgba(226, 232, 240, 0.14);
+      border-left: 6px solid var(--station);
+      border-radius: 9px;
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03), transparent 45%),
+        rgba(7, 9, 11, 0.48);
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+        0 7px 18px rgba(0, 0, 0, 0.2);
+    }
+
+    .deck-grid { z-index: 3; }
+
     .key {
+      --station: #737d89;
+      --accent: #737d89;
       position: relative;
-      display: grid;
-      grid-template-rows: 1fr auto;
       min-width: 0;
       min-height: 0;
       overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 12%;
-      color: var(--ink);
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.045), transparent 46%),
-        var(--tile);
-      box-shadow:
-        inset 0 -22px 30px rgba(0,0,0,0.72),
-        0 8px 14px rgba(0,0,0,0.22);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     }
 
-    .key::after {
+    .readout {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      border: 1px solid rgba(226, 232, 240, 0.16);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 48%),
+        #050708;
+      box-shadow:
+        inset 0 0 0 1px rgba(0, 0, 0, 0.88),
+        inset 0 -18px 24px rgba(0, 0, 0, 0.7);
+    }
+
+    .station-id {
+      border-color: var(--station);
+      background:
+        linear-gradient(90deg, var(--station) 0 9px, transparent 9px),
+        radial-gradient(circle at 70% 10%, rgba(255, 255, 255, 0.08), transparent 34%),
+        #050708;
+    }
+
+    .station-id::after {
       content: "";
       position: absolute;
-      left: 10%;
-      right: 10%;
+      left: 14px;
+      right: 12px;
+      bottom: 8px;
+      height: 4px;
+      border-radius: 999px;
+      background: var(--station);
+    }
+
+    .control {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.13), transparent 43%),
+        linear-gradient(180deg, #13181d, #050607);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.28),
+        inset 0 -10px 17px rgba(0, 0, 0, 0.82),
+        0 4px 0 rgba(0, 0, 0, 0.54);
+    }
+
+    .control::after {
+      content: "";
+      position: absolute;
+      left: 11%;
+      right: 11%;
       bottom: 7%;
       height: 4px;
       border-radius: 999px;
-      background: rgba(244, 241, 232, 0.28);
+      background: var(--accent);
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
     }
 
-    .deck-grid .key:nth-child(n+9):nth-child(-n+40)::before {
-      position: absolute;
-      z-index: 2;
-      top: 7%;
-      left: 8%;
+    .control.disabled {
+      opacity: 0.38;
+      border-color: rgba(226, 232, 240, 0.14);
+      background: #050607;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        inset 0 -10px 17px rgba(0, 0, 0, 0.72);
+    }
+
+    .control.disabled::after { background: var(--idle); }
+
+    .kind {
+      align-self: start;
+      justify-self: start;
+      margin: 6px 0 0 6px;
       border-radius: 999px;
       padding: 3px 5px;
-      color: rgba(2,2,2,0.82);
-      font: 950 clamp(5px, 0.52vw, 8px)/1 ui-monospace, SFMono-Regular, Menlo, monospace;
-      letter-spacing: 0;
+      color: #07090b;
+      background: rgba(230, 234, 242, 0.72);
+      font: 950 clamp(5px, 0.48vw, 8px)/1 ui-monospace, SFMono-Regular, Menlo, monospace;
       text-transform: uppercase;
     }
 
-    .deck-grid .key:nth-child(n+9):nth-child(-n+40):nth-child(odd)::before {
-      content: "state";
-      background: var(--green);
-    }
+    .readout .kind { background: rgba(230, 234, 242, 0.5); }
+    .station-id .kind { background: var(--station); }
+    .control .kind { background: rgba(230, 234, 242, 0.86); }
 
-    .deck-grid .key:nth-child(n+9):nth-child(-n+40):nth-child(even)::before {
-      content: "focus";
-      background: var(--pink);
-    }
-
-    .deck-grid .key:nth-child(n+9):nth-child(-n+40):nth-child(even) {
-      background:
-        linear-gradient(180deg, rgba(255,58,166,0.13), transparent 48%),
-        var(--tile);
-    }
-
-    .key[data-state="work"] { border-color: rgba(43, 217, 159, 0.44); }
-    .key[data-state="perm"] { border-color: rgba(255, 181, 46, 0.56); }
-    .key[data-state="input"] { border-color: rgba(255, 181, 46, 0.42); }
-    .key[data-state="err"] { border-color: rgba(255, 62, 87, 0.58); }
-    .key[data-state="ice"] { border-color: rgba(56, 216, 244, 0.34); }
-    .key[data-state="focus"] { border-color: rgba(255, 58, 166, 0.48); }
-
-    .key[data-state="work"]::after { background: var(--green); }
-    .key[data-state="perm"]::after,
-    .key[data-state="input"]::after { background: var(--amber); }
-    .key[data-state="err"]::after { background: var(--red); }
-    .key[data-state="ice"]::after { background: var(--cyan); }
-    .key[data-state="focus"]::after { background: var(--pink); }
-
-    .key-main {
+    .main {
       display: grid;
       place-items: center;
       align-content: center;
       gap: 4px;
-      padding: 12% 8% 4%;
+      min-width: 0;
+      padding: 4% 8%;
       text-align: center;
     }
 
-    .status {
+    .title {
       max-width: 100%;
       overflow: hidden;
-      text-overflow: ellipsis;
-      color: var(--muted);
-      font: 950 clamp(14px, 2vw, 33px)/0.9 ui-monospace, SFMono-Regular, Menlo, monospace;
+      color: var(--text);
+      font: 950 clamp(12px, 1.42vw, 25px)/0.92 ui-monospace, SFMono-Regular, Menlo, monospace;
       text-transform: uppercase;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
-    .key[data-state="work"] .status { color: var(--green); }
-    .key[data-state="perm"] .status,
-    .key[data-state="input"] .status { color: var(--amber); }
-    .key[data-state="err"] .status { color: var(--red); }
-    .key[data-state="ice"] .status { color: var(--cyan); }
-    .key[data-state="focus"] .status { color: var(--pink); }
+    .station-id .title { color: var(--text); }
+    .state-run .title { color: var(--work); }
+    .state-wait .title { color: var(--warn); }
+    .state-perm .title { color: var(--warn); }
+    .state-ice .title { color: var(--ice); }
+    .state-idle .title { color: rgba(230, 234, 242, 0.58); }
 
-    .detail {
+    .sub {
       max-width: 100%;
       overflow: hidden;
+      color: rgba(230, 234, 242, 0.63);
+      font: 850 clamp(6px, 0.62vw, 10px)/1.08 ui-monospace, SFMono-Regular, Menlo, monospace;
+      text-transform: uppercase;
       text-overflow: ellipsis;
-      color: rgba(244,241,232,0.72);
-      font: 850 clamp(7px, 0.78vw, 11px)/1.05 ui-monospace, SFMono-Regular, Menlo, monospace;
+      white-space: nowrap;
+    }
+
+    .foot {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      min-width: 0;
+      padding: 0 6% 10%;
+      color: rgba(230, 234, 242, 0.56);
+      font: 850 clamp(6px, 0.58vw, 9px)/1 ui-monospace, SFMono-Regular, Menlo, monospace;
       text-transform: uppercase;
       white-space: nowrap;
     }
 
-    .footer {
-      padding: 0 8% 15%;
-      color: rgba(244,241,232,0.66);
-      font: 850 clamp(7px, 0.76vw, 10px)/1 ui-monospace, SFMono-Regular, Menlo, monospace;
-      text-align: center;
-      text-transform: uppercase;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .lamp {
+      width: clamp(7px, 0.65vw, 10px);
+      height: clamp(7px, 0.65vw, 10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      background: var(--idle);
+      box-shadow: inset 0 -1px 2px rgba(0, 0, 0, 0.7);
     }
 
-    .group-wash {
-      position: absolute;
-      z-index: 1;
-      left: 11.8%;
-      width: 72.3%;
-      border: 1px solid rgba(49, 69, 132, 0.26);
-      border-radius: 12px;
-      background: rgba(244, 241, 232, 0.34);
-      pointer-events: none;
-    }
+    .lamp.work { background: var(--work); }
+    .lamp.warn { background: var(--warn); }
+    .lamp.danger { background: var(--danger); }
+    .lamp.ice { background: var(--ice); }
 
-    .wash-priority { top: 3.5%; height: 20.5%; }
-    .wash-live { top: 26.8%; height: 42.9%; }
-    .wash-tools { top: 72.4%; height: 9.4%; }
-    .wash-nav { top: 84.8%; height: 14.8%; }
-
-    .side-note {
-      position: absolute;
-      right: 2.2%;
-      top: 8.6%;
-      bottom: 4%;
-      width: 10.4%;
-      display: grid;
-      align-content: space-between;
-      gap: 12px;
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    .note-card {
-      border: 1px solid rgba(49, 69, 132, 0.34);
-      border-radius: 10px;
-      padding: 12px;
-      color: rgba(49, 69, 132, 0.9);
-      background: rgba(244, 234, 220, 0.74);
-      font: 850 clamp(8px, 0.75vw, 11px)/1.25 ui-monospace, SFMono-Regular, Menlo, monospace;
-      text-transform: uppercase;
+    .detail .title {
+      font-size: clamp(9px, 0.94vw, 16px);
+      line-height: 1.05;
     }
 
     .plan {
@@ -304,11 +380,11 @@
     }
 
     .plan-item {
-      min-height: 118px;
-      border: 1px solid rgba(244,241,232,0.2);
+      min-height: 128px;
+      border: 1px solid rgba(226, 232, 240, 0.18);
       border-radius: 8px;
       padding: 14px;
-      background: var(--panel);
+      background: rgba(12, 14, 16, 0.9);
     }
 
     .plan-item h2 {
@@ -325,18 +401,9 @@
 
     @media (max-width: 980px) {
       .topline,
-      .plan {
-        grid-template-columns: 1fr;
-      }
-
-      .spec {
-        grid-auto-flow: row;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .ipad {
-        min-height: auto;
-      }
+      .plan { grid-template-columns: 1fr; }
+      .spec { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .ipad { min-height: auto; }
     }
   </style>
 </head>
@@ -344,125 +411,134 @@
   <main class="page">
     <div class="topline">
       <div>
-        <h1>COMSAT iPad Dashboard</h1>
-        <p class="subhead">8 x 8 target based on the live iPad layout. The keys stay rectangular and reliable; the faceplate does the grouping, labels, and dashboard illusion.</p>
+        <h1>COMSAT iPad Row Dashboard</h1>
+        <p class="subhead">One live workstation per row. The first three columns are readouts, the last five are raised controls. Station color comes from COMSAT category config; state color is reserved for the lamp and status word.</p>
       </div>
       <div class="spec" aria-label="Target specs">
-        <div class="pill"><strong>64</strong> keys</div>
-        <div class="pill"><strong>8 x 8</strong> layout</div>
-        <div class="pill"><strong>14</strong> windows ready</div>
+        <div class="pill"><strong>8</strong> live rows</div>
+        <div class="pill"><strong>16</strong> via page B</div>
+        <div class="pill"><strong>7</strong> live now</div>
       </div>
     </div>
 
-    <section class="ipad" aria-label="8 by 8 Stream Deck Mobile dashboard mock-up">
-      <div class="scribble" aria-hidden="true"></div>
-      <div class="group-wash wash-priority" aria-hidden="true"></div>
-      <div class="group-wash wash-live" aria-hidden="true"></div>
-      <div class="group-wash wash-tools" aria-hidden="true"></div>
-      <div class="group-wash wash-nav" aria-hidden="true"></div>
-      <div class="faceplate-label label-priority">Priority / Global</div>
-      <div class="faceplate-label label-live">Live Windows: station/status key + focus key pairs</div>
-      <div class="faceplate-label label-tools">Tools</div>
-      <div class="faceplate-label label-nav">Navigation / Modes</div>
-      <div class="faceplate-label label-rule">Faceplate labels are fixed<br />buttons remain dynamic</div>
-
-      <div class="deck-grid">
-        <article class="key" data-state="perm"><div class="key-main"><span class="status">OK</span><span class="detail">top perm</span></div><div class="footer">approve</div></article>
-        <article class="key" data-state="err"><div class="key-main"><span class="status">NO</span><span class="detail">top perm</span></div><div class="footer">reject</div></article>
-        <article class="key" data-state="input"><div class="key-main"><span class="status">INPUT</span><span class="detail">waiting</span></div><div class="footer">focus</div></article>
-        <article class="key" data-state="err"><div class="key-main"><span class="status">ERR</span><span class="detail">blocked</span></div><div class="footer">inspect</div></article>
-        <article class="key" data-state="focus"><div class="key-main"><span class="status">AUTO</span><span class="detail">allow</span></div><div class="footer">toggle</div></article>
-        <article class="key" data-state="work"><div class="key-main"><span class="status">WRAP</span><span class="detail">complete</span></div><div class="footer">safe</div></article>
-        <article class="key" data-state="ice"><div class="key-main"><span class="status">RADAR</span><span class="detail">open</span></div><div class="footer">app</div></article>
-        <article class="key"><div class="key-main"><span class="status">RLD</span><span class="detail">deck</span></div><div class="footer">reload</div></article>
-
-        <article class="key" data-state="work"><div class="key-main"><span class="status">COMSAT</span><span class="detail">WORK</span></div><div class="footer">state</div></article>
-        <article class="key" data-state="focus"><div class="key-main"><span class="status">FOCUS</span><span class="detail">COMSAT</span></div><div class="footer">open</div></article>
-        <article class="key" data-state="work"><div class="key-main"><span class="status">OVER</span><span class="detail">WORK</span></div><div class="footer">state</div></article>
-        <article class="key" data-state="focus"><div class="key-main"><span class="status">FOCUS</span><span class="detail">OVER</span></div><div class="footer">open</div></article>
-        <article class="key" data-state="work"><div class="key-main"><span class="status">OVER2</span><span class="detail">WORK</span></div><div class="footer">state</div></article>
-        <article class="key" data-state="focus"><div class="key-main"><span class="status">FOCUS</span><span class="detail">OVER2</span></div><div class="footer">open</div></article>
-        <article class="key" data-state="perm"><div class="key-main"><span class="status">HPF</span><span class="detail">PERM</span></div><div class="footer">state</div></article>
-        <article class="key" data-state="focus"><div class="key-main"><span class="status">FOCUS</span><span class="detail">HPF</span></div><div class="footer">open</div></article>
-
-        <article class="key" data-state="ice"><div class="key-main"><span class="status">OPS</span><span class="detail">ICE</span></div><div class="footer">state</div></article>
-        <article class="key" data-state="focus"><div class="key-main"><span class="status">FOCUS</span><span class="detail">OPS</span></div><div class="footer">open</div></article>
-        <article class="key" data-state="ice"><div class="key-main"><span class="status">SUPER</span><span class="detail">ICE</span></div><div class="footer">state</div></article>
-        <article class="key" data-state="focus"><div class="key-main"><span class="status">FOCUS</span><span class="detail">SUPER</span></div><div class="footer">open</div></article>
-        <article class="key" data-state="input"><div class="key-main"><span class="status">NOVA</span><span class="detail">INPUT</span></div><div class="footer">state</div></article>
-        <article class="key" data-state="focus"><div class="key-main"><span class="status">FOCUS</span><span class="detail">NOVA</span></div><div class="footer">open</div></article>
-        <article class="key"><div class="key-main"><span class="status">S8</span><span class="detail">EMPTY</span></div><div class="footer">state</div></article>
-        <article class="key"><div class="key-main"><span class="status">FOCUS</span><span class="detail">SLOT 8</span></div><div class="footer">open</div></article>
-
-        <article class="key"><div class="key-main"><span class="status">S9</span><span class="detail">EMPTY</span></div><div class="footer">state</div></article>
-        <article class="key"><div class="key-main"><span class="status">FOCUS</span><span class="detail">SLOT 9</span></div><div class="footer">open</div></article>
-        <article class="key"><div class="key-main"><span class="status">S10</span><span class="detail">EMPTY</span></div><div class="footer">state</div></article>
-        <article class="key"><div class="key-main"><span class="status">FOCUS</span><span class="detail">SLOT 10</span></div><div class="footer">open</div></article>
-        <article class="key"><div class="key-main"><span class="status">S11</span><span class="detail">EMPTY</span></div><div class="footer">state</div></article>
-        <article class="key"><div class="key-main"><span class="status">FOCUS</span><span class="detail">SLOT 11</span></div><div class="footer">open</div></article>
-        <article class="key"><div class="key-main"><span class="status">S12</span><span class="detail">EMPTY</span></div><div class="footer">state</div></article>
-        <article class="key"><div class="key-main"><span class="status">FOCUS</span><span class="detail">SLOT 12</span></div><div class="footer">open</div></article>
-
-        <article class="key"><div class="key-main"><span class="status">S13</span><span class="detail">EMPTY</span></div><div class="footer">state</div></article>
-        <article class="key"><div class="key-main"><span class="status">FOCUS</span><span class="detail">SLOT 13</span></div><div class="footer">open</div></article>
-        <article class="key"><div class="key-main"><span class="status">S14</span><span class="detail">EMPTY</span></div><div class="footer">state</div></article>
-        <article class="key"><div class="key-main"><span class="status">FOCUS</span><span class="detail">SLOT 14</span></div><div class="footer">open</div></article>
-        <article class="key"><div class="key-main"><span class="status">S15</span><span class="detail">EMPTY</span></div><div class="footer">state</div></article>
-        <article class="key"><div class="key-main"><span class="status">FOCUS</span><span class="detail">SLOT 15</span></div><div class="footer">open</div></article>
-        <article class="key"><div class="key-main"><span class="status">S16</span><span class="detail">EMPTY</span></div><div class="footer">state</div></article>
-        <article class="key"><div class="key-main"><span class="status">FOCUS</span><span class="detail">SLOT 16</span></div><div class="footer">open</div></article>
-
-        <article class="key" data-state="ice"><div class="key-main"><span class="status">SNAP</span><span class="detail">api</span></div><div class="footer">json</div></article>
-        <article class="key"><div class="key-main"><span class="status">API</span><span class="detail">47322</span></div><div class="footer">ping</div></article>
-        <article class="key" data-state="work"><div class="key-main"><span class="status">BUILD</span><span class="detail">run</span></div><div class="footer">check</div></article>
-        <article class="key"><div class="key-main"><span class="status">SIZE</span><span class="detail">vscode</span></div><div class="footer">window</div></article>
-        <article class="key"><div class="key-main"><span class="status">LOG</span><span class="detail">tail</span></div><div class="footer">open</div></article>
-        <article class="key"><div class="key-main"><span class="status">BTT</span><span class="detail">reload</span></div><div class="footer">sync</div></article>
-        <article class="key"><div class="key-main"><span class="status">MUTE</span><span class="detail">audio</span></div><div class="footer">toggle</div></article>
-        <article class="key"><div class="key-main"><span class="status">SPARE</span><span class="detail">tool</span></div><div class="footer">future</div></article>
-
-        <article class="key" data-state="focus"><div class="key-main"><span class="status">COCK</span><span class="detail">pit</span></div><div class="footer">page</div></article>
-        <article class="key" data-state="focus"><div class="key-main"><span class="status">HQ</span><span class="detail">tools</span></div><div class="footer">page</div></article>
-        <article class="key" data-state="focus"><div class="key-main"><span class="status">COM</span><span class="detail">sat</span></div><div class="footer">page</div></article>
-        <article class="key"><div class="key-main"><span class="status">NEO</span><span class="detail">deck</span></div><div class="footer">page</div></article>
-        <article class="key"><div class="key-main"><span class="status">MOB</span><span class="detail">ile</span></div><div class="footer">page</div></article>
-        <article class="key" data-state="ice"><div class="key-main"><span class="status">DOCS</span><span class="detail">plans</span></div><div class="footer">open</div></article>
-        <article class="key" data-state="ice"><div class="key-main"><span class="status">BKUP</span><span class="detail">deck</span></div><div class="footer">safe</div></article>
-        <article class="key"><div class="key-main"><span class="status">SPARE</span><span class="detail">nav</span></div><div class="footer">future</div></article>
-
-        <article class="key" data-state="work"><div class="key-main"><span class="status">MISSION</span><span class="detail">view</span></div><div class="footer">mode</div></article>
-        <article class="key"><div class="key-main"><span class="status">DENSE</span><span class="detail">view</span></div><div class="footer">mode</div></article>
-        <article class="key" data-state="ice"><div class="key-main"><span class="status">ICE</span><span class="detail">all idle</span></div><div class="footer">clear</div></article>
-        <article class="key" data-state="perm"><div class="key-main"><span class="status">ALLOW</span><span class="detail">auto</span></div><div class="footer">next</div></article>
-        <article class="key" data-state="err"><div class="key-main"><span class="status">KILL</span><span class="detail">stuck</span></div><div class="footer">guard</div></article>
-        <article class="key"><div class="key-main"><span class="status">SYNC</span><span class="detail">state</span></div><div class="footer">refresh</div></article>
-        <article class="key"><div class="key-main"><span class="status">HELP</span><span class="detail">map</span></div><div class="footer">show</div></article>
-        <article class="key"><div class="key-main"><span class="status">OFF</span><span class="detail">safe</span></div><div class="footer">park</div></article>
+    <section class="ipad" aria-label="COMSAT 8 by 8 Stream Deck Mobile row dashboard mock-up">
+      <div class="faceplate-title">COMSAT / ACTIVE WORKSTATIONS</div>
+      <div class="page-label"><span>Page A</span><span>Rows 1-8</span></div>
+      <div class="band-label readouts">Readouts - flat, not primary controls</div>
+      <div class="band-label controls">Controls - raised, pressable modules</div>
+      <div class="column-labels" aria-hidden="true">
+        <div class="column-label">Station</div>
+        <div class="column-label">State</div>
+        <div class="column-label">Detail</div>
+        <div class="column-label ctrl">Focus</div>
+        <div class="column-label ctrl">Allow</div>
+        <div class="column-label ctrl">Deny</div>
+        <div class="column-label ctrl">Auto</div>
+        <div class="column-label ctrl">More</div>
       </div>
 
-      <aside class="side-note" aria-label="Dashboard notes">
-        <div class="note-card">Top row is action first, not workspace first.</div>
-        <div class="note-card">Rows 2-5: left key names the station and shows state; right key is focus.</div>
-        <div class="note-card">Rows 6-8 stay stable so muscle memory survives churn.</div>
-      </aside>
+      <div class="row-rails" aria-hidden="true">
+        <div class="row-rail" style="--station:#09e2db"></div>
+        <div class="row-rail" style="--station:#460b38"></div>
+        <div class="row-rail" style="--station:#460b38"></div>
+        <div class="row-rail" style="--station:#e53935"></div>
+        <div class="row-rail" style="--station:#1e88e5"></div>
+        <div class="row-rail" style="--station:#fed23b"></div>
+        <div class="row-rail" style="--station:#fde589"></div>
+        <div class="row-rail" style="--station:#737d89"></div>
+      </div>
+
+      <div class="deck-grid">
+        <article class="key readout station-id" style="--station:#09e2db"><span class="kind">id</span><div class="main"><span class="title">COMSAT</span><span class="sub">Radar</span></div><div class="foot">#09e2db</div></article>
+        <article class="key readout state-run"><span class="kind">read</span><div class="main"><span class="title">RUN</span><span class="sub">cooking</span></div><div class="foot"><span class="lamp work"></span>0 perm</div></article>
+        <article class="key readout detail"><span class="kind">read</span><div class="main"><span class="title">API 47322</span><span class="sub">COMSAT</span></div><div class="foot">local</div></article>
+        <article class="key control" style="--accent:#09e2db"><span class="kind">push</span><div class="main"><span class="title">FOCUS</span><span class="sub">window</span></div><div class="foot">press</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">ALLOW</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">DENY</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">AUTO</span><span class="sub">off</span></div><div class="foot">guard</div></article>
+        <article class="key control" style="--accent:#09e2db"><span class="kind">push</span><div class="main"><span class="title">MORE</span><span class="sub">tools</span></div><div class="foot">open</div></article>
+
+        <article class="key readout station-id" style="--station:#460b38"><span class="kind">id</span><div class="main"><span class="title">OVER</span><span class="sub">Overmind</span></div><div class="foot">#460b38</div></article>
+        <article class="key readout state-ice"><span class="kind">read</span><div class="main"><span class="title">STBY</span><span class="sub">standby</span></div><div class="foot"><span class="lamp ice"></span>0 perm</div></article>
+        <article class="key readout detail"><span class="kind">read</span><div class="main"><span class="title">1PW MIG</span><span class="sub">Relay</span></div><div class="foot">quiet</div></article>
+        <article class="key control" style="--accent:#460b38"><span class="kind">push</span><div class="main"><span class="title">FOCUS</span><span class="sub">window</span></div><div class="foot">press</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">ALLOW</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">DENY</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">AUTO</span><span class="sub">off</span></div><div class="foot">guard</div></article>
+        <article class="key control" style="--accent:#460b38"><span class="kind">push</span><div class="main"><span class="title">MORE</span><span class="sub">plan</span></div><div class="foot">open</div></article>
+
+        <article class="key readout station-id" style="--station:#460b38"><span class="kind">id</span><div class="main"><span class="title">OVER2</span><span class="sub">Overmind #2</span></div><div class="foot">#460b38</div></article>
+        <article class="key readout state-run"><span class="kind">read</span><div class="main"><span class="title">RUN</span><span class="sub">cooking</span></div><div class="foot"><span class="lamp work"></span>0 perm</div></article>
+        <article class="key readout detail"><span class="kind">read</span><div class="main"><span class="title">ACTIVE</span><span class="sub">coding</span></div><div class="foot">now</div></article>
+        <article class="key control" style="--accent:#460b38"><span class="kind">push</span><div class="main"><span class="title">FOCUS</span><span class="sub">window</span></div><div class="foot">press</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">ALLOW</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">DENY</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control" style="--accent:#ff3aa6"><span class="kind">push</span><div class="main"><span class="title">AUTO</span><span class="sub">arm</span></div><div class="foot">hold</div></article>
+        <article class="key control" style="--accent:#460b38"><span class="kind">push</span><div class="main"><span class="title">MORE</span><span class="sub">log</span></div><div class="foot">open</div></article>
+
+        <article class="key readout station-id" style="--station:#e53935"><span class="kind">id</span><div class="main"><span class="title">SALES</span><span class="sub">HPF Sales</span></div><div class="foot">#e53935</div></article>
+        <article class="key readout state-wait"><span class="kind">read</span><div class="main"><span class="title">INPUT</span><span class="sub">waiting</span></div><div class="foot"><span class="lamp warn"></span>0 perm</div></article>
+        <article class="key readout detail"><span class="kind">read</span><div class="main"><span class="title">GHL + TRAIN</span><span class="sub">Hardening</span></div><div class="foot">needs eye</div></article>
+        <article class="key control" style="--accent:#e53935"><span class="kind">push</span><div class="main"><span class="title">FOCUS</span><span class="sub">answer</span></div><div class="foot">press</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">ALLOW</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">DENY</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">AUTO</span><span class="sub">off</span></div><div class="foot">guard</div></article>
+        <article class="key control" style="--accent:#e53935"><span class="kind">push</span><div class="main"><span class="title">MORE</span><span class="sub">plan</span></div><div class="foot">open</div></article>
+
+        <article class="key readout station-id" style="--station:#1e88e5"><span class="kind">id</span><div class="main"><span class="title">OPS</span><span class="sub">HPF Ops</span></div><div class="foot">#1e88e5</div></article>
+        <article class="key readout state-ice"><span class="kind">read</span><div class="main"><span class="title">STBY</span><span class="sub">standby</span></div><div class="foot"><span class="lamp ice"></span>0 perm</div></article>
+        <article class="key readout detail"><span class="kind">read</span><div class="main"><span class="title">QUIET</span><span class="sub">ops</span></div><div class="foot">watch</div></article>
+        <article class="key control" style="--accent:#1e88e5"><span class="kind">push</span><div class="main"><span class="title">FOCUS</span><span class="sub">window</span></div><div class="foot">press</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">ALLOW</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">DENY</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">AUTO</span><span class="sub">off</span></div><div class="foot">guard</div></article>
+        <article class="key control" style="--accent:#1e88e5"><span class="kind">push</span><div class="main"><span class="title">MORE</span><span class="sub">log</span></div><div class="foot">open</div></article>
+
+        <article class="key readout station-id" style="--station:#fed23b"><span class="kind">id</span><div class="main"><span class="title">SUPER</span><span class="sub">SuperNova</span></div><div class="foot">#fed23b</div></article>
+        <article class="key readout state-ice"><span class="kind">read</span><div class="main"><span class="title">STBY</span><span class="sub">standby</span></div><div class="foot"><span class="lamp ice"></span>0 perm</div></article>
+        <article class="key readout detail"><span class="kind">read</span><div class="main"><span class="title">PARKED</span><span class="sub">hpf</span></div><div class="foot">quiet</div></article>
+        <article class="key control" style="--accent:#fed23b"><span class="kind">push</span><div class="main"><span class="title">FOCUS</span><span class="sub">window</span></div><div class="foot">press</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">ALLOW</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">DENY</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">AUTO</span><span class="sub">off</span></div><div class="foot">guard</div></article>
+        <article class="key control" style="--accent:#fed23b"><span class="kind">push</span><div class="main"><span class="title">MORE</span><span class="sub">plan</span></div><div class="foot">open</div></article>
+
+        <article class="key readout station-id" style="--station:#fde589"><span class="kind">id</span><div class="main"><span class="title">NOVA</span><span class="sub">Nova</span></div><div class="foot">#fde589</div></article>
+        <article class="key readout state-wait"><span class="kind">read</span><div class="main"><span class="title">INPUT</span><span class="sub">waiting</span></div><div class="foot"><span class="lamp warn"></span>0 perm</div></article>
+        <article class="key readout detail"><span class="kind">read</span><div class="main"><span class="title">AWAITING</span><span class="sub">response</span></div><div class="foot">needs eye</div></article>
+        <article class="key control" style="--accent:#fde589"><span class="kind">push</span><div class="main"><span class="title">FOCUS</span><span class="sub">answer</span></div><div class="foot">press</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">ALLOW</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">DENY</span><span class="sub">no perm</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">AUTO</span><span class="sub">off</span></div><div class="foot">guard</div></article>
+        <article class="key control" style="--accent:#fde589"><span class="kind">push</span><div class="main"><span class="title">MORE</span><span class="sub">log</span></div><div class="foot">open</div></article>
+
+        <article class="key readout station-id" style="--station:#737d89"><span class="kind">id</span><div class="main"><span class="title">ROW 8</span><span class="sub">available</span></div><div class="foot">overflow</div></article>
+        <article class="key readout state-idle"><span class="kind">read</span><div class="main"><span class="title">EMPTY</span><span class="sub">no live</span></div><div class="foot"><span class="lamp"></span>ready</div></article>
+        <article class="key readout detail"><span class="kind">read</span><div class="main"><span class="title">PAGE B</span><span class="sub">rows 9-16</span></div><div class="foot">if needed</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">FOCUS</span><span class="sub">empty</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">ALLOW</span><span class="sub">empty</span></div><div class="foot">locked</div></article>
+        <article class="key control disabled"><span class="kind">push</span><div class="main"><span class="title">DENY</span><span class="sub">empty</span></div><div class="foot">locked</div></article>
+        <article class="key control" style="--accent:#54e0ff"><span class="kind">push</span><div class="main"><span class="title">NEXT</span><span class="sub">page b</span></div><div class="foot">nav</div></article>
+        <article class="key control" style="--accent:#737d89"><span class="kind">push</span><div class="main"><span class="title">MAP</span><span class="sub">roster</span></div><div class="foot">open</div></article>
+      </div>
     </section>
 
     <section class="plan" aria-label="Implementation plan">
       <article class="plan-item">
-        <h2>1. Use 8 x 8</h2>
-        <p>The screenshot confirms button size stays usable. We should spend the extra slots on stable controls and spare capacity.</p>
+        <h2>1. Rows Are Stations</h2>
+        <p>Use one row per live COMSAT window. Page A covers rows 1-8; Page B repeats the same layout for rows 9-16 when the live count spikes.</p>
       </article>
       <article class="plan-item">
-        <h2>2. Fake The Merges</h2>
-        <p>Buttons remain square hitboxes. The faceplate draws grouped panels, row labels, and section titles around them.</p>
+        <h2>2. Readouts Vs Controls</h2>
+        <p>Flat modules are information. Raised beveled modules are pressable. Allow and Deny only light up when a row has a pending permission.</p>
       </article>
       <article class="plan-item">
-        <h2>3. Dynamic Slots</h2>
-        <p>Each pair has a station/state key on the left and a focus key on the right, sorted by urgency.</p>
+        <h2>3. Two Color Channels</h2>
+        <p>Station color is the row rail and identity key. State colors only appear as status lamps and state words: green, amber, red, cyan, gray.</p>
       </article>
       <article class="plan-item">
-        <h2>4. Install Safely</h2>
-        <p>Next build step is a backup, one new COMSAT page, generated key images, and no fragile BTT preset import.</p>
+        <h2>4. Background Does The Grouping</h2>
+        <p>The iPad background carries the column headers and row rails. The keys stay square, but the faceplate makes each row read as one control bay.</p>
       </article>
     </section>
   </main>
