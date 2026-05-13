@@ -3,23 +3,23 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>COMSAT iPad Dashboard Mock-up</title>
+  <title>COMSAT iPad 8 x 8 Dashboard Mock-up</title>
   <style>
     :root {
       --bg: #050607;
       --ink: #f4f1e8;
       --muted: rgba(244, 241, 232, 0.66);
-      --faint: rgba(244, 241, 232, 0.16);
-      --line: rgba(244, 241, 232, 0.24);
-      --panel: #11100d;
-      --tile: #090909;
+      --faint: rgba(244, 241, 232, 0.15);
+      --line: rgba(244, 241, 232, 0.28);
+      --panel: rgba(12, 12, 12, 0.86);
+      --tile: #020202;
       --green: #2bd99f;
       --cyan: #38d8f4;
       --amber: #ffb52e;
       --red: #ff3e57;
       --pink: #ff3aa6;
-      --violet: #a88cff;
-      --quiet: #8f9499;
+      --blue: #314584;
+      --paper: #f4eadc;
     }
 
     * { box-sizing: border-box; }
@@ -29,449 +29,242 @@
       min-height: 100vh;
       color: var(--ink);
       background:
-        linear-gradient(rgba(244,241,232,0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(244,241,232,0.026) 1px, transparent 1px),
+        radial-gradient(circle at 9% 20%, rgba(56, 216, 244, 0.14), transparent 22%),
+        radial-gradient(circle at 90% 72%, rgba(255, 58, 166, 0.12), transparent 21%),
         #050607;
-      background-size: 42px 42px;
       font: 15px/1.45 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     .page {
-      width: min(1360px, calc(100vw - 32px));
+      width: min(1500px, calc(100vw - 32px));
       margin: 0 auto;
       padding: 24px 0 44px;
     }
 
     .topline {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
       gap: 18px;
-      margin: 0 0 14px;
+      align-items: end;
+      margin-bottom: 16px;
     }
 
     h1 {
       margin: 0;
-      font-size: clamp(26px, 3.6vw, 44px);
+      font-size: clamp(28px, 3.8vw, 48px);
       line-height: 1.02;
       letter-spacing: 0;
     }
 
     .subhead {
-      max-width: 640px;
+      max-width: 780px;
+      margin: 8px 0 0;
       color: var(--muted);
       font-size: 14px;
     }
 
-    .mode-switch {
-      display: inline-grid;
+    .spec {
+      display: grid;
       grid-auto-flow: column;
-      gap: 4px;
-      padding: 4px;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .pill {
       border: 1px solid var(--line);
       border-radius: 8px;
-      background: rgba(244, 241, 232, 0.06);
-    }
-
-    .mode-switch button,
-    .global-button {
-      min-height: 32px;
-      border: 1px solid transparent;
-      border-radius: 6px;
+      padding: 9px 11px;
       color: var(--muted);
-      background: transparent;
-      font: 700 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
-      text-transform: uppercase;
-      cursor: pointer;
-    }
-
-    .mode-switch button {
-      padding: 0 12px;
-    }
-
-    .mode-switch button.is-active {
-      color: var(--ink);
-      border-color: rgba(244, 241, 232, 0.32);
-      background: rgba(244, 241, 232, 0.1);
-    }
-
-    .tablet {
-      position: relative;
-      overflow: hidden;
-      min-height: 780px;
-      border: 1px solid rgba(244, 241, 232, 0.3);
-      border-radius: 8px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.035), transparent 15%),
-        repeating-linear-gradient(90deg, transparent 0 83px, rgba(244,241,232,0.055) 84px),
-        repeating-linear-gradient(180deg, transparent 0 83px, rgba(244,241,232,0.045) 84px),
-        #070707;
-      box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,0.035),
-        0 26px 70px rgba(0,0,0,0.42);
-    }
-
-    .dashboard {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-rows: 64px auto;
-      min-height: 780px;
-    }
-
-    .dash-header {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: center;
-      gap: 16px;
-      padding: 0 20px;
-      border-bottom: 1px solid var(--faint);
-      background: rgba(0,0,0,0.28);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 0;
-    }
-
-    .mark {
-      width: 30px;
-      height: 30px;
-      border: 1px solid rgba(244,241,232,0.7);
-      border-radius: 50%;
-      position: relative;
-      flex: 0 0 auto;
-    }
-
-    .mark::before,
-    .mark::after {
-      content: "";
-      position: absolute;
-      left: 6px;
-      right: 6px;
-      top: 50%;
-      height: 1px;
-      background: rgba(244,241,232,0.86);
-      transform-origin: center;
-    }
-
-    .mark::before { transform: rotate(27deg); }
-    .mark::after { transform: rotate(-27deg); }
-
-    .brand strong {
-      display: block;
-      font-size: 17px;
-      line-height: 1.1;
-    }
-
-    .brand span {
-      display: block;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      color: var(--muted);
-      font: 700 11px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
-      text-transform: uppercase;
-    }
-
-    .clock-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-    }
-
-    .readout {
-      min-width: 72px;
-      padding: 8px 10px;
-      border: 1px solid var(--faint);
-      border-radius: 6px;
-      color: var(--muted);
-      font: 700 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
-      text-transform: uppercase;
-      text-align: center;
-      background: rgba(255,255,255,0.035);
-    }
-
-    .dash-body {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 272px;
-      gap: 18px;
-      padding: 18px;
-    }
-
-    .main-plane {
-      display: grid;
-      grid-template-rows: auto minmax(0, 1fr) auto;
-      gap: 16px;
-      min-width: 0;
-    }
-
-    .section-label {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      min-height: 22px;
-      color: var(--muted);
+      background: rgba(255,255,255,0.05);
       font: 800 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
       text-transform: uppercase;
-    }
-
-    .section-label span:last-child {
-      color: rgba(244,241,232,0.42);
-      font-weight: 700;
-    }
-
-    .priority-strip,
-    .workspace-field,
-    .standby-strip {
-      min-width: 0;
-    }
-
-    .priority-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .workspace-grid {
-      display: grid;
-      grid-template-columns: repeat(7, minmax(92px, 1fr));
-      gap: 12px;
-      align-items: stretch;
-    }
-
-    .standby-grid {
-      display: grid;
-      grid-template-columns: repeat(7, minmax(86px, 1fr));
-      gap: 10px;
-    }
-
-    .slot {
-      position: relative;
-      min-width: 0;
-    }
-
-    .slot-label {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      min-height: 18px;
-      color: rgba(244,241,232,0.62);
-      font: 800 10px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
-      text-transform: uppercase;
-    }
-
-    .slot-label b {
-      overflow: hidden;
-      text-overflow: ellipsis;
       white-space: nowrap;
-      font-weight: 800;
     }
 
-    .slot-label span {
-      color: rgba(244,241,232,0.36);
-      font-weight: 700;
+    .pill strong { color: var(--ink); }
+
+    .ipad {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+      min-height: 760px;
+      border: 1px solid rgba(244, 241, 232, 0.28);
+      border-radius: 10px;
+      background:
+        linear-gradient(rgba(49, 69, 132, 0.28) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(49, 69, 132, 0.28) 1px, transparent 1px),
+        var(--paper);
+      background-size: 37px 37px;
+      box-shadow: 0 34px 90px rgba(0,0,0,0.44);
     }
 
-    .tile {
+    .scribble {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.36;
+      background:
+        radial-gradient(ellipse at 1% 18%, transparent 0 9%, var(--blue) 9.4% 9.7%, transparent 10%),
+        radial-gradient(ellipse at 92% 33%, transparent 0 11%, var(--blue) 11.4% 11.7%, transparent 12%),
+        radial-gradient(ellipse at 7% 77%, transparent 0 13%, var(--blue) 13.4% 13.7%, transparent 14%),
+        radial-gradient(ellipse at 82% 93%, transparent 0 9%, var(--blue) 9.4% 9.7%, transparent 10%);
+    }
+
+    .faceplate-label {
+      position: absolute;
+      z-index: 1;
+      color: rgba(49, 69, 132, 0.92);
+      font: 900 clamp(12px, 1.1vw, 16px)/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    .label-priority { left: 13.2%; top: 3.1%; }
+    .label-live { left: 13.2%; top: 26.4%; }
+    .label-tools { left: 13.2%; top: 72%; }
+    .label-nav { left: 13.2%; top: 84.3%; }
+    .label-rule { right: 18.7%; top: 3.1%; text-align: right; }
+
+    .deck-grid {
+      position: absolute;
+      z-index: 2;
+      left: 12.8%;
+      top: 4.6%;
+      width: 70.3%;
+      height: 91.9%;
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      grid-template-rows: repeat(8, minmax(0, 1fr));
+      gap: 1.25%;
+    }
+
+    .key {
       position: relative;
       display: grid;
       grid-template-rows: 1fr auto;
-      min-height: 126px;
-      margin-top: 4px;
+      min-width: 0;
+      min-height: 0;
       overflow: hidden;
-      border: 1px solid rgba(244,241,232,0.2);
-      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 12%;
+      color: var(--ink);
       background:
-        linear-gradient(180deg, rgba(255,255,255,0.04), transparent 42%),
+        linear-gradient(180deg, rgba(255,255,255,0.045), transparent 46%),
         var(--tile);
       box-shadow:
-        inset 0 -22px 42px rgba(0,0,0,0.62),
-        0 14px 24px rgba(0,0,0,0.22);
+        inset 0 -22px 30px rgba(0,0,0,0.72),
+        0 8px 14px rgba(0,0,0,0.22);
     }
 
-    .tile::before {
+    .key::after {
       content: "";
       position: absolute;
-      inset: auto 10px 8px 10px;
-      height: 5px;
+      left: 10%;
+      right: 10%;
+      bottom: 7%;
+      height: 4px;
       border-radius: 999px;
-      background: var(--quiet);
-      box-shadow: 0 0 18px color-mix(in srgb, var(--quiet), transparent 24%);
+      background: rgba(244, 241, 232, 0.28);
     }
 
-    .tile[data-state="work"]::before,
-    .tile[data-state="work"] .status { color: var(--green); background: var(--green); }
-    .tile[data-state="perm"]::before,
-    .tile[data-state="perm"] .status { color: var(--amber); background: var(--amber); }
-    .tile[data-state="input"]::before,
-    .tile[data-state="input"] .status { color: var(--amber); background: var(--amber); }
-    .tile[data-state="err"]::before,
-    .tile[data-state="err"] .status { color: var(--red); background: var(--red); }
-    .tile[data-state="ice"]::before,
-    .tile[data-state="ice"] .status { color: var(--cyan); background: var(--cyan); }
-    .tile[data-state="focus"]::before,
-    .tile[data-state="focus"] .status { color: var(--pink); background: var(--pink); }
+    .key[data-state="work"] { border-color: rgba(43, 217, 159, 0.44); }
+    .key[data-state="perm"] { border-color: rgba(255, 181, 46, 0.56); }
+    .key[data-state="input"] { border-color: rgba(255, 181, 46, 0.42); }
+    .key[data-state="err"] { border-color: rgba(255, 62, 87, 0.58); }
+    .key[data-state="ice"] { border-color: rgba(56, 216, 244, 0.34); }
+    .key[data-state="focus"] { border-color: rgba(255, 58, 166, 0.48); }
 
-    .tile[data-state="work"] { border-color: rgba(43,217,159,0.46); }
-    .tile[data-state="perm"] { border-color: rgba(255,181,46,0.58); }
-    .tile[data-state="input"] { border-color: rgba(255,181,46,0.42); }
-    .tile[data-state="err"] { border-color: rgba(255,62,87,0.58); }
-    .tile[data-state="ice"] { border-color: rgba(56,216,244,0.32); }
-    .tile[data-state="focus"] { border-color: rgba(255,58,166,0.46); }
+    .key[data-state="work"]::after { background: var(--green); }
+    .key[data-state="perm"]::after,
+    .key[data-state="input"]::after { background: var(--amber); }
+    .key[data-state="err"]::after { background: var(--red); }
+    .key[data-state="ice"]::after { background: var(--cyan); }
+    .key[data-state="focus"]::after { background: var(--pink); }
 
-    .tile-main {
-      position: relative;
-      z-index: 1;
+    .key-main {
       display: grid;
       place-items: center;
+      align-content: center;
       gap: 4px;
-      padding: 17px 10px 9px;
+      padding: 12% 8% 4%;
       text-align: center;
     }
 
     .status {
-      display: inline-block;
       max-width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
-      color: var(--quiet);
-      background: var(--quiet);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font: 900 clamp(22px, 2.6vw, 34px)/0.9 ui-monospace, SFMono-Regular, Menlo, monospace;
+      color: var(--muted);
+      font: 950 clamp(14px, 2vw, 33px)/0.9 ui-monospace, SFMono-Regular, Menlo, monospace;
       text-transform: uppercase;
     }
+
+    .key[data-state="work"] .status { color: var(--green); }
+    .key[data-state="perm"] .status,
+    .key[data-state="input"] .status { color: var(--amber); }
+    .key[data-state="err"] .status { color: var(--red); }
+    .key[data-state="ice"] .status { color: var(--cyan); }
+    .key[data-state="focus"] .status { color: var(--pink); }
 
     .detail {
-      min-height: 16px;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
       color: rgba(244,241,232,0.72);
-      font: 800 10px/1.05 ui-monospace, SFMono-Regular, Menlo, monospace;
+      font: 850 clamp(7px, 0.78vw, 11px)/1.05 ui-monospace, SFMono-Regular, Menlo, monospace;
       text-transform: uppercase;
+      white-space: nowrap;
     }
 
-    .tile-footer {
-      position: relative;
-      z-index: 1;
-      padding: 0 10px 20px;
-      color: rgba(244,241,232,0.68);
-      font: 800 10px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
-      text-transform: uppercase;
-      text-align: center;
-    }
-
-    .slot.is-compact .tile {
-      min-height: 74px;
-    }
-
-    .slot.is-compact .tile-main {
-      padding: 11px 8px 6px;
-      gap: 2px;
-    }
-
-    .slot.is-compact .status {
-      font-size: 20px;
-    }
-
-    .slot.is-compact .tile-footer {
-      padding-bottom: 14px;
-      font-size: 9px;
-    }
-
-    .side-rail {
-      display: grid;
-      grid-template-rows: auto auto minmax(0, 1fr);
-      gap: 14px;
-      min-width: 0;
-    }
-
-    .rail-block {
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: rgba(10,10,10,0.82);
-      padding: 12px;
-    }
-
-    .rail-title {
-      margin: 0 0 10px;
-      color: var(--muted);
-      font: 800 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
-      text-transform: uppercase;
-    }
-
-    .global-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .global-button {
-      display: grid;
-      place-items: center;
-      min-height: 58px;
-      border-color: rgba(244,241,232,0.2);
-      color: var(--ink);
-      background: rgba(244,241,232,0.055);
-    }
-
-    .global-button.is-warn { border-color: rgba(255,181,46,0.36); color: var(--amber); }
-    .global-button.is-pink { border-color: rgba(255,58,166,0.36); color: var(--pink); }
-    .global-button.is-green { border-color: rgba(43,217,159,0.36); color: var(--green); }
-    .global-button.is-cyan { border-color: rgba(56,216,244,0.32); color: var(--cyan); }
-
-    .legend {
-      display: grid;
-      gap: 8px;
-    }
-
-    .legend-row {
-      display: grid;
-      grid-template-columns: 12px 54px minmax(0, 1fr);
-      gap: 8px;
-      align-items: center;
-      color: var(--muted);
-      font: 700 10px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
-      text-transform: uppercase;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--quiet);
-    }
-
-    .dot.green { background: var(--green); }
-    .dot.amber { background: var(--amber); }
-    .dot.red { background: var(--red); }
-    .dot.cyan { background: var(--cyan); }
-    .dot.pink { background: var(--pink); }
-
-    .slot-map {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 6px;
-    }
-
-    .map-cell {
-      min-height: 34px;
-      border: 1px solid rgba(244,241,232,0.14);
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 0 8px;
+    .footer {
+      padding: 0 8% 15%;
       color: rgba(244,241,232,0.66);
-      font: 800 10px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      font: 850 clamp(7px, 0.76vw, 10px)/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+      text-align: center;
       text-transform: uppercase;
-      background: rgba(244,241,232,0.035);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .group-wash {
+      position: absolute;
+      z-index: 1;
+      left: 11.8%;
+      width: 72.3%;
+      border: 1px solid rgba(49, 69, 132, 0.26);
+      border-radius: 12px;
+      background: rgba(244, 241, 232, 0.34);
+      pointer-events: none;
+    }
+
+    .wash-priority { top: 3.5%; height: 20.5%; }
+    .wash-live { top: 26.8%; height: 42.9%; }
+    .wash-tools { top: 72.4%; height: 9.4%; }
+    .wash-nav { top: 84.8%; height: 14.8%; }
+
+    .side-note {
+      position: absolute;
+      right: 2.2%;
+      top: 8.6%;
+      bottom: 4%;
+      width: 10.4%;
+      display: grid;
+      align-content: space-between;
+      gap: 12px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .note-card {
+      border: 1px solid rgba(49, 69, 132, 0.34);
+      border-radius: 10px;
+      padding: 12px;
+      color: rgba(49, 69, 132, 0.9);
+      background: rgba(244, 234, 220, 0.74);
+      font: 850 clamp(8px, 0.75vw, 11px)/1.25 ui-monospace, SFMono-Regular, Menlo, monospace;
+      text-transform: uppercase;
     }
 
     .plan {
@@ -486,7 +279,7 @@
       border: 1px solid rgba(244,241,232,0.2);
       border-radius: 8px;
       padding: 14px;
-      background: rgba(12, 12, 12, 0.88);
+      background: var(--panel);
     }
 
     .plan-item h2 {
@@ -501,89 +294,19 @@
       font-size: 13px;
     }
 
-    .dashboard[data-mode="expanded"] .workspace-grid {
-      grid-template-columns: repeat(7, minmax(92px, 1fr));
-    }
-
-    .dashboard[data-mode="expanded"] .standby-strip {
-      display: block;
-    }
-
-    .dashboard[data-mode="compact"] .priority-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .dashboard[data-mode="compact"] .priority-grid .slot:last-child {
-      display: block;
-    }
-
-    .dashboard[data-mode="compact"] .workspace-grid {
-      grid-template-columns: repeat(10, minmax(72px, 1fr));
-      gap: 9px;
-    }
-
-    .dashboard[data-mode="compact"] .slot:not(.is-priority) .tile {
-      min-height: 94px;
-    }
-
-    .dashboard[data-mode="compact"] .standby-strip {
-      display: none;
-    }
-
-    .extra-priority {
-      display: none;
-    }
-
-    @media (max-width: 1040px) {
-      .topline {
-        align-items: start;
-        flex-direction: column;
-      }
-
-      .dash-body {
+    @media (max-width: 980px) {
+      .topline,
+      .plan {
         grid-template-columns: 1fr;
       }
 
-      .workspace-grid,
-      .standby-grid,
-      .dashboard[data-mode="expanded"] .workspace-grid,
-      .dashboard[data-mode="compact"] .workspace-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-
-      .side-rail {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        grid-template-rows: auto;
-      }
-    }
-
-    @media (max-width: 680px) {
-      .page {
-        width: calc(100vw - 20px);
-        padding-top: 14px;
-      }
-
-      .dash-header {
-        grid-template-columns: 1fr;
-        height: auto;
-        padding: 14px;
-      }
-
-      .clock-row {
-        flex-wrap: wrap;
-      }
-
-      .priority-grid,
-      .workspace-grid,
-      .standby-grid,
-      .dashboard[data-mode="expanded"] .workspace-grid,
-      .dashboard[data-mode="compact"] .workspace-grid {
+      .spec {
+        grid-auto-flow: row;
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      .side-rail,
-      .plan {
-        grid-template-columns: 1fr;
+      .ipad {
+        min-height: auto;
       }
     }
   </style>
@@ -593,315 +316,126 @@
     <div class="topline">
       <div>
         <h1>COMSAT iPad Dashboard</h1>
-        <p class="subhead">Mock-up for a custom Stream Deck Mobile surface: labels live on the dashboard background, buttons stay compact, and urgency controls the visual hierarchy.</p>
+        <p class="subhead">8 x 8 target based on the live iPad layout. The keys stay rectangular and reliable; the faceplate does the grouping, labels, and dashboard illusion.</p>
       </div>
-      <div class="mode-switch" aria-label="Mock-up density">
-        <button class="is-active" type="button" data-mode="expanded">Mission</button>
-        <button type="button" data-mode="compact">Dense</button>
+      <div class="spec" aria-label="Target specs">
+        <div class="pill"><strong>64</strong> keys</div>
+        <div class="pill"><strong>8 x 8</strong> layout</div>
+        <div class="pill"><strong>14</strong> windows ready</div>
       </div>
     </div>
 
-    <section class="tablet" aria-label="COMSAT dashboard mock-up">
-      <div class="dashboard" data-mode="expanded">
-        <header class="dash-header">
-          <div class="brand">
-            <div class="mark" aria-hidden="true"></div>
-            <div>
-              <strong>COMSAT Mission Control</strong>
-              <span>7 live windows · 2 attention items · tap approve · long press focus</span>
-            </div>
-          </div>
-          <div class="clock-row">
-            <div class="readout">09:58</div>
-            <div class="readout">API 200</div>
-            <div class="readout">AUTO OFF</div>
-          </div>
-        </header>
+    <section class="ipad" aria-label="8 by 8 Stream Deck Mobile dashboard mock-up">
+      <div class="scribble" aria-hidden="true"></div>
+      <div class="group-wash wash-priority" aria-hidden="true"></div>
+      <div class="group-wash wash-live" aria-hidden="true"></div>
+      <div class="group-wash wash-tools" aria-hidden="true"></div>
+      <div class="group-wash wash-nav" aria-hidden="true"></div>
+      <div class="faceplate-label label-priority">Priority / Global</div>
+      <div class="faceplate-label label-live">Live Windows: status key + focus key pairs</div>
+      <div class="faceplate-label label-tools">Tools</div>
+      <div class="faceplate-label label-nav">Navigation / Modes</div>
+      <div class="faceplate-label label-rule">Faceplate labels are fixed<br />buttons remain dynamic</div>
 
-        <div class="dash-body">
-          <div class="main-plane">
-            <section class="priority-strip" aria-label="Needs you">
-              <div class="section-label">
-                <span>Needs You</span>
-                <span>Floating priority strip</span>
-              </div>
-              <div class="priority-grid">
-                <article class="slot is-priority">
-                  <div class="slot-label"><b>HPF Sales</b><span>oldest perm</span></div>
-                  <div class="tile" data-state="perm">
-                    <div class="tile-main">
-                      <span class="status">PERM</span>
-                      <span class="detail">1 pending</span>
-                    </div>
-                    <div class="tile-footer">tap approve</div>
-                  </div>
-                </article>
+      <div class="deck-grid">
+        <article class="key" data-state="perm"><div class="key-main"><span class="status">OK</span><span class="detail">top perm</span></div><div class="footer">approve</div></article>
+        <article class="key" data-state="err"><div class="key-main"><span class="status">NO</span><span class="detail">top perm</span></div><div class="footer">reject</div></article>
+        <article class="key" data-state="input"><div class="key-main"><span class="status">INPUT</span><span class="detail">waiting</span></div><div class="footer">focus</div></article>
+        <article class="key" data-state="err"><div class="key-main"><span class="status">ERR</span><span class="detail">blocked</span></div><div class="footer">inspect</div></article>
+        <article class="key" data-state="focus"><div class="key-main"><span class="status">AUTO</span><span class="detail">allow</span></div><div class="footer">toggle</div></article>
+        <article class="key" data-state="work"><div class="key-main"><span class="status">WRAP</span><span class="detail">complete</span></div><div class="footer">safe</div></article>
+        <article class="key" data-state="ice"><div class="key-main"><span class="status">RADAR</span><span class="detail">open</span></div><div class="footer">app</div></article>
+        <article class="key"><div class="key-main"><span class="status">RLD</span><span class="detail">deck</span></div><div class="footer">reload</div></article>
 
-                <article class="slot is-priority">
-                  <div class="slot-label"><b>Nova</b><span>awaiting input</span></div>
-                  <div class="tile" data-state="input">
-                    <div class="tile-main">
-                      <span class="status">INPUT</span>
-                      <span class="detail">over to you</span>
-                    </div>
-                    <div class="tile-footer">tap focus</div>
-                  </div>
-                </article>
+        <article class="key" data-state="work"><div class="key-main"><span class="status">WORK</span><span class="detail">comsat</span></div><div class="footer">S1</div></article>
+        <article class="key" data-state="focus"><div class="key-main"><span class="status">OPEN</span><span class="detail">comsat</span></div><div class="footer">focus</div></article>
+        <article class="key" data-state="work"><div class="key-main"><span class="status">WORK</span><span class="detail">over</span></div><div class="footer">S2</div></article>
+        <article class="key" data-state="focus"><div class="key-main"><span class="status">OPEN</span><span class="detail">over</span></div><div class="footer">focus</div></article>
+        <article class="key" data-state="work"><div class="key-main"><span class="status">WORK</span><span class="detail">over2</span></div><div class="footer">S3</div></article>
+        <article class="key" data-state="focus"><div class="key-main"><span class="status">OPEN</span><span class="detail">over2</span></div><div class="footer">focus</div></article>
+        <article class="key" data-state="perm"><div class="key-main"><span class="status">PERM</span><span class="detail">hpf</span></div><div class="footer">S4</div></article>
+        <article class="key" data-state="focus"><div class="key-main"><span class="status">OPEN</span><span class="detail">hpf</span></div><div class="footer">focus</div></article>
 
-                <article class="slot is-priority">
-                  <div class="slot-label"><b>Overmind #2</b><span>active</span></div>
-                  <div class="tile" data-state="work">
-                    <div class="tile-main">
-                      <span class="status">WORK</span>
-                      <span class="detail">tool running</span>
-                    </div>
-                    <div class="tile-footer">hold focus</div>
-                  </div>
-                </article>
+        <article class="key" data-state="ice"><div class="key-main"><span class="status">ICE</span><span class="detail">ops</span></div><div class="footer">S5</div></article>
+        <article class="key" data-state="focus"><div class="key-main"><span class="status">OPEN</span><span class="detail">ops</span></div><div class="footer">focus</div></article>
+        <article class="key" data-state="ice"><div class="key-main"><span class="status">ICE</span><span class="detail">super</span></div><div class="footer">S6</div></article>
+        <article class="key" data-state="focus"><div class="key-main"><span class="status">OPEN</span><span class="detail">super</span></div><div class="footer">focus</div></article>
+        <article class="key" data-state="input"><div class="key-main"><span class="status">INPUT</span><span class="detail">nova</span></div><div class="footer">S7</div></article>
+        <article class="key" data-state="focus"><div class="key-main"><span class="status">OPEN</span><span class="detail">nova</span></div><div class="footer">focus</div></article>
+        <article class="key"><div class="key-main"><span class="status">EMPTY</span><span class="detail">slot 8</span></div><div class="footer">auto</div></article>
+        <article class="key"><div class="key-main"><span class="status">OPEN</span><span class="detail">slot 8</span></div><div class="footer">focus</div></article>
 
-                <article class="slot is-priority extra-priority">
-                  <div class="slot-label"><b>Any Error</b><span>appears only dense</span></div>
-                  <div class="tile" data-state="err">
-                    <div class="tile-main">
-                      <span class="status">ERR</span>
-                      <span class="detail">blocked</span>
-                    </div>
-                    <div class="tile-footer">tap inspect</div>
-                  </div>
-                </article>
-              </div>
-            </section>
+        <article class="key"><div class="key-main"><span class="status">EMPTY</span><span class="detail">slot 9</span></div><div class="footer">auto</div></article>
+        <article class="key"><div class="key-main"><span class="status">OPEN</span><span class="detail">slot 9</span></div><div class="footer">focus</div></article>
+        <article class="key"><div class="key-main"><span class="status">EMPTY</span><span class="detail">slot 10</span></div><div class="footer">auto</div></article>
+        <article class="key"><div class="key-main"><span class="status">OPEN</span><span class="detail">slot 10</span></div><div class="footer">focus</div></article>
+        <article class="key"><div class="key-main"><span class="status">EMPTY</span><span class="detail">slot 11</span></div><div class="footer">auto</div></article>
+        <article class="key"><div class="key-main"><span class="status">OPEN</span><span class="detail">slot 11</span></div><div class="footer">focus</div></article>
+        <article class="key"><div class="key-main"><span class="status">EMPTY</span><span class="detail">slot 12</span></div><div class="footer">auto</div></article>
+        <article class="key"><div class="key-main"><span class="status">OPEN</span><span class="detail">slot 12</span></div><div class="footer">focus</div></article>
 
-            <section class="workspace-field" aria-label="Live workspaces">
-              <div class="section-label">
-                <span>Live Workspaces</span>
-                <span>Custom slots, labels on background</span>
-              </div>
-              <div class="workspace-grid">
-                <article class="slot">
-                  <div class="slot-label"><b>COMSAT Radar</b><span>S1</span></div>
-                  <div class="tile" data-state="work">
-                    <div class="tile-main"><span class="status">WORK</span><span class="detail">68 ctx</span></div>
-                    <div class="tile-footer">COMSAT</div>
-                  </div>
-                </article>
+        <article class="key"><div class="key-main"><span class="status">EMPTY</span><span class="detail">slot 13</span></div><div class="footer">auto</div></article>
+        <article class="key"><div class="key-main"><span class="status">OPEN</span><span class="detail">slot 13</span></div><div class="footer">focus</div></article>
+        <article class="key"><div class="key-main"><span class="status">EMPTY</span><span class="detail">slot 14</span></div><div class="footer">auto</div></article>
+        <article class="key"><div class="key-main"><span class="status">OPEN</span><span class="detail">slot 14</span></div><div class="footer">focus</div></article>
+        <article class="key"><div class="key-main"><span class="status">EMPTY</span><span class="detail">slot 15</span></div><div class="footer">auto</div></article>
+        <article class="key"><div class="key-main"><span class="status">OPEN</span><span class="detail">slot 15</span></div><div class="footer">focus</div></article>
+        <article class="key"><div class="key-main"><span class="status">EMPTY</span><span class="detail">slot 16</span></div><div class="footer">auto</div></article>
+        <article class="key"><div class="key-main"><span class="status">OPEN</span><span class="detail">slot 16</span></div><div class="footer">focus</div></article>
 
-                <article class="slot">
-                  <div class="slot-label"><b>Overmind</b><span>S2</span></div>
-                  <div class="tile" data-state="work">
-                    <div class="tile-main"><span class="status">WORK</span><span class="detail">relay</span></div>
-                    <div class="tile-footer">OVER</div>
-                  </div>
-                </article>
+        <article class="key" data-state="ice"><div class="key-main"><span class="status">SNAP</span><span class="detail">api</span></div><div class="footer">json</div></article>
+        <article class="key"><div class="key-main"><span class="status">API</span><span class="detail">47322</span></div><div class="footer">ping</div></article>
+        <article class="key" data-state="work"><div class="key-main"><span class="status">BUILD</span><span class="detail">run</span></div><div class="footer">check</div></article>
+        <article class="key"><div class="key-main"><span class="status">SIZE</span><span class="detail">vscode</span></div><div class="footer">window</div></article>
+        <article class="key"><div class="key-main"><span class="status">LOG</span><span class="detail">tail</span></div><div class="footer">open</div></article>
+        <article class="key"><div class="key-main"><span class="status">BTT</span><span class="detail">reload</span></div><div class="footer">sync</div></article>
+        <article class="key"><div class="key-main"><span class="status">MUTE</span><span class="detail">audio</span></div><div class="footer">toggle</div></article>
+        <article class="key"><div class="key-main"><span class="status">SPARE</span><span class="detail">tool</span></div><div class="footer">future</div></article>
 
-                <article class="slot">
-                  <div class="slot-label"><b>Overmind #2</b><span>S3</span></div>
-                  <div class="tile" data-state="work">
-                    <div class="tile-main"><span class="status">WORK</span><span class="detail">migrate</span></div>
-                    <div class="tile-footer">OVER2</div>
-                  </div>
-                </article>
+        <article class="key" data-state="focus"><div class="key-main"><span class="status">COCK</span><span class="detail">pit</span></div><div class="footer">page</div></article>
+        <article class="key" data-state="focus"><div class="key-main"><span class="status">HQ</span><span class="detail">tools</span></div><div class="footer">page</div></article>
+        <article class="key" data-state="focus"><div class="key-main"><span class="status">COM</span><span class="detail">sat</span></div><div class="footer">page</div></article>
+        <article class="key"><div class="key-main"><span class="status">NEO</span><span class="detail">deck</span></div><div class="footer">page</div></article>
+        <article class="key"><div class="key-main"><span class="status">MOB</span><span class="detail">ile</span></div><div class="footer">page</div></article>
+        <article class="key" data-state="ice"><div class="key-main"><span class="status">DOCS</span><span class="detail">plans</span></div><div class="footer">open</div></article>
+        <article class="key" data-state="ice"><div class="key-main"><span class="status">BKUP</span><span class="detail">deck</span></div><div class="footer">safe</div></article>
+        <article class="key"><div class="key-main"><span class="status">SPARE</span><span class="detail">nav</span></div><div class="footer">future</div></article>
 
-                <article class="slot">
-                  <div class="slot-label"><b>HPF Sales</b><span>S4</span></div>
-                  <div class="tile" data-state="perm">
-                    <div class="tile-main"><span class="status">PERM</span><span class="detail">1 pending</span></div>
-                    <div class="tile-footer">HPF</div>
-                  </div>
-                </article>
-
-                <article class="slot">
-                  <div class="slot-label"><b>HPF Ops</b><span>S5</span></div>
-                  <div class="tile" data-state="ice">
-                    <div class="tile-main"><span class="status">ICE</span><span class="detail">standby</span></div>
-                    <div class="tile-footer">OPS</div>
-                  </div>
-                </article>
-
-                <article class="slot">
-                  <div class="slot-label"><b>SuperNova</b><span>S6</span></div>
-                  <div class="tile" data-state="ice">
-                    <div class="tile-main"><span class="status">ICE</span><span class="detail">parked</span></div>
-                    <div class="tile-footer">SUPER</div>
-                  </div>
-                </article>
-
-                <article class="slot">
-                  <div class="slot-label"><b>Nova</b><span>S7</span></div>
-                  <div class="tile" data-state="input">
-                    <div class="tile-main"><span class="status">INPUT</span><span class="detail">reply</span></div>
-                    <div class="tile-footer">NOVA</div>
-                  </div>
-                </article>
-
-                <article class="slot">
-                  <div class="slot-label"><b>Slot 8</b><span>auto</span></div>
-                  <div class="tile">
-                    <div class="tile-main"><span class="status">EMPTY</span><span class="detail"></span></div>
-                    <div class="tile-footer">S8</div>
-                  </div>
-                </article>
-
-                <article class="slot">
-                  <div class="slot-label"><b>Slot 9</b><span>auto</span></div>
-                  <div class="tile">
-                    <div class="tile-main"><span class="status">EMPTY</span><span class="detail"></span></div>
-                    <div class="tile-footer">S9</div>
-                  </div>
-                </article>
-
-                <article class="slot">
-                  <div class="slot-label"><b>Slot 10</b><span>auto</span></div>
-                  <div class="tile">
-                    <div class="tile-main"><span class="status">EMPTY</span><span class="detail"></span></div>
-                    <div class="tile-footer">S10</div>
-                  </div>
-                </article>
-
-                <article class="slot">
-                  <div class="slot-label"><b>Slot 11</b><span>auto</span></div>
-                  <div class="tile">
-                    <div class="tile-main"><span class="status">EMPTY</span><span class="detail"></span></div>
-                    <div class="tile-footer">S11</div>
-                  </div>
-                </article>
-
-                <article class="slot">
-                  <div class="slot-label"><b>Slot 12</b><span>auto</span></div>
-                  <div class="tile">
-                    <div class="tile-main"><span class="status">EMPTY</span><span class="detail"></span></div>
-                    <div class="tile-footer">S12</div>
-                  </div>
-                </article>
-
-                <article class="slot">
-                  <div class="slot-label"><b>Slot 13</b><span>auto</span></div>
-                  <div class="tile">
-                    <div class="tile-main"><span class="status">EMPTY</span><span class="detail"></span></div>
-                    <div class="tile-footer">S13</div>
-                  </div>
-                </article>
-
-                <article class="slot">
-                  <div class="slot-label"><b>Slot 14</b><span>auto</span></div>
-                  <div class="tile">
-                    <div class="tile-main"><span class="status">EMPTY</span><span class="detail"></span></div>
-                    <div class="tile-footer">S14</div>
-                  </div>
-                </article>
-              </div>
-            </section>
-
-            <section class="standby-strip" aria-label="Optional command mini buttons">
-              <div class="section-label">
-                <span>Optional Secondary Controls</span>
-                <span>Only where visual separation helps</span>
-              </div>
-              <div class="standby-grid">
-                <article class="slot is-compact">
-                  <div class="slot-label"><b>HPF</b><span>focus</span></div>
-                  <div class="tile" data-state="focus">
-                    <div class="tile-main"><span class="status">OPEN</span><span class="detail"></span></div>
-                    <div class="tile-footer">focus</div>
-                  </div>
-                </article>
-                <article class="slot is-compact">
-                  <div class="slot-label"><b>NOVA</b><span>focus</span></div>
-                  <div class="tile" data-state="focus">
-                    <div class="tile-main"><span class="status">OPEN</span><span class="detail"></span></div>
-                    <div class="tile-footer">focus</div>
-                  </div>
-                </article>
-                <article class="slot is-compact">
-                  <div class="slot-label"><b>TOP</b><span>approve</span></div>
-                  <div class="tile" data-state="perm">
-                    <div class="tile-main"><span class="status">OK</span><span class="detail"></span></div>
-                    <div class="tile-footer">approve</div>
-                  </div>
-                </article>
-                <article class="slot is-compact">
-                  <div class="slot-label"><b>TOP</b><span>reject</span></div>
-                  <div class="tile" data-state="err">
-                    <div class="tile-main"><span class="status">NO</span><span class="detail"></span></div>
-                    <div class="tile-footer">reject</div>
-                  </div>
-                </article>
-              </div>
-            </section>
-          </div>
-
-          <aside class="side-rail" aria-label="Global controls and legend">
-            <section class="rail-block">
-              <h2 class="rail-title">Global Rail</h2>
-              <div class="global-grid">
-                <button class="global-button is-cyan" type="button">Radar</button>
-                <button class="global-button is-warn" type="button">Top OK</button>
-                <button class="global-button is-green" type="button">Wrap</button>
-                <button class="global-button is-pink" type="button">Auto</button>
-                <button class="global-button" type="button">Mute</button>
-                <button class="global-button" type="button">Reload</button>
-              </div>
-            </section>
-
-            <section class="rail-block">
-              <h2 class="rail-title">State Legend</h2>
-              <div class="legend">
-                <div class="legend-row"><span class="dot amber"></span><b>PERM</b><span>needs approval</span></div>
-                <div class="legend-row"><span class="dot amber"></span><b>INPUT</b><span>waiting on Emil</span></div>
-                <div class="legend-row"><span class="dot green"></span><b>WORK</b><span>tool or task running</span></div>
-                <div class="legend-row"><span class="dot cyan"></span><b>ICE</b><span>parked or standby</span></div>
-                <div class="legend-row"><span class="dot red"></span><b>ERR</b><span>broken or blocked</span></div>
-              </div>
-            </section>
-
-            <section class="rail-block">
-              <h2 class="rail-title">Slot Map</h2>
-              <div class="slot-map">
-                <div class="map-cell"><span>S1</span><b>status</b></div>
-                <div class="map-cell"><span>S1F</span><b>focus</b></div>
-                <div class="map-cell"><span>S2</span><b>status</b></div>
-                <div class="map-cell"><span>S2F</span><b>focus</b></div>
-                <div class="map-cell"><span>S3</span><b>status</b></div>
-                <div class="map-cell"><span>S3F</span><b>focus</b></div>
-                <div class="map-cell"><span>TOP</span><b>approve</b></div>
-                <div class="map-cell"><span>AUTO</span><b>toggle</b></div>
-              </div>
-            </section>
-          </aside>
-        </div>
+        <article class="key" data-state="work"><div class="key-main"><span class="status">MISSION</span><span class="detail">view</span></div><div class="footer">mode</div></article>
+        <article class="key"><div class="key-main"><span class="status">DENSE</span><span class="detail">view</span></div><div class="footer">mode</div></article>
+        <article class="key" data-state="ice"><div class="key-main"><span class="status">ICE</span><span class="detail">all idle</span></div><div class="footer">clear</div></article>
+        <article class="key" data-state="perm"><div class="key-main"><span class="status">ALLOW</span><span class="detail">auto</span></div><div class="footer">next</div></article>
+        <article class="key" data-state="err"><div class="key-main"><span class="status">KILL</span><span class="detail">stuck</span></div><div class="footer">guard</div></article>
+        <article class="key"><div class="key-main"><span class="status">SYNC</span><span class="detail">state</span></div><div class="footer">refresh</div></article>
+        <article class="key"><div class="key-main"><span class="status">HELP</span><span class="detail">map</span></div><div class="footer">show</div></article>
+        <article class="key"><div class="key-main"><span class="status">OFF</span><span class="detail">safe</span></div><div class="footer">park</div></article>
       </div>
+
+      <aside class="side-note" aria-label="Dashboard notes">
+        <div class="note-card">Top row is action first, not workspace first.</div>
+        <div class="note-card">Rows 2-5 hold 16 workspace pairs, enough for 14 live windows.</div>
+        <div class="note-card">Rows 6-8 stay stable so muscle memory survives churn.</div>
+      </aside>
     </section>
 
     <section class="plan" aria-label="Implementation plan">
       <article class="plan-item">
-        <h2>1. Background Labels</h2>
-        <p>Render section names, slot labels, legend, and global command labels into the iPad background so each button can stay dense.</p>
+        <h2>1. Use 8 x 8</h2>
+        <p>The screenshot confirms button size stays usable. We should spend the extra slots on stable controls and spare capacity.</p>
       </article>
       <article class="plan-item">
-        <h2>2. Smart Tiles</h2>
-        <p>Keep one status tile per workspace. Tap approves if there is a pending permission; otherwise it focuses the workspace.</p>
+        <h2>2. Fake The Merges</h2>
+        <p>Buttons remain square hitboxes. The faceplate draws grouped panels, row labels, and section titles around them.</p>
       </article>
       <article class="plan-item">
         <h2>3. Dynamic Slots</h2>
-        <p>Slots map to COMSAT snapshot order, sorted by urgency, so current windows appear and stale windows disappear without manual rewiring.</p>
+        <p>Workspace pairs map to COMSAT snapshot order sorted by urgency, with empty slots staying visually quiet.</p>
       </article>
       <article class="plan-item">
-        <h2>4. Optional Secondaries</h2>
-        <p>Add visible focus/reject/top-approve buttons only in the command area, not as a mandatory duplicate for every window.</p>
+        <h2>4. Install Safely</h2>
+        <p>Next build step is a backup, one new COMSAT page, generated key images, and no fragile BTT preset import.</p>
       </article>
     </section>
   </main>
-
-  <script>
-    const dashboard = document.querySelector(".dashboard");
-    const modeButtons = document.querySelectorAll(".mode-switch button[data-mode]");
-    modeButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        modeButtons.forEach((other) => other.classList.remove("is-active"));
-        button.classList.add("is-active");
-        dashboard.dataset.mode = button.dataset.mode;
-      });
-    });
-  </script>
 </body>
 </html>
