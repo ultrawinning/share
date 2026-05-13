@@ -21,6 +21,10 @@
       --ice: #54e0ff;
       --idle: #737d89;
       --gap: 1.05%;
+      --grid-left: 18.5%;
+      --grid-top: 10.4%;
+      --grid-width: 63%;
+      --grid-height: 84%;
     }
 
     * { box-sizing: border-box; }
@@ -144,15 +148,15 @@
       color: var(--muted);
     }
 
-    .band-label.readouts { left: 3.4%; width: 34.2%; }
-    .band-label.controls { left: 38.4%; width: 58.2%; border-left-color: var(--work); }
+    .band-label.readouts { left: var(--grid-left); width: 22.9%; }
+    .band-label.controls { left: 42.6%; width: 38.9%; border-left-color: var(--work); }
 
     .column-labels {
       position: absolute;
       z-index: 4;
-      left: 3.2%;
+      left: var(--grid-left);
       top: 7.5%;
-      width: 93.6%;
+      width: var(--grid-width);
       height: 2.3%;
       display: grid;
       grid-template-columns: repeat(8, minmax(0, 1fr));
@@ -177,10 +181,10 @@
     .row-rails,
     .deck-grid {
       position: absolute;
-      left: 3.2%;
-      top: 10.4%;
-      width: 93.6%;
-      height: 86.2%;
+      left: var(--grid-left);
+      top: var(--grid-top);
+      width: var(--grid-width);
+      height: var(--grid-height);
       display: grid;
       grid-template-columns: repeat(8, minmax(0, 1fr));
       grid-template-rows: repeat(8, minmax(0, 1fr));
@@ -258,26 +262,39 @@
 
     .control {
       display: grid;
-      grid-template-rows: auto 1fr auto;
-      border: 1px solid rgba(255, 255, 255, 0.28);
+      grid-template-rows: 1fr auto;
+      border: 1px solid rgba(255, 255, 255, 0.34);
+      border-bottom-color: rgba(0, 0, 0, 0.82);
+      border-radius: 9px;
       background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.13), transparent 43%),
-        linear-gradient(180deg, #13181d, #050607);
+        linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 34%),
+        radial-gradient(circle at 50% 4%, rgba(255, 255, 255, 0.18), transparent 38%),
+        linear-gradient(180deg, #1a2026 0%, #0d1115 58%, #050607 100%);
       box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.28),
-        inset 0 -10px 17px rgba(0, 0, 0, 0.82),
-        0 4px 0 rgba(0, 0, 0, 0.54);
+        inset 0 2px 0 rgba(255, 255, 255, 0.38),
+        inset 0 -10px 0 rgba(0, 0, 0, 0.52),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+        0 5px 0 rgba(0, 0, 0, 0.72),
+        0 12px 18px rgba(0, 0, 0, 0.34);
     }
 
     .control::before {
       content: "";
       position: absolute;
-      left: 11%;
-      right: 11%;
-      top: 9%;
-      height: 3px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.2);
+      z-index: 0;
+      left: 8%;
+      right: 8%;
+      top: 8%;
+      bottom: 18%;
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      border-radius: 7px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.09), transparent 44%),
+        rgba(255, 255, 255, 0.015);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.22),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.72);
+      pointer-events: none;
     }
 
     .control::after {
@@ -286,10 +303,11 @@
       left: 11%;
       right: 11%;
       bottom: 7%;
-      height: 4px;
+      height: 5px;
       border-radius: 999px;
       background: var(--accent);
       box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+      z-index: 2;
     }
 
     .control.disabled {
@@ -318,9 +336,11 @@
 
     .readout .kind { background: rgba(230, 234, 242, 0.5); }
     .station-id .kind { background: var(--station); }
-    .control .kind { background: rgba(230, 234, 242, 0.86); }
+    .control .kind { display: none; }
 
     .main {
+      position: relative;
+      z-index: 1;
       display: grid;
       place-items: center;
       align-content: center;
@@ -431,6 +451,8 @@
     }
 
     .foot {
+      position: relative;
+      z-index: 1;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -521,12 +543,12 @@
     <div class="topline">
       <div>
         <h1>COMSAT iPad Row Dashboard</h1>
-        <p class="subhead">One live workstation per row. Column 1 is the oversized identity plate, column 2 is the COMSAT state glyph, column 3 is small log text, and columns 4-8 are raised controls.</p>
+        <p class="subhead">One live workstation per row on a centered square 8 x 8 surface. Column 1 is the oversized identity plate, column 2 is the COMSAT state glyph, column 3 is small log text, and columns 4-8 are raised controls.</p>
       </div>
       <div class="spec" aria-label="Target specs">
         <div class="pill"><strong>8</strong> live rows</div>
+        <div class="pill"><strong>square</strong> keys</div>
         <div class="pill"><strong>16</strong> via page B</div>
-        <div class="pill"><strong>7</strong> live now</div>
       </div>
     </div>
 
