@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hypergrowth Pitch — James Call (£3k/m)</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  :root {
+    --ink: #1a1d24; --ink-soft: #4a4f5a; --ink-mute: #8a8f99;
+    --line: #e6e7ea; --bg: #ffffff; --warn: #fbf8ee; --warn-b: #ebe4c2;
+    --good: #edf7e9; --bad: #fdecec; --neutral: #f4f5f7; --hl: #ebeefb;
+  }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif; color: var(--ink); margin: 0; line-height: 1.55; font-size: 15.5px; -webkit-font-smoothing: antialiased; }
+  .container { max-width: 880px; margin: 0 auto; padding: 32px 32px 64px; }
+  h1 { font-size: 26px; margin: 0 0 4px; font-weight: 700; }
+  .sub { color: var(--ink-mute); margin-bottom: 28px; font-size: 14px; }
+  h2 { font-size: 19px; margin: 32px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+  h3 { font-size: 15px; margin: 16px 0 8px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.5px; }
+  .pitch-box { background: var(--warn); border: 1px solid var(--warn-b); border-radius: 10px; padding: 16px 20px; margin-bottom: 24px; }
+  .pitch-box .lead { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+  ul { margin: 0 0 12px; padding-left: 20px; }
+  ul li { margin-bottom: 4px; }
+  ol li { margin-bottom: 6px; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 14px; }
+  th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--neutral); }
+  .month { font-weight: 600; color: var(--ink); }
+  .mvp-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 14px 0; }
+  .mvp-card { background: var(--good); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+  .mvp-card .num { font-size: 22px; font-weight: 700; color: var(--ink-soft); margin-bottom: 4px; }
+  .mvp-card .name { font-weight: 600; margin-bottom: 6px; font-size: 15px; }
+  .mvp-card .desc { font-size: 13.5px; color: var(--ink-soft); }
+  .mvp-card .time { font-size: 12px; color: var(--ink-mute); margin-top: 6px; font-style: italic; }
+  .compare { background: var(--neutral); padding: 12px 16px; border-radius: 8px; margin: 12px 0; font-size: 14px; }
+  .compare ul { margin: 6px 0 0; }
+  .talking { background: var(--hl); border-radius: 10px; padding: 14px 18px; }
+  .three-q { background: var(--bad); border-radius: 10px; padding: 14px 18px; }
+  .footer { margin-top: 36px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--ink-mute); font-size: 12px; }
+  @media (max-width: 700px) { .mvp-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Hypergrowth — Build Pitch for James</h1>
+<div class="sub">£3k/m fractional AI engineering retainer · 2026-05-14</div>
+
+<div class="pitch-box">
+  <div class="lead">£3k/m. Quarter-by-quarter. Stop anytime. Month 1 ships the MVP.</div>
+  <div>Not a SaaS — you're buying Emil + Claude + an evolving custom system, plus ongoing AI consulting across Azri (content/ads), James (sales), Sam (CSM). Renewable. The MVP is the proof; everything after is the upsell ladder.</div>
+</div>
+
+<div class="compare">
+  <strong>What £3k/m compares to:</strong>
+  <ul>
+    <li>Junior AI engineer: £60-80k/yr loaded = <strong>£5-7k/m</strong> + you have to manage them + they don't know your business</li>
+    <li>Generic CSM tool (HubSpot etc): £500-1k/m + generic + doesn't know your playbook</li>
+    <li>McKinsey-style project consultant: £25k for one engagement, then gone</li>
+    <li>Refund math: at ~80 clients × £6k LTV, if MVP reduces refunds by 10% = <strong>£48k preserved/yr</strong>. Pays for itself if it saves one client per quarter.</li>
+  </ul>
+</div>
+
+<h2>The MVP — shipping end of Month 1</h2>
+<p>Three things, in this order. Each hits one of the stated goals.</p>
+
+<div class="mvp-grid">
+  <div class="mvp-card">
+    <div class="num">1</div>
+    <div class="name">Handover → diagnostic page generator</div>
+    <div class="desc">Upload James's handover docx → outputs a Chris-Millard-style per-client page with tier + 7-pillar shape + bottleneck verdict.</div>
+    <div class="time">~1.5 weeks · Saves Sam ~30 min/client</div>
+  </div>
+  <div class="mvp-card">
+    <div class="num">2</div>
+    <div class="name">Tier-routed Week-1 starter pack</div>
+    <div class="desc">Once tier is assigned, client gets a curated 5-link pack — Messaging Mastery + tracker template + setter hiring SOP. Cuts onboarding call 70min → ~25min.</div>
+    <div class="time">~1 week · Diagnosis happens BEFORE the call</div>
+  </div>
+  <div class="mvp-card">
+    <div class="num">3</div>
+    <div class="name">Sam ops dashboard</div>
+    <div class="desc">All active clients × tier × where they are in 30-day spine × drift flags (no WhatsApp reply 24h, no booked call by day 10, stale KPI sheet).</div>
+    <div class="time">~1.5 weeks · Sam stops missing things</div>
+  </div>
+</div>
+
+<p><strong>Why this MVP wins:</strong> hits all three goals (handover ingestion, reduce Sam time, improve first-30-day clarity), uses content + SOPs that already exist, ships in 4 weeks. No new content production blocking it. Visible artifact James can stand behind.</p>
+
+<h2>The roadmap — Months 2-6 (the upsell stack)</h2>
+
+<table>
+  <tr><th>Month</th><th>Build</th><th>Why it earns the retainer</th></tr>
+  <tr><td class="month">2</td><td>WhatsApp ingestion + drift detection + unresolved-promise tracker</td><td>Catches the "I'll ask Azri" loops that go cold. Solves Sam's #1 weakness (closure, not empathy).</td></tr>
+  <tr><td class="month">3</td><td>Auto KPI pull — Stripe + Meta + Calendly + GHL → 7-pillar dashboard</td><td>Sam stops nagging for data. Numbers flow in automatically.</td></tr>
+  <tr><td class="month">4</td><td>Sam pre-message briefing layer + scheduled cross-team handoffs (auto-book Alessandro/Azri at triggers)</td><td>Sam responds with full context every time. No more "narrated" handoffs.</td></tr>
+  <tr><td class="month">5</td><td>Drift-language detector + refund-risk early warning (the Kieran 10/03 pattern)</td><td>James/Sam intervene before churn, not after.</td></tr>
+  <tr><td class="month">6</td><td>AI client-status briefer ("what's up with Tej?" → instant dump) + retention scoring</td><td>System becomes the operating brain. Compounds.</td></tr>
+</table>
+
+<p><strong>The upsell layer in Months 4-6:</strong> by then the base system is proven. We start layering on AI consulting for the other two: Azri's ad creative iteration, James's sales call review, automated handover doc generation from raw call transcripts. Now we're at £3k base + project work, or £4-5k retainer.</p>
+
+<h2>Talking points (in order)</h2>
+<div class="talking">
+  <ol>
+    <li><strong>Open with the visible artifact.</strong> Pull up the Chris Millard diagnostic page on screen. "This is what Sam has open during every onboarding call by Week 4."</li>
+    <li><strong>Sam's stats are the proof.</strong> 11m median / 22h p90 / 75.7% within 4h. Numbers James didn't have before this session. The system fixes the tail, not the median.</li>
+    <li><strong>Month 1 deliverable is concrete.</strong> "By June 14 you'll have those three things live. If we haven't, you don't pay month 2."</li>
+    <li><strong>Refund math = insurance.</strong> He sells; refunds eat margin. System is a refund-rate reducer.</li>
+    <li><strong>Don't oversell Month 6.</strong> Sell Month 1. Months 2+ are the menu, not the promise.</li>
+  </ol>
+</div>
+
+<h2>Three questions to ask him on the call</h2>
+<div class="three-q">
+  <ol>
+    <li><strong>Who owns this internally?</strong> James probably — he writes the handovers, validates tiers, sees the dashboard. Sam is the user, not the owner.</li>
+    <li><strong>Where does it live?</strong> Recommend: same Bite codebase. Don't fragment.</li>
+    <li><strong>What does success look like end of Month 1 to justify Month 2?</strong> Make him define it before we start. Suggest: "Sam reports onboarding call is meaningfully shorter, James sees 5+ tier diagnostics generated from real handovers, refund rate doesn't increase in the cohort that uses it."</li>
+  </ol>
+</div>
+
+<div class="footer">
+  Source: 57 handover docs, 9 Sam Fathom onboarding calls, 5 WhatsApp chats, Sam's framework, James's T1-T4 braindump. Synthesis at <a href="https://ultrawinning.github.io/share/previews/hypergrowth-session-summary/">hypergrowth-session-summary</a>. Per-client template at <a href="https://ultrawinning.github.io/share/previews/chris-millard-diagnostic/">chris-millard-diagnostic</a>.
+</div>
+
+</div>
+</body>
+</html>
