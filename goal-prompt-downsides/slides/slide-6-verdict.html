@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>slide-6-verdict · ultrawinning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#000;
+    --pink:#ff1a8c;
+    --pdim:rgba(255,26,140,0.12);
+    --w:#f0ede8;
+    --mu:#888;
+    --dim:#222;
+    --dimb:#1a1a1a;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#000;color:var(--w)}
+  body{
+    font-family:'Share Tech Mono',monospace;
+    -webkit-font-smoothing:antialiased;
+    width:1080px;height:1920px;
+    overflow:hidden;
+    position:relative;
+  }
+  body::before{
+    content:'';position:absolute;inset:0;z-index:2;pointer-events:none;
+    background:repeating-linear-gradient(0deg,transparent,transparent 4px,rgba(255,255,255,0.012) 4px,rgba(255,255,255,0.012) 5px);
+  }
+  body::after{
+    content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:radial-gradient(ellipse at 50% 100%,rgba(255,26,140,0.18) 0%,transparent 55%);
+  }
+  .slide{
+    position:relative;z-index:3;
+    width:1080px;height:1920px;
+    padding:120px 100px;
+    display:flex;flex-direction:column;
+  }
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    font-size:24px;color:var(--mu);
+    letter-spacing:.22em;text-transform:uppercase;
+  }
+  .topbar .brand{color:var(--mu)}
+  .topbar .brand .slash{color:var(--pink)}
+  .topbar .pager{color:var(--mu)}
+  .center{
+    flex:1;display:flex;flex-direction:column;justify-content:center;
+    max-width:880px;
+  }
+  .eyebrow{
+    font-size:34px;color:var(--pink);
+    letter-spacing:.30em;text-transform:uppercase;
+    margin-bottom:48px;
+  }
+  .title{
+    font-family:'Rajdhani',sans-serif;
+    font-weight:600;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    color:var(--w);
+    line-height:.96;
+    margin-bottom:64px;
+    white-space:pre-line;
+    max-width:880px;
+  }
+  .title.size-xl{font-size:160px}
+  .title.size-lg{font-size:128px}
+  .title.size-md{font-size:104px}
+  .body{
+    font-family:Verdana,Geneva,sans-serif;
+    font-size:36px;
+    line-height:1.55;
+    color:#dcd9d4;
+    max-width:840px;
+  }
+  .body em{font-style:normal;color:var(--pink)}
+  .footer{
+    display:flex;align-items:center;justify-content:space-between;
+    font-size:22px;color:var(--mu);
+    letter-spacing:.18em;text-transform:uppercase;
+    padding-top:32px;
+    border-top:1px solid var(--dimb);
+  }
+  .footer .cue{color:var(--pink)}
+  .bracket{
+    position:absolute;left:60px;top:380px;bottom:260px;
+    width:2px;
+    background:repeating-linear-gradient(180deg,var(--pink),var(--pink) 8px,transparent 8px,transparent 22px);
+    opacity:.7;z-index:3;
+  }
+  .reticle{
+    position:absolute;width:28px;height:28px;
+    border:2px solid var(--pink);opacity:.55;z-index:3;
+  }
+  .reticle.tl{top:60px;left:60px;border-right:none;border-bottom:none}
+  .reticle.tr{top:60px;right:60px;border-left:none;border-bottom:none}
+  .reticle.bl{bottom:60px;left:60px;border-right:none;border-top:none}
+  .reticle.br{bottom:60px;right:60px;border-left:none;border-top:none}
+  .slide.hook .title{color:var(--w)}
+  .slide.hook .title .accent{color:var(--pink)}
+  .slide.verdict .title{color:var(--pink)}
+</style>
+</head>
+<body>
+  <div class="slide verdict">
+    <div class="reticle tl"></div>
+    <div class="reticle tr"></div>
+    <div class="reticle bl"></div>
+    <div class="reticle br"></div>
+    <div class="bracket"></div>
+
+    <div class="topbar">
+      <div class="brand">// ultrawinning <span class="slash">/</span> goal</div>
+      <div class="pager">06 / 06</div>
+    </div>
+
+    <div class="center">
+      <div class="eyebrow">// the verdict</div>
+      <h1 class="title size-lg">EXPLORE WITH /GOAL.
+EXECUTE WITHOUT IT.</h1>
+      <p class="body">/goal is brilliant for the first 30 minutes of a problem when you have no priors. Once you do? Drop back to surgical prompts you write yourself. The hype is half-right. The half nobody posts is the half that matters.</p>
+    </div>
+
+    <div class="footer">
+      <div>ultrawinning.com</div>
+      <div class="cue">follow → @ultrawinning</div>
+    </div>
+  </div>
+</body>
+</html>
