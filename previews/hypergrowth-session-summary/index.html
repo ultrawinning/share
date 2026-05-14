@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hypergrowth — Session Summary for James (2026-05-13/14)</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  :root {
+    --ink: #1a1d24;
+    --ink-soft: #4a4f5a;
+    --ink-mute: #8a8f99;
+    --line: #e6e7ea;
+    --bg: #ffffff;
+    --where-bg: #f4f5f7;
+    --problem-bg: #fdecec;
+    --fix-bg: #edf7e9;
+    --next-bg: #ebeefb;
+    --highlight-bg: #fbf8ee;
+    --highlight-border: #ebe4c2;
+    --tag-bg: #eaf0ff;
+    --tag-color: #3a5fb0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", system-ui, sans-serif;
+    color: var(--ink); background: var(--bg);
+    margin: 0; line-height: 1.6; font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .breadcrumb {
+    padding: 12px 32px;
+    color: var(--ink-mute);
+    font-size: 13px;
+    border-bottom: 1px solid var(--line);
+  }
+  .container { max-width: 880px; margin: 0 auto; padding: 32px 32px 80px; }
+  h1 { font-size: 28px; margin: 0 0 4px; font-weight: 700; }
+  .subtitle { color: var(--ink-mute); margin-bottom: 36px; font-size: 15px; }
+  h2 { font-size: 21px; margin: 40px 0 14px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+  h3 { font-size: 16px; margin: 24px 0 10px; color: var(--ink-soft); }
+  p { margin: 0 0 12px; }
+  .tldr {
+    background: var(--highlight-bg);
+    border: 1px solid var(--highlight-border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+  }
+  .tldr p { margin-bottom: 8px; }
+  .tldr p:last-child { margin-bottom: 0; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+  .panel { border-radius: 10px; padding: 16px 18px; border: 1px solid var(--line); font-size: 14.5px; }
+  .panel-label { color: var(--ink-mute); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .panel.a { background: var(--where-bg); }
+  .panel.b { background: var(--problem-bg); }
+  .panel.c { background: var(--fix-bg); }
+  .panel.d { background: var(--next-bg); }
+  ul { margin: 0 0 16px; padding-left: 20px; }
+  ul li { margin-bottom: 5px; }
+  table { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 14.5px; }
+  th, td { border: 1px solid var(--line); padding: 8px 11px; text-align: left; vertical-align: top; }
+  th { background: var(--where-bg); font-weight: 600; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .links { display: flex; flex-direction: column; gap: 10px; margin: 18px 0; }
+  .link-card { display: block; padding: 14px 18px; border: 1px solid var(--line); border-radius: 10px; text-decoration: none; color: var(--ink); transition: border-color 0.15s; }
+  .link-card:hover { border-color: #5b7fef; }
+  .link-card .lc-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+  .link-card .lc-meta { color: var(--ink-mute); font-size: 13px; }
+  .quote {
+    border-left: 3px solid var(--ink-mute);
+    margin: 14px 0;
+    padding: 4px 0 4px 16px;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 14px 0; }
+  .stat { padding: 12px 14px; background: var(--where-bg); border: 1px solid var(--line); border-radius: 8px; text-align: center; }
+  .stat-num { font-size: 22px; font-weight: 700; color: var(--ink); }
+  .stat-label { font-size: 12px; color: var(--ink-mute); margin-top: 4px; }
+  .footer { margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--ink-mute); font-size: 13px; }
+  @media (max-width: 700px) {
+    .grid-2, .stat-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="breadcrumb">Hypergrowth <span style="margin: 0 6px;">/</span> Session Summary for James</div>
+
+<div class="container">
+  <h1>What we found in your 57 handovers</h1>
+  <div class="subtitle">Synthesis session 2026-05-13 / 14. For James, before next conversation.</div>
+
+  <div class="tldr">
+    <p><strong>The headline:</strong> your method is repeatable and the sequence is non-negotiable. We extracted it cleanly from the 57 handovers + Sam's onboarding calls + WhatsApp chats. Your T1-T4 tier model is the right segmentation — we're dropping Sam's Stages 1/2/3 framework as the operative system (it stays as content-unlock logic per tier).</p>
+    <p><strong>The biggest finding:</strong> Sam's weakness isn't empathy. His median WhatsApp reply is 11 minutes (faster than the 4-hour standard). The problem is the tail — p90 is 22 hours, and the "I'll ask / will report back" loops go cold. Closure, not warmth.</p>
+    <p><strong>The biggest opportunity:</strong> put the diagnostic <em>before</em> the human call. Sam's 70-minute onboarding script is identical regardless of client stage. If Bite places the tier and surfaces the broken pillar pre-call, that 70 minutes becomes 25 and it's calibration, not setup.</p>
+  </div>
+
+  <h2>The four sources we reconciled</h2>
+  <table>
+    <tr><th>Source</th><th>What it captured</th><th>Limit</th></tr>
+    <tr><td><strong>57 handover docs</strong></td><td>What you SOLD on the call. The plan.</td><td>Aspirational; doesn't tell us what actually got delivered.</td></tr>
+    <tr><td><strong>T1-T4 braindump</strong></td><td>Your current operating model — five tiers with named identities.</td><td>Latest + canonical.</td></tr>
+    <tr><td><strong>Sam's Stages 1/2/3 framework</strong></td><td>What Sam THINKS he's running.</td><td>Doesn't match what he actually does.</td></tr>
+    <tr><td><strong>9 Sam onboarding-call transcripts</strong></td><td>What Sam ACTUALLY does in a live call.</td><td>Same 70-min script every time. Doesn't diagnose.</td></tr>
+    <tr><td><strong>5 WhatsApp chats</strong></td><td>What Sam ACTUALLY does day-to-day async.</td><td>Best signal on cadence, closure, drift.</td></tr>
+  </table>
+
+  <h2>The validated tier model (yours, with the data behind it)</h2>
+  <table>
+    <tr><th>Tier</th><th>Name</th><th>Revenue/mo</th><th>Population shape in your 57</th></tr>
+    <tr><td><strong>T1</strong></td><td>the build</td><td>£5-10k</td><td>~9% — pre-business, no real systems</td></tr>
+    <tr><td><strong>T2</strong></td><td>the plateau</td><td>£10-20k</td><td><strong>~39% — dominant cohort</strong></td></tr>
+    <tr><td><strong>T2.5</strong></td><td>the crossover</td><td>£20-30k</td><td>~32% — setter exists, coach imminent</td></tr>
+    <tr><td><strong>T3</strong></td><td>the sharpen</td><td>£30-50k</td><td>~12% — bottleneck is quality not capacity</td></tr>
+    <tr><td><strong>T4</strong></td><td>the scale</td><td>£50k+</td><td>~9% — "future reference only" in both your model and Sam's</td></tr>
+  </table>
+
+  <h2>The universal 30-day spine (extracted from your handovers)</h2>
+  <p>Same order in every handover. Tier changes content depth, not sequence:</p>
+
+  <div class="grid-2">
+    <div class="panel a">
+      <div class="panel-label">Week 1 — Diagnose, don't prescribe</div>
+      <ul>
+        <li>KPI tracking sheet installed Day 1 (live walkthrough)</li>
+        <li>Audit current DMs + setter situation</li>
+        <li>Setter keep/retrain/replace by Day 5</li>
+        <li>Hard no: ads, module dumps, pricing changes, coach hire</li>
+      </ul>
+    </div>
+    <div class="panel c">
+      <div class="panel-label">Week 2 — Fix the front end</div>
+      <ul>
+        <li>DM scripts rebuilt in client's voice</li>
+        <li>150-200/day outbound target</li>
+        <li>Ad account audited (NOT launched yet)</li>
+        <li>Offer simplified (29/57 — kill the tiers)</li>
+      </ul>
+    </div>
+    <div class="panel d">
+      <div class="panel-label">Week 3 — Turn on volume</div>
+      <ul>
+        <li>Ads launched IF DM KPIs floor met (≥40/15/50/40%)</li>
+        <li>4 creatives, £15/day each</li>
+        <li>Close-rate work begins</li>
+        <li>AOV → 6-month PIF</li>
+      </ul>
+    </div>
+    <div class="panel b">
+      <div class="panel-label">Week 4 — Stabilise + plan next</div>
+      <ul>
+        <li>Weekly review cadence locked</li>
+        <li>Coach hiring pipeline opened if load justifies</li>
+        <li>Retargeting if cold ads work</li>
+        <li>Founder time audit</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>What Sam actually does (WhatsApp + onboarding-call evidence)</h2>
+
+  <div class="stat-row">
+    <div class="stat"><div class="stat-num">11m</div><div class="stat-label">median reply</div></div>
+    <div class="stat"><div class="stat-num">22h</div><div class="stat-label">p90 reply</div></div>
+    <div class="stat"><div class="stat-num">75.7%</div><div class="stat-label">within 4h target</div></div>
+  </div>
+
+  <h3>What he does well</h3>
+  <ul>
+    <li><strong>KPI bottleneck reframes.</strong> When he has numbers, he translates them into one specific lever.</li>
+    <li><strong>Warm reassurance under overwhelm.</strong> This is the literal "stroking" Emil hired him for. Genuine.</li>
+    <li><strong>Capacity / fulfilment conversations.</strong> Coach pay, onboarding, client handover. Peer-level.</li>
+  </ul>
+  <div class="quote">"Outbound response rate is around 10%, goal is closer to 20-25%, so potentially worth testing a new OB message." — Sam to Tej, 30/07/2025</div>
+
+  <h3>What he ducks (Bite must absorb)</h3>
+  <ul>
+    <li>Ads diagnosis requiring creative judgment — routes to Azri, loops can go cold</li>
+    <li>Tooling/vendor questions ("descript.com looks solid?" is not a confident answer)</li>
+    <li>Promised follow-up loops — "will report back ASAP" without a closure system</li>
+    <li>Sales/pricing questions — defers to you every time</li>
+  </ul>
+
+  <h3>The most dangerous moment in the dataset</h3>
+  <p>Kieran Omara, 10/03/2026. Sam answered the metric logic correctly but mishandled the support expectation. <strong>You</strong> repaired it inside minutes. The lesson: trust questions dressed as content questions need to be flagged immediately. Bite should detect that signal.</p>
+
+  <h2>What needs your input before we build further</h2>
+  <ol>
+    <li><strong>Validate the T1-T4 definitions</strong> — especially T2.5 "the crossover" next-level state. I extrapolated it from your screenshot; want a sanity check.</li>
+    <li><strong>5 content production gaps</strong> — these don't exist in Skool or the SOP vault and the 30-day spine needs them. Which of these do you want to film vs Sam writing as SOPs?
+      <ul>
+        <li>Tier diagnostic walkthrough video (the Day 0 anchor — needs your voice)</li>
+        <li>"Kill the tiers" punch video (offer simplification — 29/57 of your handovers prescribe this)</li>
+        <li>Drift-recovery playbook (what Sam should say when a client goes 48h quiet)</li>
+        <li>Weekly review template (client-facing walkthrough of "how to read your own data")</li>
+        <li>Founder mindset "IN vs ON" piece (£5-15k loop of fear of ads + fear of delegation)</li>
+      </ul>
+    </li>
+    <li><strong>What gets first prototype</strong> — Sam's printable 2-page checklist on Monday, or Bite's Day 0 tier intake form? My recommendation: checklist first, run it manually on the next 5 clients, find the gaps, then build.</li>
+  </ol>
+
+  <h2>The shareable artifacts</h2>
+  <div class="links">
+    <a class="link-card" href="https://ultrawinning.github.io/share/previews/hypergrowth-30day-roadmap/">
+      <div class="lc-title">The operationalized 30-day roadmap</div>
+      <div class="lc-meta">Full synthesis. Spine + segmentation + Sam's role + Bite's role + ship sequence.</div>
+    </a>
+    <a class="link-card" href="https://ultrawinning.github.io/share/previews/chris-millard-diagnostic/">
+      <div class="lc-title">Chris Millard diagnostic (T2 the plateau)</div>
+      <div class="lc-meta">Per-client diagnostic template you can validate. This is what every new client gets pre-call.</div>
+    </a>
+  </div>
+
+  <div class="footer">
+    Source data: 57 handover docx (yours), 9 Sam Fathom onboarding calls (Apr 6-20 2026), 5 client WhatsApp chats (~10 months of async traffic), Sam's Client Growth Framework document, your T1-T4 tier braindump.<br>
+    Synthesis built 2026-05-13 / 14. Local archive at <code>HyperGrowth/.archive/csm-session-2026-05-13/</code>.
+  </div>
+</div>
+</body>
+</html>
