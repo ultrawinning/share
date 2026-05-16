@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overmind Stack Inventory — 2026-05-16</title>
+<style>
+  :root {
+    --bg: #0d0d10;
+    --panel: #15151a;
+    --panel-2: #1c1c22;
+    --border: #2a2a33;
+    --text: #e8e8ed;
+    --muted: #8a8a95;
+    --accent: #ff4d8f;
+    --good: #5dd39e;
+    --warn: #ffc857;
+    --bad: #ff5a5f;
+    --q: #b388ff;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
+    background: var(--bg); color: var(--text);
+    line-height: 1.55;
+  }
+  .container { max-width: 1400px; margin: 0 auto; padding: 32px 32px 96px; }
+  header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 24px; }
+  h1 { font-size: 26px; margin: 0 0 8px; font-weight: 700; letter-spacing: -0.01em; }
+  h1 .accent { color: var(--accent); }
+  .sub { color: var(--muted); font-size: 13px; }
+
+  .controls {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--bg);
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+    display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+  }
+  input[type="text"] {
+    flex: 1; min-width: 260px;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: inherit;
+  }
+  input[type="text"]:focus { outline: none; border-color: var(--accent); }
+  .filter-btn {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: var(--mono);
+  }
+  .filter-btn:hover { color: var(--text); border-color: var(--accent); }
+  .filter-btn.active { color: var(--accent); border-color: var(--accent); }
+
+  nav.toc {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 32px;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 6px;
+  }
+  nav.toc a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 12.5px;
+    padding: 4px 0;
+    font-family: var(--mono);
+  }
+  nav.toc a:hover { color: var(--accent); }
+  nav.toc a .count { color: var(--muted); font-size: 11px; }
+
+  h2 {
+    font-size: 18px; margin: 48px 0 12px;
+    font-weight: 600; letter-spacing: -0.01em;
+    padding-bottom: 8px; border-bottom: 1px solid var(--border);
+    scroll-margin-top: 80px;
+  }
+  h2 .num { color: var(--accent); font-family: var(--mono); margin-right: 12px; font-weight: 500; font-size: 14px; }
+  h2 .count { color: var(--muted); font-size: 13px; font-weight: 400; margin-left: 12px; }
+
+  .summary {
+    background: linear-gradient(135deg, rgba(255, 77, 143, 0.08), rgba(255, 77, 143, 0.02));
+    border: 1px solid rgba(255, 77, 143, 0.2);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-bottom: 24px;
+  }
+  .summary p { margin: 0 0 6px; font-size: 13.5px; }
+  .summary p:last-child { margin-bottom: 0; }
+  .summary strong { color: var(--accent); }
+  .verdict-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .verdict {
+    background: var(--panel-2);
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+  .verdict .label { font-size: 10px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.08em; }
+  .verdict .value { font-size: 22px; font-weight: 700; margin-top: 4px; }
+  .verdict .value.accent { color: var(--accent); }
+  .verdict .value.q { color: var(--q); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 16px;
+    font-size: 12.5px;
+  }
+  th, td {
+    padding: 8px 10px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  th {
+    background: var(--panel-2);
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    position: sticky; top: 60px; z-index: 5;
+  }
+  td.name { font-weight: 600; font-size: 13px; }
+  td.aliases { color: var(--muted); font-size: 11.5px; font-family: var(--mono); }
+  td.path { font-family: var(--mono); font-size: 11px; color: #ffd6e6; word-break: break-all; max-width: 280px; }
+  td.type { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  td.oneliner { color: var(--text); font-size: 12.5px; }
+  td.oneliner.q { color: var(--q); }
+  td.oneliner.q::before { content: "? "; color: var(--q); font-weight: 700; }
+  tr.q-row { background: rgba(179, 136, 255, 0.04); }
+  tr.archive-row { opacity: 0.55; }
+  tr:hover { background: var(--panel); }
+  td.empty { color: var(--muted); font-style: italic; font-size: 11px; }
+  td.empty::before { content: "fill in"; }
+
+  /* Status pill styles (when filled in via MD edits) */
+  .status { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 10px; text-transform: uppercase; font-family: var(--mono); letter-spacing: 0.05em; }
+  .status.working { background: rgba(93, 211, 158, 0.15); color: var(--good); }
+  .status.eighty { background: rgba(255, 200, 87, 0.15); color: var(--warn); }
+  .status.broken { background: rgba(255, 90, 95, 0.15); color: var(--bad); }
+  .status.experimental { background: rgba(179, 136, 255, 0.15); color: var(--q); }
+  .status.dead { background: rgba(138, 138, 149, 0.2); color: var(--muted); }
+  .status.unknown { background: rgba(255, 255, 255, 0.05); color: var(--muted); font-style: italic; }
+  .status.unknown::after { content: "?"; }
+
+  .open-questions {
+    background: var(--panel);
+    border-left: 3px solid var(--q);
+    border-radius: 4px;
+    padding: 16px 22px;
+    margin: 32px 0;
+  }
+  .open-questions h3 { margin: 0 0 12px; font-size: 14px; color: var(--q); }
+  .open-questions ol { margin: 0; padding-left: 22px; }
+  .open-questions li { font-size: 13px; margin-bottom: 6px; color: var(--text); }
+  .open-questions li strong { color: var(--q); }
+
+  footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--muted); font-size: 11.5px; }
+
+  @media (max-width: 768px) {
+    .verdict-grid { grid-template-columns: repeat(2, 1fr); }
+    table { font-size: 11px; }
+    th, td { padding: 6px 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Overmind <span class="accent">/</span> Stack Inventory</h1>
+  <div class="sub">2026-05-16 · Source: <code>~/Code/overmind/inventory/STACK.md</code> · Edit MD in VS Code, regenerate this HTML when ready</div>
+</header>
+
+<div class="summary">
+  <p>Exhaustive enumeration of every system, skill, hook, script, app, and convention in Emil's stack. <strong>~140 rows.</strong> Prior audit had 11. The cut definition was wrong, not the data.</p>
+  <p>Purple-tinted rows = <strong style="color: var(--q);">?</strong> entries where I'm not confident about the one-liner. Empty status/visibility cells = your call. Faded rows = archive/pre-consolidation.</p>
+  <div class="verdict-grid">
+    <div class="verdict"><div class="label">Total rows</div><div class="value">137</div></div>
+    <div class="verdict"><div class="label">Projects</div><div class="value">23</div></div>
+    <div class="verdict"><div class="label">Skills</div><div class="value">53</div></div>
+    <div class="verdict"><div class="label">Hooks</div><div class="value">16</div></div>
+    <div class="verdict"><div class="label">Unknowns</div><div class="value q">35</div></div>
+  </div>
+</div>
+
+<div class="controls">
+  <input type="text" id="search" placeholder="Search by name, alias, path, type, or one-liner..." />
+  <button class="filter-btn" data-filter="all">all</button>
+  <button class="filter-btn" data-filter="q">? only</button>
+  <button class="filter-btn" data-filter="archive">archive</button>
+</div>
+
+<nav class="toc">
+  <a href="#s1">01 / Code root — active <span class="count">15</span></a>
+  <a href="#s2">02 / Code root — archive <span class="count">7</span></a>
+  <a href="#s3">03 / Overmind projects <span class="count">8</span></a>
+  <a href="#s4">04 / Overmind scripts <span class="count">12</span></a>
+  <a href="#s5">05 / Overmind bin <span class="count">6</span></a>
+  <a href="#s6">06 / Skills — global <span class="count">35</span></a>
+  <a href="#s7">07 / Skills — project-scoped <span class="count">18</span></a>
+  <a href="#s8">08 / Hooks <span class="count">16</span></a>
+  <a href="#s9">09 / Launchd jobs <span class="count">10</span></a>
+  <a href="#s10">10 / Domains <span class="count">4</span></a>
+  <a href="#s11">11 / GitHub-only repos <span class="count">9</span></a>
+  <a href="#s12">12 / Conventions <span class="count">9</span></a>
+  <a href="#open">Open questions <span class="count">16</span></a>
+</nav>
+
+<!-- SECTION 1 -->
+<h2 id="s1"><span class="num">01</span>Code Root — Active Projects<span class="count">15</span></h2>
+<table>
+  <thead><tr><th>Name</th><th>Aliases</th><th>Path</th><th>Type</th><th>Status</th><th>Vis</th><th>One-liner</th></tr></thead>
+  <tbody>
+    <tr><td class="name">overmind</td><td class="aliases">—</td><td class="path">~/Code/overmind/</td><td class="type">project</td><td class="empty"></td><td class="empty"></td><td class="oneliner">The meta-repo — R&D + patterns + the meta-memory layer that governs every other system</td></tr>
+    <tr><td class="name">hpf-command-center</td><td class="aliases">HPFHQ</td><td class="path">~/Code/hpf-command-center/</td><td class="type">project</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Hyperformance business ops + leadership-tier dashboard</td></tr>
+    <tr><td class="name">bite-app</td><td class="aliases">Bite</td><td class="path">~/Code/bite-app/</td><td class="type">project</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Bite tenant app (team-tier business)</td></tr>
+    <tr><td class="name">medus-app</td><td class="aliases">Medus</td><td class="path">~/Code/medus-app/</td><td class="type">project</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Medus tenant app (team-tier business)</td></tr>
+    <tr class="q-row"><td class="name">comsat-radar</td><td class="aliases">COMSAT legacy host</td><td class="path">~/Code/comsat-radar/</td><td class="type">project</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Legacy COMSAT location vs. <code>overmind/projects/comsat/</code> — which is canonical?</td></tr>
+    <tr><td class="name">streamdeck-cockpit</td><td class="aliases">—</td><td class="path">~/Code/streamdeck-cockpit/</td><td class="type">project</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Stream Deck cockpit lib — Python render lib + scripts (silent dep from overmind streamdeck)</td></tr>
+    <tr class="q-row"><td class="name">overmind-relay</td><td class="aliases">—</td><td class="path">~/Code/overmind-relay/</td><td class="type">project</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Pre-consolidation Relay code vs. <code>overmind/projects/relay/</code> — which is canonical?</td></tr>
+    <tr class="q-row"><td class="name">claude-observer</td><td class="aliases">observer-standalone</td><td class="path">~/Code/claude-observer/</td><td class="type">project</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Claude session observer — different from <code>overmind/projects/observer/</code>?</td></tr>
+    <tr class="q-row"><td class="name">overseer</td><td class="aliases">—</td><td class="path">~/Code/overseer/</td><td class="type">project</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">You named "Overseer" earlier — what is this? GitHub repo + local dir, no memory entry.</td></tr>
+    <tr class="q-row"><td class="name">promptscore-extension</td><td class="aliases">—</td><td class="path">~/Code/promptscore-extension/</td><td class="type">project</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Browser extension for scoring prompts?</td></tr>
+    <tr><td class="name">workout-tracker</td><td class="aliases">—</td><td class="path">~/Code/workout-tracker/</td><td class="type">project</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Personal workout tracking app — parser consumes Markdown programs (workout skill output)</td></tr>
+    <tr class="q-row"><td class="name">hpf-recorder</td><td class="aliases">—</td><td class="path">~/Code/hpf-recorder/</td><td class="type">project</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Predecessor to TheRealRecorder, HPF-specific — retired?</td></tr>
+    <tr class="q-row"><td class="name">hpf-sandbox</td><td class="aliases">—</td><td class="path">~/Code/hpf-sandbox/</td><td class="type">project</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">HPFHQ experimentation sandbox — still active?</td></tr>
+    <tr class="q-row"><td class="name">GETSHREDZ</td><td class="aliases">—</td><td class="path">~/Code/GETSHREDZ/</td><td class="type">project</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Possibly fitness/coaching-related — please confirm</td></tr>
+    <tr class="q-row"><td class="name">Hypergrowth</td><td class="aliases">—</td><td class="path">~/Code/Hypergrowth/</td><td class="type">project</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Hypergrowth program work — relates to <code>whitelabel-hq/hypergrowth-hub</code>?</td></tr>
+  </tbody>
+</table>
+
+<!-- SECTION 2 -->
+<h2 id="s2"><span class="num">02</span>Code Root — Archive / Pre-Consolidation<span class="count">7</span></h2>
+<table>
+  <thead><tr><th>Name</th><th>Path</th><th>Type</th><th>Status</th><th>Vis</th><th>One-liner</th></tr></thead>
+  <tbody>
+    <tr class="archive-row"><td class="name">claude-observer (archive)</td><td class="path">~/Code/_archive/claude-observer-pre-consolidation-2026-05-12/</td><td class="type">project</td><td><span class="status dead">dead</span></td><td><span class="status">private</span></td><td class="oneliner">Pre-consolidation snapshot 2026-05-12</td></tr>
+    <tr class="archive-row"><td class="name">comsat-radar (archive)</td><td class="path">~/Code/_archive/comsat-radar-pre-consolidation-2026-05-12/</td><td class="type">project</td><td><span class="status dead">dead</span></td><td><span class="status">private</span></td><td class="oneliner">Pre-consolidation snapshot 2026-05-12</td></tr>
+    <tr class="archive-row"><td class="name">overmind-relay (archive)</td><td class="path">~/Code/_archive/overmind-relay-pre-consolidation-2026-05-12/</td><td class="type">project</td><td><span class="status dead">dead</span></td><td><span class="status">private</span></td><td class="oneliner">Pre-consolidation snapshot 2026-05-12</td></tr>
+    <tr class="archive-row"><td class="name">streamdeck-cockpit (archive)</td><td class="path">~/Code/_archive/streamdeck-cockpit-pre-consolidation-2026-05-12/</td><td class="type">project</td><td><span class="status dead">dead</span></td><td><span class="status">private</span></td><td class="oneliner">Pre-consolidation snapshot 2026-05-12</td></tr>
+    <tr class="q-row archive-row"><td class="name">Legacy Collection</td><td class="path">~/Code/Legacy Collection/</td><td class="type">folder</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Unknown contents — anything to preserve?</td></tr>
+    <tr class="q-row archive-row"><td class="name">Temp</td><td class="path">~/Code/Temp/</td><td class="type">folder</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Scratch — anything important?</td></tr>
+    <tr class="q-row archive-row"><td class="name">comsat_design_pack</td><td class="path">~/Code/comsat_design_pack/</td><td class="type">folder</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Design assets for COMSAT?</td></tr>
+  </tbody>
+</table>
+
+<!-- SECTION 3 -->
+<h2 id="s3"><span class="num">03</span>Overmind Projects<span class="count">8</span></h2>
+<table>
+  <thead><tr><th>Name</th><th>Aliases</th><th>Path</th><th>Status</th><th>Vis</th><th>One-liner</th></tr></thead>
+  <tbody>
+    <tr><td class="name">comsat</td><td class="aliases">COMSAT3, comsat-v3</td><td class="path">projects/comsat/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Workstation control panel — surfaces every active Claude/Codex session as a tile, local HTTP API on 47321/47322</td></tr>
+    <tr><td class="name">relay</td><td class="aliases">RelayMac, capture-router</td><td class="path">projects/relay/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Captures from iPhone via iCloud envelopes, routes Mac-side to drone/repo/ideas destinations</td></tr>
+    <tr><td class="name">nova</td><td class="aliases">—</td><td class="path">projects/nova/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Migration spec docs only — actual runtime is <code>scripts/nova-sweep.js</code> (identity confusion flagged)</td></tr>
+    <tr><td class="name">cockpit</td><td class="aliases">the cockpit</td><td class="path">projects/cockpit/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Design system + pipeline docs for ultrawinning.com — not a runtime today</td></tr>
+    <tr><td class="name">streamdeck</td><td class="aliases">—</td><td class="path">projects/streamdeck/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Stream Deck + SwiftBar widgets reading SessionWatcher + COMSAT HTTP API</td></tr>
+    <tr class="q-row"><td class="name">observer</td><td class="aliases">—</td><td class="path">projects/observer/</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Claude session observation tooling — relationship to <code>~/Code/claude-observer/</code>?</td></tr>
+    <tr><td class="name">TheRealRecorder</td><td class="aliases">—</td><td class="path">projects/TheRealRecorder/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Menu-bar screen recorder — ScreenCaptureKit → Supabase Storage upload</td></tr>
+    <tr><td class="name">TheRealBoard</td><td class="aliases">—</td><td class="path">projects/TheRealBoard/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Local tldraw-style canvas (Next.js) with Anthropic Make Real route</td></tr>
+  </tbody>
+</table>
+
+<!-- SECTION 4 -->
+<h2 id="s4"><span class="num">04</span>Overmind Scripts<span class="count">12</span></h2>
+<table>
+  <thead><tr><th>Name</th><th>Path</th><th>Status</th><th>Vis</th><th>One-liner</th></tr></thead>
+  <tbody>
+    <tr><td class="name">drone.js</td><td class="path">scripts/drone.js</td><td class="empty"></td><td class="empty"></td><td class="oneliner">iPhone-dropped file harvester — Haiku-classifies, fires Telegram + Supabase</td></tr>
+    <tr><td class="name">drone-to-relay.js</td><td class="path">scripts/drone-to-relay.js</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Wraps drone proposals as Relay envelopes + writes to <code>capture/queue/</code></td></tr>
+    <tr><td class="name">capture-router.js</td><td class="path">scripts/capture-router.js</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Mac-side router for iCloud envelopes — dispatches by <code>route</code> field to drone/ideas/repo</td></tr>
+    <tr><td class="name">nova-sweep.js</td><td class="path">scripts/nova-sweep.js</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Daily tag-scanner — finds <code>[NOVA-*]</code> tags across repos, fires Telegram + Supabase + HPFHQ memory API</td></tr>
+    <tr><td class="name">sweep.js</td><td class="path">scripts/sweep.js</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Friday launchd job — Haiku-classifies HPFHQ activity via two-leg pollution test</td></tr>
+    <tr class="q-row"><td class="name">relay-router.sh</td><td class="path">scripts/relay-router.sh</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Shell wrapper around capture-router?</td></tr>
+    <tr class="q-row"><td class="name">git-activity-mine.js</td><td class="path">scripts/git-activity-mine.js</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Mines git logs for cockpit <code>/coding</code> page data</td></tr>
+    <tr class="q-row"><td class="name">wakatime-mirror.js</td><td class="path">scripts/wakatime-mirror.js</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">WakaTime → local mirror for cockpit data</td></tr>
+    <tr class="q-row"><td class="name">wakatime-mirror.sh</td><td class="path">scripts/wakatime-mirror.sh</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Shell wrapper for wakatime-mirror</td></tr>
+    <tr class="q-row"><td class="name">local-drone-batch.sh</td><td class="path">scripts/local-drone-batch.sh</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Batch run of drone with local LLM</td></tr>
+    <tr class="q-row"><td class="name">seed-100-days.js</td><td class="path">scripts/seed-100-days.js</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Seeding script — for what?</td></tr>
+    <tr><td class="name">write-idea-handover.js</td><td class="path">scripts/write-idea-handover.js</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Writes Relay envelopes (markdown + frontmatter) to <code>capture/queue/</code></td></tr>
+  </tbody>
+</table>
+
+<!-- SECTION 5 -->
+<h2 id="s5"><span class="num">05</span>Overmind Bin<span class="count">6</span></h2>
+<table>
+  <thead><tr><th>Name</th><th>Path</th><th>Status</th><th>Vis</th><th>One-liner</th></tr></thead>
+  <tbody>
+    <tr><td class="name">codex-bg</td><td class="path">bin/codex-bg</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Wrapped Codex CLI invocation — timeout + PID + WORM log (Player 3 core)</td></tr>
+    <tr><td class="name">codex-status</td><td class="path">bin/codex-status</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Surfaces running/orphan Codex processes from WORM log</td></tr>
+    <tr><td class="name">local-bg</td><td class="path">bin/local-bg</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Wrapped Ollama invocation — same shape as codex-bg (Player 3 core)</td></tr>
+    <tr><td class="name">local-status</td><td class="path">bin/local-status</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Surfaces running/orphan local-LLM processes</td></tr>
+    <tr><td class="name">usage-snapshot</td><td class="path">bin/usage-snapshot</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Reads SessionWatcher caches → reports Claude/Codex utilization (powers UserPromptSubmit warn hook)</td></tr>
+    <tr class="q-row"><td class="name">claude-audio-hosts</td><td class="path">bin/claude-audio-hosts</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Manages /etc/hosts for Claude Code audio capture issue</td></tr>
+  </tbody>
+</table>
+
+<!-- SECTION 6 -->
+<h2 id="s6"><span class="num">06</span>Skills — Global<span class="count">35</span></h2>
+<table>
+  <thead><tr><th>Name</th><th>Path</th><th>Status</th><th>Vis</th><th>One-liner</th></tr></thead>
+  <tbody>
+    <tr><td class="name">3p</td><td class="path">~/.claude/skills/3p/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Third-party delegation (Codex / local LLM) helper</td></tr>
+    <tr><td class="name">agent-postmortem</td><td class="path">~/.claude/skills/agent-postmortem/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Critiques a past agent run from its own perspective; output → global rules candidate</td></tr>
+    <tr><td class="name">build-complete</td><td class="path">~/.claude/skills/build-complete/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">End-of-build checklist — CHANGELOG, state files, reconciliation</td></tr>
+    <tr><td class="name">canary</td><td class="path">~/.claude/skills/canary/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Post-deploy health check — hits critical routes, verifies shapes</td></tr>
+    <tr><td class="name">co-op</td><td class="path">~/.claude/skills/co-op/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Co-op Mode — human-in-loop pairing pattern</td></tr>
+    <tr><td class="name">data</td><td class="path">~/.claude/skills/data/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Data rigor — sourcing, classification, interpretation (always-active baseline)</td></tr>
+    <tr class="q-row"><td class="name">enterprise-security-audit</td><td class="path">~/.claude/skills/enterprise-security-audit/</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Security audit skill — what scope?</td></tr>
+    <tr><td class="name">eod</td><td class="path">~/.claude/skills/eod/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">End-of-day report — git log trawl, 6-layer categorization, Supabase INSERTs</td></tr>
+    <tr><td class="name">find-icon</td><td class="path">~/.claude/skills/find-icon/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Search Lucide/Heroicons/Iconify for SVG matching a name</td></tr>
+    <tr><td class="name">fix-complete</td><td class="path">~/.claude/skills/fix-complete/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Lightweight post-fix checklist (sibling of build-complete)</td></tr>
+    <tr><td class="name">frame-to-carousel</td><td class="path">~/.claude/skills/frame-to-carousel/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Turn a tight framing from conversation into a carousel-angle file</td></tr>
+    <tr><td class="name">freeze</td><td class="path">~/.claude/skills/freeze/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Lock edits to a specific directory during debugging</td></tr>
+    <tr><td class="name">intake</td><td class="path">~/.claude/skills/intake/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Knowledge triage and routing — Supabase/repo/hybrid</td></tr>
+    <tr><td class="name">mac-diagnose</td><td class="path">~/.claude/skills/mac-diagnose/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Diagnose Mac slowness — memory pressure, CPU pinning, WindowServer load</td></tr>
+    <tr><td class="name">meeting-prep</td><td class="path">~/.claude/skills/meeting-prep/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Pre-meeting prep generator — open items, metrics, agenda</td></tr>
+    <tr><td class="name">monday</td><td class="path">~/.claude/skills/monday/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Monday morning business briefing — outstanding items, metrics, priorities</td></tr>
+    <tr><td class="name">new-project</td><td class="path">~/.claude/skills/new-project/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Scaffold a new Emil project — CLAUDE.md + Tier 3 + pollution guard + gh repo create</td></tr>
+    <tr><td class="name">onboard-setter</td><td class="path">~/.claude/skills/onboard-setter/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Onboard a new HPF setter — roster edits + Supabase migration + Slack links</td></tr>
+    <tr><td class="name">process-meeting</td><td class="path">~/.claude/skills/process-meeting/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Post-meeting processor — transcript → decisions/tasks/Supabase</td></tr>
+    <tr><td class="name">promote-project</td><td class="path">~/.claude/skills/promote-project/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Promote a half-built folder into a properly scaffolded repo</td></tr>
+    <tr><td class="name">quantum-leap</td><td class="path">~/.claude/skills/quantum-leap/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Step back when noise is being managed by stacked filter rules</td></tr>
+    <tr><td class="name">realistic-eta</td><td class="path">~/.claude/skills/realistic-eta/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Stop overestimating execution speed — force scope/sub-task enumeration</td></tr>
+    <tr><td class="name">session-handoff</td><td class="path">~/.claude/skills/session-handoff/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Capture context for the next session — diff + task list + state</td></tr>
+    <tr><td class="name">sf</td><td class="path">~/.claude/skills/sf/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Signal-Fidelity — compress prose to max signal-per-word, four levels (sf0-sf3)</td></tr>
+    <tr><td class="name">skillify</td><td class="path">~/.claude/skills/skillify/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Detect repeated manual patterns and propose new skills</td></tr>
+    <tr><td class="name">smoke</td><td class="path">~/.claude/skills/smoke/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Browser-based smoke test with Playwright</td></tr>
+    <tr><td class="name">standby</td><td class="path">~/.claude/skills/standby/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Park a session waiting on something external — high-visibility status block</td></tr>
+    <tr><td class="name">strategy</td><td class="path">~/.claude/skills/strategy/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Strategic/operational mode — planning, P&L, OKRs, decision frameworks</td></tr>
+    <tr><td class="name">sweep</td><td class="path">~/.claude/skills/sweep/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Review pending /sweep proposals from Friday job — accept/reject migrations</td></tr>
+    <tr><td class="name">tired</td><td class="path">~/.claude/skills/tired/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Three-year-old mode — zero-friction step-by-step when Emil is exhausted</td></tr>
+    <tr><td class="name">ultrawinning-new-tool</td><td class="path">~/.claude/skills/ultrawinning-new-tool/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Add a new system/tool showcase page to ultrawinning.com</td></tr>
+    <tr><td class="name">upgrades</td><td class="path">~/.claude/skills/upgrades/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Evaluate a new tool/framework against current system — buy/build/skip</td></tr>
+    <tr><td class="name">upgrades-review</td><td class="path">~/.claude/skills/upgrades-review/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Walk pending Overmind drone reports — adopt/defer/monitor/skip per item</td></tr>
+    <tr><td class="name">workout</td><td class="path">~/.claude/skills/workout/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Generate/revise personal training program in workout-tracker format</td></tr>
+    <tr><td class="name">wrap</td><td class="path">~/.claude/skills/wrap/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Router for session-end — dispatches to handoff/eod/build-complete/fix-complete/canary</td></tr>
+  </tbody>
+</table>
+
+<!-- SECTION 7 -->
+<h2 id="s7"><span class="num">07</span>Skills — Project-Scoped<span class="count">18</span></h2>
+<table>
+  <thead><tr><th>Name</th><th>Path</th><th>Status</th><th>Vis</th><th>One-liner</th></tr></thead>
+  <tbody>
+    <tr class="q-row"><td class="name">architect (HPFHQ)</td><td class="path">hpf-command-center/.claude/skills/architect/</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Architect skill — relates to the cross-pollination "Architect" pattern</td></tr>
+    <tr class="q-row"><td class="name">audit-architecture (HPFHQ)</td><td class="path">hpf-command-center/.claude/skills/audit-architecture/</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Audits the HPFHQ architecture?</td></tr>
+    <tr><td class="name">build-complete (HPFHQ)</td><td class="path">hpf-command-center/.claude/skills/build-complete/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">HPFHQ-specific build-complete variant</td></tr>
+    <tr><td class="name">debug-ghl (HPFHQ)</td><td class="path">hpf-command-center/.claude/skills/debug-ghl/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Debug GoHighLevel integration issues</td></tr>
+    <tr class="q-row"><td class="name">debug-root-cause (HPFHQ)</td><td class="path">hpf-command-center/.claude/skills/debug-root-cause/</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Root-cause analysis pattern?</td></tr>
+    <tr class="q-row"><td class="name">decision-memo (HPFHQ)</td><td class="path">hpf-command-center/.claude/skills/decision-memo/</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Decision-log memo writer?</td></tr>
+    <tr><td class="name">fix-complete (HPFHQ)</td><td class="path">hpf-command-center/.claude/skills/fix-complete/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">HPFHQ-specific fix-complete variant</td></tr>
+    <tr class="q-row"><td class="name">landing-page-v2 (HPFHQ)</td><td class="path">hpf-command-center/.claude/skills/landing-page-v2/</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Landing page generator?</td></tr>
+    <tr class="q-row"><td class="name">logo-designer (HPFHQ)</td><td class="path">hpf-command-center/.claude/skills/logo-designer/</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Logo design helper?</td></tr>
+    <tr class="q-row"><td class="name">research-stack (HPFHQ)</td><td class="path">hpf-command-center/.claude/skills/research-stack/</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Researches a tech stack option?</td></tr>
+    <tr class="q-row"><td class="name">review-copy (HPFHQ)</td><td class="path">hpf-command-center/.claude/skills/review-copy/</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Reviews marketing copy?</td></tr>
+    <tr class="q-row"><td class="name">review-ui (HPFHQ)</td><td class="path">hpf-command-center/.claude/skills/review-ui/</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Reviews UI work?</td></tr>
+    <tr class="q-row"><td class="name">sales-report (HPFHQ)</td><td class="path">hpf-command-center/.claude/skills/sales-report/</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Sales report generator?</td></tr>
+    <tr class="q-row"><td class="name">ship-mvp (HPFHQ)</td><td class="path">hpf-command-center/.claude/skills/ship-mvp/</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Ships an MVP — what scope?</td></tr>
+    <tr class="q-row"><td class="name">spec-feature (HPFHQ)</td><td class="path">hpf-command-center/.claude/skills/spec-feature/</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Writes feature spec?</td></tr>
+    <tr class="q-row"><td class="name">upload-doc (HPFHQ)</td><td class="path">hpf-command-center/.claude/skills/upload-doc/</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Uploads a doc to where?</td></tr>
+    <tr><td class="name">uw-article</td><td class="path">Domains/Ultrawinning/.claude/skills/uw-article/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Ultrawinning article-writing skill</td></tr>
+    <tr><td class="name">uw-book</td><td class="path">Domains/Ultrawinning/.claude/skills/uw-book/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Ultrawinning book-writing skill</td></tr>
+  </tbody>
+</table>
+
+<!-- SECTION 8 -->
+<h2 id="s8"><span class="num">08</span>Hooks<span class="count">16</span></h2>
+<table>
+  <thead><tr><th>Name</th><th>Path</th><th>Status</th><th>Vis</th><th>One-liner</th></tr></thead>
+  <tbody>
+    <tr><td class="name" style="color: var(--accent);">sentinel.js</td><td class="path">~/.claude/hooks/sentinel.js</td><td class="empty"></td><td class="empty"></td><td class="oneliner"><strong style="color: var(--accent);">Claims-verification hook — reviews claims and forces verification</strong> (the "Sentinel" codename you named)</td></tr>
+    <tr><td class="name">auto-wrap-stop.js</td><td class="path">~/.claude/hooks/auto-wrap-stop.js</td><td class="empty"></td><td class="empty"></td><td class="oneliner">On Stop, writes snapshot + session_id to COMSAT queue for handoff resume</td></tr>
+    <tr><td class="name">pre-response-memory-audit.js</td><td class="path">~/.claude/hooks/pre-response-memory-audit.js</td><td class="empty"></td><td class="empty"></td><td class="oneliner">UserPromptSubmit memory-hygiene reminder injection</td></tr>
+    <tr><td class="name">inject-datetime-context.sh</td><td class="path">~/.claude/hooks/inject-datetime-context.sh</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Injects <code>Now: ...</code> datetime block at session start (the "tonight" bug fix target)</td></tr>
+    <tr><td class="name">inject-handoff-context.js</td><td class="path">~/.claude/hooks/inject-handoff-context.js</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Injects active handoff at session start</td></tr>
+    <tr><td class="name">comsat-handoff-resolver.js</td><td class="path">~/.claude/hooks/comsat-handoff-resolver.js</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Resolves COMSAT-queued handoffs into one-shot injections</td></tr>
+    <tr><td class="name">codex-direct-block.sh</td><td class="path">~/.claude/hooks/codex-direct-block.sh</td><td class="empty"></td><td class="empty"></td><td class="oneliner">PreToolUse — blocks raw <code>codex exec</code>, points at codex-bg</td></tr>
+    <tr><td class="name">codex-direct-block.py</td><td class="path">~/.claude/hooks/codex-direct-block.py</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Python sibling of codex-direct-block.sh</td></tr>
+    <tr><td class="name">codex-status-stop-hook.sh</td><td class="path">~/.claude/hooks/codex-status-stop-hook.sh</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Stop hook — surfaces orphan Codex PIDs</td></tr>
+    <tr><td class="name">local-direct-block.sh</td><td class="path">~/.claude/hooks/local-direct-block.sh</td><td class="empty"></td><td class="empty"></td><td class="oneliner">PreToolUse — blocks raw <code>ollama run</code>, points at local-bg</td></tr>
+    <tr><td class="name">local-direct-block.py</td><td class="path">~/.claude/hooks/local-direct-block.py</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Python sibling of local-direct-block.sh</td></tr>
+    <tr><td class="name">cross-repo-write-guard.sh</td><td class="path">~/.claude/hooks/cross-repo-write-guard.sh</td><td class="empty"></td><td class="empty"></td><td class="oneliner">PreToolUse — blocks writes outside the active repo</td></tr>
+    <tr><td class="name">cross-repo-write-guard.test.sh</td><td class="path">~/.claude/hooks/cross-repo-write-guard.test.sh</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Test harness for cross-repo-write-guard</td></tr>
+    <tr><td class="name">secret-leak-guard.py</td><td class="path">~/.claude/hooks/secret-leak-guard.py</td><td class="empty"></td><td class="empty"></td><td class="oneliner">PreToolUse — scans for API keys / secrets in tool calls</td></tr>
+    <tr class="q-row"><td class="name">goal-budget-cap.js</td><td class="path">~/.claude/hooks/goal-budget-cap.js</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Caps something per goal — budget enforcement (scope unclear)</td></tr>
+    <tr><td class="name">usage-warn.sh</td><td class="path">~/.claude/hooks/usage-warn.sh</td><td class="empty"></td><td class="empty"></td><td class="oneliner">UserPromptSubmit — surfaces Claude/Codex utilization warnings via usage-snapshot</td></tr>
+  </tbody>
+</table>
+
+<!-- SECTION 9 -->
+<h2 id="s9"><span class="num">09</span>Launchd Jobs<span class="count">10</span></h2>
+<table>
+  <thead><tr><th>Name</th><th>Path</th><th>Status</th><th>Vis</th><th>One-liner</th></tr></thead>
+  <tbody>
+    <tr><td class="name">com.emil.overmind-drone</td><td class="path">LaunchAgents/com.emil.overmind-drone.plist</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Runs drone.js + drone-to-relay.js every 6h</td></tr>
+    <tr><td class="name">com.emil.overmind-nova-sweep</td><td class="path">LaunchAgents/com.emil.overmind-nova-sweep.plist</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Runs nova-sweep.js daily at 09:00 Lisbon</td></tr>
+    <tr><td class="name">com.emil.overmind-sweep</td><td class="path">LaunchAgents/com.emil.overmind-sweep.plist</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Runs sweep.js Friday 18:00</td></tr>
+    <tr><td class="name">com.emil.overmind-relay-router</td><td class="path">LaunchAgents/com.emil.overmind-relay-router.plist</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Runs capture-router.js (event-driven or polling)</td></tr>
+    <tr><td class="name">com.emil.signal-archive-incremental</td><td class="path">LaunchAgents/com.emil.signal-archive-incremental.plist</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Daily 05:15 — HPFHQ signal_archive backfill</td></tr>
+    <tr class="q-row"><td class="name">com.emil.hpf-code-index</td><td class="path">LaunchAgents/com.emil.hpf-code-index.plist</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">HPFHQ codebase indexing — for what?</td></tr>
+    <tr><td class="name">com.emil.wakatime-mirror</td><td class="path">LaunchAgents/com.emil.wakatime-mirror.plist</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Mirrors WakaTime activity to local files for cockpit</td></tr>
+    <tr><td class="name">com.overmind.comsat-streamdeck-proxy</td><td class="path">LaunchAgents/com.overmind.comsat-streamdeck-proxy.plist</td><td class="empty"></td><td class="empty"></td><td class="oneliner">COMSAT ↔ Stream Deck proxy bridge</td></tr>
+    <tr class="q-row"><td class="name">com.ultrawinning.audible-sync</td><td class="path">LaunchAgents/com.ultrawinning.audible-sync.plist</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Audible library sync — to where?</td></tr>
+    <tr><td class="name">com.ultrawinning.swiftbar-deploy-cache</td><td class="path">LaunchAgents/com.ultrawinning.swiftbar-deploy-cache.plist</td><td class="empty"></td><td class="empty"></td><td class="oneliner">SwiftBar deploy cache for ultrawinning bar widgets</td></tr>
+  </tbody>
+</table>
+
+<!-- SECTION 10 -->
+<h2 id="s10"><span class="num">10</span>Domains<span class="count">4</span></h2>
+<table>
+  <thead><tr><th>Name</th><th>Path</th><th>Status</th><th>Vis</th><th>One-liner</th></tr></thead>
+  <tbody>
+    <tr><td class="name">Ultrawinning</td><td class="path">~/Code/Domains/Ultrawinning/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Core voice corpus + writing system folder (<code>writing/_system/</code>)</td></tr>
+    <tr><td class="name">UltrawinningCom</td><td class="path">~/Code/Domains/UltrawinningCom/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">The ultrawinning.com site / cockpit repo</td></tr>
+    <tr><td class="name">UltrawinningSocial</td><td class="path">~/Code/Domains/UltrawinningSocial/</td><td class="empty"></td><td class="empty"></td><td class="oneliner">@UltrawinningAI content engine + Carousel drafter</td></tr>
+    <tr class="q-row"><td class="name">Doctoremil</td><td class="path">~/Code/Domains/Doctoremil/</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Personal <code>coaching@doctoremil.com</code> domain — assets only, or active dev?</td></tr>
+  </tbody>
+</table>
+
+<!-- SECTION 11 -->
+<h2 id="s11"><span class="num">11</span>GitHub-Only Repos<span class="count">9</span></h2>
+<table>
+  <thead><tr><th>Name</th><th>Path</th><th>Status</th><th>Vis</th><th>One-liner</th></tr></thead>
+  <tbody>
+    <tr class="q-row"><td class="name">ultrawinning/cockpit</td><td class="path">gh:ultrawinning/cockpit (private)</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Cockpit repo — relates to projects/cockpit + UltrawinningCom</td></tr>
+    <tr><td class="name">ultrawinning/share</td><td class="path">gh:ultrawinning/share (public)</td><td class="empty"></td><td><span class="status">public</span></td><td class="oneliner">The Pages-served share repo for previews/temp docs (you're reading this from there)</td></tr>
+    <tr class="q-row"><td class="name">ultrawinning/social</td><td class="path">gh:ultrawinning/social (private)</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Social content repo — relates to UltrawinningSocial</td></tr>
+    <tr class="q-row"><td class="name">ultrawinning/uw-story-new</td><td class="path">gh:ultrawinning/uw-story-new (public)</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">UW story experiment?</td></tr>
+    <tr class="q-row"><td class="name">ultrawinning/ultrawinning-ai</td><td class="path">gh:ultrawinning/ultrawinning-ai (private)</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Brand/AI initiative repo?</td></tr>
+    <tr class="q-row"><td class="name">ultrawinning/ultrawinning</td><td class="path">gh:ultrawinning/ultrawinning (private)</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Org-root repo?</td></tr>
+    <tr class="q-row"><td class="name">ultrawinning/Loop</td><td class="path">gh:ultrawinning/Loop (private)</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Loop product?</td></tr>
+    <tr class="q-row"><td class="name">ultrawinning/brain-fm-chrome</td><td class="path">gh:ultrawinning/brain-fm-chrome (private)</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Brain.fm Chrome extension fork/build?</td></tr>
+    <tr class="q-row"><td class="name">whitelabel-hq/hypergrowth-hub</td><td class="path">gh:whitelabel-hq/hypergrowth-hub (private)</td><td class="empty"></td><td class="empty"></td><td class="oneliner q">Hypergrowth hub product — whitelabel-hq org</td></tr>
+  </tbody>
+</table>
+
+<!-- SECTION 12 -->
+<h2 id="s12"><span class="num">12</span>Conventions — The Unsung Systems<span class="count">9</span></h2>
+<p class="sub" style="margin-bottom: 12px;">Not files-with-code. Load-bearing nonetheless. These are the agreements that make the rest of the stack work.</p>
+<table>
+  <thead><tr><th>Name</th><th>Where it lives</th><th>Status</th><th>Vis</th><th>One-liner</th></tr></thead>
+  <tbody>
+    <tr><td class="name">Three-tier learning model</td><td class="path">~/.claude/CLAUDE.md + learning/global-rules.md + project Tier 3</td><td><span class="status working">working</span></td><td><span class="status">internal</span></td><td class="oneliner">Tier 1 manifesto / Tier 2 cross-project rules / Tier 3 per-project — sweep-promoted</td></tr>
+    <tr><td class="name">Pollution guard pre-commit</td><td class="path">.git/hooks/pre-commit per tenant repo</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Blocks cross-tenant strings outside docs/CLAUDE.md/README.md per rule-26</td></tr>
+    <tr><td class="name">1Password env wrapping</td><td class="path">op run --env-file=*.op.env across all scripts</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Every secret-using script wraps in <code>op run</code>; 41 sensitive vars tracked</td></tr>
+    <tr><td class="name">Handoffs convention</td><td class="path">.claude/handoffs/{active,archive}/ per repo</td><td class="empty"></td><td class="empty"></td><td class="oneliner">One active handoff at a time; sessions move active→archive as first action</td></tr>
+    <tr><td class="name">Two-leg pollution test</td><td class="path">/sweep skill + manual review</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Before content lands in overmind, both legs must answer yes</td></tr>
+    <tr><td class="name">Player 3 routing</td><td class="path">rules 29-34 in global-rules.md</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Codex/local/Claude lane selection based on task class + utilization</td></tr>
+    <tr><td class="name">Auto-memory write-back</td><td class="path">Stop hook + manual /remember</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Stop hook captures episodic facts into ~/.claude/projects/*/memory/</td></tr>
+    <tr><td class="name">Drone → Relay pipeline</td><td class="path">drone.js → drone-to-relay.js → capture-router.js → RelayMac</td><td class="empty"></td><td class="empty"></td><td class="oneliner">iPhone capture → Mac classification → triage UI</td></tr>
+    <tr><td class="name">Signal archive ingestion</td><td class="path">HPFHQ backfill-signal-archive.ts daily</td><td class="empty"></td><td class="empty"></td><td class="oneliner">Cross-repo git + Claude memory + Slack → unified Supabase corpus</td></tr>
+  </tbody>
+</table>
+
+<div class="open-questions" id="open">
+  <h3>Open questions — please answer in chat or edit MD directly</h3>
+  <ol>
+    <li><strong>comsat-radar vs overmind/projects/comsat</strong> — which is canonical?</li>
+    <li><strong>overmind-relay vs overmind/projects/relay</strong> — which is canonical?</li>
+    <li><strong>claude-observer vs overmind/projects/observer</strong> — same system, different states?</li>
+    <li><strong>overseer</strong> — what is it? GitHub repo + local dir, no memory entry.</li>
+    <li><strong>promptscore-extension</strong> — browser extension scope?</li>
+    <li><strong>hpf-recorder vs TheRealRecorder</strong> — migration done? Old retired?</li>
+    <li><strong>hpf-sandbox</strong> — still active or dead?</li>
+    <li><strong>GETSHREDZ</strong> — fitness coaching app? Active?</li>
+    <li><strong>Hypergrowth (local) vs whitelabel-hq/hypergrowth-hub</strong> — relationship?</li>
+    <li><strong>Legacy Collection / Temp / comsat_design_pack</strong> — anything to preserve, or archive candidates?</li>
+    <li><strong>HPFHQ skills</strong> marked <code>?</code> — 16 of them, status unknown to me.</li>
+    <li><strong>goal-budget-cap.js</strong> — what does it cap?</li>
+    <li><strong>com.emil.hpf-code-index</strong> — what does it index?</li>
+    <li><strong>com.ultrawinning.audible-sync</strong> — Audible library → where?</li>
+    <li><strong>ultrawinning org repos</strong> marked <code>?</code> — Loop, brain-fm-chrome, ultrawinning-ai, uw-story-new — what are they?</li>
+    <li><strong>Doctoremil</strong> — assets only, or active dev?</li>
+  </ol>
+</div>
+
+<footer>
+  Source markdown: <code>~/Code/overmind/inventory/STACK.md</code> · Generated 2026-05-16 · Edit MD in VS Code, regenerate HTML as needed · Filter: <code>?</code> button isolates entries needing attention
+</footer>
+
+</div>
+
+<script>
+  // Simple client-side search + filter
+  const search = document.getElementById('search');
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  let activeFilter = 'all';
+
+  function applyFilters() {
+    const q = search.value.toLowerCase();
+    document.querySelectorAll('tbody tr').forEach(row => {
+      const text = row.textContent.toLowerCase();
+      const isQ = row.classList.contains('q-row');
+      const isArchive = row.classList.contains('archive-row');
+
+      let visible = true;
+      if (q && !text.includes(q)) visible = false;
+      if (activeFilter === 'q' && !isQ) visible = false;
+      if (activeFilter === 'archive' && !isArchive) visible = false;
+      row.style.display = visible ? '' : 'none';
+    });
+  }
+
+  search.addEventListener('input', applyFilters);
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter;
+      applyFilters();
+    });
+  });
+  // Set 'all' as default active
+  document.querySelector('[data-filter="all"]').classList.add('active');
+</script>
+
+</body>
+</html>
