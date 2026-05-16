@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overmind — Architecture Audit 2026-05-16</title>
+<style>
+  :root {
+    --bg: #0d0d10;
+    --panel: #15151a;
+    --panel-2: #1c1c22;
+    --border: #2a2a33;
+    --text: #e8e8ed;
+    --muted: #8a8a95;
+    --accent: #ff4d8f;
+    --good: #5dd39e;
+    --warn: #ffc857;
+    --bad: #ff5a5f;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
+    background: var(--bg); color: var(--text);
+    line-height: 1.55;
+  }
+  .container { max-width: 1100px; margin: 0 auto; padding: 48px 32px 96px; }
+  header { border-bottom: 1px solid var(--border); padding-bottom: 24px; margin-bottom: 40px; }
+  h1 { font-size: 28px; margin: 0 0 8px; font-weight: 700; letter-spacing: -0.01em; }
+  h1 .accent { color: var(--accent); }
+  .sub { color: var(--muted); font-size: 14px; }
+  h2 {
+    font-size: 18px; margin: 48px 0 16px;
+    font-weight: 600; letter-spacing: -0.01em;
+    padding-bottom: 8px; border-bottom: 1px solid var(--border);
+  }
+  h2 .num { color: var(--accent); font-family: var(--mono); margin-right: 12px; font-weight: 500; font-size: 14px; }
+  h3 { font-size: 15px; margin: 24px 0 8px; font-weight: 600; }
+  p, li { font-size: 14px; }
+  code, .mono { font-family: var(--mono); font-size: 12.5px; }
+  code { background: var(--panel-2); padding: 1px 6px; border-radius: 3px; color: #ffd6e6; }
+
+  .system-grid {
+    display: grid; grid-template-columns: 1fr; gap: 12px;
+  }
+  .system {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  .system.fail { border-color: rgba(255, 90, 95, 0.4); }
+  .system.warn { border-color: rgba(255, 200, 87, 0.4); }
+  .sys-name {
+    font-weight: 700; font-size: 15px;
+  }
+  .sys-path {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    word-break: break-all;
+  }
+  .sys-desc { font-size: 13.5px; color: var(--text); }
+  .sys-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-family: var(--mono);
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-top: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .sys-tag.ok { background: rgba(93, 211, 158, 0.12); color: var(--good); }
+  .sys-tag.warn { background: rgba(255, 200, 87, 0.12); color: var(--warn); }
+  .sys-tag.fail { background: rgba(255, 90, 95, 0.12); color: var(--bad); }
+
+  table.contracts {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 12.5px;
+  }
+  table.contracts th, table.contracts td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  table.contracts th {
+    background: var(--panel-2);
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+  table.contracts td.from, table.contracts td.to {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    white-space: nowrap;
+  }
+  table.contracts td.contract {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: #ffd6e6;
+  }
+  table.contracts td.note { color: var(--muted); }
+  table.contracts tr.informal td.contract { color: var(--warn); }
+
+  .finding {
+    background: var(--panel);
+    border-left: 3px solid var(--bad);
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin-bottom: 14px;
+  }
+  .finding.warn { border-left-color: var(--warn); }
+  .finding.note { border-left-color: var(--muted); }
+  .finding h4 { font-size: 14px; margin: 0 0 6px; font-weight: 600; }
+  .finding .severity {
+    font-family: var(--mono); font-size: 10px;
+    padding: 2px 6px; border-radius: 3px;
+    margin-right: 8px; text-transform: uppercase;
+  }
+  .finding .severity.high { background: rgba(255, 90, 95, 0.15); color: var(--bad); }
+  .finding .severity.med { background: rgba(255, 200, 87, 0.15); color: var(--warn); }
+  .finding .severity.low { background: rgba(138, 138, 149, 0.2); color: var(--muted); }
+  .finding p { margin: 8px 0 0; font-size: 13px; color: var(--text); }
+  .finding .fix { color: var(--good); font-size: 12.5px; margin-top: 8px; }
+  .finding .fix::before { content: "→ "; }
+
+  .legend { display: flex; gap: 16px; font-size: 12px; color: var(--muted); margin: 8px 0 16px; }
+  .legend span::before {
+    content: ""; display: inline-block; width: 8px; height: 8px;
+    border-radius: 50%; margin-right: 6px; vertical-align: middle;
+  }
+  .legend .ok::before { background: var(--good); }
+  .legend .warn::before { background: var(--warn); }
+  .legend .fail::before { background: var(--bad); }
+
+  .summary {
+    background: linear-gradient(135deg, rgba(255, 77, 143, 0.08), rgba(255, 77, 143, 0.02));
+    border: 1px solid rgba(255, 77, 143, 0.2);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+  }
+  .summary p { margin: 0 0 8px; font-size: 14px; }
+  .summary p:last-child { margin-bottom: 0; }
+  .verdict-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .verdict {
+    background: var(--panel-2);
+    border-radius: 6px;
+    padding: 12px 14px;
+  }
+  .verdict .label { font-size: 10px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.08em; }
+  .verdict .value { font-size: 22px; font-weight: 700; margin-top: 4px; }
+  .verdict .value.good { color: var(--good); }
+  .verdict .value.warn { color: var(--warn); }
+  .verdict .value.bad { color: var(--bad); }
+
+  footer { margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--border); color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Overmind <span class="accent">/</span> Architecture Audit</h1>
+  <div class="sub">2026-05-16 · 11 systems · 4 audit tests · contracts mapped to physical paths</div>
+</header>
+
+<div class="summary">
+  <p><strong>Verdict:</strong> The stack is healthier than "haphazard" suggests. Most contracts ARE physical (files, dirs, Supabase tables, HTTP endpoints) — that's the hard part, and you got it right. The issues are pockets of informal coupling and two systems that exist in name only.</p>
+  <p><strong>Three things worth fixing</strong>, in priority order: (1) Nova identity confusion, (2) Drone→Relay format-by-convention, (3) HPFHQ <code>.env.local</code> as Overmind's secret source.</p>
+  <div class="verdict-grid">
+    <div class="verdict"><div class="label">Systems</div><div class="value">11</div></div>
+    <div class="verdict"><div class="label">Pass all tests</div><div class="value good">6</div></div>
+    <div class="verdict"><div class="label">Soft issues</div><div class="value warn">3</div></div>
+    <div class="verdict"><div class="label">Hard issues</div><div class="value bad">2</div></div>
+  </div>
+</div>
+
+<h2><span class="num">01</span>One-sentence job test</h2>
+<p class="sub" style="margin-bottom: 16px;">If a system can't be described in one sentence, it's probably doing two jobs OR doesn't really exist as a system yet.</p>
+
+<div class="legend">
+  <span class="ok">passes — one clear job</span>
+  <span class="warn">passes with caveat</span>
+  <span class="fail">fails — ambiguous or doesn't exist</span>
+</div>
+
+<div class="system-grid">
+
+  <div class="system">
+    <div>
+      <div class="sys-name">COMSAT</div>
+      <div class="sys-path">projects/comsat/</div>
+      <span class="sys-tag ok">PASS</span>
+    </div>
+    <div class="sys-desc">The workstation control panel — surfaces every active Claude/Codex session as a tile and exposes a local HTTP API for approving, denying, focusing, and stopping sessions.</div>
+  </div>
+
+  <div class="system">
+    <div>
+      <div class="sys-name">Relay</div>
+      <div class="sys-path">projects/relay/ + scripts/capture-router.js</div>
+      <span class="sys-tag ok">PASS</span>
+    </div>
+    <div class="sys-desc">Moves captures from iPhone (via iCloud envelopes) to a routed destination on the Mac — drone folder, repo inbox, or ideas API.</div>
+  </div>
+
+  <div class="system warn">
+    <div>
+      <div class="sys-name">Nova</div>
+      <div class="sys-path">scripts/nova-sweep.js (NOT projects/nova/)</div>
+      <span class="sys-tag fail">FAIL — identity confusion</span>
+    </div>
+    <div class="sys-desc">The running system: scans every repo daily for <code>[NOVA-*]</code> tags and fires Telegram + Supabase + memory persistence when tags trip. <strong>But <code>projects/nova/</code> is a placeholder with no runnable code</strong> — two things share the name.</div>
+  </div>
+
+  <div class="system fail">
+    <div>
+      <div class="sys-name">Cockpit</div>
+      <div class="sys-path">projects/cockpit/ (design docs only)</div>
+      <span class="sys-tag fail">FAIL — doesn't exist as runtime</span>
+    </div>
+    <div class="sys-desc">Currently no runnable code. The directory holds <code>PATTERNS.md</code> / <code>PIPELINE.md</code> / design-system tokens. The operational "cockpit" surface is actually <code>projects/streamdeck/swiftbar/cockpit-bar.10s.sh</code>.</div>
+  </div>
+
+  <div class="system">
+    <div>
+      <div class="sys-name">Drone</div>
+      <div class="sys-path">scripts/drone.js + scripts/drone-to-relay.js</div>
+      <span class="sys-tag ok">PASS</span>
+    </div>
+    <div class="sys-desc">Runs every 6 hours, classifies iPhone-dropped files in <code>~/Documents/Overmind/drone/</code> via Haiku, then forwards proposals into Relay envelopes + Telegram inline-keyboard messages.</div>
+  </div>
+
+  <div class="system">
+    <div>
+      <div class="sys-name">Player 3</div>
+      <div class="sys-path">bin/codex-bg, bin/local-bg, bin/usage-snapshot, bin/codex-status</div>
+      <span class="sys-tag ok">PASS</span>
+    </div>
+    <div class="sys-desc">The wrapped-execution lane for Codex CLI and local Ollama — every invocation produces an append-only WORM log at <code>~/.claude/state/{codex,local}/log.jsonl</code> with PID + timeout enforcement.</div>
+  </div>
+
+  <div class="system warn">
+    <div>
+      <div class="sys-name">Signal Archive</div>
+      <div class="sys-path">hpf-command-center/scripts/backfill-signal-archive.ts</div>
+      <span class="sys-tag warn">CROSS-REPO</span>
+    </div>
+    <div class="sys-desc">Crawls cross-repo git history + Claude memory + Slack daily, upserting to the <code>signal_archive</code> Supabase table. <strong>Lives in HPFHQ but reads Overmind paths</strong> — cross-tenant reach-in by design.</div>
+  </div>
+
+  <div class="system">
+    <div>
+      <div class="sys-name">TheRealRecorder</div>
+      <div class="sys-path">projects/TheRealRecorder/</div>
+      <span class="sys-tag ok">PASS</span>
+    </div>
+    <div class="sys-desc">Menu-bar screen recorder — captures via ScreenCaptureKit and uploads the MP4 to a configurable Supabase Storage bucket via anon-key PUT.</div>
+  </div>
+
+  <div class="system">
+    <div>
+      <div class="sys-name">TheRealBoard</div>
+      <div class="sys-path">projects/TheRealBoard/</div>
+      <span class="sys-tag ok">PASS</span>
+    </div>
+    <div class="sys-desc">Local Next.js canvas (tldraw-style) — POSTs canvas selections to <code>/api/make-real</code>, which calls Anthropic to generate HTML prototypes; boards saved as JSON.</div>
+  </div>
+
+  <div class="system warn">
+    <div>
+      <div class="sys-name">Streamdeck</div>
+      <div class="sys-path">projects/streamdeck/ (+ silent dep on ~/Code/streamdeck-cockpit/)</div>
+      <span class="sys-tag warn">SILENT DEP</span>
+    </div>
+    <div class="sys-desc">Stream Deck tile scripts via BetterTouchTool + SwiftBar — read SessionWatcher caches, call COMSAT HTTP API. <strong>Imports Python render lib from a separate repo</strong> that lives outside overmind with no manifest.</div>
+  </div>
+
+  <div class="system">
+    <div>
+      <div class="sys-name">Sweep</div>
+      <div class="sys-path">scripts/sweep.js</div>
+      <span class="sys-tag ok">PASS</span>
+    </div>
+    <div class="sys-desc">Friday 18:00 launchd job — asks Haiku whether each new HPFHQ task/commit/Tier-3 rule passes the two-leg pollution test, then writes a review proposal to <code>inbox/sweep-YYYY-MM-DD.md</code>.</div>
+  </div>
+
+</div>
+
+<h2><span class="num">02</span>Contract map — who talks to whom and through what</h2>
+<p class="sub" style="margin-bottom: 16px;">If you can name the physical thing two systems share, the boundary is clean. Yellow rows = informal coupling (format known by convention, no schema document).</p>
+
+<table class="contracts">
+  <thead>
+    <tr><th style="width: 18%;">From</th><th style="width: 18%;">To</th><th style="width: 34%;">Contract (physical thing)</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="from">iPhone Relay app</td>
+      <td class="to">capture-router.js</td>
+      <td class="contract">~/Documents/Overmind/capture/queue/*.md (iCloud)</td>
+      <td class="note">Markdown envelope w/ frontmatter — clean schema, well-defined</td>
+    </tr>
+    <tr>
+      <td class="from">capture-router.js</td>
+      <td class="to">RelayMac</td>
+      <td class="contract">~/Documents/Overmind/capture/active/&lt;route&gt;/*.md</td>
+      <td class="note">Sub-folder per route (comsat, ideas, repos)</td>
+    </tr>
+    <tr>
+      <td class="from">capture-router.js</td>
+      <td class="to">Drone</td>
+      <td class="contract">~/Documents/Overmind/drone/&lt;id&gt;.md</td>
+      <td class="note">Soft conflict: drone reader + capture-router writer share dir</td>
+    </tr>
+    <tr>
+      <td class="from">Drone</td>
+      <td class="to">Telegram</td>
+      <td class="contract">drone_pending Supabase table + bot inline keyboard</td>
+      <td class="note">High-confidence items get approve/reject buttons</td>
+    </tr>
+    <tr>
+      <td class="from">Telegram webhook (HPFHQ)</td>
+      <td class="to">Nova-sweep</td>
+      <td class="contract">drone_verdicts + drone_pending Supabase tables</td>
+      <td class="note">Schema-by-column-name across HPFHQ ↔ Overmind</td>
+    </tr>
+    <tr class="informal">
+      <td class="from">Drone</td>
+      <td class="to">drone-to-relay.js</td>
+      <td class="contract">inbox/drone-&lt;date&gt;.md (markdown headings)</td>
+      <td class="note">Parsed by regex on <code>## </code> + <code>**Source:**</code> — no schema doc</td>
+    </tr>
+    <tr>
+      <td class="from">Player 3</td>
+      <td class="to">COMSAT</td>
+      <td class="contract">~/.claude/state/{codex,local}/log.jsonl (WORM)</td>
+      <td class="note">Append-only JSONL, well-defined event shape</td>
+    </tr>
+    <tr>
+      <td class="from">Claude Code</td>
+      <td class="to">COMSAT</td>
+      <td class="contract">~/.claude/projects/&lt;path&gt;/*.jsonl transcripts</td>
+      <td class="note">Read-only mirror of authoritative state — safe</td>
+    </tr>
+    <tr class="informal">
+      <td class="from">auto-wrap-stop hook</td>
+      <td class="to">COMSAT</td>
+      <td class="contract">~/.comsat/logs/sessionstart.log (JSONL tail)</td>
+      <td class="note">Event format <code>{event, workspaceId}</code> — undocumented</td>
+    </tr>
+    <tr>
+      <td class="from">Streamdeck</td>
+      <td class="to">COMSAT</td>
+      <td class="contract">HTTP API at 127.0.0.1:47321/47322</td>
+      <td class="note">Versioned-feeling endpoints, well-defined contract</td>
+    </tr>
+    <tr>
+      <td class="from">SessionWatcher.app</td>
+      <td class="to">Player 3 + Streamdeck</td>
+      <td class="contract">~/Library/Application Support/SessionWatcher/cache-*.json</td>
+      <td class="note">Two consumers, same source — duplication-safe (read-only)</td>
+    </tr>
+    <tr class="informal">
+      <td class="from">Streamdeck</td>
+      <td class="to">streamdeck-cockpit (external repo)</td>
+      <td class="contract">/Users/emil/Code/streamdeck-cockpit/lib/sd_render.py</td>
+      <td class="note">Hardcoded absolute path to repo outside overmind — silent dep</td>
+    </tr>
+    <tr>
+      <td class="from">Nova-sweep</td>
+      <td class="to">Telegram + Supabase + HPFHQ memory API</td>
+      <td class="contract">nova_upkeep table + /api/knowledge/intake POST</td>
+      <td class="note">Three writes per tripped tag — fan-out by design</td>
+    </tr>
+    <tr>
+      <td class="from">Sweep</td>
+      <td class="to">/sweep skill (user)</td>
+      <td class="contract">inbox/sweep-&lt;date&gt;.md + Telegram notice</td>
+      <td class="note">Asynchronous handoff to human review — clean</td>
+    </tr>
+    <tr class="informal">
+      <td class="from">Drone + Sweep + Nova-sweep</td>
+      <td class="to">overmind/.env or hpf .env.local</td>
+      <td class="contract">~/Code/hpf-command-center/.env.local (fallback chain)</td>
+      <td class="note">Three Overmind scripts depend on HPFHQ's env file — coupling</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2><span class="num">03</span>Findings — what's actually worth fixing</h2>
+
+<div class="finding">
+  <h4><span class="severity high">HIGH</span>Nova identity confusion</h4>
+  <p>Two things named "Nova": <code>projects/nova/</code> is a placeholder with design docs only, while <code>scripts/nova-sweep.js</code> is the actual running system. The project dir's <code>CONTRACT.md</code> describes a future adapter that doesn't exist, which any new session reading it would treat as live.</p>
+  <p class="fix">Either move <code>scripts/nova-sweep.js</code> into <code>projects/nova/</code> and make it the canonical home, or rename the project dir to <code>projects/nova-plan/</code> so a fresh reader can't confuse intent with implementation.</p>
+</div>
+
+<div class="finding">
+  <h4><span class="severity high">HIGH</span>Drone → Relay format-by-convention</h4>
+  <p><code>drone-to-relay.js</code> parses <code>inbox/drone-&lt;date&gt;.md</code> by regexing markdown headings produced by <code>drone.js</code>. If <code>drone.js</code> ever tweaks its output template, <code>drone-to-relay.js</code> silently drops entries — no error, just lost ideas.</p>
+  <p class="fix">Either (a) write a JSONL sidecar alongside the markdown report (<code>drone-&lt;date&gt;.jsonl</code>) and have <code>drone-to-relay.js</code> read that instead, or (b) extract the shared template into one module that both scripts import.</p>
+</div>
+
+<div class="finding warn">
+  <h4><span class="severity med">MEDIUM</span>HPFHQ <code>.env.local</code> as Overmind's secret source</h4>
+  <p>Drone, Sweep, Nova-sweep, and (indirectly) Signal Archive all fall back to reading <code>~/Code/hpf-command-center/.env.local</code> when their own env isn't set. That's a structural dependency from Overmind into HPFHQ — opposite to the pollution direction your tier model expects (Overmind sees outward, not into a leaf tenant).</p>
+  <p class="fix">Already covered by the 2026-05-14 1Password migration ([[project_one_password_migration_2026_05_14]]). Audit which scripts still have the HPFHQ fallback path and remove — they should source from <code>op run --env-file=&lt;overmind-side&gt;.op.env</code> exclusively.</p>
+</div>
+
+<div class="finding warn">
+  <h4><span class="severity med">MEDIUM</span>Streamdeck silent dep on external repo</h4>
+  <p>Multiple Streamdeck scripts hardcode imports from <code>/Users/emil/Code/streamdeck-cockpit/lib/sd_render.py</code>. That repo isn't in overmind, isn't a submodule, and isn't documented as a dependency. A fresh clone of overmind on a new Mac won't run Streamdeck widgets.</p>
+  <p class="fix">Three options, in increasing effort: (a) add a one-line note in <code>projects/streamdeck/README.md</code> listing the external dep, (b) symlink the lib into <code>projects/streamdeck/lib/</code> at install time, (c) git-submodule or vendored copy.</p>
+</div>
+
+<div class="finding warn">
+  <h4><span class="severity med">MEDIUM</span>Cockpit doesn't exist as a system</h4>
+  <p>You talk about Cockpit as if it's a thing, but <code>projects/cockpit/</code> is design docs. The actual operational dashboard is fragmented across <code>projects/streamdeck/swiftbar/cockpit-bar.10s.sh</code>, the Stream Deck buttons, and (eventually) ultrawinning.com pages. New work on "the cockpit" has no canonical home.</p>
+  <p class="fix">Decide: is Cockpit (1) the design-system folder, (2) the SwiftBar bar, or (3) the future ultrawinning.com surface? Name it explicitly and put a README in the canonical dir pointing to the others.</p>
+</div>
+
+<div class="finding note">
+  <h4><span class="severity low">LOW</span>Soft conflict on <code>~/Documents/Overmind/drone/</code></h4>
+  <p>Drone reads + moves files out of this directory; capture-router writes new files into it (route=upgrades). The two never run simultaneously by accident (capture-router is event-driven, drone is launchd every 6h), but if they did, a partially-written file could be read mid-flight.</p>
+  <p class="fix">Lowest priority — the race is theoretically possible but hasn't happened. If it ever does: have capture-router write to a <code>.tmp</code> sibling and rename when done (atomic move pattern).</p>
+</div>
+
+<div class="finding note">
+  <h4><span class="severity low">LOW</span>auto-wrap-stop event format undocumented</h4>
+  <p>The Claude Code hook at <code>~/.claude/hooks/auto-wrap-stop.js</code> appends JSONL events to <code>~/.comsat/logs/sessionstart.log</code> that COMSAT then tails. The event shape <code>{event, workspaceId, ...}</code> isn't documented anywhere except in the consuming code.</p>
+  <p class="fix">Add a short <code>HOOK-CONTRACT.md</code> to <code>projects/comsat/</code> listing every external-write source that COMSAT consumes and the expected event shape per source.</p>
+</div>
+
+<h2><span class="num">04</span>What's right (don't break these)</h2>
+
+<p>Three architectural choices that are doing real load-bearing work and should be preserved:</p>
+
+<div class="finding note" style="border-left-color: var(--good);">
+  <h4>iCloud envelope queue as iPhone ↔ Mac bridge</h4>
+  <p>Using iCloud Drive to hand markdown envelopes between iPhone and Mac is a clean physical contract — no API, no auth, no server. Both sides read/write the same folder. The fact that it works offline-first is a strong property.</p>
+</div>
+
+<div class="finding note" style="border-left-color: var(--good);">
+  <h4>WORM logs as the Player 3 spine</h4>
+  <p>Append-only JSONL at <code>~/.claude/state/{codex,local}/log.jsonl</code> is the canonical record of every 3p invocation. Consumers (COMSAT, usage-snapshot, status checks) all read the same file. This is the right pattern — copy it elsewhere when adding new agent lanes.</p>
+</div>
+
+<div class="finding note" style="border-left-color: var(--good);">
+  <h4>COMSAT as the only HTTP service in the stack</h4>
+  <p>Streamdeck, Stream Deck Mobile, /wrap auto-allow, and future remote-control tools all go through one local HTTP API. One service to harden, one port to firewall, one auth model to think about. Resist the urge to add a second HTTP service for any new feature — extend COMSAT instead.</p>
+</div>
+
+<footer>
+  <p>Generated 2026-05-16 · Pages mirror of an audit run inside <code>~/Code/overmind/</code>. Source data: <code>codex-bg</code>/<code>local-bg</code> WORM logs, repo tree walk, and an Explore-agent mapping of I/O surfaces per system.</p>
+</footer>
+
+</div>
+</body>
+</html>
