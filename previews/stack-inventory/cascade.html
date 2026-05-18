@@ -166,11 +166,11 @@
     <table class="components">
       <thead><tr><th>Component</th><th>Type</th><th>Status</th><th>Path</th><th>Notes</th></tr></thead>
       <tbody>
-        <tr><td>comsat_design_pack</td><td><span class="type">folder</span></td><td></td><td><code>~/Code/overmind/projects/comsat/.design/pack/</code></td><td>Design assets for COMSAT</td></tr>
-        <tr><td>comsat</td><td><span class="type">project</span></td><td></td><td><code>projects/comsat/</code></td><td>Workstation control panel — surfaces every active Claude/Codex session as a tile, local HTTP API on 47321/47322</td></tr>
-        <tr><td>streamdeck</td><td><span class="type">project</span></td><td></td><td><code>projects/streamdeck/</code></td><td>Stream Deck + SwiftBar widgets that read SessionWatcher + COMSAT HTTP API</td></tr>
-        <tr><td>com.overmind.comsat-streamdeck-proxy</td><td><span class="type">launchd</span></td><td></td><td><code>LaunchAgents/com.overmind.comsat-streamdeck-proxy.plist</code></td><td>COMSAT ↔ Stream Deck proxy bridge</td></tr>
-        <tr><td>com.ultrawinning.swiftbar-deploy-cache</td><td><span class="type">launchd</span></td><td></td><td><code>LaunchAgents/com.ultrawinning.swiftbar-deploy-cache.plist</code></td><td>SwiftBar deploy cache for ultrawinning bar widgets</td></tr>
+        <tr><td>comsat_design_pack</td><td><span class="type">folder</span></td><td><span class="badge badge-muted">dead</span></td><td><code>~/Code/overmind/projects/comsat/.design/pack/</code></td><td>Design assets for COMSAT</td></tr>
+        <tr><td>comsat</td><td><span class="type">project</span></td><td><span class="badge badge-good">working</span></td><td><code>projects/comsat/</code></td><td>Workstation control panel — surfaces every active Claude/Codex session as a tile, local HTTP API on 47321/47322</td></tr>
+        <tr><td>streamdeck</td><td><span class="type">project</span></td><td><span class="badge badge-good">working</span></td><td><code>projects/streamdeck/</code></td><td>Stream Deck + SwiftBar widgets that read SessionWatcher + COMSAT HTTP API</td></tr>
+        <tr><td>com.overmind.comsat-streamdeck-proxy</td><td><span class="type">launchd</span></td><td><span class="badge badge-good">working</span></td><td><code>LaunchAgents/com.overmind.comsat-streamdeck-proxy.plist</code></td><td>COMSAT ↔ Stream Deck proxy bridge</td></tr>
+        <tr><td>com.ultrawinning.swiftbar-deploy-cache</td><td><span class="type">launchd</span></td><td><span class="badge badge-good">working</span></td><td><code>LaunchAgents/com.ultrawinning.swiftbar-deploy-cache.plist</code></td><td>SwiftBar deploy cache for ultrawinning bar widgets</td></tr>
       </tbody>
     </table>
   </details>
@@ -179,15 +179,15 @@
     <table class="components">
       <thead><tr><th>Component</th><th>Type</th><th>Status</th><th>Path</th><th>Notes</th></tr></thead>
       <tbody>
-        <tr><td>relay</td><td><span class="type">project</span></td><td></td><td><code>projects/relay/</code></td><td>Captures from iPhone via iCloud envelopes, routes Mac-side to drone/repo/ideas destinations</td></tr>
-        <tr><td>drone.js</td><td><span class="type">script</span></td><td></td><td><code>scripts/drone.js</code></td><td>iPhone-dropped file harvester — classifies via Haiku, fires Telegram + Supabase</td></tr>
-        <tr><td>drone-to-relay.js</td><td><span class="type">script</span></td><td></td><td><code>scripts/drone-to-relay.js</code></td><td>Wraps drone proposals as Relay envelopes + writes to capture/queue/</td></tr>
-        <tr><td>capture-router.js</td><td><span class="type">script</span></td><td></td><td><code>scripts/capture-router.js</code></td><td>Mac-side router for iCloud envelopes — dispatches by route field to drone/ideas/repo</td></tr>
-        <tr><td>relay-router.sh</td><td><span class="type">script</span></td><td></td><td><code>scripts/relay-router.sh</code></td><td>Shell wrapper around capture-router?</td></tr>
-        <tr><td>write-idea-handover.js</td><td><span class="type">script</span></td><td></td><td><code>scripts/write-idea-handover.js</code></td><td>Writes Relay envelopes (markdown with frontmatter) to capture/queue/</td></tr>
-        <tr><td>com.emil.overmind-drone</td><td><span class="type">launchd</span></td><td></td><td><code>LaunchAgents/com.emil.overmind-drone.plist</code></td><td>Runs drone.js + drone-to-relay.js every 6h</td></tr>
-        <tr><td>com.emil.overmind-relay-router</td><td><span class="type">launchd</span></td><td></td><td><code>LaunchAgents/com.emil.overmind-relay-router.plist</code></td><td>Runs capture-router.js (event-driven or polling)</td></tr>
-        <tr><td>Drone → Relay pipeline</td><td><span class="type">convention</span></td><td></td><td><code></code></td><td>iPhone capture → Mac classification → triage UI</td></tr>
+        <tr><td>relay</td><td><span class="type">project</span></td><td><span class="badge badge-good">working</span></td><td><code>projects/relay/</code></td><td>Captures from iPhone via iCloud envelopes, routes Mac-side to drone/repo/ideas destinations</td></tr>
+        <tr><td>drone.js</td><td><span class="type">script</span></td><td><span class="badge badge-good">working</span></td><td><code>scripts/drone.js</code></td><td>iPhone-dropped file harvester — classifies via Haiku, fires Telegram + Supabase</td></tr>
+        <tr><td>drone-to-relay.js</td><td><span class="type">script</span></td><td><span class="badge badge-good">working</span></td><td><code>scripts/drone-to-relay.js</code></td><td>Wraps drone proposals as Relay envelopes + writes to capture/queue/</td></tr>
+        <tr><td>capture-router.js</td><td><span class="type">script</span></td><td><span class="badge badge-good">working</span></td><td><code>scripts/capture-router.js</code></td><td>Mac-side router for iCloud envelopes — dispatches by route field to drone/ideas/repo</td></tr>
+        <tr><td>relay-router.sh</td><td><span class="type">script</span></td><td><span class="badge badge-good">working</span></td><td><code>scripts/relay-router.sh</code></td><td>Shell wrapper around capture-router?</td></tr>
+        <tr><td>write-idea-handover.js</td><td><span class="type">script</span></td><td><span class="badge badge-good">working</span></td><td><code>scripts/write-idea-handover.js</code></td><td>Writes Relay envelopes (markdown with frontmatter) to capture/queue/</td></tr>
+        <tr><td>com.emil.overmind-drone</td><td><span class="type">launchd</span></td><td><span class="badge badge-good">working</span></td><td><code>LaunchAgents/com.emil.overmind-drone.plist</code></td><td>Runs drone.js + drone-to-relay.js every 6h</td></tr>
+        <tr><td>com.emil.overmind-relay-router</td><td><span class="type">launchd</span></td><td><span class="badge badge-good">working</span></td><td><code>LaunchAgents/com.emil.overmind-relay-router.plist</code></td><td>Runs capture-router.js (event-driven or polling)</td></tr>
+        <tr><td>Drone → Relay pipeline</td><td><span class="type">convention</span></td><td><span class="badge badge-good">working</span></td><td><code></code></td><td>iPhone capture → Mac classification → triage UI</td></tr>
       </tbody>
     </table>
   </details>
@@ -197,17 +197,17 @@
       <thead><tr><th>Component</th><th>Type</th><th>Status</th><th>Path</th><th>Notes</th></tr></thead>
       <tbody>
         <tr><td>claude-observer (archive)</td><td><span class="type">project</span></td><td><span class="badge badge-muted">dead</span></td><td><code>~/Code/_archive/claude-observer-pre-consolidation-2026-05-12/</code></td><td>Pre-consolidation snapshot 2026-05-12</td></tr>
-        <tr><td>observer</td><td><span class="type">project</span></td><td></td><td><code>projects/observer/</code></td><td>Claude session observation tooling — relationship to ~/Code/claude-observer/?</td></tr>
-        <tr><td>auto-wrap-stop.js</td><td><span class="type">hook</span></td><td></td><td><code>~/.claude/hooks/auto-wrap-stop.js</code></td><td>On Stop, writes snapshot + session_id to COMSAT queue for handoff resume</td></tr>
-        <tr><td>pre-response-memory-audit.js</td><td><span class="type">hook</span></td><td></td><td><code>~/.claude/hooks/pre-response-memory-audit.js</code></td><td>UserPromptSubmit memory-hygiene reminder injection</td></tr>
-        <tr><td>inject-datetime-context.sh</td><td><span class="type">hook</span></td><td></td><td><code>~/.claude/hooks/inject-datetime-context.sh</code></td><td>Injects Now: ... datetime block at session start (the &quot;tonight&quot; bug fix target)</td></tr>
-        <tr><td>inject-handoff-context.js</td><td><span class="type">hook</span></td><td></td><td><code>~/.claude/hooks/inject-handoff-context.js</code></td><td>Injects active handoff at session start</td></tr>
-        <tr><td>comsat-handoff-resolver.js</td><td><span class="type">hook</span></td><td></td><td><code>~/.claude/hooks/comsat-handoff-resolver.js</code></td><td>Resolves COMSAT-queued handoffs into one-shot injections</td></tr>
-        <tr><td>com.emil.signal-archive-incremental</td><td><span class="type">launchd</span></td><td></td><td><code>LaunchAgents/com.emil.signal-archive-incremental.plist</code></td><td>Daily 05:15 — HPFHQ signal_archive backfill</td></tr>
+        <tr><td>observer</td><td><span class="type">project</span></td><td><span class="badge badge-good">working</span></td><td><code>projects/observer/</code></td><td>Claude session observation tooling — relationship to ~/Code/claude-observer/?</td></tr>
+        <tr><td>auto-wrap-stop.js</td><td><span class="type">hook</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/hooks/auto-wrap-stop.js</code></td><td>On Stop, writes snapshot + session_id to COMSAT queue for handoff resume</td></tr>
+        <tr><td>pre-response-memory-audit.js</td><td><span class="type">hook</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/hooks/pre-response-memory-audit.js</code></td><td>UserPromptSubmit memory-hygiene reminder injection</td></tr>
+        <tr><td>inject-datetime-context.sh</td><td><span class="type">hook</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/hooks/inject-datetime-context.sh</code></td><td>Injects Now: ... datetime block at session start (the &quot;tonight&quot; bug fix target)</td></tr>
+        <tr><td>inject-handoff-context.js</td><td><span class="type">hook</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/hooks/inject-handoff-context.js</code></td><td>Injects active handoff at session start</td></tr>
+        <tr><td>comsat-handoff-resolver.js</td><td><span class="type">hook</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/hooks/comsat-handoff-resolver.js</code></td><td>Resolves COMSAT-queued handoffs into one-shot injections</td></tr>
+        <tr><td>com.emil.signal-archive-incremental</td><td><span class="type">launchd</span></td><td><span class="badge badge-good">working</span></td><td><code>LaunchAgents/com.emil.signal-archive-incremental.plist</code></td><td>Daily 05:15 — HPFHQ signal_archive backfill</td></tr>
         <tr><td>Three-tier learning model</td><td><span class="type">convention</span></td><td><span class="badge badge-good">working</span></td><td><code></code></td><td>Tier 1 manifesto / Tier 2 cross-project rules / Tier 3 per-project — sweep-promoted</td></tr>
-        <tr><td>Handoffs convention</td><td><span class="type">convention</span></td><td></td><td><code></code></td><td>One active handoff at a time; sessions move active→archive as first action</td></tr>
-        <tr><td>Auto-memory write-back</td><td><span class="type">convention</span></td><td></td><td><code></code></td><td>Stop hook captures episodic facts into ~/.claude/projects/*/memory/</td></tr>
-        <tr><td>Signal archive ingestion</td><td><span class="type">convention</span></td><td></td><td><code></code></td><td>Cross-repo git + Claude memory + Slack → unified Supabase corpus</td></tr>
+        <tr><td>Handoffs convention</td><td><span class="type">convention</span></td><td><span class="badge badge-good">working</span></td><td><code></code></td><td>One active handoff at a time; sessions move active→archive as first action</td></tr>
+        <tr><td>Auto-memory write-back</td><td><span class="type">convention</span></td><td><span class="badge badge-good">working</span></td><td><code></code></td><td>Stop hook captures episodic facts into ~/.claude/projects/*/memory/</td></tr>
+        <tr><td>Signal archive ingestion</td><td><span class="type">convention</span></td><td><span class="badge badge-good">working</span></td><td><code></code></td><td>Cross-repo git + Claude memory + Slack → unified Supabase corpus</td></tr>
         <tr><td>inject-always-load.sh</td><td><span class="type">hook</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/hooks/inject-always-load.sh</code></td><td>SessionStart hook — concatenates _always_load/*.md into context every session (hardware roster, etc.)</td></tr>
       </tbody>
     </table>
@@ -226,9 +226,9 @@
     <table class="components">
       <thead><tr><th>Component</th><th>Type</th><th>Status</th><th>Path</th><th>Notes</th></tr></thead>
       <tbody>
-        <tr><td>nova</td><td><span class="type">project</span></td><td></td><td><code>projects/nova/</code></td><td>Migration spec docs only — actual runtime is scripts/nova-sweep.js (see [[project_sentinel_claims_verification]] codename clarifications)</td></tr>
-        <tr><td>nova-sweep.js</td><td><span class="type">script</span></td><td></td><td><code>scripts/nova-sweep.js</code></td><td>Daily tag-scanner — finds [NOVA-*] tags across repos, fires Telegram + Supabase + HPFHQ memory API</td></tr>
-        <tr><td>com.emil.overmind-nova-sweep</td><td><span class="type">launchd</span></td><td></td><td><code>LaunchAgents/com.emil.overmind-nova-sweep.plist</code></td><td>Runs nova-sweep.js daily at 09:00 Lisbon</td></tr>
+        <tr><td>nova</td><td><span class="type">project</span></td><td><span class="badge badge-good">working</span></td><td><code>projects/nova/</code></td><td>Migration spec docs only — actual runtime is scripts/nova-sweep.js (see [[project_sentinel_claims_verification]] codename clarifications)</td></tr>
+        <tr><td>nova-sweep.js</td><td><span class="type">script</span></td><td><span class="badge badge-good">working</span></td><td><code>scripts/nova-sweep.js</code></td><td>Daily tag-scanner — finds [NOVA-*] tags across repos, fires Telegram + Supabase + HPFHQ memory API</td></tr>
+        <tr><td>com.emil.overmind-nova-sweep</td><td><span class="type">launchd</span></td><td><span class="badge badge-good">working</span></td><td><code>LaunchAgents/com.emil.overmind-nova-sweep.plist</code></td><td>Runs nova-sweep.js daily at 09:00 Lisbon</td></tr>
       </tbody>
     </table>
   </details>
@@ -241,40 +241,40 @@
     <table class="components">
       <thead><tr><th>Component</th><th>Type</th><th>Status</th><th>Path</th><th>Notes</th></tr></thead>
       <tbody>
-        <tr><td>overmind</td><td><span class="type">project</span></td><td></td><td><code>~/Code/overmind/</code></td><td>The meta-repo — R&amp;D + patterns + the meta-memory layer that governs every other system</td></tr>
+        <tr><td>overmind</td><td><span class="type">project</span></td><td><span class="badge badge-good">working</span></td><td><code>~/Code/overmind/</code></td><td>The meta-repo — R&amp;D + patterns + the meta-memory layer that governs every other system</td></tr>
         <tr><td>hpf-sandbox (archive)</td><td><span class="type">project</span></td><td><span class="badge badge-muted">dead</span></td><td><code>~/Code/_archive/2026-05-18-hpf-sandbox/</code></td><td>HPFHQ experimentation sandbox</td></tr>
         <tr><td>comsat-radar (archive)</td><td><span class="type">project</span></td><td><span class="badge badge-muted">dead</span></td><td><code>~/Code/_archive/comsat-radar-pre-consolidation-2026-05-12/</code></td><td>Pre-consolidation snapshot 2026-05-12</td></tr>
         <tr><td>overmind-relay (archive)</td><td><span class="type">project</span></td><td><span class="badge badge-muted">dead</span></td><td><code>~/Code/_archive/overmind-relay-pre-consolidation-2026-05-12/</code></td><td>Pre-consolidation snapshot 2026-05-12</td></tr>
         <tr><td>streamdeck-cockpit (archive)</td><td><span class="type">project</span></td><td><span class="badge badge-muted">dead</span></td><td><code>~/Code/_archive/streamdeck-cockpit-pre-consolidation-2026-05-12/</code></td><td>Pre-consolidation snapshot 2026-05-12</td></tr>
-        <tr><td>local-drone-batch.sh</td><td><span class="type">script</span></td><td></td><td><code>scripts/local-drone-batch.sh</code></td><td>Batch run of drone with local LLM</td></tr>
-        <tr><td>seed-100-days.js</td><td><span class="type">script</span></td><td></td><td><code>scripts/seed-100-days.js</code></td><td>Seeding script — for what?</td></tr>
-        <tr><td>3p</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/3p/</code></td><td>Third-party delegation (Codex / local LLM) helper</td></tr>
-        <tr><td>agent-postmortem</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/agent-postmortem/</code></td><td>Critiques a past agent run from its own perspective; output → global rules candidate</td></tr>
-        <tr><td>co-op</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/co-op/</code></td><td>Co-op Mode — human-in-loop pairing pattern</td></tr>
-        <tr><td>data</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/data/</code></td><td>Data rigor — sourcing, classification, interpretation (always-active baseline)</td></tr>
-        <tr><td>enterprise-security-audit</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/enterprise-security-audit/</code></td><td>Security audit skill — what scope?</td></tr>
-        <tr><td>intake</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/intake/</code></td><td>Knowledge triage and routing — Supabase/repo/hybrid</td></tr>
-        <tr><td>new-project</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/new-project/</code></td><td>Scaffold a new Emil project — CLAUDE.md + Tier 3 + pollution guard + .gitignore + gh repo create</td></tr>
-        <tr><td>promote-project</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/promote-project/</code></td><td>Promote a half-built folder into a properly scaffolded repo</td></tr>
-        <tr><td>quantum-leap</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/quantum-leap/</code></td><td>Step back when noise is being managed by stacked filter rules — look at trigger source</td></tr>
-        <tr><td>realistic-eta</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/realistic-eta/</code></td><td>Stop overestimating execution speed — force scope/sub-task enumeration</td></tr>
-        <tr><td>sf</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/sf/</code></td><td>Signal-Fidelity — compress prose to max signal-per-word, four levels (sf0-sf3)</td></tr>
-        <tr><td>skillify</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/skillify/</code></td><td>Detect repeated manual patterns and propose new skills</td></tr>
-        <tr><td>smoke</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/smoke/</code></td><td>Browser-based smoke test with Playwright</td></tr>
-        <tr><td>standby</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/standby/</code></td><td>Park a session waiting on something external — high-visibility status block</td></tr>
-        <tr><td>tired</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/tired/</code></td><td>Three-year-old mode — zero-friction step-by-step when Emil is exhausted</td></tr>
-        <tr><td>cross-repo-write-guard.sh</td><td><span class="type">hook</span></td><td></td><td><code>~/.claude/hooks/cross-repo-write-guard.sh</code></td><td>PreToolUse — blocks writes outside the active repo</td></tr>
-        <tr><td>cross-repo-write-guard.test.sh</td><td><span class="type">hook</span></td><td></td><td><code>~/.claude/hooks/cross-repo-write-guard.test.sh</code></td><td>Test harness for cross-repo-write-guard</td></tr>
-        <tr><td>secret-leak-guard.py</td><td><span class="type">hook</span></td><td></td><td><code>~/.claude/hooks/secret-leak-guard.py</code></td><td>PreToolUse — scans for API keys / secrets in tool calls</td></tr>
-        <tr><td>goal-budget-cap.js</td><td><span class="type">hook</span></td><td></td><td><code>~/.claude/hooks/goal-budget-cap.js</code></td><td>Caps something per goal — budget enforcement</td></tr>
-        <tr><td>ultrawinning/share</td><td><span class="type">repo</span></td><td></td><td><code>gh:ultrawinning/share` (public)</code></td><td>The Pages-served share repo for previews/temp docs</td></tr>
-        <tr><td>ultrawinning/Loop</td><td><span class="type">repo</span></td><td></td><td><code>gh:ultrawinning/Loop` (private)</code></td><td>Loop product</td></tr>
-        <tr><td>ultrawinning/brain-fm-chrome</td><td><span class="type">repo</span></td><td></td><td><code>gh:ultrawinning/brain-fm-chrome` (private)</code></td><td>Brain.fm Chrome extension fork/build</td></tr>
-        <tr><td>whitelabel-hq/hypergrowth-hub</td><td><span class="type">repo</span></td><td></td><td><code>gh:whitelabel-hq/hypergrowth-hub` (private)</code></td><td>Hypergrowth hub product — whitelabel-hq org</td></tr>
-        <tr><td>Pollution guard pre-commit</td><td><span class="type">convention</span></td><td></td><td><code></code></td><td>Blocks cross-tenant strings outside docs/CLAUDE.md/README.md per rule-26</td></tr>
-        <tr><td>1Password env wrapping</td><td><span class="type">convention</span></td><td></td><td><code></code></td><td>Every secret-using script wraps in op run; 41 sensitive vars tracked</td></tr>
-        <tr><td>Two-leg pollution test</td><td><span class="type">convention</span></td><td></td><td><code></code></td><td>Before content lands in overmind, both legs must answer yes</td></tr>
-        <tr><td>Player 3 routing</td><td><span class="type">convention</span></td><td></td><td><code></code></td><td>Codex/local/Claude lane selection based on task class + utilization</td></tr>
+        <tr><td>local-drone-batch.sh</td><td><span class="type">script</span></td><td><span class="badge badge-good">working</span></td><td><code>scripts/local-drone-batch.sh</code></td><td>Batch run of drone with local LLM</td></tr>
+        <tr><td>seed-100-days.js</td><td><span class="type">script</span></td><td><span class="badge badge-good">working</span></td><td><code>scripts/seed-100-days.js</code></td><td>Seeding script — for what?</td></tr>
+        <tr><td>3p</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/3p/</code></td><td>Third-party delegation (Codex / local LLM) helper</td></tr>
+        <tr><td>agent-postmortem</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/agent-postmortem/</code></td><td>Critiques a past agent run from its own perspective; output → global rules candidate</td></tr>
+        <tr><td>co-op</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/co-op/</code></td><td>Co-op Mode — human-in-loop pairing pattern</td></tr>
+        <tr><td>data</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/data/</code></td><td>Data rigor — sourcing, classification, interpretation (always-active baseline)</td></tr>
+        <tr><td>enterprise-security-audit</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/enterprise-security-audit/</code></td><td>Security audit skill — what scope?</td></tr>
+        <tr><td>intake</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/intake/</code></td><td>Knowledge triage and routing — Supabase/repo/hybrid</td></tr>
+        <tr><td>new-project</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/new-project/</code></td><td>Scaffold a new Emil project — CLAUDE.md + Tier 3 + pollution guard + .gitignore + gh repo create</td></tr>
+        <tr><td>promote-project</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/promote-project/</code></td><td>Promote a half-built folder into a properly scaffolded repo</td></tr>
+        <tr><td>quantum-leap</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/quantum-leap/</code></td><td>Step back when noise is being managed by stacked filter rules — look at trigger source</td></tr>
+        <tr><td>realistic-eta</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/realistic-eta/</code></td><td>Stop overestimating execution speed — force scope/sub-task enumeration</td></tr>
+        <tr><td>sf</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/sf/</code></td><td>Signal-Fidelity — compress prose to max signal-per-word, four levels (sf0-sf3)</td></tr>
+        <tr><td>skillify</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/skillify/</code></td><td>Detect repeated manual patterns and propose new skills</td></tr>
+        <tr><td>smoke</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/smoke/</code></td><td>Browser-based smoke test with Playwright</td></tr>
+        <tr><td>standby</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/standby/</code></td><td>Park a session waiting on something external — high-visibility status block</td></tr>
+        <tr><td>tired</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/tired/</code></td><td>Three-year-old mode — zero-friction step-by-step when Emil is exhausted</td></tr>
+        <tr><td>cross-repo-write-guard.sh</td><td><span class="type">hook</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/hooks/cross-repo-write-guard.sh</code></td><td>PreToolUse — blocks writes outside the active repo</td></tr>
+        <tr><td>cross-repo-write-guard.test.sh</td><td><span class="type">hook</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/hooks/cross-repo-write-guard.test.sh</code></td><td>Test harness for cross-repo-write-guard</td></tr>
+        <tr><td>secret-leak-guard.py</td><td><span class="type">hook</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/hooks/secret-leak-guard.py</code></td><td>PreToolUse — scans for API keys / secrets in tool calls</td></tr>
+        <tr><td>goal-budget-cap.js</td><td><span class="type">hook</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/hooks/goal-budget-cap.js</code></td><td>Caps something per goal — budget enforcement</td></tr>
+        <tr><td>ultrawinning/share</td><td><span class="type">repo</span></td><td><span class="badge badge-muted">?</span></td><td><code>gh:ultrawinning/share` (public)</code></td><td>The Pages-served share repo for previews/temp docs</td></tr>
+        <tr><td>ultrawinning/Loop</td><td><span class="type">repo</span></td><td><span class="badge badge-muted">?</span></td><td><code>gh:ultrawinning/Loop` (private)</code></td><td>Loop product</td></tr>
+        <tr><td>ultrawinning/brain-fm-chrome</td><td><span class="type">repo</span></td><td><span class="badge badge-muted">?</span></td><td><code>gh:ultrawinning/brain-fm-chrome` (private)</code></td><td>Brain.fm Chrome extension fork/build</td></tr>
+        <tr><td>whitelabel-hq/hypergrowth-hub</td><td><span class="type">repo</span></td><td><span class="badge badge-muted">?</span></td><td><code>gh:whitelabel-hq/hypergrowth-hub` (private)</code></td><td>Hypergrowth hub product — whitelabel-hq org</td></tr>
+        <tr><td>Pollution guard pre-commit</td><td><span class="type">convention</span></td><td><span class="badge badge-good">working</span></td><td><code></code></td><td>Blocks cross-tenant strings outside docs/CLAUDE.md/README.md per rule-26</td></tr>
+        <tr><td>1Password env wrapping</td><td><span class="type">convention</span></td><td><span class="badge badge-good">working</span></td><td><code></code></td><td>Every secret-using script wraps in op run; 41 sensitive vars tracked</td></tr>
+        <tr><td>Two-leg pollution test</td><td><span class="type">convention</span></td><td><span class="badge badge-good">working</span></td><td><code></code></td><td>Before content lands in overmind, both legs must answer yes</td></tr>
+        <tr><td>Player 3 routing</td><td><span class="type">convention</span></td><td><span class="badge badge-good">working</span></td><td><code></code></td><td>Codex/local/Claude lane selection based on task class + utilization</td></tr>
         <tr><td>2026-05-18-temp-smalls (archive)</td><td><span class="type">folder</span></td><td><span class="badge badge-muted">dead</span></td><td><code>~/Code/_archive/2026-05-18-temp-smalls/</code></td><td>Smalls archived from ~/Code/Temp/ on 2026-05-18</td></tr>
       </tbody>
     </table>
@@ -284,7 +284,7 @@
     <table class="components">
       <thead><tr><th>Component</th><th>Type</th><th>Status</th><th>Path</th><th>Notes</th></tr></thead>
       <tbody>
-        <tr><td>overseer</td><td><span class="type">project</span></td><td></td><td><code>~/Code/overseer/</code></td><td>You named &quot;Overseer&quot; earlier — what is this?</td></tr>
+        <tr><td>overseer</td><td><span class="type">project</span></td><td><span class="badge badge-good">working</span></td><td><code>~/Code/overseer/</code></td><td>You named &quot;Overseer&quot; earlier — what is this?</td></tr>
       </tbody>
     </table>
   </details>
@@ -293,18 +293,18 @@
     <table class="components">
       <thead><tr><th>Component</th><th>Type</th><th>Status</th><th>Path</th><th>Notes</th></tr></thead>
       <tbody>
-        <tr><td>codex-bg</td><td><span class="type">bin</span></td><td></td><td><code>bin/codex-bg</code></td><td>Wrapped Codex CLI invocation — timeout + PID + WORM log (Player 3)</td></tr>
-        <tr><td>codex-status</td><td><span class="type">bin</span></td><td></td><td><code>bin/codex-status</code></td><td>Surfaces running/orphan Codex processes from WORM log</td></tr>
-        <tr><td>local-bg</td><td><span class="type">bin</span></td><td></td><td><code>bin/local-bg</code></td><td>Wrapped Ollama invocation — same shape as codex-bg (Player 3)</td></tr>
-        <tr><td>local-status</td><td><span class="type">bin</span></td><td></td><td><code>bin/local-status</code></td><td>Surfaces running/orphan local-LLM processes</td></tr>
-        <tr><td>usage-snapshot</td><td><span class="type">bin</span></td><td></td><td><code>bin/usage-snapshot</code></td><td>Reads SessionWatcher caches → reports Claude/Codex utilization (used by UserPromptSubmit warn hook)</td></tr>
-        <tr><td>claude-audio-hosts</td><td><span class="type">bin</span></td><td></td><td><code>bin/claude-audio-hosts</code></td><td>Manages /etc/hosts for Claude Code audio capture issue</td></tr>
-        <tr><td>codex-direct-block.sh</td><td><span class="type">hook</span></td><td></td><td><code>~/.claude/hooks/codex-direct-block.sh</code></td><td>PreToolUse — blocks raw codex exec, points at codex-bg</td></tr>
-        <tr><td>codex-direct-block.py</td><td><span class="type">hook</span></td><td></td><td><code>~/.claude/hooks/codex-direct-block.py</code></td><td>Python sibling of codex-direct-block.sh</td></tr>
-        <tr><td>codex-status-stop-hook.sh</td><td><span class="type">hook</span></td><td></td><td><code>~/.claude/hooks/codex-status-stop-hook.sh</code></td><td>Stop hook — surfaces orphan Codex PIDs</td></tr>
-        <tr><td>local-direct-block.sh</td><td><span class="type">hook</span></td><td></td><td><code>~/.claude/hooks/local-direct-block.sh</code></td><td>PreToolUse — blocks raw ollama run, points at local-bg</td></tr>
-        <tr><td>local-direct-block.py</td><td><span class="type">hook</span></td><td></td><td><code>~/.claude/hooks/local-direct-block.py</code></td><td>Python sibling of local-direct-block.sh</td></tr>
-        <tr><td>usage-warn.sh</td><td><span class="type">hook</span></td><td></td><td><code>~/.claude/hooks/usage-warn.sh</code></td><td>UserPromptSubmit — surfaces Claude/Codex utilization warnings via usage-snapshot</td></tr>
+        <tr><td>codex-bg</td><td><span class="type">bin</span></td><td><span class="badge badge-good">working</span></td><td><code>bin/codex-bg</code></td><td>Wrapped Codex CLI invocation — timeout + PID + WORM log (Player 3)</td></tr>
+        <tr><td>codex-status</td><td><span class="type">bin</span></td><td><span class="badge badge-good">working</span></td><td><code>bin/codex-status</code></td><td>Surfaces running/orphan Codex processes from WORM log</td></tr>
+        <tr><td>local-bg</td><td><span class="type">bin</span></td><td><span class="badge badge-good">working</span></td><td><code>bin/local-bg</code></td><td>Wrapped Ollama invocation — same shape as codex-bg (Player 3)</td></tr>
+        <tr><td>local-status</td><td><span class="type">bin</span></td><td><span class="badge badge-good">working</span></td><td><code>bin/local-status</code></td><td>Surfaces running/orphan local-LLM processes</td></tr>
+        <tr><td>usage-snapshot</td><td><span class="type">bin</span></td><td><span class="badge badge-good">working</span></td><td><code>bin/usage-snapshot</code></td><td>Reads SessionWatcher caches → reports Claude/Codex utilization (used by UserPromptSubmit warn hook)</td></tr>
+        <tr><td>claude-audio-hosts</td><td><span class="type">bin</span></td><td><span class="badge badge-good">working</span></td><td><code>bin/claude-audio-hosts</code></td><td>Manages /etc/hosts for Claude Code audio capture issue</td></tr>
+        <tr><td>codex-direct-block.sh</td><td><span class="type">hook</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/hooks/codex-direct-block.sh</code></td><td>PreToolUse — blocks raw codex exec, points at codex-bg</td></tr>
+        <tr><td>codex-direct-block.py</td><td><span class="type">hook</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/hooks/codex-direct-block.py</code></td><td>Python sibling of codex-direct-block.sh</td></tr>
+        <tr><td>codex-status-stop-hook.sh</td><td><span class="type">hook</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/hooks/codex-status-stop-hook.sh</code></td><td>Stop hook — surfaces orphan Codex PIDs</td></tr>
+        <tr><td>local-direct-block.sh</td><td><span class="type">hook</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/hooks/local-direct-block.sh</code></td><td>PreToolUse — blocks raw ollama run, points at local-bg</td></tr>
+        <tr><td>local-direct-block.py</td><td><span class="type">hook</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/hooks/local-direct-block.py</code></td><td>Python sibling of local-direct-block.sh</td></tr>
+        <tr><td>usage-warn.sh</td><td><span class="type">hook</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/hooks/usage-warn.sh</code></td><td>UserPromptSubmit — surfaces Claude/Codex utilization warnings via usage-snapshot</td></tr>
       </tbody>
     </table>
   </details>
@@ -313,8 +313,8 @@
     <table class="components">
       <thead><tr><th>Component</th><th>Type</th><th>Status</th><th>Path</th><th>Notes</th></tr></thead>
       <tbody>
-        <tr><td>freeze</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/freeze/</code></td><td>Lock edits to a specific directory during debugging</td></tr>
-        <tr><td>mac-diagnose</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/mac-diagnose/</code></td><td>Diagnose Mac slowness — memory pressure, CPU pinning, WindowServer</td></tr>
+        <tr><td>freeze</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/freeze/</code></td><td>Lock edits to a specific directory during debugging</td></tr>
+        <tr><td>mac-diagnose</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/mac-diagnose/</code></td><td>Diagnose Mac slowness — memory pressure, CPU pinning, WindowServer</td></tr>
       </tbody>
     </table>
   </details>
@@ -323,7 +323,7 @@
     <table class="components">
       <thead><tr><th>Component</th><th>Type</th><th>Status</th><th>Path</th><th>Notes</th></tr></thead>
       <tbody>
-        <tr><td>sentinel.js</td><td><span class="type">hook</span></td><td></td><td><code>~/.claude/hooks/sentinel.js</code></td><td>Claims-verification hook — reviews claims and forces verification (named codename system)</td></tr>
+        <tr><td>sentinel.js</td><td><span class="type">hook</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/hooks/sentinel.js</code></td><td>Claims-verification hook — reviews claims and forces verification (named codename system)</td></tr>
       </tbody>
     </table>
   </details>
@@ -336,11 +336,11 @@
     <table class="components">
       <thead><tr><th>Component</th><th>Type</th><th>Status</th><th>Path</th><th>Notes</th></tr></thead>
       <tbody>
-        <tr><td>sweep.js</td><td><span class="type">script</span></td><td></td><td><code>scripts/sweep.js</code></td><td>Friday launchd job — Haiku-classifies HPFHQ activity for two-leg pollution test</td></tr>
-        <tr><td>sweep</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/sweep/</code></td><td>Review pending /sweep proposals (the Friday job) — accept/reject migrations</td></tr>
-        <tr><td>upgrades</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/upgrades/</code></td><td>Evaluate a new tool/framework against current system — buy/build/skip</td></tr>
-        <tr><td>upgrades-review</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/upgrades-review/</code></td><td>Walk pending Overmind drone reports — adopt/defer/monitor/skip per item</td></tr>
-        <tr><td>com.emil.overmind-sweep</td><td><span class="type">launchd</span></td><td></td><td><code>LaunchAgents/com.emil.overmind-sweep.plist</code></td><td>Runs sweep.js Friday 18:00</td></tr>
+        <tr><td>sweep.js</td><td><span class="type">script</span></td><td><span class="badge badge-good">working</span></td><td><code>scripts/sweep.js</code></td><td>Friday launchd job — Haiku-classifies HPFHQ activity for two-leg pollution test</td></tr>
+        <tr><td>sweep</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/sweep/</code></td><td>Review pending /sweep proposals (the Friday job) — accept/reject migrations</td></tr>
+        <tr><td>upgrades</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/upgrades/</code></td><td>Evaluate a new tool/framework against current system — buy/build/skip</td></tr>
+        <tr><td>upgrades-review</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/upgrades-review/</code></td><td>Walk pending Overmind drone reports — adopt/defer/monitor/skip per item</td></tr>
+        <tr><td>com.emil.overmind-sweep</td><td><span class="type">launchd</span></td><td><span class="badge badge-good">working</span></td><td><code>LaunchAgents/com.emil.overmind-sweep.plist</code></td><td>Runs sweep.js Friday 18:00</td></tr>
       </tbody>
     </table>
   </details>
@@ -350,8 +350,8 @@
       <thead><tr><th>Component</th><th>Type</th><th>Status</th><th>Path</th><th>Notes</th></tr></thead>
       <tbody>
         <tr><td>hpf-recorder (archive)</td><td><span class="type">project</span></td><td><span class="badge badge-muted">dead</span></td><td><code>~/Code/_archive/2026-05-18-hpf-recorder/</code></td><td>Predecessor to TheRealRecorder, HPF-specific</td></tr>
-        <tr><td>TheRealRecorder</td><td><span class="type">project</span></td><td></td><td><code>projects/TheRealRecorder/</code></td><td>Menu-bar screen recorder — ScreenCaptureKit → Supabase Storage upload</td></tr>
-        <tr><td>TheRealBoard</td><td><span class="type">project</span></td><td></td><td><code>projects/TheRealBoard/</code></td><td>Local tldraw-style canvas (Next.js) with Anthropic Make Real route</td></tr>
+        <tr><td>TheRealRecorder</td><td><span class="type">project</span></td><td><span class="badge badge-good">working</span></td><td><code>projects/TheRealRecorder/</code></td><td>Menu-bar screen recorder — ScreenCaptureKit → Supabase Storage upload</td></tr>
+        <tr><td>TheRealBoard</td><td><span class="type">project</span></td><td><span class="badge badge-good">working</span></td><td><code>projects/TheRealBoard/</code></td><td>Local tldraw-style canvas (Next.js) with Anthropic Make Real route</td></tr>
       </tbody>
     </table>
   </details>
@@ -360,12 +360,12 @@
     <table class="components">
       <thead><tr><th>Component</th><th>Type</th><th>Status</th><th>Path</th><th>Notes</th></tr></thead>
       <tbody>
-        <tr><td>build-complete</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/build-complete/</code></td><td>End-of-build checklist — CHANGELOG, state files, reconciliation</td></tr>
-        <tr><td>canary</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/canary/</code></td><td>Post-deploy health check — hits critical routes, verifies shapes</td></tr>
-        <tr><td>eod</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/eod/</code></td><td>End-of-day report — git log trawl, 6-layer categorization, Supabase INSERTs</td></tr>
-        <tr><td>fix-complete</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/fix-complete/</code></td><td>Lightweight post-fix checklist (smaller sibling of build-complete)</td></tr>
-        <tr><td>session-handoff</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/session-handoff/</code></td><td>Capture context for the next session — diff + task list + state</td></tr>
-        <tr><td>wrap</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/wrap/</code></td><td>Router for session-end — classifies + dispatches to session-handoff/eod/build-complete/fix-complete/canary</td></tr>
+        <tr><td>build-complete</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/build-complete/</code></td><td>End-of-build checklist — CHANGELOG, state files, reconciliation</td></tr>
+        <tr><td>canary</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/canary/</code></td><td>Post-deploy health check — hits critical routes, verifies shapes</td></tr>
+        <tr><td>eod</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/eod/</code></td><td>End-of-day report — git log trawl, 6-layer categorization, Supabase INSERTs</td></tr>
+        <tr><td>fix-complete</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/fix-complete/</code></td><td>Lightweight post-fix checklist (smaller sibling of build-complete)</td></tr>
+        <tr><td>session-handoff</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/session-handoff/</code></td><td>Capture context for the next session — diff + task list + state</td></tr>
+        <tr><td>wrap</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/wrap/</code></td><td>Router for session-end — classifies + dispatches to session-handoff/eod/build-complete/fix-complete/canary</td></tr>
       </tbody>
     </table>
   </details>
@@ -377,9 +377,9 @@
     <table class="components">
       <thead><tr><th>Component</th><th>Type</th><th>Status</th><th>Path</th><th>Notes</th></tr></thead>
       <tbody>
-        <tr><td>bite-app</td><td><span class="type">project</span></td><td></td><td><code>~/Code/bite-app/</code></td><td>A client platform within Medus for the clients of the clients.</td></tr>
-        <tr><td>medus-app</td><td><span class="type">project</span></td><td></td><td><code>~/Code/medus-app/</code></td><td>Commercial / client-facing version of the online fitness biz</td></tr>
-        <tr><td>Hypergrowth</td><td><span class="type">project</span></td><td></td><td><code>~/Code/Hypergrowth/</code></td><td>Hypergrowth program work — relates to whitelabel-hq/hypergrowth-hub?</td></tr>
+        <tr><td>bite-app</td><td><span class="type">project</span></td><td><span class="badge badge-good">working</span></td><td><code>~/Code/bite-app/</code></td><td>A client platform within Medus for the clients of the clients.</td></tr>
+        <tr><td>medus-app</td><td><span class="type">project</span></td><td><span class="badge badge-good">working</span></td><td><code>~/Code/medus-app/</code></td><td>Commercial / client-facing version of the online fitness biz</td></tr>
+        <tr><td>Hypergrowth</td><td><span class="type">project</span></td><td><span class="badge badge-good">working</span></td><td><code>~/Code/Hypergrowth/</code></td><td>Hypergrowth program work — relates to whitelabel-hq/hypergrowth-hub?</td></tr>
       </tbody>
     </table>
   </details>
@@ -391,26 +391,26 @@
     <table class="components">
       <thead><tr><th>Component</th><th>Type</th><th>Status</th><th>Path</th><th>Notes</th></tr></thead>
       <tbody>
-        <tr><td>hpf-command-center</td><td><span class="type">project</span></td><td></td><td><code>~/Code/hpf-command-center/</code></td><td>Fully integrated AI ops online fitness biz.</td></tr>
-        <tr><td>meeting-prep</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/meeting-prep/</code></td><td>Pre-meeting prep generator — open items, metrics, agenda</td></tr>
-        <tr><td>monday</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/monday/</code></td><td>Monday morning business briefing — outstanding items, metrics, priorities</td></tr>
-        <tr><td>onboard-setter</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/onboard-setter/</code></td><td>Onboard a new HPF setter — roster edits + Supabase migration + Slack links</td></tr>
-        <tr><td>process-meeting</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/process-meeting/</code></td><td>Post-meeting processor — transcript → decisions/tasks/delegations/Supabase</td></tr>
-        <tr><td>strategy</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/strategy/</code></td><td>Strategic/operational mode — planning, P&amp;L, OKRs, decision frameworks</td></tr>
-        <tr><td>build-complete (HPFHQ)</td><td><span class="type">skill</span></td><td></td><td><code>hpf-command-center/.claude/skills/build-complete/</code></td><td>HPFHQ-specific build-complete variant</td></tr>
-        <tr><td>debug-ghl (HPFHQ)</td><td><span class="type">skill</span></td><td></td><td><code>hpf-command-center/.claude/skills/debug-ghl/</code></td><td>Debug GoHighLevel integration issues</td></tr>
-        <tr><td>debug-root-cause (HPFHQ)</td><td><span class="type">skill</span></td><td></td><td><code>hpf-command-center/.claude/skills/debug-root-cause/</code></td><td>This is great, but should probably be global. </td></tr>
-        <tr><td>decision-memo (HPFHQ)</td><td><span class="type">skill</span></td><td></td><td><code>hpf-command-center/.claude/skills/decision-memo/</code></td><td>Decision-log memo writer</td></tr>
-        <tr><td>fix-complete (HPFHQ)</td><td><span class="type">skill</span></td><td></td><td><code>hpf-command-center/.claude/skills/fix-complete/</code></td><td>HPFHQ-specific fix-complete variant</td></tr>
-        <tr><td>landing-page-v2 (HPFHQ)</td><td><span class="type">skill</span></td><td></td><td><code>hpf-command-center/.claude/skills/landing-page-v2/</code></td><td>Not sure what this is. </td></tr>
-        <tr><td>logo-designer (HPFHQ)</td><td><span class="type">skill</span></td><td></td><td><code>hpf-command-center/.claude/skills/logo-designer/</code></td><td></td></tr>
-        <tr><td>research-stack (HPFHQ)</td><td><span class="type">skill</span></td><td></td><td><code>hpf-command-center/.claude/skills/research-stack/</code></td><td></td></tr>
-        <tr><td>review-copy (HPFHQ)</td><td><span class="type">skill</span></td><td></td><td><code>hpf-command-center/.claude/skills/review-copy/</code></td><td></td></tr>
-        <tr><td>review-ui (HPFHQ)</td><td><span class="type">skill</span></td><td></td><td><code>hpf-command-center/.claude/skills/review-ui/</code></td><td>I think a lot of these HPF HQ skills should probably be global. Basically, they were just built in HGHQ because that is what I was building first. </td></tr>
-        <tr><td>sales-report (HPFHQ)</td><td><span class="type">skill</span></td><td></td><td><code>hpf-command-center/.claude/skills/sales-report/</code></td><td></td></tr>
-        <tr><td>ship-mvp (HPFHQ)</td><td><span class="type">skill</span></td><td></td><td><code>hpf-command-center/.claude/skills/ship-mvp/</code></td><td></td></tr>
-        <tr><td>spec-feature (HPFHQ)</td><td><span class="type">skill</span></td><td></td><td><code>hpf-command-center/.claude/skills/spec-feature/</code></td><td></td></tr>
-        <tr><td>upload-doc (HPFHQ)</td><td><span class="type">skill</span></td><td></td><td><code>hpf-command-center/.claude/skills/upload-doc/</code></td><td></td></tr>
+        <tr><td>hpf-command-center</td><td><span class="type">project</span></td><td><span class="badge badge-good">working</span></td><td><code>~/Code/hpf-command-center/</code></td><td>Fully integrated AI ops online fitness biz.</td></tr>
+        <tr><td>meeting-prep</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/meeting-prep/</code></td><td>Pre-meeting prep generator — open items, metrics, agenda</td></tr>
+        <tr><td>monday</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/monday/</code></td><td>Monday morning business briefing — outstanding items, metrics, priorities</td></tr>
+        <tr><td>onboard-setter</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/onboard-setter/</code></td><td>Onboard a new HPF setter — roster edits + Supabase migration + Slack links</td></tr>
+        <tr><td>process-meeting</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/process-meeting/</code></td><td>Post-meeting processor — transcript → decisions/tasks/delegations/Supabase</td></tr>
+        <tr><td>strategy</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/strategy/</code></td><td>Strategic/operational mode — planning, P&amp;L, OKRs, decision frameworks</td></tr>
+        <tr><td>build-complete (HPFHQ)</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>hpf-command-center/.claude/skills/build-complete/</code></td><td>HPFHQ-specific build-complete variant</td></tr>
+        <tr><td>debug-ghl (HPFHQ)</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>hpf-command-center/.claude/skills/debug-ghl/</code></td><td>Debug GoHighLevel integration issues</td></tr>
+        <tr><td>debug-root-cause (HPFHQ)</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>hpf-command-center/.claude/skills/debug-root-cause/</code></td><td>This is great, but should probably be global. </td></tr>
+        <tr><td>decision-memo (HPFHQ)</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>hpf-command-center/.claude/skills/decision-memo/</code></td><td>Decision-log memo writer</td></tr>
+        <tr><td>fix-complete (HPFHQ)</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>hpf-command-center/.claude/skills/fix-complete/</code></td><td>HPFHQ-specific fix-complete variant</td></tr>
+        <tr><td>landing-page-v2 (HPFHQ)</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>hpf-command-center/.claude/skills/landing-page-v2/</code></td><td>Not sure what this is. </td></tr>
+        <tr><td>logo-designer (HPFHQ)</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>hpf-command-center/.claude/skills/logo-designer/</code></td><td></td></tr>
+        <tr><td>research-stack (HPFHQ)</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>hpf-command-center/.claude/skills/research-stack/</code></td><td></td></tr>
+        <tr><td>review-copy (HPFHQ)</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>hpf-command-center/.claude/skills/review-copy/</code></td><td></td></tr>
+        <tr><td>review-ui (HPFHQ)</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>hpf-command-center/.claude/skills/review-ui/</code></td><td>I think a lot of these HPF HQ skills should probably be global. Basically, they were just built in HGHQ because that is what I was building first. </td></tr>
+        <tr><td>sales-report (HPFHQ)</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>hpf-command-center/.claude/skills/sales-report/</code></td><td></td></tr>
+        <tr><td>ship-mvp (HPFHQ)</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>hpf-command-center/.claude/skills/ship-mvp/</code></td><td></td></tr>
+        <tr><td>spec-feature (HPFHQ)</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>hpf-command-center/.claude/skills/spec-feature/</code></td><td></td></tr>
+        <tr><td>upload-doc (HPFHQ)</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>hpf-command-center/.claude/skills/upload-doc/</code></td><td></td></tr>
       </tbody>
     </table>
   </details>
@@ -430,7 +430,7 @@
     <table class="components">
       <thead><tr><th>Component</th><th>Type</th><th>Status</th><th>Path</th><th>Notes</th></tr></thead>
       <tbody>
-        <tr><td>GETSHREDZ</td><td><span class="type">project</span></td><td></td><td><code>~/Code/GETSHREDZ/</code></td><td>Possibly fitness/coaching-related — please confirm</td></tr>
+        <tr><td>GETSHREDZ</td><td><span class="type">project</span></td><td><span class="badge badge-good">working</span></td><td><code>~/Code/GETSHREDZ/</code></td><td>Possibly fitness/coaching-related — please confirm</td></tr>
       </tbody>
     </table>
   </details>
@@ -439,8 +439,8 @@
     <table class="components">
       <thead><tr><th>Component</th><th>Type</th><th>Status</th><th>Path</th><th>Notes</th></tr></thead>
       <tbody>
-        <tr><td>workout-tracker</td><td><span class="type">project</span></td><td></td><td><code>~/Code/workout-tracker/</code></td><td>Personal workout tracking app — parser consumes Markdown programs</td></tr>
-        <tr><td>workout</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/workout/</code></td><td>Generate/revise personal training program in workout-tracker format</td></tr>
+        <tr><td>workout-tracker</td><td><span class="type">project</span></td><td><span class="badge badge-good">working</span></td><td><code>~/Code/workout-tracker/</code></td><td>Personal workout tracking app — parser consumes Markdown programs</td></tr>
+        <tr><td>workout</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/workout/</code></td><td>Generate/revise personal training program in workout-tracker format</td></tr>
       </tbody>
     </table>
   </details>
@@ -453,7 +453,7 @@
     <table class="components">
       <thead><tr><th>Component</th><th>Type</th><th>Status</th><th>Path</th><th>Notes</th></tr></thead>
       <tbody>
-        <tr><td>promptscore-extension</td><td><span class="type">project</span></td><td></td><td><code>~/Code/promptscore-extension/</code></td><td>Browser extension for scoring prompts</td></tr>
+        <tr><td>promptscore-extension</td><td><span class="type">project</span></td><td><span class="badge badge-good">working</span></td><td><code>~/Code/promptscore-extension/</code></td><td>Browser extension for scoring prompts</td></tr>
       </tbody>
     </table>
   </details>
@@ -465,7 +465,7 @@
     <table class="components">
       <thead><tr><th>Component</th><th>Type</th><th>Status</th><th>Path</th><th>Notes</th></tr></thead>
       <tbody>
-        <tr><td>Doctoremil</td><td><span class="type">domain</span></td><td></td><td><code>~/Code/Domains/Doctoremil/</code></td><td>Personal coaching@doctoremil.com domain assets</td></tr>
+        <tr><td>Doctoremil</td><td><span class="type">domain</span></td><td><span class="badge badge-good">working</span></td><td><code>~/Code/Domains/Doctoremil/</code></td><td>Personal coaching@doctoremil.com domain assets</td></tr>
       </tbody>
     </table>
   </details>
@@ -474,26 +474,26 @@
     <table class="components">
       <thead><tr><th>Component</th><th>Type</th><th>Status</th><th>Path</th><th>Notes</th></tr></thead>
       <tbody>
-        <tr><td>cockpit</td><td><span class="type">project</span></td><td></td><td><code>projects/cockpit/</code></td><td>Design system + pipeline docs for ultrawinning.com — not a runtime today</td></tr>
-        <tr><td>git-activity-mine.js</td><td><span class="type">script</span></td><td></td><td><code>scripts/git-activity-mine.js</code></td><td>Mines git logs for cockpit /coding page data</td></tr>
-        <tr><td>wakatime-mirror.js</td><td><span class="type">script</span></td><td></td><td><code>scripts/wakatime-mirror.js</code></td><td>WakaTime → local mirror for cockpit data</td></tr>
-        <tr><td>wakatime-mirror.sh</td><td><span class="type">script</span></td><td></td><td><code>scripts/wakatime-mirror.sh</code></td><td>Shell wrapper for wakatime-mirror</td></tr>
-        <tr><td>find-icon</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/find-icon/</code></td><td>Search Lucide/Heroicons/Iconify for an SVG matching a name</td></tr>
-        <tr><td>frame-to-carousel</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/frame-to-carousel/</code></td><td>Turn a tight framing from conversation into a carousel-angle file</td></tr>
-        <tr><td>ultrawinning-new-tool</td><td><span class="type">skill</span></td><td></td><td><code>~/.claude/skills/ultrawinning-new-tool/</code></td><td>Add a new system/tool showcase page to ultrawinning.com</td></tr>
-        <tr><td>uw-article</td><td><span class="type">skill</span></td><td></td><td><code>~/Code/Domains/Ultrawinning/.claude/skills/uw-article/</code></td><td>Ultrawinning article-writing skill</td></tr>
-        <tr><td>uw-book</td><td><span class="type">skill</span></td><td></td><td><code>~/Code/Domains/Ultrawinning/.claude/skills/uw-book/</code></td><td>Ultrawinning book-writing skill</td></tr>
-        <tr><td>com.emil.hpf-code-index</td><td><span class="type">launchd</span></td><td></td><td><code>LaunchAgents/com.emil.hpf-code-index.plist</code></td><td>HPFHQ codebase indexing job</td></tr>
-        <tr><td>com.emil.wakatime-mirror</td><td><span class="type">launchd</span></td><td></td><td><code>LaunchAgents/com.emil.wakatime-mirror.plist</code></td><td>Mirrors WakaTime activity to local files for cockpit</td></tr>
-        <tr><td>com.ultrawinning.audible-sync</td><td><span class="type">launchd</span></td><td></td><td><code>LaunchAgents/com.ultrawinning.audible-sync.plist</code></td><td>Audible library sync — for what?</td></tr>
-        <tr><td>Ultrawinning</td><td><span class="type">domain</span></td><td></td><td><code>~/Code/Domains/Ultrawinning/</code></td><td>Core voice corpus + writing system folder (writing/_system/ per memory)</td></tr>
-        <tr><td>UltrawinningCom</td><td><span class="type">domain</span></td><td></td><td><code>~/Code/Domains/UltrawinningCom/</code></td><td>The ultrawinning.com site / cockpit repo</td></tr>
-        <tr><td>UltrawinningSocial</td><td><span class="type">domain</span></td><td></td><td><code>~/Code/Domains/UltrawinningSocial/</code></td><td>@UltrawinningAI content engine + Carousel drafter</td></tr>
-        <tr><td>ultrawinning/cockpit</td><td><span class="type">repo</span></td><td></td><td><code>gh:ultrawinning/cockpit` (private)</code></td><td>Cockpit repo — relates to projects/cockpit + UltrawinningCom</td></tr>
-        <tr><td>ultrawinning/social</td><td><span class="type">repo</span></td><td></td><td><code>gh:ultrawinning/social` (private)</code></td><td>Social content repo — relates to UltrawinningSocial</td></tr>
-        <tr><td>ultrawinning/uw-story-new</td><td><span class="type">repo</span></td><td></td><td><code>gh:ultrawinning/uw-story-new` (public)</code></td><td>UW story experiment</td></tr>
-        <tr><td>ultrawinning/ultrawinning-ai</td><td><span class="type">repo</span></td><td></td><td><code>gh:ultrawinning/ultrawinning-ai` (private)</code></td><td>Brand/AI initiative repo</td></tr>
-        <tr><td>ultrawinning/ultrawinning</td><td><span class="type">repo</span></td><td></td><td><code>gh:ultrawinning/ultrawinning` (private)</code></td><td>Org-root repo</td></tr>
+        <tr><td>cockpit</td><td><span class="type">project</span></td><td><span class="badge badge-good">working</span></td><td><code>projects/cockpit/</code></td><td>Design system + pipeline docs for ultrawinning.com — not a runtime today</td></tr>
+        <tr><td>git-activity-mine.js</td><td><span class="type">script</span></td><td><span class="badge badge-good">working</span></td><td><code>scripts/git-activity-mine.js</code></td><td>Mines git logs for cockpit /coding page data</td></tr>
+        <tr><td>wakatime-mirror.js</td><td><span class="type">script</span></td><td><span class="badge badge-good">working</span></td><td><code>scripts/wakatime-mirror.js</code></td><td>WakaTime → local mirror for cockpit data</td></tr>
+        <tr><td>wakatime-mirror.sh</td><td><span class="type">script</span></td><td><span class="badge badge-good">working</span></td><td><code>scripts/wakatime-mirror.sh</code></td><td>Shell wrapper for wakatime-mirror</td></tr>
+        <tr><td>find-icon</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/find-icon/</code></td><td>Search Lucide/Heroicons/Iconify for an SVG matching a name</td></tr>
+        <tr><td>frame-to-carousel</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/frame-to-carousel/</code></td><td>Turn a tight framing from conversation into a carousel-angle file</td></tr>
+        <tr><td>ultrawinning-new-tool</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/.claude/skills/ultrawinning-new-tool/</code></td><td>Add a new system/tool showcase page to ultrawinning.com</td></tr>
+        <tr><td>uw-article</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/Code/Domains/Ultrawinning/.claude/skills/uw-article/</code></td><td>Ultrawinning article-writing skill</td></tr>
+        <tr><td>uw-book</td><td><span class="type">skill</span></td><td><span class="badge badge-good">working</span></td><td><code>~/Code/Domains/Ultrawinning/.claude/skills/uw-book/</code></td><td>Ultrawinning book-writing skill</td></tr>
+        <tr><td>com.emil.hpf-code-index</td><td><span class="type">launchd</span></td><td><span class="badge badge-good">working</span></td><td><code>LaunchAgents/com.emil.hpf-code-index.plist</code></td><td>HPFHQ codebase indexing job</td></tr>
+        <tr><td>com.emil.wakatime-mirror</td><td><span class="type">launchd</span></td><td><span class="badge badge-good">working</span></td><td><code>LaunchAgents/com.emil.wakatime-mirror.plist</code></td><td>Mirrors WakaTime activity to local files for cockpit</td></tr>
+        <tr><td>com.ultrawinning.audible-sync</td><td><span class="type">launchd</span></td><td><span class="badge badge-good">working</span></td><td><code>LaunchAgents/com.ultrawinning.audible-sync.plist</code></td><td>Audible library sync — for what?</td></tr>
+        <tr><td>Ultrawinning</td><td><span class="type">domain</span></td><td><span class="badge badge-good">working</span></td><td><code>~/Code/Domains/Ultrawinning/</code></td><td>Core voice corpus + writing system folder (writing/_system/ per memory)</td></tr>
+        <tr><td>UltrawinningCom</td><td><span class="type">domain</span></td><td><span class="badge badge-good">working</span></td><td><code>~/Code/Domains/UltrawinningCom/</code></td><td>The ultrawinning.com site / cockpit repo</td></tr>
+        <tr><td>UltrawinningSocial</td><td><span class="type">domain</span></td><td><span class="badge badge-good">working</span></td><td><code>~/Code/Domains/UltrawinningSocial/</code></td><td>@UltrawinningAI content engine + Carousel drafter</td></tr>
+        <tr><td>ultrawinning/cockpit</td><td><span class="type">repo</span></td><td><span class="badge badge-muted">?</span></td><td><code>gh:ultrawinning/cockpit` (private)</code></td><td>Cockpit repo — relates to projects/cockpit + UltrawinningCom</td></tr>
+        <tr><td>ultrawinning/social</td><td><span class="type">repo</span></td><td><span class="badge badge-muted">?</span></td><td><code>gh:ultrawinning/social` (private)</code></td><td>Social content repo — relates to UltrawinningSocial</td></tr>
+        <tr><td>ultrawinning/uw-story-new</td><td><span class="type">repo</span></td><td><span class="badge badge-muted">?</span></td><td><code>gh:ultrawinning/uw-story-new` (public)</code></td><td>UW story experiment</td></tr>
+        <tr><td>ultrawinning/ultrawinning-ai</td><td><span class="type">repo</span></td><td><span class="badge badge-muted">?</span></td><td><code>gh:ultrawinning/ultrawinning-ai` (private)</code></td><td>Brand/AI initiative repo</td></tr>
+        <tr><td>ultrawinning/ultrawinning</td><td><span class="type">repo</span></td><td><span class="badge badge-muted">?</span></td><td><code>gh:ultrawinning/ultrawinning` (private)</code></td><td>Org-root repo</td></tr>
       </tbody>
     </table>
   </details>
@@ -513,7 +513,7 @@
 </details>
 
 <footer>
-  Generated by <code>bin/librarian-render-cascade</code> · 2026-05-18T10:23:26.217Z · See also <a href="./index.html">flat view</a>.
+  Generated by <code>bin/librarian-render-cascade</code> · 2026-05-18T10:45:22.618Z · See also <a href="./index.html">flat view</a>.
 </footer>
 </body>
 </html>
