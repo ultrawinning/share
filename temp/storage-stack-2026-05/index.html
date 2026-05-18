@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Emil's Storage Stack — May 2026 Consolidation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; line-height: 1.55; color: #222; }
+  h1 { border-bottom: 3px solid #d63384; padding-bottom: 0.3em; }
+  h2 { border-bottom: 1px solid #ccc; padding-bottom: 0.2em; margin-top: 2em; }
+  h3 { color: #444; }
+  code, pre { font-family: "SF Mono", Menlo, Consolas, monospace; background: #f4f4f4; }
+  code { padding: 1px 6px; border-radius: 3px; font-size: 0.92em; }
+  pre { padding: 12px; border-radius: 6px; overflow-x: auto; font-size: 0.9em; }
+  table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+  th, td { border: 1px solid #ddd; padding: 6px 10px; text-align: left; vertical-align: top; }
+  th { background: #f0f0f0; }
+  .tldr { background: #fff8e1; border-left: 4px solid #f0a000; padding: 10px 14px; margin: 1em 0; border-radius: 0 6px 6px 0; }
+  .danger { background: #ffe5e5; border-left: 4px solid #c00; padding: 10px 14px; margin: 1em 0; border-radius: 0 6px 6px 0; }
+  .ok { background: #e5ffea; border-left: 4px solid #2a8; padding: 10px 14px; margin: 1em 0; border-radius: 0 6px 6px 0; }
+  .meta { color: #888; font-size: 0.88em; }
+</style>
+</head>
+<body>
+
+<h1>📦 Storage Stack — May 2026 Consolidation</h1>
+<p class="meta">Last updated: 2026-05-18 · Authored over the 2026-05-17/18 cleanup session · Authoritative until superseded</p>
+
+<div class="tldr">
+<strong>TL;DR.</strong> Emil consolidated 4 legacy external drives and ordered the permanent stack. WD Elements 20TB ×2 arrive <strong>Fri 22 May</strong>; Corsair Survivor 4TB USB4 arrives <strong>Mon 1 Jun</strong>; Mac Studio (CITADEL) arrives <strong>22–29 Jun</strong>. All 4 old drives retire post-Khaydarin migration. Photos consolidated: current iCloud library untouched; new local-only Pre-2015-Photos library on GHOST holds all the pre-2015 era content from touro.
+</div>
+
+<h2>Hostname & box inventory</h2>
+
+<table>
+<thead><tr><th>Codename</th><th>Hardware</th><th>Role</th><th>Status</th></tr></thead>
+<tbody>
+<tr><td><strong>GHOST</strong> (<code>Ghost-MBP-M5</code>)</td><td>MBP, M5 Max, 128 GB RAM, 2 TB SSD</td><td>Daily driver, foreground, all local AI, travel</td><td>Active</td></tr>
+<tr><td><strong>OVERSEER</strong> (<code>Overseer-MBP-M4</code>)</td><td>MBP, M4, 48 GB RAM, 256 GB SSD</td><td>Always-on operator. Triage agent + canary + heartbeat (PLANNED, not yet installed)</td><td>Active, lean. <br>macOS user: <code>overseer</code> (NOT <code>emil</code>)<br>SSH: <code>ssh overseer@overseer-mbp-m4.taild3c667.ts.net</code></td></tr>
+<tr><td><strong>CITADEL</strong> (<code>Citadel-Studio-M?</code>)</td><td>Mac Studio, 64 GB RAM, 1 TB SSD</td><td>Always-on heavy AI + headless server in Portugal</td><td><strong>ETA 22–29 Jun 2026, ships to Portugal</strong></td></tr>
+<tr><td><strong>Supernova-mini</strong> (<code>supernova-mini</code>)</td><td>Mac mini, 16 GB RAM, ~1 TB SSD</td><td>Active host of Supernova service + Arena scenarios</td><td>Active. Bookshelf. Rename to <code>Supernova-mini-M?</code> queued for Jun 29.</td></tr>
+</tbody>
+</table>
+
+<p><strong>Naming convention (locked):</strong> <code>&lt;StarCraft-name&gt;-&lt;form-factor&gt;-&lt;chip-generation&gt;</code>. Memory: <code>feedback_starcraft_naming_convention.md</code>.</p>
+
+<h2>Storage architecture — Final shape</h2>
+
+<h3>Portugal base — CITADEL</h3>
+<ul>
+<li><strong>CITADEL internal 1 TB</strong> → OS, apps, Docker, dev tools, model cache, small DBs</li>
+<li><strong>Khaydarin-1 (WD Elements 20 TB)</strong> → archive, media library, completed projects — primary archive</li>
+<li><strong>Khaydarin-2 (WD Elements 20 TB)</strong> → daily-mirror backup of Khaydarin-1 (one drive is NOT a backup)</li>
+<li><strong>Studio active SSD (4–8 TB USB4)</strong> → planned Q3 2026 once local AI disk usage measured</li>
+<li>UPS + Ethernet + Tailscale/WireGuard for remote access from Mexico</li>
+</ul>
+
+<h3>Travel kit — with GHOST</h3>
+<ul>
+<li><strong>Corsair Survivor 4 TB USB4</strong> → active travel/editing drive (~3 GB/s real-world on Mac)</li>
+<li><strong>SanDisk Extreme 2 TB</strong> → travel backup/shuttle (demoted from primary)</li>
+</ul>
+
+<h3>Mexico — pure travel, no local storage</h3>
+<p>Travel kit only. Tailscale into CITADEL for any always-on workload.</p>
+
+<h3>Cloud backup</h3>
+<p><strong>Backblaze Personal Backup</strong> (€90/yr) — install on CITADEL after delivery. One sub backs up CITADEL internal + both Khaydarin HDDs.</p>
+
+<h2>Purchase orders — placed 2026-05-17</h2>
+
+<table>
+<thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>ETA</th></tr></thead>
+<tbody>
+<tr><td><strong>Corsair EX400U Survivor 4TB USB4</strong></td><td>1</td><td>~€641 Prime (Amazon.es)</td><td><strong>Mon 1 Jun 2026</strong></td></tr>
+<tr><td><strong>WD Elements Desktop 20 TB</strong></td><td>2</td><td>~€330-380 each (Amazon.es)</td><td><strong>Fri 22 May 2026</strong></td></tr>
+<tr><td>Backblaze Personal Backup</td><td>defer</td><td>$99/yr</td><td>After CITADEL arrives</td></tr>
+<tr><td>APC Back-UPS BX700U-GR</td><td>defer</td><td>~€80-100</td><td>Portugal consolidation</td></tr>
+</tbody>
+</table>
+
+<h2>Friday 22 May — WD Elements migration playbook</h2>
+
+<div class="ok">
+Full procedural playbook with verification gates lives at <code>~/.claude/plans/friday-2026-05-22-wd-elements-migration.md</code> on GHOST. Calendar event triggers at 07:00 WEST. Below is the high-level summary.
+</div>
+
+<h3>Pre-flight (when boxes arrive)</h3>
+<ul>
+<li>Unbox + plug both WDs into Anker Prime TB5 dock</li>
+<li>SMART check both — <code>diskutil info /dev/disk&lt;N&gt; | grep SMART</code></li>
+<li>Both should report "SMART Status: Verified"</li>
+</ul>
+
+<h3>Sequenced steps</h3>
+<ol>
+<li><strong>Format both as APFS Encrypted</strong> via Disk Utility GUI. Names: <code>Khaydarin-1</code> + <code>Khaydarin-2</code>. Store passphrases in 1Password.</li>
+<li><strong>Migrate GHOST staging → Khaydarin-1</strong> (rsync ~/Storage-staging/touro/ + the Pre-2015-Photos library). ~30-60 min.</li>
+<li><strong>Re-plug touro + Orange LaCie + SanDisk</strong>. Direct-copy each → Khaydarin-1:
+  <ul>
+    <li>Orange LaCie 2.3 TB (~6-12 hr, background)</li>
+    <li>SanDisk's 1.5 TB <code>FULL Iphoto library May 3rd 2026</code> (~3-6 hr)</li>
+  </ul>
+</li>
+<li><strong>Seed Khaydarin-2 mirror</strong> from Khaydarin-1 (~6-12 hr, overnight)</li>
+<li><strong>Install daily mirror launchd job</strong> firing 02:00 local. Plist label: <code>com.ultrawinning.khaydarin-mirror</code>.</li>
+<li><strong>Verify both archives healthy</strong>: file counts, sample reads, size matches.</li>
+<li><strong>NOW safe to wipe</strong> touro + Orange LaCie + PYLON. Disk Utility → APFS Encrypted (or factory exFAT if selling).</li>
+</ol>
+
+<div class="danger">
+<strong>DO NOT WIPE</strong> touro / Orange / PYLON until Step 6 (mirror verification) passes. Single-copy data on Khaydarin-1 alone is not safe.
+</div>
+
+<h2>Monday 29 June — CITADEL setup day playbook</h2>
+
+<div class="ok">
+Calendar event triggers at 07:00 WEST. Tasks:
+</div>
+
+<ol>
+<li><strong>CITADEL initial setup</strong> — name <code>Citadel-Studio-M?</code>, set up Tailscale, add to fleet</li>
+<li><strong>Supernova-mini rename</strong> — pause Supernova service, rename mini to <code>Supernova-mini-M?</code>, update launchd plists, restart</li>
+<li><strong>Backblaze Personal Backup</strong> — install on CITADEL (€99/yr), pair with both Khaydarin HDDs</li>
+<li><strong>UPS</strong> — if ordered, install APC Back-UPS between wall + CITADEL + archive HDDs</li>
+<li><strong>Housekeeper failover card</strong> — print 1-page restart instructions, tape behind CITADEL: <em>"If Emil asks for restart: press silver button once. If no response, hold 10s, wait 30s, press once."</em></li>
+</ol>
+
+<h2>What happened in this session (2026-05-17/18)</h2>
+
+<h3>Cleanup operations</h3>
+<ul>
+<li>✅ Wiped 2 TB square LaCie → APFS Encrypted, renamed PYLON</li>
+<li>✅ Copied 273 GB of touro Tier 1+2 to GHOST staging</li>
+<li>✅ Diffed Orange's BU Extreme SSD vs live SanDisk: <strong>0 uniques</strong> (B.1 trivially complete)</li>
+<li>✅ Diffed Orange's BU TheRealDrive vs touro: subset, no uniques</li>
+<li>✅ Deleted single duplicate Homecoming PDF (only true dup found)</li>
+<li>✅ Created new <code>Pre-2015-Photos.photoslibrary</code> on GHOST (local-only, NOT iCloud-synced)</li>
+<li>✅ Imported all pre-2015 era content from touro's Pics and Videos into Pre-2015-Photos</li>
+<li>✅ Imported old iPhoto Library content (3,657 files, 1999-2012) via Originals/Modified folders</li>
+<li>✅ Imported Rosie's photos for sharing</li>
+<li>✅ Converted 13 DV NTSC camcorder files → MP4 via ffmpeg (4.4 GB → 374 MB, no quality loss)</li>
+<li>✅ Music: 1,154 artist folders imported into Apple Music, full alphabet. Legacy XML preserved at <code>~/Music/iTunes-import-staging/_legacy-metadata/</code> for future ratings/playlists merge script.</li>
+</ul>
+
+<h3>Naming + SSH</h3>
+<ul>
+<li>✅ Renamed NEW MBP → Ghost-MBP-M5 (macOS + Tailscale)</li>
+<li>✅ Renamed old MBP → Overseer-MBP-M4 (macOS + Tailscale + SSH key authorized + Remote Login enabled)</li>
+<li>✅ Verified SSH from GHOST → OVERSEER works as <code>overseer@overseer-mbp-m4</code></li>
+</ul>
+
+<h2>Source memory files (on GHOST)</h2>
+
+<p>For future Claude sessions to access this context:</p>
+
+<ul>
+<li><code>~/.claude/projects/-Users-emil-Code-overmind/memory/reference_emil_hardware_2026_05.md</code> — full hardware inventory + hostnames</li>
+<li><code>~/.claude/projects/-Users-emil-Code-overmind/memory/project_storage_architecture_2026_05.md</code> — storage architecture decisions</li>
+<li><code>~/.claude/projects/-Users-emil-Code-overmind/memory/user_six_six_portugal_mexico.md</code> — travel pattern</li>
+<li><code>~/.claude/projects/-Users-emil-Code-overmind/memory/feedback_starcraft_naming_convention.md</code> — naming convention</li>
+</ul>
+
+<h2>Source plan files (on GHOST)</h2>
+
+<ul>
+<li><code>~/.claude/plans/eager-chasing-wren.md</code> — full storage architecture plan</li>
+<li><code>~/.claude/plans/friday-2026-05-22-wd-elements-migration.md</code> — Friday playbook with exact commands</li>
+</ul>
+
+<h2>Calendar events (Google Calendar coaching@doctoremil.com)</h2>
+
+<ul>
+<li><strong>Fri 22 May 2026 07:00 WEST</strong> — 📦 WD Elements arrive — Khaydarin migration day</li>
+<li><strong>Mon 29 Jun 2026 07:00 WEST</strong> — 🏛️ CITADEL setup day</li>
+</ul>
+
+<hr>
+<p class="meta">Document URL: <code>https://ultrawinning.github.io/share/temp/storage-stack-2026-05/</code> · Generated from session 2026-05-17/18 by Claude (claude-opus-4-7).</p>
+
+</body>
+</html>
