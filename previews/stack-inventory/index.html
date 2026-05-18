@@ -100,16 +100,16 @@
 
 <header>
   <h1>Overmind <span class="accent">/</span> Stack Inventory</h1>
-  <div class="sub">Auto-generated from Librarian Sheet · 2026-05-18 05:45 UTC · <a href="https://docs.google.com/spreadsheets/d/1HbZZ4c5Np7qDPbU2IJZHrMA3DgVtBKjiUT-p35yY2wk/edit" target="_blank" style="color: var(--accent); text-decoration: none;">edit in Sheet →</a></div>
+  <div class="sub">Auto-generated from Librarian Sheet · 2026-05-18 06:40 UTC · <a href="https://docs.google.com/spreadsheets/d/1HbZZ4c5Np7qDPbU2IJZHrMA3DgVtBKjiUT-p35yY2wk/edit" target="_blank" style="color: var(--accent); text-decoration: none;">edit in Sheet →</a></div>
 </header>
 
 <div class="summary">
-  <p><strong style="color: var(--accent);">27 Systems</strong> · <strong>149 Components</strong> · The full surface of Emil's stack.</p>
+  <p><strong style="color: var(--accent);">25 Systems</strong> · <strong>149 Components</strong> · The full surface of Emil's stack.</p>
   <p>Three-surface Librarian pattern: <strong>Sheet</strong> (edit) → <strong>MD/JSON</strong> (Claude consume) → <strong>HTML</strong> (you're here).</p>
   <div class="verdict-grid">
-    <div class="verdict"><div class="label">Systems</div><div class="value" style="color: var(--accent);">27</div></div>
+    <div class="verdict"><div class="label">Systems</div><div class="value" style="color: var(--accent);">25</div></div>
     <div class="verdict"><div class="label">Components</div><div class="value">149</div></div>
-    <div class="verdict"><div class="label">Working</div><div class="value" style="color: var(--good);">16</div></div>
+    <div class="verdict"><div class="label">Working</div><div class="value" style="color: var(--good);">17</div></div>
     <div class="verdict"><div class="label">Dormant/Dead</div><div class="value" style="color: var(--muted);">3</div></div>
   </div>
 </div>
@@ -126,13 +126,13 @@
   <button class="filter-btn" data-filter="unsure">? rows</button>
 </div>
 
-<h2 id="systems"><span class="num">01</span>Systems<span class="count">27</span></h2>
+<h2 id="systems"><span class="num">01</span>Systems<span class="count">25</span></h2>
 <div class="system-grid">
 
   <div class="system-card kind-platform status-working">
     <div class="head">
       <div class="name">Overmind<span class="sc">Zerg hivemind</span></div>
-      <div class="components-count">44 comp</div>
+      <div class="components-count">36 comp</div>
     </div>
     <div class="meta">
       <span class="pill kind-platform">platform</span>
@@ -255,20 +255,6 @@
     <div class="owner">Emil</div>
   </div>
 
-  <div class="system-card kind-platform status-partial">
-    <div class="head">
-      <div class="name">Cockpit</div>
-      <div class="components-count">8 comp</div>
-    </div>
-    <div class="meta">
-      <span class="pill kind-platform">platform</span>
-      <span class="pill status-partial">partial</span>
-    </div>
-    <div class="one-liner">Operating-surface concept for ultrawinning.com — design system + future ops dashboard</div>
-    <div class="path">~/Code/overmind/projects/cockpit/</div>
-    <div class="owner">Emil</div>
-  </div>
-
   <div class="system-card kind-product status-working">
     <div class="head">
       <div class="name">Arena<span class="sc">combat zone</span></div>
@@ -280,7 +266,7 @@
     </div>
     <div class="one-liner">Supernova reliability lab — scenario-based agent testing harness, sellable</div>
     <div class="path">~/Code/Domains/UltrawinningCom/scripts/supernova-arena.mjs</div>
-    <div class="owner">Emil + Codex</div>
+    <div class="owner">Emil</div>
   </div>
 
   <div class="system-card kind-product status-partial">
@@ -325,14 +311,14 @@
     <div class="owner">Emil</div>
   </div>
 
-  <div class="system-card kind-legacy status-?">
+  <div class="system-card kind-tool status-working">
     <div class="head">
       <div class="name">Observer</div>
-      <div class="components-count">3 comp</div>
+      <div class="components-count">0 comp</div>
     </div>
     <div class="meta">
-      <span class="pill kind-legacy">legacy</span>
-      <span class="pill status-?">?</span>
+      <span class="pill kind-tool">tool</span>
+      <span class="pill status-working">working</span>
     </div>
     <div class="one-liner">Claude session observation tooling (purpose unclear, multiple legacy states)</div>
     <div class="path">~/Code/claude-observer/ + projects/observer/</div>
@@ -409,52 +395,10 @@
     <div class="owner">Emil</div>
   </div>
 
-  <div class="system-card kind-platform status-partial">
-    <div class="head">
-      <div class="name">UltrawinningCom</div>
-      <div class="components-count">4 comp</div>
-    </div>
-    <div class="meta">
-      <span class="pill kind-platform">platform</span>
-      <span class="pill status-partial">partial</span>
-    </div>
-    <div class="one-liner">Brand site + public surface for ultrawinning.com (the.com vs Cockpit operating-surface)</div>
-    <div class="path">~/Code/Domains/UltrawinningCom/ + gh:ultrawinning/cockpit</div>
-    <div class="owner">Emil + Agnese</div>
-  </div>
-
-  <div class="system-card kind-product status-partial">
-    <div class="head">
-      <div class="name">Ultrawinning Content</div>
-      <div class="components-count">6 comp</div>
-    </div>
-    <div class="meta">
-      <span class="pill kind-product">product</span>
-      <span class="pill status-partial">partial</span>
-    </div>
-    <div class="one-liner">@UltrawinningAI content pipeline — Carousel drafter, UltrawinningSocial</div>
-    <div class="path">~/Code/Domains/UltrawinningSocial/ + gh:ultrawinning/social</div>
-    <div class="owner">Emil + Agnese</div>
-  </div>
-
-  <div class="system-card kind-tool status-working">
-    <div class="head">
-      <div class="name">Voice &amp; Writing</div>
-      <div class="components-count">2 comp</div>
-    </div>
-    <div class="meta">
-      <span class="pill kind-tool">tool</span>
-      <span class="pill status-working">working</span>
-    </div>
-    <div class="one-liner">Voice corpus + writing skills (uw-article, uw-book) for the Ultrawinning brand</div>
-    <div class="path">~/Code/Domains/Ultrawinning/</div>
-    <div class="owner">Emil</div>
-  </div>
-
   <div class="system-card kind-tool status-working">
     <div class="head">
       <div class="name">Signal Archive</div>
-      <div class="components-count">2 comp</div>
+      <div class="components-count">0 comp</div>
     </div>
     <div class="meta">
       <span class="pill kind-tool">tool</span>
@@ -506,11 +450,39 @@
     <div class="path">~/Code/Domains/Doctoremil/</div>
     <div class="owner">Emil</div>
   </div>
+
+  <div class="system-card kind-platform status-working">
+    <div class="head">
+      <div class="name">HIVE<span class="sc">Zerg HIVE structure</span></div>
+      <div class="components-count">13 comp</div>
+    </div>
+    <div class="meta">
+      <span class="pill kind-platform">platform</span>
+      <span class="pill status-working">working</span>
+    </div>
+    <div class="one-liner">Knowledge / memory / context infrastructure — Tier 1-3 learning + auto-memory + hooks + Signal Archive feed + handoffs</div>
+    <div class="path">~/.claude/ + ~/.claude/projects/*/memory/ + ~/.claude/hooks/*memory* + .claude/handoffs/{active,archive}/</div>
+    <div class="owner">Emil</div>
+  </div>
+
+  <div class="system-card kind-platform status-partial">
+    <div class="head">
+      <div class="name">ultrawinning</div>
+      <div class="components-count">20 comp</div>
+    </div>
+    <div class="meta">
+      <span class="pill kind-platform">platform</span>
+      <span class="pill status-partial">partial</span>
+    </div>
+    <div class="one-liner">The Ultrawinning brand: public site + content engine (UltrawinningAI carousels) + voice corpus + writing skills + design system</div>
+    <div class="path">~/Code/Domains/UltrawinningCom/ + ~/Code/Domains/UltrawinningSocial/ + ~/Code/Domains/Ultrawinning/ + gh:ultrawinning/{cockpit,social,uw-story-new,landing-page-generator}</div>
+    <div class="owner">Emil + Agnese</div>
+  </div>
 </div>
 
 <h2 id="components"><span class="num">02</span>Components<span class="count">149</span></h2>
 
-    <h3 style="font-size: 14px; margin: 24px 0 6px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.02em;">Overmind <span class="pill kind-platform">platform</span> <span style="color: var(--muted); font-weight: 400;">44</span></h3>
+    <h3 style="font-size: 14px; margin: 24px 0 6px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.02em;">Overmind <span class="pill kind-platform">platform</span> <span style="color: var(--muted); font-weight: 400;">36</span></h3>
     <table>
       <thead><tr><th>Name</th><th>Path</th><th>Type</th><th>Status</th><th>Visibility</th><th>One-liner</th><th>Notes</th></tr></thead>
       <tbody>
@@ -731,51 +703,6 @@
           <td class="notes"></td>
         </tr>
 <tr class="">
-          <td class="name">auto-wrap-stop.js</td>
-          <td class="path">`~/.claude/hooks/auto-wrap-stop.js`</td>
-          <td>hook</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">On Stop, writes snapshot + session_id to COMSAT queue for handoff resume</td>
-          <td class="notes"></td>
-        </tr>
-<tr class="">
-          <td class="name">pre-response-memory-audit.js</td>
-          <td class="path">`~/.claude/hooks/pre-response-memory-audit.js`</td>
-          <td>hook</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">UserPromptSubmit memory-hygiene reminder injection</td>
-          <td class="notes"></td>
-        </tr>
-<tr class="">
-          <td class="name">inject-datetime-context.sh</td>
-          <td class="path">`~/.claude/hooks/inject-datetime-context.sh`</td>
-          <td>hook</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">Injects Now: ... datetime block at session start (the &quot;tonight&quot; bug fix target)</td>
-          <td class="notes"></td>
-        </tr>
-<tr class="">
-          <td class="name">inject-handoff-context.js</td>
-          <td class="path">`~/.claude/hooks/inject-handoff-context.js`</td>
-          <td>hook</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">Injects active handoff at session start</td>
-          <td class="notes">This is a comsat-related hook. </td>
-        </tr>
-<tr class="">
-          <td class="name">comsat-handoff-resolver.js</td>
-          <td class="path">`~/.claude/hooks/comsat-handoff-resolver.js`</td>
-          <td>hook</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">Resolves COMSAT-queued handoffs into one-shot injections</td>
-          <td class="notes">This is also a comsat-related hook. </td>
-        </tr>
-<tr class="">
           <td class="name">cross-repo-write-guard.sh</td>
           <td class="path">`~/.claude/hooks/cross-repo-write-guard.sh`</td>
           <td>hook</td>
@@ -848,15 +775,6 @@
           <td class="notes">These have all been tidied up in GitHub, so probably refresh your GitHub understanding before we do anything here. </td>
         </tr>
 <tr class="">
-          <td class="name">Three-tier learning model</td>
-          <td class="path"></td>
-          <td>convention</td>
-          <td><span class="pill status-working">working</span></td>
-          <td><span class="pill vis-internal">internal</span></td>
-          <td class="oneliner">Tier 1 manifesto / Tier 2 cross-project rules / Tier 3 per-project — sweep-promoted</td>
-          <td class="notes"></td>
-        </tr>
-<tr class="">
           <td class="name">Pollution guard pre-commit</td>
           <td class="path"></td>
           <td>convention</td>
@@ -875,15 +793,6 @@
           <td class="notes">1Password env wrapping</td>
         </tr>
 <tr class="">
-          <td class="name">Handoffs convention</td>
-          <td class="path"></td>
-          <td>convention</td>
-          <td></td>
-          <td><span class="pill vis-internal">internal</span></td>
-          <td class="oneliner">One active handoff at a time; sessions move active→archive as first action</td>
-          <td class="notes"></td>
-        </tr>
-<tr class="">
           <td class="name">Two-leg pollution test</td>
           <td class="path"></td>
           <td>convention</td>
@@ -900,15 +809,6 @@
           <td><span class="pill vis-internal">internal</span></td>
           <td class="oneliner">Codex/local/Claude lane selection based on task class + utilization</td>
           <td class="notes">I think this should also be consolidated with the three-piece skill. </td>
-        </tr>
-<tr class="">
-          <td class="name">Auto-memory write-back</td>
-          <td class="path"></td>
-          <td>convention</td>
-          <td></td>
-          <td><span class="pill vis-internal">internal</span></td>
-          <td class="oneliner">Stop hook captures episodic facts into ~/.claude/projects/*/memory/</td>
-          <td class="notes"></td>
         </tr>
       </tbody>
     </table>
@@ -1349,85 +1249,6 @@
       </tbody>
     </table>
 
-    <h3 style="font-size: 14px; margin: 24px 0 6px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.02em;">Cockpit <span class="pill kind-platform">platform</span> <span style="color: var(--muted); font-weight: 400;">8</span></h3>
-    <table>
-      <thead><tr><th>Name</th><th>Path</th><th>Type</th><th>Status</th><th>Visibility</th><th>One-liner</th><th>Notes</th></tr></thead>
-      <tbody>
-<tr class="">
-          <td class="name">cockpit</td>
-          <td class="path">`projects/cockpit/`</td>
-          <td>project</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">Design system + pipeline docs for ultrawinning.com — not a runtime today</td>
-          <td class="notes">This is probably a confusing name, but this is the online control surface for ultra winning. </td>
-        </tr>
-<tr class="unsure-row">
-          <td class="name">git-activity-mine.js</td>
-          <td class="path">`scripts/git-activity-mine.js`</td>
-          <td>script</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">Mines git logs for cockpit /coding page data</td>
-          <td class="notes"></td>
-        </tr>
-<tr class="unsure-row">
-          <td class="name">wakatime-mirror.js</td>
-          <td class="path">`scripts/wakatime-mirror.js`</td>
-          <td>script</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">WakaTime → local mirror for cockpit data</td>
-          <td class="notes"></td>
-        </tr>
-<tr class="unsure-row">
-          <td class="name">wakatime-mirror.sh</td>
-          <td class="path">`scripts/wakatime-mirror.sh`</td>
-          <td>script</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">Shell wrapper for wakatime-mirror</td>
-          <td class="notes"></td>
-        </tr>
-<tr class="unsure-row">
-          <td class="name">com.emil.hpf-code-index</td>
-          <td class="path">`LaunchAgents/com.emil.hpf-code-index.plist`</td>
-          <td>launchd</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">HPFHQ codebase indexing job</td>
-          <td class="notes"></td>
-        </tr>
-<tr class="">
-          <td class="name">com.emil.wakatime-mirror</td>
-          <td class="path">`LaunchAgents/com.emil.wakatime-mirror.plist`</td>
-          <td>launchd</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">Mirrors WakaTime activity to local files for cockpit</td>
-          <td class="notes"></td>
-        </tr>
-<tr class="">
-          <td class="name">UltrawinningCom</td>
-          <td class="path">`~/Code/Domains/UltrawinningCom/`</td>
-          <td>domain</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">The ultrawinning.com site / cockpit repo</td>
-          <td class="notes">This is the control and cockpit area. For the ultra winning business </td>
-        </tr>
-<tr class="unsure-row">
-          <td class="name">ultrawinning/cockpit</td>
-          <td class="path">`gh:ultrawinning/cockpit` (private)</td>
-          <td>repo</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">Cockpit repo — relates to projects/cockpit + UltrawinningCom</td>
-          <td class="notes">This relates to Ultra Winning Com. </td>
-        </tr>
-      </tbody>
-    </table>
-
     <h3 style="font-size: 14px; margin: 24px 0 6px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.02em;">Nova <span class="pill kind-legacy">legacy</span> <span style="color: var(--muted); font-weight: 400;">3</span></h3>
     <table>
       <thead><tr><th>Name</th><th>Path</th><th>Type</th><th>Status</th><th>Visibility</th><th>One-liner</th><th>Notes</th></tr></thead>
@@ -1474,40 +1295,6 @@
           <td></td>
           <td class="oneliner">You named &quot;Overseer&quot; earlier — what is this?</td>
           <td class="notes">A business monitoring system - initally for HPFHQ but eventually to be rolled out as a commericial product (possibly) and also to monitor everything in my biz.</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h3 style="font-size: 14px; margin: 24px 0 6px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.02em;">Observer <span class="pill kind-legacy">legacy</span> <span style="color: var(--muted); font-weight: 400;">3</span></h3>
-    <table>
-      <thead><tr><th>Name</th><th>Path</th><th>Type</th><th>Status</th><th>Visibility</th><th>One-liner</th><th>Notes</th></tr></thead>
-      <tbody>
-<tr class="unsure-row">
-          <td class="name">claude-observer</td>
-          <td class="path">`~/Code/claude-observer/`</td>
-          <td>project</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">Claude session observer — different from overmind/projects/observer/?</td>
-          <td class="notes"></td>
-        </tr>
-<tr class="">
-          <td class="name">claude-observer (archive)</td>
-          <td class="path">`~/Code/_archive/claude-observer-pre-consolidation-2026-05-12/`</td>
-          <td>project</td>
-          <td><span class="pill status-dead">dead</span></td>
-          <td><span class="pill vis-private">private</span></td>
-          <td class="oneliner">Pre-consolidation snapshot 2026-05-12</td>
-          <td class="notes"></td>
-        </tr>
-<tr class="unsure-row">
-          <td class="name">observer</td>
-          <td class="path">`projects/observer/`</td>
-          <td>project</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">Claude session observation tooling — relationship to ~/Code/claude-observer/?</td>
-          <td class="notes">Both observers are the same, but I don't really know what they do or what they are. </td>
         </tr>
       </tbody>
     </table>
@@ -1826,160 +1613,6 @@
       </tbody>
     </table>
 
-    <h3 style="font-size: 14px; margin: 24px 0 6px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.02em;">UltrawinningCom <span class="pill kind-platform">platform</span> <span style="color: var(--muted); font-weight: 400;">4</span></h3>
-    <table>
-      <thead><tr><th>Name</th><th>Path</th><th>Type</th><th>Status</th><th>Visibility</th><th>One-liner</th><th>Notes</th></tr></thead>
-      <tbody>
-<tr class="">
-          <td class="name">Ultrawinning</td>
-          <td class="path">`~/Code/Domains/Ultrawinning/`</td>
-          <td>domain</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">Core voice corpus + writing system folder (writing/_system/ per memory)</td>
-          <td class="notes">This should probably move into the ultra winning social domain. </td>
-        </tr>
-<tr class="unsure-row">
-          <td class="name">ultrawinning/uw-story-new</td>
-          <td class="path">`gh:ultrawinning/uw-story-new` (public)</td>
-          <td>repo</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">UW story experiment</td>
-          <td class="notes"></td>
-        </tr>
-<tr class="unsure-row">
-          <td class="name">ultrawinning/ultrawinning-ai</td>
-          <td class="path">`gh:ultrawinning/ultrawinning-ai` (private)</td>
-          <td>repo</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">Brand/AI initiative repo</td>
-          <td class="notes"></td>
-        </tr>
-<tr class="unsure-row">
-          <td class="name">ultrawinning/ultrawinning</td>
-          <td class="path">`gh:ultrawinning/ultrawinning` (private)</td>
-          <td>repo</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">Org-root repo</td>
-          <td class="notes"></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h3 style="font-size: 14px; margin: 24px 0 6px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.02em;">Ultrawinning Content <span class="pill kind-product">product</span> <span style="color: var(--muted); font-weight: 400;">6</span></h3>
-    <table>
-      <thead><tr><th>Name</th><th>Path</th><th>Type</th><th>Status</th><th>Visibility</th><th>One-liner</th><th>Notes</th></tr></thead>
-      <tbody>
-<tr class="">
-          <td class="name">find-icon</td>
-          <td class="path">`~/.claude/skills/find-icon/`</td>
-          <td>skill</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">Search Lucide/Heroicons/Iconify for an SVG matching a name</td>
-          <td class="notes"></td>
-        </tr>
-<tr class="">
-          <td class="name">frame-to-carousel</td>
-          <td class="path">`~/.claude/skills/frame-to-carousel/`</td>
-          <td>skill</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">Turn a tight framing from conversation into a carousel-angle file</td>
-          <td class="notes"></td>
-        </tr>
-<tr class="">
-          <td class="name">ultrawinning-new-tool</td>
-          <td class="path">`~/.claude/skills/ultrawinning-new-tool/`</td>
-          <td>skill</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">Add a new system/tool showcase page to ultrawinning.com</td>
-          <td class="notes"></td>
-        </tr>
-<tr class="unsure-row">
-          <td class="name">com.ultrawinning.audible-sync</td>
-          <td class="path">`LaunchAgents/com.ultrawinning.audible-sync.plist`</td>
-          <td>launchd</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">Audible library sync — for what?</td>
-          <td class="notes"></td>
-        </tr>
-<tr class="">
-          <td class="name">UltrawinningSocial</td>
-          <td class="path">`~/Code/Domains/UltrawinningSocial/`</td>
-          <td>domain</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">@UltrawinningAI content engine + Carousel drafter</td>
-          <td class="notes">This is everything ultra winning AI</td>
-        </tr>
-<tr class="unsure-row">
-          <td class="name">ultrawinning/social</td>
-          <td class="path">`gh:ultrawinning/social` (private)</td>
-          <td>repo</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">Social content repo — relates to UltrawinningSocial</td>
-          <td class="notes"></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h3 style="font-size: 14px; margin: 24px 0 6px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.02em;">Voice &amp; Writing <span class="pill kind-tool">tool</span> <span style="color: var(--muted); font-weight: 400;">2</span></h3>
-    <table>
-      <thead><tr><th>Name</th><th>Path</th><th>Type</th><th>Status</th><th>Visibility</th><th>One-liner</th><th>Notes</th></tr></thead>
-      <tbody>
-<tr class="">
-          <td class="name">uw-article</td>
-          <td class="path">`~/Code/Domains/Ultrawinning/.claude/skills/uw-article/`</td>
-          <td>skill</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">Ultrawinning article-writing skill</td>
-          <td class="notes">This should definitely not be an HGHQ. </td>
-        </tr>
-<tr class="">
-          <td class="name">uw-book</td>
-          <td class="path">`~/Code/Domains/Ultrawinning/.claude/skills/uw-book/`</td>
-          <td>skill</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">Ultrawinning book-writing skill</td>
-          <td class="notes">This should definitely not be in HGHQ. </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h3 style="font-size: 14px; margin: 24px 0 6px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.02em;">Signal Archive <span class="pill kind-tool">tool</span> <span style="color: var(--muted); font-weight: 400;">2</span></h3>
-    <table>
-      <thead><tr><th>Name</th><th>Path</th><th>Type</th><th>Status</th><th>Visibility</th><th>One-liner</th><th>Notes</th></tr></thead>
-      <tbody>
-<tr class="">
-          <td class="name">com.emil.signal-archive-incremental</td>
-          <td class="path">`LaunchAgents/com.emil.signal-archive-incremental.plist`</td>
-          <td>launchd</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">Daily 05:15 — HPFHQ signal_archive backfill</td>
-          <td class="notes"></td>
-        </tr>
-<tr class="">
-          <td class="name">Signal archive ingestion</td>
-          <td class="path"></td>
-          <td>convention</td>
-          <td></td>
-          <td><span class="pill vis-internal">internal</span></td>
-          <td class="oneliner">Cross-repo git + Claude memory + Slack → unified Supabase corpus</td>
-          <td class="notes"></td>
-        </tr>
-      </tbody>
-    </table>
-
     <h3 style="font-size: 14px; margin: 24px 0 6px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.02em;">promptscore-extension <span class="pill kind-demo">demo</span> <span style="color: var(--muted); font-weight: 400;">1</span></h3>
     <table>
       <thead><tr><th>Name</th><th>Path</th><th>Type</th><th>Status</th><th>Visibility</th><th>One-liner</th><th>Notes</th></tr></thead>
@@ -2008,6 +1641,317 @@
           <td></td>
           <td class="oneliner">Personal coaching@doctoremil.com domain assets</td>
           <td class="notes">This is just a landing page which was a one-click production because I have the domain. </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size: 14px; margin: 24px 0 6px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.02em;">HIVE <span class="pill kind-platform">platform</span> <span style="color: var(--muted); font-weight: 400;">13</span></h3>
+    <table>
+      <thead><tr><th>Name</th><th>Path</th><th>Type</th><th>Status</th><th>Visibility</th><th>One-liner</th><th>Notes</th></tr></thead>
+      <tbody>
+<tr class="unsure-row">
+          <td class="name">claude-observer</td>
+          <td class="path">`~/Code/claude-observer/`</td>
+          <td>project</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">Claude session observer — different from overmind/projects/observer/?</td>
+          <td class="notes"></td>
+        </tr>
+<tr class="">
+          <td class="name">claude-observer (archive)</td>
+          <td class="path">`~/Code/_archive/claude-observer-pre-consolidation-2026-05-12/`</td>
+          <td>project</td>
+          <td><span class="pill status-dead">dead</span></td>
+          <td><span class="pill vis-private">private</span></td>
+          <td class="oneliner">Pre-consolidation snapshot 2026-05-12</td>
+          <td class="notes"></td>
+        </tr>
+<tr class="unsure-row">
+          <td class="name">observer</td>
+          <td class="path">`projects/observer/`</td>
+          <td>project</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">Claude session observation tooling — relationship to ~/Code/claude-observer/?</td>
+          <td class="notes">Both observers are the same, but I don't really know what they do or what they are. </td>
+        </tr>
+<tr class="">
+          <td class="name">auto-wrap-stop.js</td>
+          <td class="path">`~/.claude/hooks/auto-wrap-stop.js`</td>
+          <td>hook</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">On Stop, writes snapshot + session_id to COMSAT queue for handoff resume</td>
+          <td class="notes"></td>
+        </tr>
+<tr class="">
+          <td class="name">pre-response-memory-audit.js</td>
+          <td class="path">`~/.claude/hooks/pre-response-memory-audit.js`</td>
+          <td>hook</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">UserPromptSubmit memory-hygiene reminder injection</td>
+          <td class="notes"></td>
+        </tr>
+<tr class="">
+          <td class="name">inject-datetime-context.sh</td>
+          <td class="path">`~/.claude/hooks/inject-datetime-context.sh`</td>
+          <td>hook</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">Injects Now: ... datetime block at session start (the &quot;tonight&quot; bug fix target)</td>
+          <td class="notes"></td>
+        </tr>
+<tr class="">
+          <td class="name">inject-handoff-context.js</td>
+          <td class="path">`~/.claude/hooks/inject-handoff-context.js`</td>
+          <td>hook</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">Injects active handoff at session start</td>
+          <td class="notes">This is a comsat-related hook. </td>
+        </tr>
+<tr class="">
+          <td class="name">comsat-handoff-resolver.js</td>
+          <td class="path">`~/.claude/hooks/comsat-handoff-resolver.js`</td>
+          <td>hook</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">Resolves COMSAT-queued handoffs into one-shot injections</td>
+          <td class="notes">This is also a comsat-related hook. </td>
+        </tr>
+<tr class="">
+          <td class="name">com.emil.signal-archive-incremental</td>
+          <td class="path">`LaunchAgents/com.emil.signal-archive-incremental.plist`</td>
+          <td>launchd</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">Daily 05:15 — HPFHQ signal_archive backfill</td>
+          <td class="notes"></td>
+        </tr>
+<tr class="">
+          <td class="name">Three-tier learning model</td>
+          <td class="path"></td>
+          <td>convention</td>
+          <td><span class="pill status-working">working</span></td>
+          <td><span class="pill vis-internal">internal</span></td>
+          <td class="oneliner">Tier 1 manifesto / Tier 2 cross-project rules / Tier 3 per-project — sweep-promoted</td>
+          <td class="notes"></td>
+        </tr>
+<tr class="">
+          <td class="name">Handoffs convention</td>
+          <td class="path"></td>
+          <td>convention</td>
+          <td></td>
+          <td><span class="pill vis-internal">internal</span></td>
+          <td class="oneliner">One active handoff at a time; sessions move active→archive as first action</td>
+          <td class="notes"></td>
+        </tr>
+<tr class="">
+          <td class="name">Auto-memory write-back</td>
+          <td class="path"></td>
+          <td>convention</td>
+          <td></td>
+          <td><span class="pill vis-internal">internal</span></td>
+          <td class="oneliner">Stop hook captures episodic facts into ~/.claude/projects/*/memory/</td>
+          <td class="notes"></td>
+        </tr>
+<tr class="">
+          <td class="name">Signal archive ingestion</td>
+          <td class="path"></td>
+          <td>convention</td>
+          <td></td>
+          <td><span class="pill vis-internal">internal</span></td>
+          <td class="oneliner">Cross-repo git + Claude memory + Slack → unified Supabase corpus</td>
+          <td class="notes"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size: 14px; margin: 24px 0 6px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.02em;">ultrawinning <span class="pill kind-platform">platform</span> <span style="color: var(--muted); font-weight: 400;">20</span></h3>
+    <table>
+      <thead><tr><th>Name</th><th>Path</th><th>Type</th><th>Status</th><th>Visibility</th><th>One-liner</th><th>Notes</th></tr></thead>
+      <tbody>
+<tr class="">
+          <td class="name">cockpit</td>
+          <td class="path">`projects/cockpit/`</td>
+          <td>project</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">Design system + pipeline docs for ultrawinning.com — not a runtime today</td>
+          <td class="notes">This is probably a confusing name, but this is the online control surface for ultra winning. </td>
+        </tr>
+<tr class="unsure-row">
+          <td class="name">git-activity-mine.js</td>
+          <td class="path">`scripts/git-activity-mine.js`</td>
+          <td>script</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">Mines git logs for cockpit /coding page data</td>
+          <td class="notes"></td>
+        </tr>
+<tr class="unsure-row">
+          <td class="name">wakatime-mirror.js</td>
+          <td class="path">`scripts/wakatime-mirror.js`</td>
+          <td>script</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">WakaTime → local mirror for cockpit data</td>
+          <td class="notes"></td>
+        </tr>
+<tr class="unsure-row">
+          <td class="name">wakatime-mirror.sh</td>
+          <td class="path">`scripts/wakatime-mirror.sh`</td>
+          <td>script</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">Shell wrapper for wakatime-mirror</td>
+          <td class="notes"></td>
+        </tr>
+<tr class="">
+          <td class="name">find-icon</td>
+          <td class="path">`~/.claude/skills/find-icon/`</td>
+          <td>skill</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">Search Lucide/Heroicons/Iconify for an SVG matching a name</td>
+          <td class="notes"></td>
+        </tr>
+<tr class="">
+          <td class="name">frame-to-carousel</td>
+          <td class="path">`~/.claude/skills/frame-to-carousel/`</td>
+          <td>skill</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">Turn a tight framing from conversation into a carousel-angle file</td>
+          <td class="notes"></td>
+        </tr>
+<tr class="">
+          <td class="name">ultrawinning-new-tool</td>
+          <td class="path">`~/.claude/skills/ultrawinning-new-tool/`</td>
+          <td>skill</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">Add a new system/tool showcase page to ultrawinning.com</td>
+          <td class="notes"></td>
+        </tr>
+<tr class="">
+          <td class="name">uw-article</td>
+          <td class="path">`~/Code/Domains/Ultrawinning/.claude/skills/uw-article/`</td>
+          <td>skill</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">Ultrawinning article-writing skill</td>
+          <td class="notes">This should definitely not be an HGHQ. </td>
+        </tr>
+<tr class="">
+          <td class="name">uw-book</td>
+          <td class="path">`~/Code/Domains/Ultrawinning/.claude/skills/uw-book/`</td>
+          <td>skill</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">Ultrawinning book-writing skill</td>
+          <td class="notes">This should definitely not be in HGHQ. </td>
+        </tr>
+<tr class="unsure-row">
+          <td class="name">com.emil.hpf-code-index</td>
+          <td class="path">`LaunchAgents/com.emil.hpf-code-index.plist`</td>
+          <td>launchd</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">HPFHQ codebase indexing job</td>
+          <td class="notes"></td>
+        </tr>
+<tr class="">
+          <td class="name">com.emil.wakatime-mirror</td>
+          <td class="path">`LaunchAgents/com.emil.wakatime-mirror.plist`</td>
+          <td>launchd</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">Mirrors WakaTime activity to local files for cockpit</td>
+          <td class="notes"></td>
+        </tr>
+<tr class="unsure-row">
+          <td class="name">com.ultrawinning.audible-sync</td>
+          <td class="path">`LaunchAgents/com.ultrawinning.audible-sync.plist`</td>
+          <td>launchd</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">Audible library sync — for what?</td>
+          <td class="notes"></td>
+        </tr>
+<tr class="">
+          <td class="name">Ultrawinning</td>
+          <td class="path">`~/Code/Domains/Ultrawinning/`</td>
+          <td>domain</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">Core voice corpus + writing system folder (writing/_system/ per memory)</td>
+          <td class="notes">This should probably move into the ultra winning social domain. </td>
+        </tr>
+<tr class="">
+          <td class="name">UltrawinningCom</td>
+          <td class="path">`~/Code/Domains/UltrawinningCom/`</td>
+          <td>domain</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">The ultrawinning.com site / cockpit repo</td>
+          <td class="notes">This is the control and cockpit area. For the ultra winning business </td>
+        </tr>
+<tr class="">
+          <td class="name">UltrawinningSocial</td>
+          <td class="path">`~/Code/Domains/UltrawinningSocial/`</td>
+          <td>domain</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">@UltrawinningAI content engine + Carousel drafter</td>
+          <td class="notes">This is everything ultra winning AI</td>
+        </tr>
+<tr class="unsure-row">
+          <td class="name">ultrawinning/cockpit</td>
+          <td class="path">`gh:ultrawinning/cockpit` (private)</td>
+          <td>repo</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">Cockpit repo — relates to projects/cockpit + UltrawinningCom</td>
+          <td class="notes">This relates to Ultra Winning Com. </td>
+        </tr>
+<tr class="unsure-row">
+          <td class="name">ultrawinning/social</td>
+          <td class="path">`gh:ultrawinning/social` (private)</td>
+          <td>repo</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">Social content repo — relates to UltrawinningSocial</td>
+          <td class="notes"></td>
+        </tr>
+<tr class="unsure-row">
+          <td class="name">ultrawinning/uw-story-new</td>
+          <td class="path">`gh:ultrawinning/uw-story-new` (public)</td>
+          <td>repo</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">UW story experiment</td>
+          <td class="notes"></td>
+        </tr>
+<tr class="unsure-row">
+          <td class="name">ultrawinning/ultrawinning-ai</td>
+          <td class="path">`gh:ultrawinning/ultrawinning-ai` (private)</td>
+          <td>repo</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">Brand/AI initiative repo</td>
+          <td class="notes"></td>
+        </tr>
+<tr class="unsure-row">
+          <td class="name">ultrawinning/ultrawinning</td>
+          <td class="path">`gh:ultrawinning/ultrawinning` (private)</td>
+          <td>repo</td>
+          <td></td>
+          <td></td>
+          <td class="oneliner">Org-root repo</td>
+          <td class="notes"></td>
         </tr>
       </tbody>
     </table>
