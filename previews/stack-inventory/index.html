@@ -100,16 +100,16 @@
 
 <header>
   <h1>Overmind <span class="accent">/</span> Stack Inventory</h1>
-  <div class="sub">Auto-generated from Librarian Sheet · 2026-05-18 08:05 UTC · <a href="https://docs.google.com/spreadsheets/d/1HbZZ4c5Np7qDPbU2IJZHrMA3DgVtBKjiUT-p35yY2wk/edit" target="_blank" style="color: var(--accent); text-decoration: none;">edit in Sheet →</a></div>
+  <div class="sub">Auto-generated from Librarian Sheet · 2026-05-19 05:45 UTC · <a href="https://docs.google.com/spreadsheets/d/1HbZZ4c5Np7qDPbU2IJZHrMA3DgVtBKjiUT-p35yY2wk/edit" target="_blank" style="color: var(--accent); text-decoration: none;">edit in Sheet →</a></div>
 </header>
 
 <div class="summary">
-  <p><strong style="color: var(--accent);">25 Systems</strong> · <strong>144 Components</strong> · The full surface of Emil's stack.</p>
+  <p><strong style="color: var(--accent);">27 Systems</strong> · <strong>146 Components</strong> · The full surface of Emil's stack.</p>
   <p>Three-surface Librarian pattern: <strong>Sheet</strong> (edit) → <strong>MD/JSON</strong> (Claude consume) → <strong>HTML</strong> (you're here).</p>
   <div class="verdict-grid">
-    <div class="verdict"><div class="label">Systems</div><div class="value" style="color: var(--accent);">25</div></div>
-    <div class="verdict"><div class="label">Components</div><div class="value">144</div></div>
-    <div class="verdict"><div class="label">Working</div><div class="value" style="color: var(--good);">17</div></div>
+    <div class="verdict"><div class="label">Systems</div><div class="value" style="color: var(--accent);">27</div></div>
+    <div class="verdict"><div class="label">Components</div><div class="value">146</div></div>
+    <div class="verdict"><div class="label">Working</div><div class="value" style="color: var(--good);">19</div></div>
     <div class="verdict"><div class="label">Dormant/Dead</div><div class="value" style="color: var(--muted);">3</div></div>
   </div>
 </div>
@@ -126,7 +126,7 @@
   <button class="filter-btn" data-filter="unsure">? rows</button>
 </div>
 
-<h2 id="systems"><span class="num">01</span>Systems<span class="count">25</span></h2>
+<h2 id="systems"><span class="num">01</span>Systems<span class="count">27</span></h2>
 <div class="system-grid">
 
   <div class="system-card kind-platform status-working">
@@ -146,7 +146,7 @@
   <div class="system-card kind-platform status-working">
     <div class="head">
       <div class="name">Librarian</div>
-      <div class="components-count">0 comp</div>
+      <div class="components-count">1 comp</div>
     </div>
     <div class="meta">
       <span class="pill kind-platform">platform</span>
@@ -342,7 +342,7 @@
   <div class="system-card kind-product status-working">
     <div class="head">
       <div class="name">HPFHQ</div>
-      <div class="components-count">22 comp</div>
+      <div class="components-count">20 comp</div>
     </div>
     <div class="meta">
       <span class="pill kind-product">product</span>
@@ -454,7 +454,7 @@
   <div class="system-card kind-platform status-working">
     <div class="head">
       <div class="name">HIVE<span class="sc">Zerg HIVE structure</span></div>
-      <div class="components-count">12 comp</div>
+      <div class="components-count">13 comp</div>
     </div>
     <div class="meta">
       <span class="pill kind-platform">platform</span>
@@ -478,9 +478,37 @@
     <div class="path">~/Code/Domains/UltrawinningCom/ + ~/Code/Domains/UltrawinningSocial/ + ~/Code/Domains/Ultrawinning/ + gh:ultrawinning/{cockpit,social,uw-story-new,landing-page-generator}</div>
     <div class="owner">Emil + Agnese</div>
   </div>
+
+  <div class="system-card kind-infrastructure status-working">
+    <div class="head">
+      <div class="name">Pathfinder</div>
+      <div class="components-count">0 comp</div>
+    </div>
+    <div class="meta">
+      <span class="pill kind-infrastructure">infrastructure</span>
+      <span class="pill status-working">working</span>
+    </div>
+    <div class="one-liner">Knowledge retrieval engine — 8-domain routed scored bundles of articles, decisions, SOPs, memories, integrations</div>
+    <div class="path">~/Code/hpf-command-center/app/api/knowledge/pathfinder/</div>
+    <div class="owner">Emil</div>
+  </div>
+
+  <div class="system-card kind-infrastructure status-working">
+    <div class="head">
+      <div class="name">Rigor Mode</div>
+      <div class="components-count">0 comp</div>
+    </div>
+    <div class="meta">
+      <span class="pill kind-infrastructure">infrastructure</span>
+      <span class="pill status-working">working</span>
+    </div>
+    <div class="one-liner">UserPromptSubmit force-load of critical plan content into Claude session context — defeats soft-compliance</div>
+    <div class="path">~/Code/hpf-command-center/scripts/cc-memory-lookup.js</div>
+    <div class="owner">Emil</div>
+  </div>
 </div>
 
-<h2 id="components"><span class="num">02</span>Components<span class="count">144</span></h2>
+<h2 id="components"><span class="num">02</span>Components<span class="count">146</span></h2>
 
     <h3 style="font-size: 14px; margin: 24px 0 6px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.02em;">Overmind <span class="pill kind-platform">platform</span> <span style="color: var(--muted); font-weight: 400;">35</span></h3>
     <table>
@@ -490,7 +518,7 @@
           <td class="name">overmind</td>
           <td class="path">`~/Code/overmind/`</td>
           <td>project</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">The meta-repo — R&amp;D + patterns + the meta-memory layer that governs every other system</td>
           <td class="notes"></td>
@@ -535,7 +563,7 @@
           <td class="name">local-drone-batch.sh</td>
           <td class="path">`scripts/local-drone-batch.sh`</td>
           <td>script</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Batch run of drone with local LLM</td>
           <td class="notes"></td>
@@ -544,7 +572,7 @@
           <td class="name">seed-100-days.js</td>
           <td class="path">`scripts/seed-100-days.js`</td>
           <td>script</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Seeding script — for what?</td>
           <td class="notes"></td>
@@ -553,7 +581,7 @@
           <td class="name">3p</td>
           <td class="path">`~/.claude/skills/3p/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Third-party delegation (Codex / local LLM) helper</td>
           <td class="notes">yes - nearly done, probably just needs a review. </td>
@@ -562,7 +590,7 @@
           <td class="name">agent-postmortem</td>
           <td class="path">`~/.claude/skills/agent-postmortem/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Critiques a past agent run from its own perspective; output → global rules candidate</td>
           <td class="notes"></td>
@@ -571,7 +599,7 @@
           <td class="name">co-op</td>
           <td class="path">`~/.claude/skills/co-op/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Co-op Mode — human-in-loop pairing pattern</td>
           <td class="notes">Can this be consolidated with 3P? </td>
@@ -580,7 +608,7 @@
           <td class="name">data</td>
           <td class="path">`~/.claude/skills/data/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Data rigor — sourcing, classification, interpretation (always-active baseline)</td>
           <td class="notes">If it's always active, should it be somewhere else? </td>
@@ -589,7 +617,7 @@
           <td class="name">enterprise-security-audit</td>
           <td class="path">`~/.claude/skills/enterprise-security-audit/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Security audit skill — what scope?</td>
           <td class="notes"></td>
@@ -598,7 +626,7 @@
           <td class="name">intake</td>
           <td class="path">`~/.claude/skills/intake/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Knowledge triage and routing — Supabase/repo/hybrid</td>
           <td class="notes"></td>
@@ -607,7 +635,7 @@
           <td class="name">new-project</td>
           <td class="path">`~/.claude/skills/new-project/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Scaffold a new Emil project — CLAUDE.md + Tier 3 + pollution guard + .gitignore + gh repo create</td>
           <td class="notes"></td>
@@ -616,7 +644,7 @@
           <td class="name">promote-project</td>
           <td class="path">`~/.claude/skills/promote-project/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Promote a half-built folder into a properly scaffolded repo</td>
           <td class="notes"></td>
@@ -625,7 +653,7 @@
           <td class="name">quantum-leap</td>
           <td class="path">`~/.claude/skills/quantum-leap/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Step back when noise is being managed by stacked filter rules — look at trigger source</td>
           <td class="notes"></td>
@@ -634,7 +662,7 @@
           <td class="name">realistic-eta</td>
           <td class="path">`~/.claude/skills/realistic-eta/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Stop overestimating execution speed — force scope/sub-task enumeration</td>
           <td class="notes">This is similar to the rule I have about not giving me times, but I think I maybe got it wrong. Maybe not a skill. </td>
@@ -643,7 +671,7 @@
           <td class="name">sf</td>
           <td class="path">`~/.claude/skills/sf/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Signal-Fidelity — compress prose to max signal-per-word, four levels (sf0-sf3)</td>
           <td class="notes">SF actually stands for Special Forces, but Signal Fidelity is kind of cool. </td>
@@ -652,7 +680,7 @@
           <td class="name">skillify</td>
           <td class="path">`~/.claude/skills/skillify/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Detect repeated manual patterns and propose new skills</td>
           <td class="notes">I assume this is on all the time as well? </td>
@@ -661,7 +689,7 @@
           <td class="name">smoke</td>
           <td class="path">`~/.claude/skills/smoke/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Browser-based smoke test with Playwright</td>
           <td class="notes"></td>
@@ -670,7 +698,7 @@
           <td class="name">standby</td>
           <td class="path">`~/.claude/skills/standby/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Park a session waiting on something external — high-visibility status block</td>
           <td class="notes"></td>
@@ -679,7 +707,7 @@
           <td class="name">tired</td>
           <td class="path">`~/.claude/skills/tired/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Three-year-old mode — zero-friction step-by-step when Emil is exhausted</td>
           <td class="notes"></td>
@@ -688,7 +716,7 @@
           <td class="name">cross-repo-write-guard.sh</td>
           <td class="path">`~/.claude/hooks/cross-repo-write-guard.sh`</td>
           <td>hook</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">PreToolUse — blocks writes outside the active repo</td>
           <td class="notes"></td>
@@ -697,7 +725,7 @@
           <td class="name">cross-repo-write-guard.test.sh</td>
           <td class="path">`~/.claude/hooks/cross-repo-write-guard.test.sh`</td>
           <td>hook</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Test harness for cross-repo-write-guard</td>
           <td class="notes"></td>
@@ -706,7 +734,7 @@
           <td class="name">secret-leak-guard.py</td>
           <td class="path">`~/.claude/hooks/secret-leak-guard.py`</td>
           <td>hook</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">PreToolUse — scans for API keys / secrets in tool calls</td>
           <td class="notes"></td>
@@ -715,7 +743,7 @@
           <td class="name">goal-budget-cap.js</td>
           <td class="path">`~/.claude/hooks/goal-budget-cap.js`</td>
           <td>hook</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Caps something per goal — budget enforcement</td>
           <td class="notes"></td>
@@ -724,7 +752,7 @@
           <td class="name">ultrawinning/share</td>
           <td class="path">`gh:ultrawinning/share` (public)</td>
           <td>repo</td>
-          <td></td>
+          <td><span class="pill status-?">?</span></td>
           <td><span class="pill vis-public-live">public-live</span></td>
           <td class="oneliner">The Pages-served share repo for previews/temp docs</td>
           <td class="notes"></td>
@@ -733,7 +761,7 @@
           <td class="name">ultrawinning/Loop</td>
           <td class="path">`gh:ultrawinning/Loop` (private)</td>
           <td>repo</td>
-          <td></td>
+          <td><span class="pill status-?">?</span></td>
           <td></td>
           <td class="oneliner">Loop product</td>
           <td class="notes"></td>
@@ -742,7 +770,7 @@
           <td class="name">ultrawinning/brain-fm-chrome</td>
           <td class="path">`gh:ultrawinning/brain-fm-chrome` (private)</td>
           <td>repo</td>
-          <td></td>
+          <td><span class="pill status-?">?</span></td>
           <td></td>
           <td class="oneliner">Brain.fm Chrome extension fork/build</td>
           <td class="notes"></td>
@@ -751,7 +779,7 @@
           <td class="name">whitelabel-hq/hypergrowth-hub</td>
           <td class="path">`gh:whitelabel-hq/hypergrowth-hub` (private)</td>
           <td>repo</td>
-          <td></td>
+          <td><span class="pill status-?">?</span></td>
           <td></td>
           <td class="oneliner">Hypergrowth hub product — whitelabel-hq org</td>
           <td class="notes">These have all been tidied up in GitHub, so probably refresh your GitHub understanding before we do anything here. </td>
@@ -760,7 +788,7 @@
           <td class="name">Pollution guard pre-commit</td>
           <td class="path"></td>
           <td>convention</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td><span class="pill vis-internal">internal</span></td>
           <td class="oneliner">Blocks cross-tenant strings outside docs/CLAUDE.md/README.md per rule-26</td>
           <td class="notes"></td>
@@ -769,7 +797,7 @@
           <td class="name">1Password env wrapping</td>
           <td class="path"></td>
           <td>convention</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td><span class="pill vis-internal">internal</span></td>
           <td class="oneliner">Every secret-using script wraps in op run; 41 sensitive vars tracked</td>
           <td class="notes">1Password env wrapping</td>
@@ -778,7 +806,7 @@
           <td class="name">Two-leg pollution test</td>
           <td class="path"></td>
           <td>convention</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td><span class="pill vis-internal">internal</span></td>
           <td class="oneliner">Before content lands in overmind, both legs must answer yes</td>
           <td class="notes">I feel all the anti-pollution stuff should be consolidated. </td>
@@ -787,7 +815,7 @@
           <td class="name">Player 3 routing</td>
           <td class="path"></td>
           <td>convention</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td><span class="pill vis-internal">internal</span></td>
           <td class="oneliner">Codex/local/Claude lane selection based on task class + utilization</td>
           <td class="notes">I think this should also be consolidated with the three-piece skill. </td>
@@ -804,6 +832,22 @@
       </tbody>
     </table>
 
+    <h3 style="font-size: 14px; margin: 24px 0 6px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.02em;">Librarian <span class="pill kind-platform">platform</span> <span style="color: var(--muted); font-weight: 400;">1</span></h3>
+    <table>
+      <thead><tr><th>Name</th><th>Path</th><th>Type</th><th>Status</th><th>Visibility</th><th>One-liner</th><th>Notes</th></tr></thead>
+      <tbody>
+<tr class="">
+          <td class="name">librarian</td>
+          <td class="path">`~/.claude/skills/librarian/`</td>
+          <td>skill</td>
+          <td><span class="pill status-working">working</span></td>
+          <td><span class="pill vis-private">private</span></td>
+          <td class="oneliner">Three-surface tabular-data router (Sheet edit / MD-JSON consume / HTML view). Reverse counterpart to Pathfinder.</td>
+          <td class="notes">New 2026-05-18. Routes to bin/librarian-* scripts. Lib docs at lib/librarian/README.md. Triggers on /librarian, &quot;use librarian&quot;, &quot;make this a sheet&quot;, &quot;P&amp;L sheet&quot;.</td>
+        </tr>
+      </tbody>
+    </table>
+
     <h3 style="font-size: 14px; margin: 24px 0 6px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.02em;">COMSAT <span class="pill kind-tool">tool</span> <span style="color: var(--muted); font-weight: 400;">5</span></h3>
     <table>
       <thead><tr><th>Name</th><th>Path</th><th>Type</th><th>Status</th><th>Visibility</th><th>One-liner</th><th>Notes</th></tr></thead>
@@ -812,7 +856,7 @@
           <td class="name">comsat_design_pack</td>
           <td class="path">`~/Code/overmind/projects/comsat/.design/pack/`</td>
           <td>folder</td>
-          <td></td>
+          <td><span class="pill status-dead">dead</span></td>
           <td></td>
           <td class="oneliner">Design assets for COMSAT</td>
           <td class="notes">Folded into projects/comsat/.design/pack/ on 2026-05-18. Coexists with .design/comsat/ (Claude Design handoff).</td>
@@ -821,7 +865,7 @@
           <td class="name">comsat</td>
           <td class="path">`projects/comsat/`</td>
           <td>project</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Workstation control panel — surfaces every active Claude/Codex session as a tile, local HTTP API on 47321/47322</td>
           <td class="notes"></td>
@@ -830,7 +874,7 @@
           <td class="name">streamdeck</td>
           <td class="path">`projects/streamdeck/`</td>
           <td>project</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Stream Deck + SwiftBar widgets that read SessionWatcher + COMSAT HTTP API</td>
           <td class="notes">How does this overlap with the active project above? Can we consolidate? </td>
@@ -839,7 +883,7 @@
           <td class="name">com.overmind.comsat-streamdeck-proxy</td>
           <td class="path">`LaunchAgents/com.overmind.comsat-streamdeck-proxy.plist`</td>
           <td>launchd</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">COMSAT ↔ Stream Deck proxy bridge</td>
           <td class="notes"></td>
@@ -848,7 +892,7 @@
           <td class="name">com.ultrawinning.swiftbar-deploy-cache</td>
           <td class="path">`LaunchAgents/com.ultrawinning.swiftbar-deploy-cache.plist`</td>
           <td>launchd</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">SwiftBar deploy cache for ultrawinning bar widgets</td>
           <td class="notes"></td>
@@ -864,7 +908,7 @@
           <td class="name">relay</td>
           <td class="path">`projects/relay/`</td>
           <td>project</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Captures from iPhone via iCloud envelopes, routes Mac-side to drone/repo/ideas destinations</td>
           <td class="notes">Reply is an idea capture solution for iPhone and Mac OS, specifically for vibe coding. </td>
@@ -873,7 +917,7 @@
           <td class="name">drone.js</td>
           <td class="path">`scripts/drone.js`</td>
           <td>script</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">iPhone-dropped file harvester — classifies via Haiku, fires Telegram + Supabase</td>
           <td class="notes">Drone is the script which transfers items from iPhone to Reply. </td>
@@ -882,7 +926,7 @@
           <td class="name">drone-to-relay.js</td>
           <td class="path">`scripts/drone-to-relay.js`</td>
           <td>script</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Wraps drone proposals as Relay envelopes + writes to capture/queue/</td>
           <td class="notes">As above, I suppose they can all be grouped together. </td>
@@ -891,7 +935,7 @@
           <td class="name">capture-router.js</td>
           <td class="path">`scripts/capture-router.js`</td>
           <td>script</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Mac-side router for iCloud envelopes — dispatches by route field to drone/ideas/repo</td>
           <td class="notes">I assume this is similar to drone. </td>
@@ -900,7 +944,7 @@
           <td class="name">relay-router.sh</td>
           <td class="path">`scripts/relay-router.sh`</td>
           <td>script</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Shell wrapper around capture-router?</td>
           <td class="notes">I think we need to tidy all the relay stuff together. It's associated with DRONE as an overall capture system. </td>
@@ -909,7 +953,7 @@
           <td class="name">write-idea-handover.js</td>
           <td class="path">`scripts/write-idea-handover.js`</td>
           <td>script</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Writes Relay envelopes (markdown with frontmatter) to capture/queue/</td>
           <td class="notes"></td>
@@ -918,7 +962,7 @@
           <td class="name">com.emil.overmind-drone</td>
           <td class="path">`LaunchAgents/com.emil.overmind-drone.plist`</td>
           <td>launchd</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Runs drone.js + drone-to-relay.js every 6h</td>
           <td class="notes"></td>
@@ -927,7 +971,7 @@
           <td class="name">com.emil.overmind-relay-router</td>
           <td class="path">`LaunchAgents/com.emil.overmind-relay-router.plist`</td>
           <td>launchd</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Runs capture-router.js (event-driven or polling)</td>
           <td class="notes"></td>
@@ -936,7 +980,7 @@
           <td class="name">Drone → Relay pipeline</td>
           <td class="path"></td>
           <td>convention</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td><span class="pill vis-internal">internal</span></td>
           <td class="oneliner">iPhone capture → Mac classification → triage UI</td>
           <td class="notes">This should be consolidated with the drone relay thing. </td>
@@ -952,7 +996,7 @@
           <td class="name">sweep.js</td>
           <td class="path">`scripts/sweep.js`</td>
           <td>script</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Friday launchd job — Haiku-classifies HPFHQ activity for two-leg pollution test</td>
           <td class="notes">We need a plain English definition for this. </td>
@@ -961,7 +1005,7 @@
           <td class="name">sweep</td>
           <td class="path">`~/.claude/skills/sweep/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Review pending /sweep proposals (the Friday job) — accept/reject migrations</td>
           <td class="notes"></td>
@@ -970,7 +1014,7 @@
           <td class="name">upgrades</td>
           <td class="path">`~/.claude/skills/upgrades/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Evaluate a new tool/framework against current system — buy/build/skip</td>
           <td class="notes"></td>
@@ -979,7 +1023,7 @@
           <td class="name">upgrades-review</td>
           <td class="path">`~/.claude/skills/upgrades-review/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Walk pending Overmind drone reports — adopt/defer/monitor/skip per item</td>
           <td class="notes"></td>
@@ -988,7 +1032,7 @@
           <td class="name">com.emil.overmind-sweep</td>
           <td class="path">`LaunchAgents/com.emil.overmind-sweep.plist`</td>
           <td>launchd</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Runs sweep.js Friday 18:00</td>
           <td class="notes"></td>
@@ -1004,7 +1048,7 @@
           <td class="name">codex-bg</td>
           <td class="path">`bin/codex-bg`</td>
           <td>bin</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Wrapped Codex CLI invocation — timeout + PID + WORM log (Player 3)</td>
           <td class="notes"></td>
@@ -1013,7 +1057,7 @@
           <td class="name">codex-status</td>
           <td class="path">`bin/codex-status`</td>
           <td>bin</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Surfaces running/orphan Codex processes from WORM log</td>
           <td class="notes"></td>
@@ -1022,7 +1066,7 @@
           <td class="name">local-bg</td>
           <td class="path">`bin/local-bg`</td>
           <td>bin</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Wrapped Ollama invocation — same shape as codex-bg (Player 3)</td>
           <td class="notes"></td>
@@ -1031,7 +1075,7 @@
           <td class="name">local-status</td>
           <td class="path">`bin/local-status`</td>
           <td>bin</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Surfaces running/orphan local-LLM processes</td>
           <td class="notes"></td>
@@ -1040,7 +1084,7 @@
           <td class="name">usage-snapshot</td>
           <td class="path">`bin/usage-snapshot`</td>
           <td>bin</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Reads SessionWatcher caches → reports Claude/Codex utilization (used by UserPromptSubmit warn hook)</td>
           <td class="notes"></td>
@@ -1049,7 +1093,7 @@
           <td class="name">claude-audio-hosts</td>
           <td class="path">`bin/claude-audio-hosts`</td>
           <td>bin</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Manages /etc/hosts for Claude Code audio capture issue</td>
           <td class="notes"></td>
@@ -1058,7 +1102,7 @@
           <td class="name">codex-direct-block.sh</td>
           <td class="path">`~/.claude/hooks/codex-direct-block.sh`</td>
           <td>hook</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">PreToolUse — blocks raw codex exec, points at codex-bg</td>
           <td class="notes"></td>
@@ -1067,7 +1111,7 @@
           <td class="name">codex-direct-block.py</td>
           <td class="path">`~/.claude/hooks/codex-direct-block.py`</td>
           <td>hook</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Python sibling of codex-direct-block.sh</td>
           <td class="notes"></td>
@@ -1076,7 +1120,7 @@
           <td class="name">codex-status-stop-hook.sh</td>
           <td class="path">`~/.claude/hooks/codex-status-stop-hook.sh`</td>
           <td>hook</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Stop hook — surfaces orphan Codex PIDs</td>
           <td class="notes"></td>
@@ -1085,7 +1129,7 @@
           <td class="name">local-direct-block.sh</td>
           <td class="path">`~/.claude/hooks/local-direct-block.sh`</td>
           <td>hook</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">PreToolUse — blocks raw ollama run, points at local-bg</td>
           <td class="notes"></td>
@@ -1094,7 +1138,7 @@
           <td class="name">local-direct-block.py</td>
           <td class="path">`~/.claude/hooks/local-direct-block.py`</td>
           <td>hook</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Python sibling of local-direct-block.sh</td>
           <td class="notes"></td>
@@ -1103,7 +1147,7 @@
           <td class="name">usage-warn.sh</td>
           <td class="path">`~/.claude/hooks/usage-warn.sh`</td>
           <td>hook</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">UserPromptSubmit — surfaces Claude/Codex utilization warnings via usage-snapshot</td>
           <td class="notes"></td>
@@ -1119,7 +1163,7 @@
           <td class="name">sentinel.js</td>
           <td class="path">`~/.claude/hooks/sentinel.js`</td>
           <td>hook</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Claims-verification hook — reviews claims and forces verification (named codename system)</td>
           <td class="notes">This is an entity, and it should include what we discussed the other day about the post claim check. I think we included the time piece here. </td>
@@ -1135,7 +1179,7 @@
           <td class="name">freeze</td>
           <td class="path">`~/.claude/skills/freeze/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Lock edits to a specific directory during debugging</td>
           <td class="notes">Never used. </td>
@@ -1144,7 +1188,7 @@
           <td class="name">mac-diagnose</td>
           <td class="path">`~/.claude/skills/mac-diagnose/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Diagnose Mac slowness — memory pressure, CPU pinning, WindowServer</td>
           <td class="notes"></td>
@@ -1160,7 +1204,7 @@
           <td class="name">build-complete</td>
           <td class="path">`~/.claude/skills/build-complete/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">End-of-build checklist — CHANGELOG, state files, reconciliation</td>
           <td class="notes">Under the wrap skill </td>
@@ -1169,7 +1213,7 @@
           <td class="name">canary</td>
           <td class="path">`~/.claude/skills/canary/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Post-deploy health check — hits critical routes, verifies shapes</td>
           <td class="notes"></td>
@@ -1178,7 +1222,7 @@
           <td class="name">eod</td>
           <td class="path">`~/.claude/skills/eod/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">End-of-day report — git log trawl, 6-layer categorization, Supabase INSERTs</td>
           <td class="notes">Under the wrap scale </td>
@@ -1187,7 +1231,7 @@
           <td class="name">fix-complete</td>
           <td class="path">`~/.claude/skills/fix-complete/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Lightweight post-fix checklist (smaller sibling of build-complete)</td>
           <td class="notes">Under the wrap skill </td>
@@ -1196,7 +1240,7 @@
           <td class="name">session-handoff</td>
           <td class="path">`~/.claude/skills/session-handoff/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Capture context for the next session — diff + task list + state</td>
           <td class="notes"></td>
@@ -1205,7 +1249,7 @@
           <td class="name">wrap</td>
           <td class="path">`~/.claude/skills/wrap/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Router for session-end — classifies + dispatches to session-handoff/eod/build-complete/fix-complete/canary</td>
           <td class="notes"></td>
@@ -1221,7 +1265,7 @@
           <td class="name">nova</td>
           <td class="path">`projects/nova/`</td>
           <td>project</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Migration spec docs only — actual runtime is scripts/nova-sweep.js (see [[project_sentinel_claims_verification]] codename clarifications)</td>
           <td class="notes">Nova is currently my first attempt at an EA, and all she does right now is various notifications, but this project is definitely on ice right now as I don't really know what the plan is for her. She has been superseded by Supernova. </td>
@@ -1230,7 +1274,7 @@
           <td class="name">nova-sweep.js</td>
           <td class="path">`scripts/nova-sweep.js`</td>
           <td>script</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Daily tag-scanner — finds [NOVA-*] tags across repos, fires Telegram + Supabase + HPFHQ memory API</td>
           <td class="notes">Don't know what this is. </td>
@@ -1239,7 +1283,7 @@
           <td class="name">com.emil.overmind-nova-sweep</td>
           <td class="path">`LaunchAgents/com.emil.overmind-nova-sweep.plist`</td>
           <td>launchd</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Runs nova-sweep.js daily at 09:00 Lisbon</td>
           <td class="notes"></td>
@@ -1255,7 +1299,7 @@
           <td class="name">overseer</td>
           <td class="path">`~/Code/overseer/`</td>
           <td>project</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">You named &quot;Overseer&quot; earlier — what is this?</td>
           <td class="notes">A business monitoring system - initally for HPFHQ but eventually to be rolled out as a commericial product (possibly) and also to monitor everything in my biz.</td>
@@ -1271,7 +1315,7 @@
           <td class="name">bite-app</td>
           <td class="path">`~/Code/bite-app/`</td>
           <td>project</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">A client platform within Medus for the clients of the clients.</td>
           <td class="notes"></td>
@@ -1280,7 +1324,7 @@
           <td class="name">medus-app</td>
           <td class="path">`~/Code/medus-app/`</td>
           <td>project</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Commercial / client-facing version of the online fitness biz</td>
           <td class="notes"></td>
@@ -1289,7 +1333,7 @@
           <td class="name">Hypergrowth</td>
           <td class="path">`~/Code/Hypergrowth/`</td>
           <td>project</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Hypergrowth program work — relates to whitelabel-hq/hypergrowth-hub?</td>
           <td class="notes">I have now moved around and tidied up the Github, and so Hypergrowth is a Medus tenant</td>
@@ -1297,7 +1341,7 @@
       </tbody>
     </table>
 
-    <h3 style="font-size: 14px; margin: 24px 0 6px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.02em;">HPFHQ <span class="pill kind-product">product</span> <span style="color: var(--muted); font-weight: 400;">22</span></h3>
+    <h3 style="font-size: 14px; margin: 24px 0 6px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.02em;">HPFHQ <span class="pill kind-product">product</span> <span style="color: var(--muted); font-weight: 400;">20</span></h3>
     <table>
       <thead><tr><th>Name</th><th>Path</th><th>Type</th><th>Status</th><th>Visibility</th><th>One-liner</th><th>Notes</th></tr></thead>
       <tbody>
@@ -1305,7 +1349,7 @@
           <td class="name">hpf-command-center</td>
           <td class="path">`~/Code/hpf-command-center/`</td>
           <td>project</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Fully integrated AI ops online fitness biz.</td>
           <td class="notes"></td>
@@ -1314,7 +1358,7 @@
           <td class="name">meeting-prep</td>
           <td class="path">`~/.claude/skills/meeting-prep/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Pre-meeting prep generator — open items, metrics, agenda</td>
           <td class="notes"></td>
@@ -1323,7 +1367,7 @@
           <td class="name">monday</td>
           <td class="path">`~/.claude/skills/monday/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Monday morning business briefing — outstanding items, metrics, priorities</td>
           <td class="notes"></td>
@@ -1332,7 +1376,7 @@
           <td class="name">onboard-setter</td>
           <td class="path">`~/.claude/skills/onboard-setter/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Onboard a new HPF setter — roster edits + Supabase migration + Slack links</td>
           <td class="notes"></td>
@@ -1341,7 +1385,7 @@
           <td class="name">process-meeting</td>
           <td class="path">`~/.claude/skills/process-meeting/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Post-meeting processor — transcript → decisions/tasks/delegations/Supabase</td>
           <td class="notes"></td>
@@ -1350,34 +1394,16 @@
           <td class="name">strategy</td>
           <td class="path">`~/.claude/skills/strategy/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Strategic/operational mode — planning, P&amp;L, OKRs, decision frameworks</td>
           <td class="notes"></td>
-        </tr>
-<tr class="unsure-row">
-          <td class="name">architect (HPFHQ)</td>
-          <td class="path">`hpf-command-center/.claude/skills/architect/`</td>
-          <td>skill</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner">Architect skill — relates to the &quot;architect&quot; cross-pollination pattern</td>
-          <td class="notes">This, to me, is the entity where I'm trying to fit something new into the current architecture needs an architectural review. This should probably be global. </td>
-        </tr>
-<tr class="unsure-row">
-          <td class="name">audit-architecture (HPFHQ)</td>
-          <td class="path">`hpf-command-center/.claude/skills/audit-architecture/`</td>
-          <td>skill</td>
-          <td></td>
-          <td></td>
-          <td class="oneliner"></td>
-          <td class="notes">As above. </td>
         </tr>
 <tr class="">
           <td class="name">build-complete (HPFHQ)</td>
           <td class="path">`hpf-command-center/.claude/skills/build-complete/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">HPFHQ-specific build-complete variant</td>
           <td class="notes">Do we need a duplicate? </td>
@@ -1386,7 +1412,7 @@
           <td class="name">debug-ghl (HPFHQ)</td>
           <td class="path">`hpf-command-center/.claude/skills/debug-ghl/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Debug GoHighLevel integration issues</td>
           <td class="notes"></td>
@@ -1395,7 +1421,7 @@
           <td class="name">debug-root-cause (HPFHQ)</td>
           <td class="path">`hpf-command-center/.claude/skills/debug-root-cause/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner"></td>
           <td class="notes">This is great, but should probably be global. </td>
@@ -1404,7 +1430,7 @@
           <td class="name">decision-memo (HPFHQ)</td>
           <td class="path">`hpf-command-center/.claude/skills/decision-memo/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Decision-log memo writer</td>
           <td class="notes"></td>
@@ -1413,7 +1439,7 @@
           <td class="name">fix-complete (HPFHQ)</td>
           <td class="path">`hpf-command-center/.claude/skills/fix-complete/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">HPFHQ-specific fix-complete variant</td>
           <td class="notes">As above. </td>
@@ -1422,7 +1448,7 @@
           <td class="name">landing-page-v2 (HPFHQ)</td>
           <td class="path">`hpf-command-center/.claude/skills/landing-page-v2/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner"></td>
           <td class="notes">Not sure what this is. </td>
@@ -1431,7 +1457,7 @@
           <td class="name">logo-designer (HPFHQ)</td>
           <td class="path">`hpf-command-center/.claude/skills/logo-designer/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner"></td>
           <td class="notes"></td>
@@ -1440,7 +1466,7 @@
           <td class="name">research-stack (HPFHQ)</td>
           <td class="path">`hpf-command-center/.claude/skills/research-stack/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner"></td>
           <td class="notes"></td>
@@ -1449,7 +1475,7 @@
           <td class="name">review-copy (HPFHQ)</td>
           <td class="path">`hpf-command-center/.claude/skills/review-copy/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner"></td>
           <td class="notes"></td>
@@ -1458,7 +1484,7 @@
           <td class="name">review-ui (HPFHQ)</td>
           <td class="path">`hpf-command-center/.claude/skills/review-ui/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner"></td>
           <td class="notes">I think a lot of these HPF HQ skills should probably be global. Basically, they were just built in HGHQ because that is what I was building first. </td>
@@ -1467,7 +1493,7 @@
           <td class="name">sales-report (HPFHQ)</td>
           <td class="path">`hpf-command-center/.claude/skills/sales-report/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner"></td>
           <td class="notes"></td>
@@ -1476,7 +1502,7 @@
           <td class="name">ship-mvp (HPFHQ)</td>
           <td class="path">`hpf-command-center/.claude/skills/ship-mvp/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner"></td>
           <td class="notes"></td>
@@ -1485,7 +1511,7 @@
           <td class="name">spec-feature (HPFHQ)</td>
           <td class="path">`hpf-command-center/.claude/skills/spec-feature/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner"></td>
           <td class="notes"></td>
@@ -1494,7 +1520,7 @@
           <td class="name">upload-doc (HPFHQ)</td>
           <td class="path">`hpf-command-center/.claude/skills/upload-doc/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner"></td>
           <td class="notes"></td>
@@ -1519,7 +1545,7 @@
           <td class="name">TheRealRecorder</td>
           <td class="path">`projects/TheRealRecorder/`</td>
           <td>project</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Menu-bar screen recorder — ScreenCaptureKit → Supabase Storage upload</td>
           <td class="notes">Loom wannabe, though I just realized that Clean Shot does this much better and very easily. </td>
@@ -1528,7 +1554,7 @@
           <td class="name">TheRealBoard</td>
           <td class="path">`projects/TheRealBoard/`</td>
           <td>project</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Local tldraw-style canvas (Next.js) with Anthropic Make Real route</td>
           <td class="notes">Miro wannabe, but will be super useful for social media. Still super buggy. </td>
@@ -1544,7 +1570,7 @@
           <td class="name">workout-tracker</td>
           <td class="path">`~/Code/workout-tracker/`</td>
           <td>project</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Personal workout tracking app — parser consumes Markdown programs</td>
           <td class="notes"></td>
@@ -1553,7 +1579,7 @@
           <td class="name">workout</td>
           <td class="path">`~/.claude/skills/workout/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Generate/revise personal training program in workout-tracker format</td>
           <td class="notes"></td>
@@ -1569,7 +1595,7 @@
           <td class="name">GETSHREDZ</td>
           <td class="path">`~/Code/GETSHREDZ/`</td>
           <td>project</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Possibly fitness/coaching-related — please confirm</td>
           <td class="notes">nutrition tracking app - made as an experiment to see how easy it is and what issues come up because Dan from HPF is building one and I think it's shit and want to improve it or at least be able to understand what is going on. He is paying $15k a month for developers to build this, and honestly, a child could do it with vibe coding. </td>
@@ -1585,7 +1611,7 @@
           <td class="name">promptscore-extension</td>
           <td class="path">`~/Code/promptscore-extension/`</td>
           <td>project</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Browser extension for scoring prompts</td>
           <td class="notes">live on chrome webstore. was my first attempt at shipping something </td>
@@ -1601,7 +1627,7 @@
           <td class="name">Doctoremil</td>
           <td class="path">`~/Code/Domains/Doctoremil/`</td>
           <td>domain</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Personal coaching@doctoremil.com domain assets</td>
           <td class="notes">This is just a landing page which was a one-click production because I have the domain. </td>
@@ -1609,7 +1635,7 @@
       </tbody>
     </table>
 
-    <h3 style="font-size: 14px; margin: 24px 0 6px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.02em;">HIVE <span class="pill kind-platform">platform</span> <span style="color: var(--muted); font-weight: 400;">12</span></h3>
+    <h3 style="font-size: 14px; margin: 24px 0 6px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.02em;">HIVE <span class="pill kind-platform">platform</span> <span style="color: var(--muted); font-weight: 400;">13</span></h3>
     <table>
       <thead><tr><th>Name</th><th>Path</th><th>Type</th><th>Status</th><th>Visibility</th><th>One-liner</th><th>Notes</th></tr></thead>
       <tbody>
@@ -1626,7 +1652,7 @@
           <td class="name">observer</td>
           <td class="path">`projects/observer/`</td>
           <td>project</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Claude session observation tooling — relationship to ~/Code/claude-observer/?</td>
           <td class="notes">Canonical Claude session observer. Was symlinked from ~/Code/claude-observer/; symlink removed 2026-05-18 (single home now).</td>
@@ -1635,7 +1661,7 @@
           <td class="name">auto-wrap-stop.js</td>
           <td class="path">`~/.claude/hooks/auto-wrap-stop.js`</td>
           <td>hook</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">On Stop, writes snapshot + session_id to COMSAT queue for handoff resume</td>
           <td class="notes"></td>
@@ -1644,7 +1670,7 @@
           <td class="name">pre-response-memory-audit.js</td>
           <td class="path">`~/.claude/hooks/pre-response-memory-audit.js`</td>
           <td>hook</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">UserPromptSubmit memory-hygiene reminder injection</td>
           <td class="notes"></td>
@@ -1653,7 +1679,7 @@
           <td class="name">inject-datetime-context.sh</td>
           <td class="path">`~/.claude/hooks/inject-datetime-context.sh`</td>
           <td>hook</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Injects Now: ... datetime block at session start (the &quot;tonight&quot; bug fix target)</td>
           <td class="notes"></td>
@@ -1662,7 +1688,7 @@
           <td class="name">inject-handoff-context.js</td>
           <td class="path">`~/.claude/hooks/inject-handoff-context.js`</td>
           <td>hook</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Injects active handoff at session start</td>
           <td class="notes">This is a comsat-related hook. </td>
@@ -1671,7 +1697,7 @@
           <td class="name">comsat-handoff-resolver.js</td>
           <td class="path">`~/.claude/hooks/comsat-handoff-resolver.js`</td>
           <td>hook</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Resolves COMSAT-queued handoffs into one-shot injections</td>
           <td class="notes">This is also a comsat-related hook. </td>
@@ -1680,7 +1706,7 @@
           <td class="name">com.emil.signal-archive-incremental</td>
           <td class="path">`LaunchAgents/com.emil.signal-archive-incremental.plist`</td>
           <td>launchd</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Daily 05:15 — HPFHQ signal_archive backfill</td>
           <td class="notes"></td>
@@ -1698,7 +1724,7 @@
           <td class="name">Handoffs convention</td>
           <td class="path"></td>
           <td>convention</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td><span class="pill vis-internal">internal</span></td>
           <td class="oneliner">One active handoff at a time; sessions move active→archive as first action</td>
           <td class="notes"></td>
@@ -1707,7 +1733,7 @@
           <td class="name">Auto-memory write-back</td>
           <td class="path"></td>
           <td>convention</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td><span class="pill vis-internal">internal</span></td>
           <td class="oneliner">Stop hook captures episodic facts into ~/.claude/projects/*/memory/</td>
           <td class="notes"></td>
@@ -1716,10 +1742,19 @@
           <td class="name">Signal archive ingestion</td>
           <td class="path"></td>
           <td>convention</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td><span class="pill vis-internal">internal</span></td>
           <td class="oneliner">Cross-repo git + Claude memory + Slack → unified Supabase corpus</td>
           <td class="notes"></td>
+        </tr>
+<tr class="">
+          <td class="name">inject-always-load.sh</td>
+          <td class="path">`~/.claude/hooks/inject-always-load.sh`</td>
+          <td>hook</td>
+          <td><span class="pill status-working">working</span></td>
+          <td><span class="pill vis-private">private</span></td>
+          <td class="oneliner">SessionStart hook — concatenates _always_load/*.md into context every session (hardware roster, etc.)</td>
+          <td class="notes">Shipped 2026-05-18. Source files at ~/.claude/projects/-Users-emil-Code-overmind/memory/_always_load/. Budget &lt;10KB total. Convention spec in project_always_load_memory_convention memory.</td>
         </tr>
       </tbody>
     </table>
@@ -1732,7 +1767,7 @@
           <td class="name">cockpit</td>
           <td class="path">`projects/cockpit/`</td>
           <td>project</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Design system + pipeline docs for ultrawinning.com — not a runtime today</td>
           <td class="notes">This is probably a confusing name, but this is the online control surface for ultra winning. </td>
@@ -1741,7 +1776,7 @@
           <td class="name">git-activity-mine.js</td>
           <td class="path">`scripts/git-activity-mine.js`</td>
           <td>script</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Mines git logs for cockpit /coding page data</td>
           <td class="notes"></td>
@@ -1750,7 +1785,7 @@
           <td class="name">wakatime-mirror.js</td>
           <td class="path">`scripts/wakatime-mirror.js`</td>
           <td>script</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">WakaTime → local mirror for cockpit data</td>
           <td class="notes"></td>
@@ -1759,7 +1794,7 @@
           <td class="name">wakatime-mirror.sh</td>
           <td class="path">`scripts/wakatime-mirror.sh`</td>
           <td>script</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Shell wrapper for wakatime-mirror</td>
           <td class="notes"></td>
@@ -1768,7 +1803,7 @@
           <td class="name">find-icon</td>
           <td class="path">`~/.claude/skills/find-icon/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Search Lucide/Heroicons/Iconify for an SVG matching a name</td>
           <td class="notes"></td>
@@ -1777,7 +1812,7 @@
           <td class="name">frame-to-carousel</td>
           <td class="path">`~/.claude/skills/frame-to-carousel/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Turn a tight framing from conversation into a carousel-angle file</td>
           <td class="notes"></td>
@@ -1786,7 +1821,7 @@
           <td class="name">ultrawinning-new-tool</td>
           <td class="path">`~/.claude/skills/ultrawinning-new-tool/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Add a new system/tool showcase page to ultrawinning.com</td>
           <td class="notes"></td>
@@ -1795,7 +1830,7 @@
           <td class="name">uw-article</td>
           <td class="path">`~/Code/Domains/Ultrawinning/.claude/skills/uw-article/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Ultrawinning article-writing skill</td>
           <td class="notes">This should definitely not be an HGHQ. </td>
@@ -1804,7 +1839,7 @@
           <td class="name">uw-book</td>
           <td class="path">`~/Code/Domains/Ultrawinning/.claude/skills/uw-book/`</td>
           <td>skill</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Ultrawinning book-writing skill</td>
           <td class="notes">This should definitely not be in HGHQ. </td>
@@ -1813,7 +1848,7 @@
           <td class="name">com.emil.hpf-code-index</td>
           <td class="path">`LaunchAgents/com.emil.hpf-code-index.plist`</td>
           <td>launchd</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">HPFHQ codebase indexing job</td>
           <td class="notes"></td>
@@ -1822,7 +1857,7 @@
           <td class="name">com.emil.wakatime-mirror</td>
           <td class="path">`LaunchAgents/com.emil.wakatime-mirror.plist`</td>
           <td>launchd</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Mirrors WakaTime activity to local files for cockpit</td>
           <td class="notes"></td>
@@ -1831,7 +1866,7 @@
           <td class="name">com.ultrawinning.audible-sync</td>
           <td class="path">`LaunchAgents/com.ultrawinning.audible-sync.plist`</td>
           <td>launchd</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Audible library sync — for what?</td>
           <td class="notes"></td>
@@ -1840,7 +1875,7 @@
           <td class="name">Ultrawinning</td>
           <td class="path">`~/Code/Domains/Ultrawinning/`</td>
           <td>domain</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">Core voice corpus + writing system folder (writing/_system/ per memory)</td>
           <td class="notes">This should probably move into the ultra winning social domain. </td>
@@ -1849,7 +1884,7 @@
           <td class="name">UltrawinningCom</td>
           <td class="path">`~/Code/Domains/UltrawinningCom/`</td>
           <td>domain</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">The ultrawinning.com site / cockpit repo</td>
           <td class="notes">This is the control and cockpit area. For the ultra winning business </td>
@@ -1858,7 +1893,7 @@
           <td class="name">UltrawinningSocial</td>
           <td class="path">`~/Code/Domains/UltrawinningSocial/`</td>
           <td>domain</td>
-          <td></td>
+          <td><span class="pill status-working">working</span></td>
           <td></td>
           <td class="oneliner">@UltrawinningAI content engine + Carousel drafter</td>
           <td class="notes">This is everything ultra winning AI</td>
@@ -1867,7 +1902,7 @@
           <td class="name">ultrawinning/cockpit</td>
           <td class="path">`gh:ultrawinning/cockpit` (private)</td>
           <td>repo</td>
-          <td></td>
+          <td><span class="pill status-?">?</span></td>
           <td></td>
           <td class="oneliner">Cockpit repo — relates to projects/cockpit + UltrawinningCom</td>
           <td class="notes">This relates to Ultra Winning Com. </td>
@@ -1876,7 +1911,7 @@
           <td class="name">ultrawinning/social</td>
           <td class="path">`gh:ultrawinning/social` (private)</td>
           <td>repo</td>
-          <td></td>
+          <td><span class="pill status-?">?</span></td>
           <td></td>
           <td class="oneliner">Social content repo — relates to UltrawinningSocial</td>
           <td class="notes"></td>
@@ -1885,7 +1920,7 @@
           <td class="name">ultrawinning/uw-story-new</td>
           <td class="path">`gh:ultrawinning/uw-story-new` (public)</td>
           <td>repo</td>
-          <td></td>
+          <td><span class="pill status-?">?</span></td>
           <td></td>
           <td class="oneliner">UW story experiment</td>
           <td class="notes"></td>
@@ -1894,7 +1929,7 @@
           <td class="name">ultrawinning/ultrawinning-ai</td>
           <td class="path">`gh:ultrawinning/ultrawinning-ai` (private)</td>
           <td>repo</td>
-          <td></td>
+          <td><span class="pill status-?">?</span></td>
           <td></td>
           <td class="oneliner">Brand/AI initiative repo</td>
           <td class="notes"></td>
@@ -1903,10 +1938,35 @@
           <td class="name">ultrawinning/ultrawinning</td>
           <td class="path">`gh:ultrawinning/ultrawinning` (private)</td>
           <td>repo</td>
-          <td></td>
+          <td><span class="pill status-?">?</span></td>
           <td></td>
           <td class="oneliner">Org-root repo</td>
           <td class="notes"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size: 14px; margin: 24px 0 6px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.02em;">Architect  <span style="color: var(--muted); font-weight: 400;">2</span></h3>
+    <table>
+      <thead><tr><th>Name</th><th>Path</th><th>Type</th><th>Status</th><th>Visibility</th><th>One-liner</th><th>Notes</th></tr></thead>
+      <tbody>
+<tr class="">
+          <td class="name">architect</td>
+          <td class="path">`~/.claude/skills/architect/`</td>
+          <td>skill</td>
+          <td><span class="pill status-working">working</span></td>
+          <td><span class="pill vis-private">private</span></td>
+          <td class="oneliner">Infrastructure-extension recipes — project-aware, paired with audit-architecture</td>
+          <td class="notes">Promoted from HPFHQ on 2026-05-18 with project-awareness top section. HPFHQ copy deleted. Generic fallback content TBD for projects without docs/extension-contracts.md.</td>
+        </tr>
+<tr class="">
+          <td class="name">audit-architecture</td>
+          <td class="path">`~/.claude/skills/audit-architecture/`</td>
+          <td>skill</td>
+          <td><span class="pill status-working">working</span></td>
+          <td><span class="pill vis-private">private</span></td>
+          <td class="oneliner">Evaluate technical designs — pre-mortem, tradeoffs, recommend one path. Pair counterpart to /architect.</td>
+          <td class="notes">Promoted from HPFHQ on 2026-05-18. Project-aware top section + generic anti-patterns fallback. HPFHQ copy deleted.</td>
         </tr>
       </tbody>
     </table>
