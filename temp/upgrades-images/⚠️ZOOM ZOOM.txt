@@ -1,0 +1,2465 @@
+⚠️ZOOM ZOOM
+
+Auto upgrade - needs a name - 
+Build a Claude code set up page for my friends maybe take an email or something
+
+Check the prompt score landing page
+Get a fridge
+Scout- basically for the team to access the repo and ask questions - via slack???
+
+Sort, Kimmie
+Check for hairdryer
+Create a contingency plan for breaches.
+Figure out how to let DJ work on small silod sections of the repo - eg can he edit the setter page 
+
+https://testflight.apple.com/join/x9yeeWvc
+
+(https://testflight.apple.com/join/
+
+x9yeeWvc%5D
+
+
+x9yeeWvc
+
+
+x9yeeWvc%5D
+Prompt score.
+
+	1.	Set up Google OAUTH
+	2.	MAKING AN INITIAL ROUND OF PIPELINE CHANGES - inc UI
+	3.	Sort / check typeform 
+	4.	Sort nova
+	5.	Sort fulfillment - SOPs
+	6.	Make a better version of Sherpa
+
+
+Fix nova.
+Start posting. The protein and gym of AI.
+Workout app
+
+Auto manager - who to start with?
+	1.	‼️⭐️CLOSER EOD
+	2.	SUPERNOVA /NovaClaw
+	3.	HIVEMIND
+	4.	Dan access and hardening.
+	5.	Noah Email
+
+operators guide to narrtives
+
+	◦	Put key in key safe
+	◦	Check ledger
+	◦	Pay taxes (48,864) (tope to pay 4500 then)
+	◦	Order Peptides
+	◦	Ashton 
+	◦	Pick up parcels 
+	◦	Find scales
+
+https://us02web.zoom.us/j/3046086580?pwd=agFnd1ucmWUBaaYbsjda2b9Rqbr0hY.1
+
+
+	1.	Attribution
+	2.	SALES DATE //Sales EOD
+	3.	Leaders (sales, fulfillment, setters)
+
+Give Bea the project for next month
+	1.	Fulfillment (Bryan)
+
+Check capital attention
+
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILYxiPZWRldry49uTmCWAWDJBD6adk++UZC0l0EqIlyc user@iphone
+
+
+Paying stuff to do:
+	⁃	Joseph. 
+
+
+	⁃	supps - owed money (Q4/25 owed Mid Feb) // Q1/26 owed mid May) - ask for both at this point…
+
+
+
+
+
+
+	1.	Content production for Ultrawinning (see recent screenshots)
+
+
+	1.	Attribution
+	2.	Closer data
+	3.	building leaders - important - how? This is high level thinking. Or how to be lazy af.
+Have an architecture block we’re only the architects has access and has specific context. Everything has to go through the architects to set up in a separate file and understand the architecture really well and that’s it..
+
+Is the skill prompt making or system building?
+
+Send Brandon the SOPs for closers - once I’ve launched EOD.
+Shorten articles and make them more matter of factual
+Reply to Dan courses and CAC.
+Nano banana for creatives. IG Aisha. And manus app
+N4n training app. Upload new.. workouts from CC, gives you shot for missing workouts. No videos. Just what you need to do.
+How can I add voice note journaling to ultra winning? Maybe via nova. Maybe I just focus on technical articles.
+I need to get hyper growth set up.
+I need to make a plan for the next week. In terms of things to actually ship.
+
+I want to start documenting what I’m building on ultrawinning.com so I need to create a series of white papers or something. 
+
+How do I create a personal version HPFHQ and the hive? Where do I get data from? What is the use case for it?
+
+Sort out money order sleep 8
+Supabase CLI
+Tool for getting people set up on CC. 
+
+Tech audit. 
+Add a claude file per directory
+
+Attribution notifications. 
+
+Thanks reply to Dan about Visual access to IG
+
+Reply to dan - he was looking for CAC
+
+
+
+Sign Malta thing. 
+AI-100 - can I combine this with the plan for the next week?
+
+Ask Claude.
+
+	1.	Story maker 
+	2.	Voice script maker. how can I make an agent chain to do all of this? Also needs to be free.
+
+
+
+Use both sinnet and opus
+
+
+	⁃	USE Manus to improve Landing page for Dan Go.
+‼️DJ Set up - contract and chase up payment.
+‼️ Sales EOD
+
+
+
+What am i doing about CAPI??
+
+
+
+
+🔴prompt score
+
+
+
+
+
+
+🟡MEDUS TEST (wait for voice note).
+Daaaaaamn!
+This is wild because I was making a list of what I wanted to set up (EA that I talk to morning and night who reads all my meeting transcripts and helps me track tasks & follows ups plus dashboard & team oversight , marketing trained on the two system I/my team have invests in, invisible client support/tracking trained on my framework and helping me track/prep/debrief priorities/working sessions/progress) and this basically covers that and more from what I can see
+
+Re: getmedus.ai — buy the domain whenever. When ready, add it in Vercel (Project Settings → Domains → add getmedus.ai). The admin page can live at getmedus.ai/admin/orgs and tenant portals at getmedus.ai/org/hypergrowth/marketing. Zero code change — just DNS.
+
+
+
+
+
+🔴CEREBRUS - Test it now (after Vercel deploys ~60s):
+Step 1 — Telegram:
+
+/spec Build a workout monitoring app. Track exercises, sets, reps, weight. Simple dark UI. Show workout history. No auth needed for v1.
+Step 2 — Wait ~30-60s for the spec, then reply:
+
+approved
+Step 3 — Terminal:
+
+node scripts/cc-runner.js
+Then watch the terminal + Telegram for results.
+Everything you need to remember is in docs/CC_PIPELINE_GUIDE.md.  Action required:
+	•	 Wait ~60s for Vercel deploy
+	•	 Test /spec on Telegram
+	•	 Approve the spec
+	•	 Run node scripts/cc-runner.js in terminal
+	•	 Check NEXT_PUBLIC_APP_URL is set to https://hpfhq.com on Vercel (needed for fire-and-forget endpoint call)
+
+
+
+✅HGHQ Setup — Friday Call with Azri 
+Before the call
+	1.	Share Google Sheets with the service account email (same one that reads HPF sheets — check in .env.local for GOOGLE_SERVICE_ACCOUNT_EMAIL)
+	•	Share Azri's Q Leads sheet: 1cIj_k_LJM4yBWyE7DRtK89JauPzPIX22GBg06sl8LLo
+	•	Share Azri's Revenue sheet: 1QFatOgdBL1NLY84SNdDv3ouUo7hkvoajSUqgEydwJMk
+	•	Read-only access is fine
+	2.	Push code to Vercel (all changes from this session)
+	3.	Test HPF marketing tab — verify Phase 3 upgrades (strategy cards, tier split, cash attribution, dual attribution) render correctly on hpfhq.com/marketing
+On the call
+	1.	Open hpfhq.com/admin/orgs → select Hypergrowth tab
+	2.	Set Portal Password → Save (this creates the bcrypt hash + portal_config entry)
+	3.	Get Azri's Meta System User Token → paste into Meta Token field → Save
+	4.	Verify Sheets IDs are pre-filled (they're seeded). If tab names differ from 1️⃣ Call Funnel All Leads or Client Payment Tracker, update them
+	5.	Open hpfhq.com/org/hypergrowth/marketing in a new tab
+	6.	Enter the password you just set
+	7.	Click "🔄 Sync from Sheets" — data populates live
+	8.	Walk Azri through: strategy cards → ranked ads → tier split → cash attribution → funnel → source mix
+	9.	Azri bookmarks the URL
+After the call
+	•	Hyros API key (if Azri has it): paste into Admin → Other Integrations → Save
+	•	Set calendar reminder: Meta token expires ~90 days from issue date
+
+
+Friday call flow:
+	1.	Go to hpfhq.com/admin/orgs → select Hypergrowth
+	2.	Paste Meta token, set portal password, verify Sheets IDs are correct → Save
+	3.	Open hpfhq.com/org/hypergrowth/marketing in another tab
+	4.	Enter password, click "Sync from Sheets" — data populates live
+	5.	Azri bookmarks the URL, done
+
+
+
+
+
+
+https://maven.com/p/918565/the-agentic-lifecycle-with-opik-trace-evaluate-iterate?utm_medium=ll_share_link&utm_source=maven
+
+Discuss with Claude regarding using dashboard builds as a lead magnet and entry point for SAAS. Easy entry point and we can gather data. 
+
+Ultrawinning dashboard 
+Write invoices 
+Homepage
+Scoreboard
+
+	⁃	Pack!!!!
+	⁃	Build dashboard for Azri 
+
+
+typeform??
+
+
+
+
+MARKETING TAB/ATTRIBUTION
+	⁃	find attribution for all calls. (leads page) (MARKETING TAB)
+	⁃	MEDUS
+	⁃	HGHQ AZRI
+
+
+
+SALES/SETTERS /TEAM TABS
+	⁃	Build test tab? 
+
+
+
+NOVA UPGRADES
+	⁃	ongoing
+
+
+
+
+TEAM CLAUDE
+	⁃	pull the data from Slack and store it
+
+
+
+
+PROMPT SCORE
+[] Social media manager for prompt score 
+[] Add edge to promptscore.
+
+
+
+
+
+
+Leave AI innovators 
+
+Add codex to Claude code  (don’t)
+
+
+
+
+[] Check password.
+[] Keep building out sales tab. 
+[] Front end UI overhaul. What do I like. What don’t I like.
+[] Finish attribution. Make into supabase. Add it as a master sheet that Claude can refer to. 
+[] slSame with UTM build.
+Trouble shoot. 
+
+Nova md
+Compare my set up with Agnese 
+
+Send out offer letter.
+
+Tomorrow. Build setter Manuel.
+
+Speed improvement. 
+
+Build an iPhone app even on base44 that I can use to add notes from Apple notes or direct in app that I can send to the prep screen daily. Or on send. 
+
+Change log to give to Agnese: 
+Get an update for today to populate Hq
+
+Create an app for the team where they can enter information and produce UTN links, which then update updates the master database, which should probably be on supabase.
+
+I wonder if I can make it in Slack or even link it in Slack, that would work, could also be a page directly on HPF
+
+They should also have the ability to search current ETM’s to make sure that we’re not creating new ones for the sake of it
+
+You can’t be like that on one hand 
+￼
+
+
+
+Here's my assessment:
+You have everything you need for a qualified lead scoring system. The three qualification fields that matter for your tier logic are Q5 (occupation), Q6 (location), and Q8 (income/investment). Here's the natural tier mapping:
+Qualified (green): Q5 = Business owner OR Executive/C-suite OR Professional, AND Q6 = US/UK/Canada, AND Q8 = Yes willing to invest, AND Q7 = ASAP or 1-3 months.
+Amber (bookable with review): One of the three criteria is soft — e.g., "Rest of world" but everything else is green, or "Professional" in Australia (your Tier 3 never-book list says Aus — that's a conflict with the Typeform showing it as an option).
+DQ (don't book): Q8 = No, OR Q5 = Other, OR Q7 = Just researching.
+Now here's what I need to flag:
+Problem 1 — Australia is on the form but on your never-book list. The Setters Hub doc says Australia, New Zealand, and Israel are Tier 3 (never book). But the Typeform presents Australia as a top-level option alongside US/UK/Canada. That's sending a confusing signal — leads from Australia fill out the form thinking they qualify, take a call slot, and waste closer time. Either remove Australia from the form or add it to the amber tier with a high-income-job filter.
+Problem 2 — "Rest of world" is too broad. Your Setters Hub has a detailed 3-tier country system (Tier A safe to book, Tier 2 book if high-income job, Tier 3 never book). The Typeform collapses all of Europe, Middle East, Asia, and Latin America into one bucket. A $300K/year tech exec in Germany gets the same tag as an unemployed person in Venezuela. You're losing qualification signal here.
+Problem 3 — The Typeform doesn't ask "how did you hear about us?" The UTMs handle attribution for Path 1 (direct to form via link), but if a setter sends someone to this form, the UTMs might not carry the right source unless the setter uses a specific link. This is the setter attribution gap.
+Before I spec the Marketing Tab and the setter attribution system, one last question:
+These three answers determine whether we can build the Marketing Tab on existing data or need to fix the plumbing first. The worst outcome would be building a beautiful dashboard that reads from empty fields.
+
+
+
+
+
+
+
+
+
+
+Task hub is main database and all the other places are just views from there.
+
+Dashboard is main hub, metrics for prep phase coke from there.
+
+OKRs is main place and they pull thru from there.
+
+Files are organized by AI? How are we going to view it?
+
+Need to figure out task flow - they should all be linked and maybe the GTD/ 2nd brain frame work. Speak to Claude. Define what is needed. Sit and think. 
+
+Figma for creatives 
+Grok for video 
+
+
+Do
+
+	⁃	fulfillment SOPs (resign) - in a doc John sent me - to review
+
+	⁃	need to also look at the testimonial gathering piece to stop people giving 4 star reviews
+
+
+
+
+
+
+need 
+
+“why did people end up booking”
+
+	⁃	tasks to be added automatically from brain dump (or can i use {} or something to signify that its a task? maybe it makes suggestions? And i can choose whether to add them or not.
+	⁃	should pull tasks from brain dump + projects/ previous day not done and projects.
+	⁃	option to add tasks to calendar or assign them (id we already have deep work).
+	⁃	Also, only need 2 options - deep work and quick fire but also worth having meeting prep somewhere.
+	⁃	The start working button doesn’t do anything. 
+
+	⁃	Build out setter offer letter - check the below - use Claude.
+	⁃	Consider how much setters can make with current revenue levels and different commission structures.
+	⁃	Build out memory part for Claude AI assistant (see my PRD below - pull meeting summaries, book meetings, controlled via Telegram/whatsapp - see Jon’s list) - does it make sense to use obsidian? or the one ashton told me about.
+	⁃	Build out rest of dashboard (APIs/MCPs)
+	⁃	
+
+	1.	Client info and summaries (fathom + whatsapp)
+	2.	Whatsapp
+	3.	SOPS based on data.
+
+[/] Lockk in new price automations - Message Sheena and connect Brandon.
+[/] Bea to change meetings to monthly and remove team meetings
+[/] Tyrus to send me the prev presentation (as a template)
+[/] Tyrus to give me access to Zapier?? (Check 1password) - see if I can change the automation.
+[?] iframe access? This link is dead?
+[] Brandon - To give goals for q2.
+[/] Bea - to get on call
+[] ☎️ Bea - Manual data - automation from calls booked - even manually find out if they are qualified. 
+[/] Message Dan about discrepency between PnL and 
+
+
+[] Chase ad calls booked (2 in Feb - capt attn Feb 2 - retargeting) - new one today too.
+[] Chase up John info (for dashboard - data).
+[] JOHN - to get resign info etc. (review SOPs) - linked in the folder.
+
+
+
+[] SETTER - send out onboarding documents
+[] SETTER - build out onboarding documents
+	- Offer letter
+	- [/]onboarding process (Lia?)
+	
+
+[/] tech and personel audits (BEA)
+
+
+
+x-x-x-x-x-x-x-x
+
+?? Thurs 26th until Monday 30th - Tues
+
+
+	⁃	5k fee
+
+Rosevesalvador1gmail.com
+
+
+retention SOP (downloaded from convo with John).
+
+Need a goal (OKR??) for each dept with how I am going to approach it.spa\
+
+What am I avoiding today?
+
+What is the quickest way to get calls/money?
+
+	⁃	Book call with angelica. - need to hire another setter.
+	⁃	Ryan Email 
+	⁃	See what Bryan has to say.
+
+
+
+
+referral process - see John chat - 
+
+
+
+
+OTHER
+	⁃	ADMIN Re-do team meetings from next week (remove team meeting - make it a monthly meeting) 
+	⁃	ADMIN Add a fulfillment meeting (john should be doing this).
+	⁃	SETTER - set up a Notion HQ for all the material and tracking etc.
+	⁃	ADMIN Sort Ryan (finalize contract - up it to $75/h - actually do not need to do this if Bryan leaves.
+	⁃	LDS Plan for Team meeting (all-hands) 24th.
+	⁃	ADMIN Add emoji to sales meetings so they can more easily be identified.
+	⁃	Get on call with Dillon (book)
+	⁃	Clear Slack
+	⁃	DAN MEETING - 3 months of bank statements
+	⁃	DAN MEETING - an idea for ads and setting - final plan - who is doing what, who i need to hire - make some decisions and pitch som cases.
+	⁃	DAN MEETING - (check email!!) PnL review (need to figure out how much money we have -hard to make hiring decisions
+	⁃	 get attribution from Bea (Discussed with Angelica) - like this sheet
+	⁃	Chase BnPL + training for it (what options do we have available).
+	⁃	FULFILLMENT - include John’s closes with close rate/sales for the team.
+
+AI
+Build a tool to coordinate planning and working.
+What is my workflow?
+
+	1.	Reminder of last week (in Claude) - can this be done? Summary page that I sent to Dan?
+	2.	Update dashboard
+	3.	Review projects
+	4.	List all the tasks. (?tab per project with title, description, goal etc.)
+	5.	Assign tasks to today in an order (including booking meetings/sending messages and adding to meeting agendas).
+	1.	Quickfire section - tasks put in here with a button.
+	2.	Today section.
+	3.	Tomorrow section
+	4.	Place to enter a summary (box at the bottom) + a plan for the next day - which carries over to the next day).
+
+	1.	Add meeting summaries to meetings - from Fathom ? ideally all of this is in one place (meeting + links, agenda and then summary - can I recreate a calendar in this app that is like google (2 way integration) but actually
+	2.	tabs
+	1.	TAB 1 - Calendar (as google calendar but can also access 
+	2.	TAB 2 - Work view (by day)
+	3.	TAB 3 - projects (with a smaller tab per project? where tasks are listed).
+	4.	
+What am I avoiding today?
+
+
+
+
+
+I don’t like lying when a few judiciously placed and entirely true facts can get them lying to themselves. 
+
+
+
+Maybe hit a setting session on Sunday 
+
+MONDAY:
+	⁃	cross check spreadsheet data with GHL Dashboards
+	⁃	Get in convos 
+	⁃	Chase up attribution into slack (Tyrus)
+	⁃	[]Post the setter job listing — Dan approved it, no reason to wait (does Noor have one).
+	⁃	[] NPS system + [] Re-sign system + [] When is john starting meetings (wc 30th March)
+	⁃	Lock in pricing and meeting structure with Brandon (do it via zoom with agendas)
+
+TODAY
+
+	⁃	Questionnaire
+
+
+
+
+
+TLC off boarding (not until post payment/notice period).
+	⁃	Close down accounts (check that I’m not paying) - canva? Loom? Train Heroic?
+	⁃	Get paid
+	⁃	Speak to team
+	⁃	Leave all the groups
+contracts
+
+	◦	Will have a plan by the 24th… (Miro flow chart - IG, Email - fill in all the data gaps - use this as a part of the presentation - this is current - fucking mess- ignore the rotten flesh and just build out a super streamlined funnel that I CAN control and observe - go Rob Hanley).
+	◦	Review Dan Convo
+	◦	See where Will and I connected with Jeff regarding new plan to be implemented.
+	◦	Ad tracking plan- Hyros? Attributition??
+	◦	Tyrus/Idris - did the tracking happen? Did Idris connect after I spoke to him on Thursday?
+
+
+
+
+DAN PLAN
+	⁃	What do I need to do from April (get a presentatation ready for Dan for Tues after next (24th)
+	•	In the mean time I need to research attribution, media buying and make a plan for the next few months .
+	⁃	What would it take
+	⁃	What are the blockers
+	⁃	What info do I need now in next few weeks
+	⁃	Utm/Attribution  
+	⁃	Also need to define critical needs vs nice to haves (pnl etc)
+Present all options with pros and cons and costs and considerations. Make it into a presentation - use clause. 
+	⁃	Setting team 
+	⁃	What needs to be tidied up (Tyrus projects)
+	⁃	What can I simplify
+	⁃	Slack
+	⁃	Price
+	⁃	funnels
+	⁃	Price, meetings, media buying. 
+
+DAN CADENCE
+
+
+
+retargeting ads
+
+campaign - multiple ad sets with creative packs (5-6packs), static image, videos - 
+ad set
+10-20 different
+
+Hyros
+Cappy
+
+
+Ads to
+
+optimize for booked calls.
+
+Tidy up meetings from yesterday
+Make a plan for media buying
+
+
+$150-200 cost per call
+8-10 calls a day
+
+
+	1.	Monday - Avatar (closed won calls, testimonials) - find ideal client (interview) send them across. (how many do we need?) - we can send them in bulk.
+	1.	could be sales calls
+	2.	onboardings / offboardings
+	3.	youtube videos (related to specific person)
+	4.	testimonials (need to be longer for more depth) - 
+	5.	list of videos that worked well on IG
+	6.	Could be competition
+	2.	Rant videos - we need ideas 90-120seconds
+	1.	bookmarked folder (examples for each stage)
+	2.	Suprahuman ads.
+
+
+Tracking at the application level (john or sarah or whatever).
+
+CADENCE?
+	1.	source + rant videos
+	2.	
+
+Testing to find the right one? Is this the plan?
+	1.	
+
+Feedback? iteration?
+	1.	(on
+
+
+Data
+	1.	
+
+
+
+
+
+
+
+	⁃	Rant videos - we need ideas.
+
+Finalize meetings
+Media Buying
+Reta for Dan
+Money for me (saad).
+Watch the Zoom video.
+Attribution with
+
+Attribution!!!!
+
+Do a tech and payroll audit for DG.
+Attribution (EMIL
+
+	⁃	What did you used to do with tyrys?
+	⁃	Open up calendars more? (Lead cadence)
+	⁃	Ask about attribution - where did we get it from before? https://docs.google.com/spreadsheets/d/1rDAIxZZl8fYqjR38P0waU0oY0513upTtXwIhsIT2qmM/edit?gid=1286946135#gid=1286946135
+
+	⁃	Thoughts on BNPL
+	⁃	Attribution - manually via closers (or different versions of typeform).
+	⁃	BNPL
+
+
+Revio - software - great way to train the setters
+
+	1.	Wait for PnL for Feb
+	2.	Get paid for Feb
+	3.	Get paid extra for Jan
+	4.	Resign March 14th and ask for full month of pay in advance in return for 2 weeks of onboarding. 
+
+
+
+Setters
+Media Buying
+Onboard and Learn
+close rate
+
+Book in with Will
+
+
+5-830
+
+	1.	Setter flow + materials + reach out to Angelica regarding setter hire
+	2.	Org chart, pay, metrics
+	3.	Organize meetings (including Dan).
+	4.	Learn some ads.
+
+
+
+	1.	setter hire
+	2.	materials
+	3.	ask Dan
+The depths are in the foundations. 
+
+To be bold is to walk a fool hardy edge
+
+	1.	Review all the setter stuff and book in with Sheena.
+	1.	lead engagement strat
+	2.	Review app funnel build (and what needs to be done).
+	3.	Review App funnel metrics.
+	•	Opt In Rates Above 10% (DO NOT CHANGE UNLESS HAVE 100+ PAGE VIEWS)
+	•	Cost Per Survey Under $50
+	•	Cost Per Booked Call Under $100
+	•	Cost Per Show Under $150 
+
+	⁃	Are we getting messages or leads from the ads after 3-5 days?
+	⁃	If you’re above KPI but closing clients and in KPI then let it run,
+	⁃	I need to know if we are booking calls.
+	⁃	Ad to booked call funnel.
+	⁃	Results so far? (how many calls booked?)
+
+Dr Emil is inviting you to a scheduled Zoom meeting.
+
+Topic: Dr Emil's Personal Meeting Room
+Join Zoom Meeting
+https://us02web.zoom.us/j/3046086580?pwd=agFnd1ucmWUBaaYbsjda2b9Rqbr0hY.1
+
+Meeting ID: 304 608 6580
+Passcode: 500987
+
+---
+
+One tap mobile
++13863475053,,3046086580#,,,,*500987# US
++15074734847,,3046086580#,,,,*500987# US
+
+Join instructions
+https://us02web.zoom.us/meetings/3046086580/invitations?signature=ATmmbMXT9V5W_oMLEf-B12z5jUpC5su1_kYQSa5EgVo
+
+
+
+ Review whole ‘client-dan-go’ channel
+
+
+Retargetting KPIs 60-80$ calls. EIther new followers or 60-90days.
+
+lead to quality percentage >10% (5 quality leads in 50 leads)
+
+
+MANUAL BOOK IN AND SEND APP FORM AFTER - make sure it is connected.
+
+Look tidier for sales calls - collared shirt etc.
+
+
+CPQCB
+CPA
+ROAS
+MER
+
+https://docs.google.com/document/d/1SFQMSmrjWbgbFnYq54kP_HsAjLHzqzPLBGNrVfJPDVc/edit?tab=t.0
+
+DM ads
+
+
+Split test the landing pages for funnels.
+	⁃	can we collect emails on uncompleted forms from ads?
+	⁃	add video of Dan on booking page to frame the call (instead of confirmation page) 1-2mins.
+
+	⁃	PNL with Tyrus
+
+
+	⁃	Fulfillment NPS
+	⁃	Closer automation
+	⁃	Dashboards
+	⁃	SOPs
+	⁃	Jeff and new web pages (transfer).
+
+Would love to know what dan Go does
+
+Learn ads - make plan.
+
+
+
+Base + rev share
+
+retargetting -> lander
+⭐️Reduce stress by closing loops.
+⭐️Ignore Noah, journal and plan. 
+
+	1.	Insurance
+	2.	Malta certificate of tax residency
+	3.	DG Projection for 4-5M to decide on 1st action/project
+	1.	setters.
+	2.	retargetting?
+	4.	Also need a fulfillment plan probably sooner rather than later.
+
+
+	1.	HG Azri
+	2.	TLC Phase 2 planning
+
+
+	⁃	FB Ads - $5M spend
+	⁃	How are you working right now?
+
+890
+
+DG
+Also, effective date
+Plan for 4-5M with 50%(?) margin and what EBIDTA?
+
+Hey Dan, quick one on the contract before we finalise.
+
+My accountant flagged that the way the agreement describes my role matters for cross-border tax purposes between Canada and Malta. Basically, if the CRA sees it as me "managing a Canadian business" they could require your company to withhold 15% from my payments — which would be a headache for both of us to sort out.
+
+The fix is simple and doesn't change anything about what I actually do — we just need to adjust some of the language so it reads as a consulting/advisory engagement rather than an operational management role. Things like:
+
+- Title: "Strategic Consulting Agreement" or "Business Growth Services Agreement" instead of "Operator Agreement"
+- Instead of "managing day-to-day operations" → "advising on and providing consulting services related to operational improvement"
+- Instead of "autonomy over day-to-day operational decisions" → "providing strategic and operational recommendations"
+
+Same work, same role, just described in a way that's clean for international tax. This is standard stuff for cross-border consulting arrangements.
+
+On my side, I'm getting a Certificate of Tax Residency from Malta which your accountant will probably want on file. Could you check with your accountant whether they need anything else from us to confirm no withholding is required? Happy to connect our accountants directly if that's easier.
+
+Want to get this buttoned up so we can get started.
+
+TLC (TH)
+￼
+
+TO DO
+Lesson per day 
+
+
+	⁃	Projection for 5M (with ebidta etc so I can reverse engineer this including hires, amount I can spend on things etc etc. and what info I need.
+	⁃	Funnel hack and sales call
+	⁃	roadmap (Software) + plan for DG
+	⁃	Setters and fulfillment?
+	⁃	Download everything I need from TLC
+	⁃	See if I have anything from springs
+	⁃	Projections for numbers - what is best thing to address? Setters or closers?
+	⁃	Who I want from TLC - Louise?
+	⁃	Faudia? Lia? But time zones. Milica? But for what? Time zones? Denisa as PSM.
+	⁃	Create org chart.
+
+Marketing
+	⁃	review ad library 
+	⁃	Check emails
+	⁃	Check LinkedIn
+	⁃	Check IG DMs
+	⁃	Fit metrics
+	⁃	Check how much we are paying for Whop
+	⁃	Whatever I decide, learn as much as possible from Azri.
+
+
+
+
+
+
+
+
+
+Reply /Outstanding
+Mauro (about Sat) - ??
+Ryan Lazarus - review
+
+
+
+TLC
+Hand over to Denisa and Silvana. 
+Look at coach hiring list. ?James.
+
+
+Look at notion from Dan Clark Old or new?
+Agnese 4th Sept.
+
+
+
+
+
+
+
+
+
+
+This is a normal body of someone who has been training for 20+ years. Pretty consistently. Maybe a few weeks off for Covid. Maybe my genetics are good. Maybe they are not. But what I will say to most people who do this trend. Have you tried losing a bit of extra fat and getting a tan? It really makes a difference to how you look 😂.
+
+RETA and MT2 make a hellova difference 😂
+
+Create roadmap for TLC
+	1.	MRP phase 1 (aw noah)
+	2.	MRP phase 2/VIP (aw Silvana)
+	3.	Cash (aw noah)
+	4.	Course (aw noah)
+
+SAM
+-People need clarity
+-You need to do ads yourself.
+-Calls booked + revenue are key metrics
+simplified tracking
+	⁃	cut off.
+
+First thing on a lot of calls with Azri - 
+Most ad problems are not strategy problems - they’re volume, variation, and patience problems.
+
+
+HG - 100 day Plan
+
+DG - 100 day Plan 
+
+	◦	Dan Go 
+	◦	Plan HG meeting + Strat HG - Overarching 100d plan with daily check ins (what metrics - use ChatGPT).
+
+	◦	Map out strategy for TLC (quiet quit)
+	◦	Mini Board (HG-100 day sprint, DG-Q+A Sheet, All-Pnl-norm)
+	◦	HG WED- Sam ads stuff
+
+	◦	Invoice for James Rufus
+	◦	Payment processor
+
+
+
+All included with fan basis
+(fanbasis - we can add service charge)
+https://docs.whop.com/fees
+
+
+Removing caffeine from your diet can remove almost 60% of your will to live. 
+
+
+Later
+	◦	Projections for 500k month (margins etc).
+
+I consume energy drinks, sweeteners, and don’t pay attention to seed oils or microplastics. I eat lots of candy and ice cream and might overdo it with stimulants now and again 🙄.
+
+I also keep an eye on my calorie intake, train hard every day, spend time in the sun, walk everywhere and eat tons of protein and vegetables.
+
+Maybe some things have more impact than others 🤷🏽‍♂️
+
+But I train hard, eat a lot of protein and veg, live in the sun. How are you?
+
+Fill out roadmap in dashboard so we can populate and cross reference with PnL. If it is not on the roadmap, then it doesn’t go in the PnL. 
+
+Payment processor
+Mortgage
+https://us06web.zoom.us/j/4326308228
+
+To map out roles for MRP and business.
+
+
+Noah priorities
+	1.	MRP to VIP implementation.
+	2.	Contracts
+	3.	Stem cells (limited)
+
+
+	◦	doctor protocol (MASTER PROTOCOL peps and supps)
+	◦	Stripe review (faudia DM chat)
+	◦	azri overhaul for friday (with Rob
+	✓	Update MRP protocols and sheets (OB James/Denisa)
+	◦	nebojsa
+	◦	Luca
+
+
+the moment your realize calories exist, it becomes a choice - which is why so many people deny them
+
+
+Rohin - bit more complex - https://fathom.video/share/zxq_FA5N9yvypYCvxW6r4eZhybAQZsyN
+
+Connor C - basic af - https://fathom.video/share/LUeEiCCCvBeHa5uSHxz7_e3xwt3HSoD8 
+
+Matt P - supposedly high risk - ads ‘not working for months’ - spent 240 quid, didn’t attribute properly - https://fathom.video/share/5zxjBznzjkPWndzzKT_x4A3khyE7CEUF 
+
+Chris W - 50k / mo - scaling spend - https://fathom.video/share/xD_me8xaacsAtoUzNLJ2CzBr12wzx8Xz
+
+
+
+
+
+
+
+	1.	What is food. Addy and Reta
+	2.	I like I microsise seed oils 
+	3.	Lazy leadership. Don’t even worry about being removed.
+
+Stim maxing 
+	⁃	wheel of life for visionaries with coach upsell (or email list?)
+	⁃	 3pm crash stack (see troy)
+	⁃	why and what you can do about it.
+
+
+
+
+	✓	thomas answers in slack
+	✓	sales script overview Wes.
+	✓	setter script Loom review
+
+
+
+
+
+
+	✓	Jenna set up
+
+	⁃	Plan for Strategy Meeting / pre meeting.( message Noah)
+	⁃	Also, you need to own marketing.
+	⁃	I need to turn the sales script into a pitch deck
+
+
+
+	1.	THOMAS - MRP/VIP data for next week
+	2.	content review
+	3.	Marketing discussion - please keep this for marketing these calls.
+	1.	Website
+	2.	Speed
+	4.	marketing to be better
+	5.	dashboard per dept.
+
+
+And we need some kind of 1-pager brochure, as a backup for people who ask to review or discuss with husband etc...
+
+
+Stories for this week
+	◦	logistical sales script
+
+
+
+
+	◦	8 weeks -> 12 weeks
+
+
+
+	◦	prep for calls (Jad + Helena).
+	◦	Slack
+
+	✓	Update sheet and Call logs
+
+
+	⁃	Frame a load of posts/ideas as questions with three bullet points and an idea of how long they should be eg 3-6 mins (or 5-10) and do a Cory. 
+	⁃	if you can’t organize your life in apple notes, it’s too complicated.
+
+
+
+
+
+
+	◦	Prep for Azri
+	◦	tourya hq
+	◦	Jad plan (tag James in for sure with advice from Silvana)
+	◦	🔄Doctor SOP and protocols (including role - to send to Jenna and Labib)
+	◦	Set up jenna
+	◦	🔄Set up whop
+	◦	Plan leadership meeting - are we ready for closers coming online + we need a robust feedback loop.
+	◦	🔄Thomas commission. IN PROGRESS
+	◦	Agenda for strategy call (see Noah tab).
+	◦	Contract roadmap
+	◦	B2b peptide contracts. 
+	✓	Create master internal doc. With all protocols etc.
+	✓	Agenda for MRP Call
+	✓	Questions from Dr Sheraz and James answered
+	✓	Supplements should be finalized and cross checked
+	✓	Finalize the role of the doctor (Supps/nutrition/exercise) and prescription standards
+	✓	List for James/Briefing for James (feedback loop for who we are getting).
+	✓	Reporting structure. Protocols are revealed on the calls and rolled out to the team. (Add this to agenda). (Docs work under Silvana and direct questions to her and protocols are discussed on these weekly meetings. 
+	✓	Handover for Silvana-Plan for MRP meetings 
+	✓	Sheet for Kendal (and anyone else)
+
+Strategy meeting - I need an update on all the points from Noah. Get this before the call. 
+
+
+✅ Ed Colombia
+✅ Dan operator 
+✅ Steve noah
+✅ Dan go
+Jake bodybuilding chat.
+✅Chad - fat loss. 
+James ampk 
+
+Thomas compensation.
+
+CEO of ford - podcasts (James swanick)
+
+
+Retatrutide does not preserve muscle. 😂.
+
+
+Jakob - start on 26th with mobility again.
+Kendal - lock and load her ASAP. 
+Mastermind message for Denisa. Also new coach message. 
+
+You can’t fail. You either learn or you win. If you learn you keep learning until you win. If you win… well then you go back to learning. So it’s just a cycle of learning and winning forever. So you might as well strap yourself in and learn to enjoy the ride. Ideally do some of the other things in life too. You know, balance or something. So yeah. Let’s fucking go. 
+
+	1.	Do Azri invoice (once I’ve checked in with James)
+
+
+	◦	Build the “week by week” for MRP according to what we discussed.
+	◦	water fast 1st week
+	◦	Figure out peptide protocols for 12 week MRP
+	◦	Onboard coaches (Maybe start a whatsapp group with all of us)
+	◦	Onboard closer
+	◦	•⁠  ⁠⁠Go through all MRP clients with Denisa (Whatsapp)
+	◦	•⁠  ⁠⁠Onboard 2 new MRP clients (MON + TUE)
+	◦	•⁠  ⁠⁠Coach/ put MRP clients on track as a few of them are starting.
+	◦	•⁠  ⁠⁠Prep for leadership meeting tomorrow.
+	◦	•⁠  ⁠⁠Activate Faudia/Louise to get Whop set up (Unless you’ve done this already?)
+	✓	•⁠  ⁠⁠Message coaches who didn’t get a job.
+	✓	Tell Faudia to onboard everyone.
+	✓	•⁠  ⁠Review offer philosophy document.
+
+
+	◦	Define rules for coaching and add to OB (comms and )
+	◦	breathwork and including therapy at the beginning of each masterclass
+	◦	Weekly MRP meetings (starting next week) 7am or 11am on Monday…
+
+
+Supp stack
+	◦	Creatine 2 to 3 times 5 grams per day ( several times and not in one go), Cascara, Psyllium husk, Bentonite clay, Digestive enzymes, Magnesium
+	◦	sauna is not a must. cold plunge is not a must. high fat high protein and sleep early and hydration and these pills are a must
+
+
+
+i am disapointed you take energy drinks. I am disappointed by your faculty for critical thinking.
+
+Can I make an MVP app and post at least a weekly update or my profile. 
+
+Can I use ChatGPT to create content around what I’ve learned in fitness e.g. pragmatic thinking and energy drinks and what it is called. Basically how can I relate fitness ship to high-level thinking? And something that’s entrepreneur as well wants to consume. 
+Mental models, thinking probabilities is not certainties.
+
+Perspective me because I drink energy drinks. Respect for them because their lack of critical thinking faculty https://philosophyofk.com/products/mental-model-km1-part1-think-in-probabilities-not-certainties-book?ad_id=120236533579780784&campaign_id=120236533579770784&fbclid=PAZXh0bgNhZW0BMABhZGlkAasqoN6QRLBzcnRjBmFwcF9pZA8xMjQwMjQ1NzQyODc0MTQAAac3JUr0vsc-pB7PO_wf96yb1muz0r0wiGov2dyV5onlvY9JyidRzSQGIx5pRw_aem_9Ts2ID09kgPSQ2ViJ64XMQ&utm_campaign=120236533579770784&utm_content=120236533579780784&utm_id=120236533579770784&utm_medium=paid&utm_source=facebook&utm_term=120236533579910784
+
+
+
+
+Check Roberto has a picture
+
+
+
+“Hi [Name], really appreciate you taking the time to speak with us. We had some strong candidates this round, and after a lot of discussion we’re moving ahead with someone whose experience lines up more directly with the immediate scope. I want you to know we genuinely enjoyed meeting you — you’ve got solid skills and a great vibe. If future roles come up that feel like a better fit, I’ll definitely keep you in mind.”
+
+
+
+
+better way to do mastermind messages
+a template for call reminders for clients and Dr Sheraz
+
+lunge jumps with KB
+
+1.875mg
+
+
+Troy mixing
+Goal (0.5ml injecting needles) 3 bacstat, 4 NAD+ 2 reta
+
+Use 1 bacstat, one mixing needle and 2 injecting needles.
+NAD+ 20mg
+	1.	20mg per 0.1ml per injection for NAD+  (500mg vial)
+	2.	Mix 2.5ml in each of 2 vials
+ RETA+ start at 1mg 1mg per 0.1ml for reta (he has 10mg vials)
+So mix 10mg vial with 1ml of bacstat do just one vial for now.
+
+	◦	coach hire plan
+	◦	Go thru all patients in MRP + whatsapp and write a one sentance. (Make it a psyop for Nate and Kayden.)
+	◦	tass needs to book in and confirm dosing.
+	◦	message all coaches we did not hire.
+	◦	heather ? rachel?
+	◦	Brianna
+
+
+	◦	not urgent - make new template - Make HQ 12 weeks
+	◦	add injections and mixing tab
+
+
+	✓	recording for Thomas
+	✓	Data from Lia and Louise
+	✓	Peptides for nat. do order
+	✓	Plan mastermind 
+	✓	Reta mixing video.
+	✓	Aston workout. 
+
+
+
+
+
+
+	⁃	Journal on what it would take for me to disconnect and survive for 6 months.
+	⁃	Journal on boundaries 
+	⁃	Journal on what it will take for this biz to succeed. 
+	⁃	“If you are struggling for time then let’s get on a meeting to prioritize”.
+	⁃	Someone needs to own marketing. If you are too busy, we need to decide a distribution of areas and tasks and downsize the business. You can’t just fire random people.
+
+
+
+
+
+
+Until I’m …xyz I’m gonna keep drinking energy drinks.
+
+Once I’m 
+It makes no sense for me to budget. It’s easier to just make more money. Budgeting is like rearranging deck chairs on the titanic. 
+
+Sport isn’t good for you. Don’t get me wrong it’s better than being sedentary but there are many things far better for healthspan.
+
+
+
+⭐️Leadership
+	◦	Sort out Thomas compensation
+	◦	Wes convo (outcomes and cadence - clarify with Noah regarding pay).
+	◦	Roadmap and partnerships
+	◦	US connection for Peptidesb- Kenzie 
+	◦	Sort out Sheraz and MRP patients
+
+My frustration is that you will panic in four weeks when we miss our goals again and start trying to fire people and change the contract. 
+
+I agree with everything you are saying, the issue is FOCUS and prioritization.
+
+And I refuse to follow your chaos. Because we are currently building a house made of sand. 
+
+MRP
+	◦	update needle size
+	◦	add FAQ
+	◦	MRP Supps (how are we doing this without overwhelming people??) - there are a lot of supps here, maybe I can create a flow chart?
+	◦	Record a workout introduction (evidence based etc etc.)
+
+
+clients
+	◦	Jakob - Client HQ + Loom (send once peptides have arrived)
+	◦	 Troy - Book in kick off call - (once peps arrive)
+	◦	Nat - review sheraz call and book in again.
+	◦	Workout (maybe an addon, maybe nothing)
+	◦	Client HQ + Loom
+	◦	Aston //aw doctor booking (and pics of space)
+	◦	Workout (barbell) invited
+	◦	Client HQ + Loom  (send once peptides have arrived)
+	✓	OB form sent
+	✓	Handover to Sheraz
+	✓	update his notes
+	◦	Tass //reply - Client HQ + Loom (send once peptides have arrived)
+
+MONDAY MORN
+	◦	Leadership for TLC
+	◦	Coach hire plan
+	✓	Make plans for quarter mil
+	◦	Finance Audits
+	◦	cancel charm?
+	◦	Including expenses (be CEO)
+	◦	Ensure Lia is paid her bonus
+	◦	🤝 FAUDIA - Stripe - what is the plan here (FAUDIA
+	◦	🤝 FAUDIA chargebacks etc - to discuss with Noah
+	◦	🤝 FAUDIA Whop
+
+TODAY
+	◦	Journalling - Leadership thoughts (post mushie trip)
+	◦	Ultrawinning (mr beast advice for reels)
+	◦	Journal on backing myself but being open to being wrongs
+	◦	Speak to chat GPT about the video game thing.  
+	◦	Kimmie to send me money for Saude
+
+
+	◦	windsor mews (chase vee \\)
+	◦	joseph (book meeting)
+	◦	$$ Azri to pay me $7500 9th Jan
+	◦	$$ TLC to pay me ($8000??) 9th Jan
+	◦	$$ amaDRN to pay me?? ($6-8k)???
+	◦	NEXO ($3800) REV ($700) WISE ($3000)
+	◦	George
+	◦	Deposit back for Oceana (+deposit back!!!)
+	◦	to consider paying for next year. (?? end of Jan 4500?)
+	✓	saxobank
+
+	◦	Planning sessions for Azri (MONDAY)
+
+
+
+
+Make contingency plans
+Backup Hit list
+	1.	Manuel - coaching biz
+	2.	Phil - coaching/coaching biz
+	3.	Own biz (landing page and videos).
+	4.	Mauro - something there?
+	5.	Ashton - ops person?
+	6.	Celine - ops person
+	7.	George/James - reach out, partnership.
+	8.	Rosa? Long shot.
+	9.	Jeremy
+	10.	Talia
+	11.	Closing for TLC (Or more limited role).
+	12.	Frontier Club - speak to James Ure regarding investing etc.
+
+
+
+Continually upgrading my in-game avatar.
+I like to distribute skill points across all areas and then just make sure 
+
+What are the talent trees for health, wealth and relationships. What are the domains? Family, friends and sex? Does each have 2? Money and freedom? Health and performance? 
+
+10 things you need to have to be able to talk to me about sugar-free energy drinks - a lesson in pragmatic thinking. Unless you check all 10 boxes, I don’t want to hear it.
+
+
+	1.	Consistent inconsistency
+	2.	Near evils
+	3.	Base camp 
+Operations is the identification of bottle necks within a business and strategizing and organizing the fix and ideally preempting them. 
+
+Life is hard and then a study comes out saying I have to quit energy drinks because if I drink 5000 of them in 10 minutes, then it might kill a rat
+Biohacking is a near enemy.
+Attachment is the near enemy of love. 
+It can be mistaken for it but it does not give the benefits of it. 
+Biohacking is the near enemy of health. 
+
+Like a plane, off by a few degrees, there is minimal issue now, but you will not arrive at the correct destination. 
+It can lead to states of delusion initially, which can feel good, but cripple our capacity to flourish in the long-term
+
+
+
+
+
+
+
+
+
+1.⁠ ⁠Trainer hire form/ filtering candretaes (https://forms.gle/RXE8GKf9QEPP4H8k6)
+2.⁠ ⁠⁠MRP fulfillment systems finalized
+3.⁠ ⁠⁠Notes for Roberto after the OB yday + build system for documentation.
+4.⁠ ⁠⁠🔲 Sales handover (meeting with Thomas)
+5.⁠ ⁠⁠Checkinsg PnL / current cash for December so we can plan out the next 2 weeks.
+6. Story review for last 2 weeks.
+7. ⁠Update Reta guide.
+8. Review sales attribution for last few months
+	9.	Thomas Comp
+	10.	Interview coaches
+
+
+
+Dashboard current cash
+Trainer form and list
+
+(22/23) 24/25/26/27/28/29/30/31/1/2/3/4
+
+	◦	Notes for Roberto
+	◦	book a call with Denisa - link for MRP client HQ and whatsapp
+	◦	Dr Jenna bio, photo + calendar
+	◦	Supps updated
+	✓	clarification from Silvana
+	◦	build out onboarding doc
+	◦	Build out medical notes doc.
+	◦	check in form.
+	◦	Fix blood tests in GHL
+
+	⁃	Document everything and analyze last closes and where they are from. 
+	⁃	Current cash and dashboard. 
+	⁃	Attributes for sales. 
+	⁃	Learn to calm the fuck down. It’s a game. 
+
+
+
+PEPTIDE INFO YOUTUBE
+https://www.youtube.com/watch?v=B_tpdA2qa8U
+
+PEPTIDE GUIDE PDF
+https://drive.google.com/file/d/1WcpgpHtUG72mYDVegLmKWffuSRUN5IkQ/view
+
+https://docs.google.com/spreadsheets/d/1Ad0evfkfdpycaVfTz4TSBFF-v9_Ht1rtq-Yy3BC_t-c/edit?gid=780797082#gid=780797082
+
+
+I understand what you are saying.
+
+At this stage I am a contractor with a profit share. Similar to Thomas.
+
+Currently a lot of the business operation is out of my control - as you know I am frustrated and have minimal ability to influence or expedite you. You still make all the decisions unilaterally.
+
+This means that I do not partake in the downside yet. If we proceed with this relationship then likely we will have to re-negotiate this and if you want me to be involved with the downside then I need to have more autonomy and control.
+
+
+https://link.spyglassops.com/widget/bookings/spyglass-30-minutes-call
+
+3 stage workout and hitlist. Give so much value people feel it’s a no brainer. 
+
+sort phil reta
+Sort Dion reta
+fairy lights
+
+freepik
+cling2.5
+
+This stim stack has no chill.
+
+
+
+	◦	Dashboard. 
+	◦	Activate my funnel 
+	◦	Workout
+	◦	Finalize patient client sheet - including weights for 8 weeks/pics place. 
+	◦	Sales data sheet including attribution.
+	✓	10 - Doctor incorporation - lucy messagec
+	✓	Check PnL for margins. And check payout.
+	✓	Azri
+
+Chase up Dr Emil nut payment .
+
+Can we go back to telling people to eat less and move more? Or are we still pretending it’s not real. 0
+
+Fairy lights 
+Milk
+Veg
+Large trash bags 
+sweet potato
+Sardines
+
+
+Coaching program (no peptides) - Metabolic Reset
+High ticket program
+Landing Page + articles
+
+
+
+
+HSA 
+Health 
+
+Split it
+
+
+
+Salea data.
+Dashboard 
+
+
+Get premium.
+	1.	Handover sales to Thomas. (Once colin is out). He can have percentage of all new cash collected by sales team not including Noah.
+	2.	Coach MRP. Make sure they are good. 
+	3.	Keep tabs on whole biz (dashboard?)
+
+
+Then we also clear the decks of old software. 
+
+3 ways of showing trust 
+	1.	Taking my advice.
+	2.	Not doing things behind my back.
+	3.	Including me in core business decisions and meetings.
+
+1. Data is shit - need source of truth. I don’t know what you’ve sent him. I can help here. We have Louise ready to go with the data. We haven’t had the volume until recently.
+2. ⁠Closers re-assessment. Others not a fit, we will know by EOM. Also you helped Thomas with half his calls. And he came when we had the most stuff in place. 
+3. ⁠Lia is our best setter. I think moving her into an organizational role is a bad idea. She will make more from sales than anything else you can give her. And she’s not being paid well right now. Nothing near what she wants. 
+4. ⁠send leads to Thomas. Easy to do. We have more calls than we can handle probably. But he does not know the subtleties as
+
+You neee to hire an assistant as well. 
+The middle of funnel exists as of a month ago. 
+Email when call is booked. We have those. They do fill out the form. Give Wes access to everything. 
+November no messages. Why?
+
+Blood work
+Paper clips 
+Another blanket 
+
+Map out stories but at the very least weekly offers.
+
+10th Week 2 - personally coach with our CEO peptide stack. Limited 10 spaces.
+
+17th Week 3 - jump on new year
+
+24th - last chance to get jump. 
+
+What do I need to do for MRP? Each day. How do I get this up to speed quick enough to tolerate 20-30k refunds.
+Listen to call with Peter. 
+Back myself. 
+I can back out of Old fulfillment entirely. 
+Take Denisa and Dan with me. Dan needs to take over. Calls with him daily. 
+Leave Milica and Nebojsa behind. They all need to feel it. 
+Who can he use? No one. For current business there is a system. For new business there is not. That is his assistant or ask Thomas. 
+
+Do both PnLs and get paid for November.
+Check December MTD and sort Azri out. 
+Check contract for profit share wording and also non compete wording. I can do coaching as part of my current stuff. I am not renewing. 
+
+It’s all About whether the closers can close the new product. 
+
+Dan needs to take over. Full power. Closers need to close. Offer end of next week. Milica to take old people. Me to deal with all MRP people. 
+
+We split people. I am sales and MRP. He is marketing and old fulfillment. 
+
+
+
+WhatsApp.
+Ask them to own their clients for his hundred dollar fee even if he doesn’t train them. Regardless, they had better be happy. (after his call on Friday)
+
+Build color coded workout 
+mrp dailymeeting from tomorrow
+
+
+
+Plan.
+⚫️ MARKETING: NOAH to lead (Emil to be involved).
+⚫️SALES: EMIL to lead (Noah to be involved).
+⚫️FULFILLMENT:
+   ▪️Old patients / recent sales - (NOAH to manage alongside Nebo - Emil to help coordinate).
+   ▪️MRP (EMIL to build and organize alongside Dan and Denisa).
+Milica to run orders until old patients are all sorted out and the new MRP process is figured out and then to hire and train a replacement.
+She can then take over the running/coordinating of fulfillment from Emil.
+
+THEN (in 3-6 months time).
+
+NOAH - to focus on events, personal relationships, podcasts etc., lead gen., partnerships. (MARKETING).
+EMIL - to focus on new packages, day to day running of the business, building the team etc.
+
+—— Milica will lead fulfillment
+—— Colin or Thomas will lead Sales (alongside Lia).
+
+
+0.⁠ ⁠Making sure old patients  and recent sign ups are happy.
+1.⁠ ⁠⁠MRP - running smoothly.
+2.⁠ ⁠⁠⁠ "Coaching only” package, ready for Jan.
+3.⁠ ⁠MRP Upsells (packages) - ? Muscle building and energy
+4.⁠ ⁠⁠ ⁠⁠High ticket super personalized package.
+
+Dan for MRP and ask about WhatsApp
+Welcome email
+Flow for MRP. Inc SOP for docs.
+
+Alcohol guide.
+
+Upsells. 
+
+Quick workout + abs + HIIT.
+
+
+Go thru expenses.
+Calendly.
+Possibly FITMETRICS 
+
+
+https://calendly.com/success-thelongevityclinic/30min
+
+https://link.testomasters.com/widget/bookings/mrp-silvana
+
+https://calendly.com/silvana-thelongevityclinic/mrp
+
+
+
+Need a welcome email.
+
+
+1 peptide sheet
+2 MRP flow and sheet
+3 noah special flow and sheet
+
+Make a plan for Noah specials and fulfillment. Meetings and Denisa to keep on top of everything. Including a sheet. Could be master sheet. Could be a sheet. I have to stay on top of everyone.
+
+Make a plan for MRP.
+
+Including Denisa on boarding, Dan, coaching and Jenna doctoring, including up sells and plan for this. Make a flow for this. Straight with doctor?
+
+Stick with Silvana until peptide packages are figured out. Then figure out upsells and how packages will work. And then onboard doctors. 
+
+Check up on WhatsApp. Movie FITMETRICS to folders. 
+
+Set up regular calls for this. See what works for noah/what is needed here. See what he wants to take accountability for. 
+
+We need to transition from a company of ideas, fire drills, drama, and fuzziness to a company of outcomes, standards, accountability and results.
+
+We are building high maintenance when we need to focus on high-performance.
+
+Spark peptides…Billy address.
+
+Look into Whatsapp add-ons
+Look into Dnb Mallorca
+Check for game 
+
+
+I am taking ownership of stuff I have no control over. That is frustrating. I can’t go full power in this context. So I’ll do what I can and see how the dice fall.
+
+Sales - 
+Marketing
+ulfillment - onboarding, packages.
+I am just disappointed - we have a system for onboarding which works. Then you don’t show up. 
+
+You say you will go full power sales and marketing and we have no leads, no stories and you didn’t show up to the sales huddle. 
+
+You agreed that ads make no sense then I hear you’ve hired 2 funnel people? Are they Alen’s people?
+
+You tell me to build a funnel which I build then you let it sink and tell me weeks later that you never believed in it. Then we come back around to it. This should be top priority. This should be full power.
+
+You tell us things are urgent then days later they disappear into nothing. Zara. Alen. Peptide packages. When I tell you things are urgent they may or may not happen. 
+
+You live by your own rules brother. It’s fine. I am no longer frustrated.
+
+I take on responsibility for everyone. 
+
+
+
+For me to stop getting frustrated I need to stop caring I’m not probably won’t happen
+	1.	Bread.
+	2.	Onions
+	3.	Recipe for Ayvar
+	4.	Pharmacy
+Bloods
+Pablo
+Website
+GMP
+ANYTHING ELSE?
+
+
+Update medical notes
+
+LERN COO STUFF. Plan to finish it. 
+
+Create personal site
+Fix workout 
+Sort Farah - do I have all the CoAs?
+What else do I need?
+Subscription + articles + YouTube 
+
+
+
+	⁃	Complaints - 2 types - upset patients.
+	⁃	note taking
+	⁃	Ticket system on Discord
+	⁃	Whatsapp integration system.
+	⁃	all emails to finance + remove Saad
+
+Create profile for me on Wordpress?
+Redirect sites to it 
+
+Make a plan for new people I am onboarditn
+
+Sort Mercado libre and send peptides to Billy. 
+
+Go to collect mounjaro and get an extra test. 
+Consider late start on Wednesdays and opening Sat morn for a call. Maybe no stim day on weds.
+Hit some more MT2
+
+Step 1- sort out people who may refund
+	⁃	audit them
+
+	⁃	Sabinje
+	⁃	
+
+Step 2- plan for new people
+Step 3 - take over old people. Review all of them. Figure out who they are, what they want and what happened. 
+
+Audit the other projects Noah has and whether they are bringing in money. We need to attribute leads. 
+
+Miro for new flow according to what I understand of what is going on. 
+
+Look at non-peptide package.
+Send Noah KPIs.
+Do pnl data break down. Show that Noah has not created anything. 
+We need to attribute leads to different ops. Let’s be a fucking boss. Own fulfillment so he can’t boot me. 
+Be a savage with metrics. 
+Boundaries like a fucking beast. 
+
+
+
+https://us06web.zoom.us/j/4326308228
+
+	⁃	Send Tope bill
+	⁃	Processors
+
+	⁃	Accounts/PNL - reach out to Saad about Nov. ✅
+	⁃	KPIs for Noah. Let Lia know about it so she can keep an eye.
+	⁃	Let Faudia know about Farah payment.✅
+	⁃	Add credentials somewhere. When I speak to Jenna for example. 
+	⁃	sort out slack and chats and make it simple (include diagrams) - with Milica
+	⁃	figure out clinics (where do people go for information).
+
+	⁃	Sort Reta + mounjaro
+	⁃	hair cut
+	⁃	Gum 
+	⁃	Benedict
+	✓	Alex asyetunknown
+	⁃	Thanksgiving + tiramisu 
+
+https://www.reversebodytime.com/faq
+
+
+
+
+
+	⁃	KPIs for team (for inbounds)
+
+	⁃	Masterminds and selling packages on the calls.
+	⁃	It CANNOT be the same thing.
+
+
+
+
+
+Jump on with Nebojsa to find out what the issues are in WhatsApp. 
+
+Sort out nurse. Send noah the ad. Does Milica have the info for it. 
+
+Emil booking link (60min)
+https://link.testomasters.com/widget/bookings/call-emil
+https://link.testomasters.com/widget/booking/aIdkAF6V6wGF1ifivrGn
+
+
+https://link.testomasters.com/widget/bookings/call-emil-30 https://link.testomasters.com/widget/booking/TOlI0HrzXDfoKyxOmxA8
+
+
+
+Books
+Figure out courses on discor 
+
+Mercado libre 
+
+Go thru the master client tracker. 
+Do the webinar update. 
+Dig into fit metrics 
+
+
+	1.	Noah needs to update me
+	2.	Decide who lives and dies
+	3.	
+
+Give Faudia access to everything.
+PDF -need amounts. 
+Platform
+Communications
+
+I should probably be at the point of contact for all the fulfillment. 
+
+codigo secreto 2-8 - how old are your netas
+caracassone 2-5 (junior version too).c
+dixit 3-6
+
+
+Write SOP for podcast
+Make plan for HG including job description
+Write a narrative for TLC.
+Update PDF
+Both PNL’s
+Fasting
+
+
+Ozempic Oral - 3000 3mg x30 ($150)
+Ozempic Oral - 6000 14mg x30 ($300)
+
+Mounjaro 7.5mg -11k en pesos - $600
+  MRP PAYMENT LINKS (With COUPONS)
+https://dremil.thrivecart.com/metabolic-reset-protocol/ (2997)
+https://dremil.thrivecart.com/metabolic-reset-protocol-2ps/ (1500x2)
+https://dremil.thrivecart.com/metabolic-reset-protocol-2ps-grant/ (1000x2)
+https://dremil.thrivecart.com/metabolic-reset-protocol-grant/ (1997)
+
+TLC500SPECIAL
+MRP1000OFF
+
+HEALTH OPTIMIZATION COACHING (OPTIONS)
+https://dremil.thrivecart.com/premium-health-optimization-coaching-op/ (PIF, 2pay, 3pay)
+
+MRP FUNNEL ASSETS
+https://thelongevityclinic.online/how-it-works
+https://thelongevityclinic.online/landing-page https://thelongevityclinic.online/thanks-faq-mrp
+
+
+
+DONE
+Update landing pages for MRP (including thumbnails)
+Tidy up all of the payment links
+
+NEED
+Need testimonials stories from Noah
+Need a thank you video for the check out.
+	⁃	script - 30-60seconds.
+
+TO DO
+Contract update
+Onboarding
+
+Need a thank you video for the check out.
+Finish the funnel alignment. 
+
+
+
+
+
+
+
+Assumptions - don’t be a victim
+Assume you are biased/wrong 
+Assume everything is possible 
+Assume you can do more.
+
+
+
+
+
+
+
+
+
+debate topic? truth about immigration in the US
+
+
+
+
+
+LERN
+NOTION/locked in
+Just take action 
+I could easily write 10 to 20 short posts for my carousel. Each could be a draft from medium honestly. 
+Eods and plan the mornings. Need to get back into fulfillment.
+
+To those casually dropping age as an excuse - you mean neglect. Step one to changing it is owning up to it. 
+
+
+COLD WEBBY - 11th Nov - next Wednesday
+
+figure out how to get tested in mexico (maybe ask alex???) = who else do I know - jocelyn actually.
+
+look at apple apps (shortcuts + journal) - MAYBE A youtube video.
+ Take creatine and a vibrator with me
+
+https://www.instagram.com/drpompa/ (VSL)
+https://aliabdaal.com/7-video-challenge/
+
+HOMEWORK VIDEO
+
+“Hey thank you for booking, here are your next steps…. below you will see a list of FAQ’s that will be super helpful and a few testimonials.
+
+Then, our program director will reach out to you directly to introduce themself and lay out the next steps for the call.
+
+Best of luck!”
+
+something along those lines but in more detail.
+
+
+
+19x20mg
+8x 30mg
+3x25mg
+
+
+
+Mia
+ESG
+Ellisif
+Bryan Johnson job
+
+EARLY - 15AfterTrial
+Stop being a pussy
+
+
+
+
+
+ 
+
+	⁃	milica - central Claude
+	⁃	milica - denisa admin zoom set up.
+	⁃	milica - SOP for doctors - 
+	⁃	Milica - digital stamp
+	⁃	
+	⁃	Emil - summarize medical notes
+	⁃	symptoms + treatment
+	⁃	mps
+	⁃	Emil - delayed triggers in automations.
+	⁃	Emil - set up Fulfillment meeting
+	⁃	Contract Check - Dan
+
+
+	⁃	Call Amex - 0800 032 7404
+
+
+Thoughts on transparency 
+Thoughts on men and women in relationships and traditional gender roles 
+
+
+
+hair cut post
+stim stak post (DC or FC)
+
+
+
+Calle 28 norte y av Cozumel, condómino oceana, apt 433
+GONZALO GUERRERO
+PLAYA DEL CARMEN, QUINTANA ROO, SOLIDARIDAD 77720
+México
+
+
+
+
+
+
+
+
+	1.	Write/post Colombia on IG
+
+	⁃	Get my residency card (Nick
+Renew Esta.Book outbound flight. TAP biz class. 
+Mexico form
+Check in
+Pack.
+
+	⁃	Weekend cover - to be sorted with Milica
+	⁃	Faudia (We need to sort out scorecards and contracts (working hours and responsibilities).
+	⁃	Nebojsa in sales (drafting some emails for Noah).
+
+	⁃	Sort any other apps.
+	⁃	
+
+To add to my life (from FC)
+	⁃	Zone 2 cardio. 
+	⁃	Operating at 85% is 100%.
+	⁃	Masculinity is just a game /story like money
+	⁃	Speak to James about his weekly check in structures (radical self alignment)
+	⁃	What does it feel like to be 100% ourselves with each other. (James - share).
+	⁃	Stay centered - people come to me instead of me goin to people. 
+	⁃	Anti scale super high ticket model - Rian - to discuss with Noah and speak to Billy about it. 
+	⁃	Chick check - Layah, Jess, Ellisif 
+	⁃	Speak to Mario about purpose and giving back. 
+	⁃	Hit rich up on the EA how to work with course. 
+
+Be bold, act swiftly and keep moving. 
+
+Habits - health, boundaries, depth, subtraction, focus on self.
+
+	1.	Sales
+
+
+
+Plan for biz. 
+	1.	Book rewards /book club
+	2.	Reflect on “world class operator” and 2025. Lock it in. Use chstGPT or similar  
+	3.	Keep in touch with Talia, Ellisif, Layah  (weekly calls). Halima.
+	4.	Speak to Jeremy about outsourcing Accounting. Probably Quickbooks can do this. What else. 
+	1.	Fyxer - nice color labels - can I have multiple inboxes in one place? Not cheap
+	2.	Focusflow - need to check. 25/m- should cancel it not. (Call tomo). its simply - this may be a very good thing actually coming to think of it. Can I replace notion with it?
+	3.	Spark. Cheap. All emails in one place. Labeling system is meh. 
+	5.	Figure out NameCheap for noah.
+	6.	Check lovable for landing pages. 
+	7.	Check in with Isaac. 
+	8.	What more can I do for Azri. Data dashboard???? Pnl - marketing? Hiring?
+	9.	Debrief of my time at springs based on the second in command book. What did I do well? Where did I fail?
+	10.	Plan of roles etc for TLC. What is my role? What are my superpowers? 
+	11.	Write about simplicity but quality. What’s in my pack. Pen. Ikigai cases.  Headphones. Rate each item and what could be improved. (Rate according to Fibonacci. 1,2,3,5,8,13,21
+	12.	How can I work with Talia. Informally really (weekly planning and reporting structure) and what could a deal look like. Start with info gathering. Data dashboard for her. 
+	13.	Do books including hard copy ones. 
+	14.	Write article about books.
+	15.	I should probably connect with Mina somehow. What was his hiring strategy. Fire the bottom 10%. When we get a moment or consolidation. 
+	16.	Do my stim reel video (script).
+
+Million dollar routine of a 30 something gym bro preneur in Miami.
+
+Eyes open. It’s before 2am. Perfect. Alarms are for the weak:”
+
+	⁃	is there a better way of task capture?
+	⁃	There is one that works via WhatsApp? Maybe needs Internet.
+	⁃	
+
+
+	⁃	FAQ from Milica (to add to domain pages)
+	⁃	Org chart - scorecards and SOPs - to be added.
+
+BOOKING PAGE
+	⁃	Add FAQs
+	⁃	Add ‘what is coaching vs peptides video??’
+	⁃	Add 
+
+Create folder in g-drive (can be directly accessed from GHL.
+To create course in Trainerize.
+
+
+
+Message Marco
+
+
+Patient encounters - multiple errors - looks like it is done by AI. Kevin is making mistakes (or is Silvana making mistakes).
+
+
+Onboard Jenna. Record it to Faudia can see.
+Record it so Jenna can do it. 
+
+Who am I going to handover Faudia to. Noah? Milica? Could be good for her. Or just make sure she has enough tasks.
+
+
+Test my link. 
+
+https://us06web.zoom.us/j/6606838642
+
+
+Build doctor onboarding doc 
+Weekend plan.
+.
+Pack
+Read 
+Journal
+
+
+
+20th Dubai
+21st Dubai
+22nd Dubai
+23rd SA
+24th SA
+25th SA
+26th SA
+27th SA
+28th SA
+29th SA
+30th SA
+
+Google Voice T+1 307-429-0888
+
+3198016516in
+
+
+Testimonials
+----- interviews
+----- selfies
+----- Other event videos
+----- before and after pictures
+----- Whatsapp screen shots
+
+Information
+-- Looms (we have a list of videos needed here) - i can organize them later.
+-- VSLs
+-- courses
+
+
+Social Media (if you want to store this here - could be useful to have).
+-- Youtube Videos
+----- thumbnails
+-- Reels
+-- Stories
+
+
+Media Pack
+-- program assets (PDFs etc)
+----- screen shots of app, website etc.
+-- Brand Pack
+---- logos
+---- prof pics of team
+---- banners
+---- relevant social media posts
+
+-- Specifics (any specifics that anyone wants from the other ares e.g. VSLs)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Plunge pool or ocean view $$
+
+very bougie ocean front but could do for less days
+
+
+
+delete
+cerbo to charm (in docs)
+miami. mp4 in docs
+springs recordigns (doc? downloads?)
+
+	1.	Fix card for Zoom (set up scheduling for Dan/Success) - remove from Calendly - ideally set up on Google calendar.
+	2.	Onboard Jenna and figure out process for this.
+
+
+
+Money saving
+	⁃	MANYCHAT (change Noah from Owner - unless he’s using it.
+	⁃	Calendly download
+	⁃	NEED TO UPDATE ZOOM CARD
+
+📲 LOCKED IN / G-B-P
+Locked in -daily routine can I get 6 months 
+Start tracking sheet now (with timular?) - brutal truth of GBP. Make it satirical but “wish I was joking”. Daily reel? Into subscriber with real info. Stims, family time, steps. 
+
+⚠️UK Accounts
+⚠️Get new Santander card (how?)
+
+
+Share with dan the peptide guides.
+Peptide guide  https://youtu.be/as9fTVW94wk
+https://drive.google.com/file/d/1NEOHafMIxdn9PIBmo3o5Ohtm5pAF7W1c/view
+
+
+⚠️ Questions being answered in Trainerize - need to decide about this (i.e. have medics etc in here) - Milica knows.
+Check- ins implemented? - we need to add a fuck ton of value here-  this needs to be a proper coaching program…
+
+
+
+
+
+📪 ORDERPOST
+Aussie bum - F30023549
+Gymshark - US23815284
+Bond ring - ack !!! = emailed
+Freestyle x1 ()
+Ridge - R4600212
+Ikigai pill box -  #IC131944 Timeular (emailed) - should be fine.
+USPeptidesDHL - 6100211005478525
+
+Amazon +++
+ball pit
+drinks
+protein
+nose spray
+
+	⁃	GUM
+	⁃	
+	⁃	Energy drinks + apple pen lid
+	⁃	manscape - tue
+	⁃	games - sunday
+	⁃	packign cubes - sunday
+	⁃	charger + 2x stands - tue
+	⁃	hair gel
+	⁃	need to find apple pencil nibs
+	⁃	Key chain +
+	⁃	Supps - macro fossils
+	⁃	Sex stuff = 2nd Oct (maybe 3rd for harness) - harness refunded.
+	⁃	Supps (PICK UP TODAY ⚠️)
+	⁃	Case and extendable key ring etc (re-ordered)
+
+
+
+
+Systems for everything
+
+
+Summarize my end of day. Tasks. Meeting some reason update updates for the team. What I did in the day. Take this from the agenda.
+
+Payroll to be done tomorrow.
+Onboard Erna and intro to Milica.
+Watch watch watch
+Make plan for Milica and Louise and erna. Plan to be out by 15th (Colombia).
+
+
+	⁃	Make honesty the basis of all interactions and avoid partial truths. 
+	⁃	Think small - small groups of smart people. Include final decision maker.
+	⁃	Think minimal - communicate one thing at a time. (Multiple messages can be under a single theme)
+	⁃	Think motion - timeline and speed. 
+	⁃	Iconic - image to galvanize audience. 
+
+
+VN one day before the call: Just wanted to check in and see if you're still all set for our call tomorrow! Looking forward to getting to know you!
+
+VN on the day of the call: Hey I’m looking forward to our call today! Got the Zoom link for the call today? If not, happy to go grab it for you!
+
+DAN
+	1.	Get people into Trainerize - Noah and Dan have a plan.
+	1.	noah to chase up
+	2.	All automated messages are too much. (onboarding is an issue).
+	1.	EMIL - Sales call intro/onboarding.
+
+noahonzoom.com
+
+MILICA
+	1.	WhatsApp - consider system for delegation
+	2.	Blood tests (w/ Louise)
+	1.	Blood tests
+	3.	Managing Kevin
+
+Silvana
+	1.	Coordinate Milica and Kevin (to divide tasks) - continue current process.
+	2.	Packages calculated - focus on one goal and give them the full cycle.
+	1.	Emil + Silvana to talk about it.
+	3.	Sales team encounter (Milica and Emil)
+	4.	Peptides (see Noah)
+
+￼
+NOAH
+	1.	Peptide ordering process
+	1.	Europe no problem (we are sending separately ⚠️)
+	2.	Dubai no problem
+	3.	Canada - we have a fulfillment partner.
+	4.	USA - we do not have a fulfillment partner
+	1.	Maybe we have a solution - peptides.
+	2.	Hormones (BRITE).
+	1.	Consultation included.
+
+
+
+Plan for Denisa
+
+
+The basic role
+	1.	Welcoming all patients into program
+	2.	Facilitating blood tests
+	3.	Facilitating Medical form completion
+	4.	Ensuring everyone is happy. 
+#1 CLIENT CHECKPOINT
+⊡ In trainerize
+⊡ App downloaded
+⊡ Contract signed
+⊡ Blood Rx form completed +
+⊡ All uploaded to FM
+
+#2 CLIENT CHECKPOINT
+⊡ Blood test uploaded
+⊡ Medical questionnaire done
+⊡ Both in FM
+⊡ BOTH NEEDED BEFORE MED CONSULT CAN BE BOOKED ‼️
+⊡ Aware of group calls and how to access (ideally in calendar).
+⊡ (Basic training program uploaded)
+⊡ Have basic nutrition plan if they want one.
+
+#3 CLIENT CHECKPOINT
+⊡ Follow Up documented + doctor reminder set
+⊡ Pt aware of group calls and how to access (ideally in calendar).
+⊡ Have a program if they want one.
+⊡ Have updated nutrition plan including supplements (PDF).
+
+
+	1.	Denisa !!!!!
+	2.	Reta
+	3.	Sun steps
+	4.	Gym
+	5.	Shower gel + old spice bin bags
+	6.	Kimmie money
+	7.	Ashton money
+	1.	20k left in kraken
+	2.	NEXO 54k 40k btc, 13k nexo - lock in 15th Oct
+	8.	Charles / Billy
+	9.	Annabell wake boarding 
+	10.	Review calls
+	11.	Learn ops (jhana)
+	12.	Projections and salaries for different levels. 
+	13.	Cable for blender and razor ? USB c razor
+	14.	Aussie bums
+	15.	Handover, Dan and Denisa to Noah including budget.
+
+
+
+
+
+Why I lent my friend 100k
+Plan consolidation and rapid growth. Who are my people. Erna. Ana marija. Peter???
+
+
+LANDING PAGE Needs to be much stronger.
+
+
+	1.	Kevin delegation (not Milica)
+	2.	Regarding Dubai fulfillment
+	3.	Why are we buying a cool fridge for Ismo.
+	4.	Overload of messages, questionnaire - what do you want in it?
+	5.	Fulfillment - none of these clients have context.
+
+
+	1.	Direct CTAs for a process
+
+
+	1.	Pay self 60k for q4 (why? to..
+	1.	Pay 20k GBP on UK mortgage
+	2.	UK accounts
+
+	1.	Send money to Vee £1,146.42
+	1.	Get new card ???
+
+
+Plan to bail on all humans or at least just put it in the calendar.
+Seeing Talia. Olive.
+Do a pay projection 
+
+
+
+
+
+
+	⁃	Sort Dan
+	⁃	Sort CSM  / Denisa
+	⁃	Finalize meetings
+
+Add 5 KPIs to scorecards. 
+
+course cost abuse circle aerobic average census indoor absorb funny space dose step mobile trick system twin adult pottery question hip stereo flat hammer
+
+
+
+
+	⁃	Add gym recurring event with gym schedule and real time.
+	⁃	Set up closing link and closing schedule.
+	•	tasks@usemotion.com
+
+
+
+$$$$
+	◦	Azri Sept payout
+	◦	Springs Sept (4k) + deferred payout. (25th Sept)
+	◦	TLC Sept payout 
+	✓	Azri August payout
+	✓	TLC August payout 
+	✓	DEN Q2 payout 6k+?
+
+
+
+Chasing every new shiny object is a recipe for distracted mediocrity
+
+	⁃	Figure out plan for fulfillment 
+	⁃	Go thru document, move it to slack and check in with Kevin. 
+	⁃	Hand over peptide supplies to Silvana. Put agenda in meeting description. 
+	⁃	Update roadmap.
+	⁃	Figure out ice packs
+	⁃	Figure out needles
+	⁃	Figure out doctor
+
+Kevin
+	⁃	Make sure clients are pushed thru - client tracker.
+	⁃	Valeo blood work to be uploaded + sent to patient + book consultation. (everyone
+	⁃	Including shipping address).
+	⁃	make sure packages (US) are sorted)
+	⁃	ALL MESSAGES PRIORITIZED
+
+
+Louise
+	⁃	Messages + Emails for group call - 
+	⁃	Onboarding (contract + blood form ?? Shipping address).
+	1.	Reply to Louise - sort out whether she is doing sales meetings or not (and why - ask NOAH).
+
+DAN
+	⁃	GROUP CALLS
+	⁃	messages in group
+	⁃	automessages in onboarding.
+	⁃	need emails
+	⁃	Whatsapp
+	⁃	Projections/ salaries
+	⁃	Whatsapp
+	⁃	Emails
+
+NOAH
+	⁃	PDF FILE FOR PATIENTS (for Noah to send to fulfillment channel).
+	⁃	To sort Omar and Lia and make sure - data is entered and collected.
+	⁃	asd
+
+
+EMIL
+	⁃	offboard peeps
+	⁃	set up website + flow for recordings to be put there.
+
+
+sort namecheap
+
+	1.	Offboard people
+	2.	Get US travel insurance
+	3.	Sort vee thing.
+
+	1.	
+
+	1.	Trainerize message + email.
+	2.	 X 16 weeks invite
+	3.	X reminders
+	4.	WhatsApp broadcast list 
+	5.	Kevin fulfillment - packages to US
+	6.	X WhatsApp
+	7.	X recordings (health link). +/- trainerize.
+
+	1.	GHL emails?
+	2.	Saad??
+	3.	Fulfillment
+
+
+
+Projections for income and ramp up plan for Dan. 
+Charles House
+	⁃	Sort iphone - Talia?
+	⁃	
+
+
+Offboard Hamed and Tomi
+	⁃	Slack
+	⁃	Hypergrowth
+	⁃	Gmail
+	⁃	Zoom
+	⁃	Calendly
+	⁃	GHL??
+
+
+
+Create hand over docs for Ashton and define end point and also who is looking after what. If I’m not mediating. 
+
+Org chart of tasks 
+Serbia flights 
+
+Model it out for 100k per month. With sales director + head coach. 
+
+Create flow chart for fulfillment. 
+
+
+Fitmetrics
+	1.	Contracts
+	2.	Onboarding flow
+	3.	Document storage
+	4.	Courses
+	5.	Deactivated clients (not using app?)
+
+
+EMIL OPS https://us06web.zoom.us/j/4326308228
+NOAH LAITH https://us06web.zoom.us/j/4323981102
+Silvana https://us06web.zoom.us/j/4119040818
+
+
+	◦	Agendas for morning meetings.
+	◦	Hire a EA (Job Rack)
+	◦	To set up lastpass and to take over the tech bullshit from Noah
+
+	⁃	correct PnL
+	⁃	shipping twice
+	⁃	packaging in costs
+	⁃	Zoom
+	⁃	video.com (chargeback -> for saad to do).
+	⁃	Manychat
+	⁃	can personal be tracked somewhere.
+	⁃	Can we get categorized expenses
+	⁃	SOP for saad
+	⁃	1. Get all the items categorized and confirmed.
+	⁃	2. PnL
+	⁃	3. 
+
+
+
+PROJECTS
+Get Fulfilment to 90%
+	⁃	Liaise with Kevin all week to lock this down - get on meetings with him and Silvana to figure this out.
+	⁃	Get check in’s built out
+	⁃	include contracts - could do this direct in FM or via Stripe -> signer ->
+	◦	Need blood prescription form
+Peptide Store
+	⁃	authorize payment links
+	⁃	Could easily be a canva page
+
+
+
+
+To discuss with Noah
+	◦	Webpage: Expectations + Links (Here)  (https://thelongevityclinic.my.canva.site/) pw TLC2025! Need URL
+	◦	Testimonials (do it on call)
+
+	◦	Contract (finalize
+	◦	14 day money back guarantee
+	◦	full guarantee - money models
+
+
+	◦	VSL
+	◦	Scorecards
+	◦	my contract - finalize + send.
+	◦	Pnl - define how personal expenses are dealt with.
+	◦	Shipping in COR
+	◦	
+
+
+
+=TEXTJOIN("-",, INDEX(SPLIT(A1,"-"),2), INDEX(SPLIT(A1,"-"),1), INDEX(SPLIT(A1,"-"),3))
+
+
+
+
+TLC 9/3
+	1.	New program written down
+	2.	Update link (routing form??) for calendly to landing pages + VSLs (review scripts).
+
+	1.	Higher ticket trainerize links
+	2.	Review FM and blood form. 
+
+
+	◦	Contract
+
+	◦	For this we need check-ins
+	◦	For this we need all the photos and weigh ins.
+	◦	Scorecards
+	◦	Lia
+	◦	Alesha
+	◦	Dan
+	◦	Ensure payroll sent
+	◦	My contract
+	◦	My pay - when did I start? Do I get paid for June? Or not.
+	◦	Expenses clarified
+	◦	Follow up Kevin
+	◦	Login to Whatsapp biz and audit it.
+	◦	Set up groups with all the docs. Add it to automation.
+
+	◦	Clean ManyChat
+
+Onboarding script
+<take payment>
+
+
+Fulfillment
+	1.	Onboarding script for sales team to explain all of this.
+	2.	Patients need to be able to onboard.
+	3.	Upselling clarity - need packages (and store so she can take money on call).
+	4.	Patients arriving on medical calls with no blood work or consultations. (VA to check and cancel calls).
+	5.	Making orders (kevin does it) - he does email.
+	1.	Blood tests to group
+	2.	Supps to group
+	3.	Encounters to be uploaded.
+	6.	Peptides to go in one go (add to contract?) - clarity that this is everything.
+	7.	Peptide injections video and guide done ✅
+	8.	Where are their instructions for peptides/their prescription (where are we putting this for them) - can this be put into trainerize??
+	9.	Medical questions between consultations (group calls or whatsapp)
+	10.	When does it end? (how do we know when to upsell etc) - VA to enter data into.
+	11.	Best way to train new doctors
+	12.	small shop for peptides
+	13.	Setting expectations for calls in general (to put in invite for calendly - 15 mins late and then we leave).
+	14.	Setting expectations and sticking to them - where are these written out? Where are these? - lateness on calls, setting expectations regaridng contacting doctor.
+	1.	blood work at least 24-48h before
+	2.	what is included (peptides/supps)
+	3.	doctor consults - every 3 months (except)
+	15.	TCLHQ.com for all the files and links etc.
+	16.	Submission form for Qs - NOT WHATSAPP
+
+
+	⁃	Zoom transcript downloaded
+
+ORDERS
+	•	“Order master list” - needs to be killed/simplified.
+	•	Tracking - cancellations/ delivery
+
+
+FITMETRICS
+I wonder if it's possible to:
+1) Have forms downloadable as PDFs rather than integrated and
+2) Have a toggle/options to allow forms to be shared with or emailed (or messaged) to clients
+Esig not working
+	3.	Are contracts done
+	4.	Can we add columns to metrics - price paid. Can program purchased be added?
+	5.	15th Sept payments kick in. Still can’t use it. 
+	◦	
