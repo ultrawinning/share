@@ -100,16 +100,16 @@
 
 <header>
   <h1>Overmind <span class="accent">/</span> Stack Inventory</h1>
-  <div class="sub">Auto-generated from Librarian Sheet · 2026-05-19 05:45 UTC · <a href="https://docs.google.com/spreadsheets/d/1HbZZ4c5Np7qDPbU2IJZHrMA3DgVtBKjiUT-p35yY2wk/edit" target="_blank" style="color: var(--accent); text-decoration: none;">edit in Sheet →</a></div>
+  <div class="sub">Auto-generated from Librarian Sheet · 2026-05-20 05:45 UTC · <a href="https://docs.google.com/spreadsheets/d/1HbZZ4c5Np7qDPbU2IJZHrMA3DgVtBKjiUT-p35yY2wk/edit" target="_blank" style="color: var(--accent); text-decoration: none;">edit in Sheet →</a></div>
 </header>
 
 <div class="summary">
-  <p><strong style="color: var(--accent);">27 Systems</strong> · <strong>146 Components</strong> · The full surface of Emil's stack.</p>
+  <p><strong style="color: var(--accent);">28 Systems</strong> · <strong>147 Components</strong> · The full surface of Emil's stack.</p>
   <p>Three-surface Librarian pattern: <strong>Sheet</strong> (edit) → <strong>MD/JSON</strong> (Claude consume) → <strong>HTML</strong> (you're here).</p>
   <div class="verdict-grid">
-    <div class="verdict"><div class="label">Systems</div><div class="value" style="color: var(--accent);">27</div></div>
-    <div class="verdict"><div class="label">Components</div><div class="value">146</div></div>
-    <div class="verdict"><div class="label">Working</div><div class="value" style="color: var(--good);">19</div></div>
+    <div class="verdict"><div class="label">Systems</div><div class="value" style="color: var(--accent);">28</div></div>
+    <div class="verdict"><div class="label">Components</div><div class="value">147</div></div>
+    <div class="verdict"><div class="label">Working</div><div class="value" style="color: var(--good);">20</div></div>
     <div class="verdict"><div class="label">Dormant/Dead</div><div class="value" style="color: var(--muted);">3</div></div>
   </div>
 </div>
@@ -126,7 +126,7 @@
   <button class="filter-btn" data-filter="unsure">? rows</button>
 </div>
 
-<h2 id="systems"><span class="num">01</span>Systems<span class="count">27</span></h2>
+<h2 id="systems"><span class="num">01</span>Systems<span class="count">28</span></h2>
 <div class="system-grid">
 
   <div class="system-card kind-platform status-working">
@@ -506,9 +506,23 @@
     <div class="path">~/Code/hpf-command-center/scripts/cc-memory-lookup.js</div>
     <div class="owner">Emil</div>
   </div>
+
+  <div class="system-card kind-router status-working">
+    <div class="head">
+      <div class="name">Conductor</div>
+      <div class="components-count">1 comp</div>
+    </div>
+    <div class="meta">
+      <span class="pill kind-router">router</span>
+      <span class="pill status-working">working</span>
+    </div>
+    <div class="one-liner">Task router — input intent, get a destination + primer (handoff + COMSAT envelope)</div>
+    <div class="path">~/Code/overmind/skills/conductor/ + ~/Code/overmind/bin/conductor*</div>
+    <div class="owner">Emil</div>
+  </div>
 </div>
 
-<h2 id="components"><span class="num">02</span>Components<span class="count">146</span></h2>
+<h2 id="components"><span class="num">02</span>Components<span class="count">147</span></h2>
 
     <h3 style="font-size: 14px; margin: 24px 0 6px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.02em;">Overmind <span class="pill kind-platform">platform</span> <span style="color: var(--muted); font-weight: 400;">35</span></h3>
     <table>
@@ -1942,6 +1956,22 @@
           <td></td>
           <td class="oneliner">Org-root repo</td>
           <td class="notes"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size: 14px; margin: 24px 0 6px; color: var(--accent); font-family: var(--mono); letter-spacing: 0.02em;">Conductor <span class="pill kind-router">router</span> <span style="color: var(--muted); font-weight: 400;">1</span></h3>
+    <table>
+      <thead><tr><th>Name</th><th>Path</th><th>Type</th><th>Status</th><th>Visibility</th><th>One-liner</th><th>Notes</th></tr></thead>
+      <tbody>
+<tr class="">
+          <td class="name">conductor</td>
+          <td class="path">`~/Code/overmind/skills/conductor/`</td>
+          <td>skill</td>
+          <td><span class="pill status-working">working</span></td>
+          <td></td>
+          <td class="oneliner">Task router: intent → LLM-classified destination + primer in handoff + COMSAT relay envelope</td>
+          <td class="notes">Components: bin/conductor (entry), bin/conductor-launch.mjs (orchestrator), bin/conductor-classify.mjs (local-bg --coder), bin/conductor-context.mjs (gatherer). Two-surface output: handoff + relay envelope.</td>
         </tr>
       </tbody>
     </table>
