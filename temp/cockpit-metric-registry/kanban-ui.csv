@@ -1,0 +1,46 @@
+kanban,card_state,field,visibility,source,notes
+setter,collapsed,lead_name,shown,leads.name (displayName fallback to email prefix),Row 1 left — always visible
+setter,collapsed,qualification_dot,shown,leads.qualification_tier,Color dot: green/amber/red/grey
+setter,collapsed,stage_pill,shown,lead_pipeline.stage (setter display mapping),Only for non-NEW leads; shows abbreviated stage + urgency color
+setter,collapsed,follow_up_date,shown,lead_pipeline.follow_up_date,Inline date picker when canEdit. Shows overdue/today urgency badge.
+setter,collapsed,cash_collected,shown if >0,leads.cash_collected,Small green $ badge
+setter,collapsed,time_ago badge,shown for NEW stage,leads.created_at,Freshness badge: blue <1h / teal <4h / yellow <24h / red >24h
+setter,collapsed,platform source icons,shown,leads.source_normalized + source_method,PlatformSourceIcons component
+setter,collapsed,info emojis (objection/reschedule/tier),shown,lead_pipeline.objection + leads.reschedule_count,InfoEmojis — not shown in dialer mode
+setter,collapsed,is_paid badge,shown if true,leads.is_paid,Paid badge in orange
+setter,collapsed,expand chevron,shown,ui state,Always visible; click to expand
+setter,expanded,email,shown,leads.email,CardExpanded section
+setter,expanded,phone,shown,leads.phone,
+setter,expanded,instagram_handle,shown,leads.instagram_handle,
+setter,expanded,occupation / location / timeline / income_willing,shown,leads.occupation etc,Qualification fields via QualField component
+setter,expanded,notes,editable,lead_pipeline.notes,Debounced 1500ms auto-save via PATCH /api/setter/kanban
+setter,expanded,follow_up_date,editable (duplicate),lead_pipeline.follow_up_date,Also in collapsed row; expanded view shows full date picker
+setter,expanded,conversation_url,editable,lead_pipeline.conversation_url,PATCH setter kanban
+setter,expanded,last_contact_at,shown,lead_pipeline.last_contact_at,
+setter,expanded,UTM fields (source/medium/campaign/content),shown,leads.utm_*,
+setter,expanded,undo/unclaim button,shown for recently-claimed,ui state (recentlyClaimed set),Visible 60s after claim; calls DELETE /api/setter/kanban
+dialer,collapsed,lead_name,shown,leads.name,Row 1 left
+dialer,collapsed,qualification_dot,shown,leads.qualification_tier,
+dialer,collapsed,time_ago badge,shown for NEW leads,leads.created_at,urgent=true variant (different color threshold than setter)
+dialer,collapsed,contact channels (phone/email/IG),shown,leads.phone + email + instagram_handle,ContactChannels component (shown instead of InfoEmojis for dialer role)
+dialer,collapsed,buyer timing badge,shown for csv_import leads,leads.purchased_at,Color by age: green ≤30d / teal ≤90d / yellow ≤365d / red >365d
+dialer,collapsed,follow_up_date,shown,lead_pipeline.follow_up_date,
+dialer,collapsed,is_paid badge,shown if true,leads.is_paid,
+dialer,collapsed,undo/unclaim button,shown for recently-claimed,ui state,60s window same as setter
+dialer,expanded,notes,editable,lead_pipeline.notes,PATCH /api/dialer/kanban
+dialer,expanded,contact_log entries,shown,"lead_pipeline.contact_log",Array of {date, method, note}
+dialer,expanded,follow_up_date,editable,lead_pipeline.follow_up_date,
+dialer,expanded,occupation / location / timeline / income_willing,shown,leads.*,Same qual fields as setter
+dialer,expanded,UTM / lead_source / source_campaign fields,shown,leads.*,More fields than setter (includes purchased_at)
+closer,collapsed,lead_name,shown,sales_followup_pipeline.prospect_name or leads.name,
+closer,collapsed,qualification_dot,shown,leads.qualification_tier,
+closer,collapsed,outcome/status pill,shown for non-setter roles,leads.outcome or leads.status,StatusPill — not shown in setter mode
+closer,collapsed,setter_badge,shown,leads.setter_name,SetterBadge — shown for closer/dialer roles
+closer,collapsed,follow_up_date,shown,lead_pipeline.follow_up_date,
+closer,collapsed,scheduled_call badge,shown if calendar match,/api/closer/calendar (Google Cal lookup by name/email),Blue Call MMM d HH:mm badge
+closer,collapsed,cash_collected,shown if >0,leads.cash_collected or closer_eod_entries.revenue,
+closer,collapsed,objection filter badge,shown if set,lead_pipeline.objection,Filterable via objection dropdown in filter bar
+closer,expanded,notes,editable,lead_pipeline.notes (via followup-pipeline/[id]),PATCH /api/closer/followup-pipeline/[id]
+closer,expanded,contact_log,shown + appendable,lead_pipeline.contact_log,Atomic append via RPC append_contact_log
+closer,expanded,move to FU_IMMEDIATE/FU_NURTURE actions,shown,ui action buttons,handleAction({type:move})
+closer,expanded,archive (won/dead) actions,shown,ui action buttons,handleAction({type:archive}); drops to Won/Lost bar

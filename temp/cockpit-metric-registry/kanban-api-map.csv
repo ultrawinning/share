@@ -1,0 +1,29 @@
+kanban,interaction,endpoint,method,payload_summary,notes
+setter,initial-load / refresh,/api/setter/kanban,GET,?setter={slug}&new_source={all|typeform|meta|manychat}&page={n},Calls get_setter_kanban RPC + fetchNewLeads. Returns {stages, newLeads, newPagination, summary}
+setter,stage-move (drag within pipeline),/api/setter/kanban,PATCH,"{card_id, stage}",Fires CAPI + Meta Lead Center if stage in BOOKING_STAGES and lead has meta_leadgen_id
+setter,field-edit (notes/FU date/last_contact/conversation_url),/api/setter/kanban,PATCH,"{card_id, notes|follow_up_date|last_contact_at|conversation_url}",
+setter,batch position update (sort within column),/api/setter/kanban,PATCH,"{batch_positions: [{card_id, position}]}",Fired after intra-column reorder
+setter,claim new lead (drag NEW → pipeline),/api/setter/kanban,POST,"{lead_id, setter_slug, stage, claim:true}",Upserts setter_leads + lead_pipeline
+setter,manual add from local search,/api/setter/kanban,POST,"{lead_id, setter_slug, stage, claim:true}",Local lead path
+setter,manual add from GHL,/api/setter/leads/from-ghl,POST,"{contact_id, setter_slug, stage}",GHL path; imports contact then creates pipeline card
+setter,search (add form),/api/setter/leads/search,GET,?q={query},Local lead search in add form
+setter,search GHL (add form),/api/ghl/contacts/search,GET,?q={query},GHL contact search in add form
+setter,unclaim lead,/api/setter/kanban,DELETE,"{card_id, lead_id, setter_slug}",Deletes lead_pipeline + setter_leads rows
+setter,patch lead fields (leads table),/api/setter/leads,PATCH,"{lead_id, [field]: value}",Separate from kanban PATCH; writes to leads table directly (via patchLeadField)
+dialer,initial-load / refresh,/api/dialer/kanban,GET,?dialer={slug}&new_source={lb90|partial|meta_ads}&new_sort={oldest|newest}&page={n}&created_from&created_to,Full lead + pipeline fetch; coaching-client payment check on new leads
+dialer,load-more (pagination),/api/dialer/kanban,GET,?page={n+1} (append mode),Appends to existing newLeads client-side
+dialer,stage-move,/api/dialer/kanban,PATCH,"{card_id, stage}",CAPI + Meta Lead Center on BOOKED; Slack auto-resolve on META_LEADS_CHANNEL if slack_message_ts set
+dialer,field-edit (notes/FU date/last_contact/contact_log),/api/dialer/kanban,PATCH,"{card_id, notes|follow_up_date|last_contact_at|contact_log}",
+dialer,batch position update,/api/dialer/kanban,PATCH,"{batch_positions: [{card_id, position}]}",
+dialer,claim new lead,/api/dialer/kanban,POST,"{lead_id, dialer_slug, stage, claim:true}",Coaching-client block check before upsert
+dialer,unclaim lead,/api/dialer/kanban,DELETE,"{card_id, lead_id, dialer_slug}",
+dialer,CSV import,/api/dialer/lead-import,POST,"FormData {file, dialer_slug, source_tag}",Bulk import; sets source_normalized = dialer_lb90_buyers|dialer_partial_apps|dialer_meta_ads
+dialer,meta-alert polling (every 30s),/api/dialer/meta-check,GET,?since={iso},Checks for new Meta leads since last check; triggers browser Notification if count > 0
+closer,initial-load / refresh,/api/sales/pipeline-view,GET,?role=closer&person={closerName},Reads leads table + closer_eod_entries to compute stage buckets
+closer,stage-move (FU_IMMEDIATE ↔ FU_NURTURE),/api/closer/followup-pipeline/[id],PATCH,"{pipeline_stage: immediate|nurture}",Updates lead_pipeline stage
+closer,archive (won/dead),/api/closer/followup-pipeline/[id],PATCH,"{status: won|dead}",Closes pipeline entry
+closer,add manual entry,/api/closer/followup-pipeline,POST,"{closer_name, prospect_name, prospect_email, prospect_phone, pipeline_stage, follow_up_date, notes, source}",Creates new lead_pipeline entry (owner_role=closer)
+closer,recovery drag (CANCELLED/NO_SHOW → FU),/api/closer/followup-pipeline,POST,"{closer_name, prospect_name, prospect_email, prospect_phone, pipeline_stage, source:recovery_drag}",Same POST path as add; triggered from DnD drop handler
+closer,calendar pre-fetch (on load),/api/closer/calendar,GET,?days=14,Fetches Google Calendar events 14 days out; builds name→ScheduledCall map for card badges
+closer,field-edit (notes/FU date/objection/contact_log),/api/closer/followup-pipeline/[id],PATCH,"{notes|follow_up_date|objection|contact_log|contact_log_entry}",contact_log_entry uses RPC append_contact_log for atomic append
+closer,outcome submit,/api/closer/outcome,POST,"{lead_id, closer_name, call_date, status, closed, product, revenue, contracted, payment_type, follow_up_type, fathom_link, team_handover, team_tag, ...}",Upserts closer_eod_entries + updates leads booleans + GHL reflection + Slack Win Bot post on close
