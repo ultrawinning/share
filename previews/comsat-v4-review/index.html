@@ -395,6 +395,69 @@
 
 </div>
 
+<!-- =================== WHAT'S ACTUALLY MISSING =================== -->
+<h2>What's actually missing</h2>
+<div class="hud"><span class="corner-tr"></span><span class="corner-bl"></span>
+
+<p class="kicker">Audited the shipped files against the design brief. Beyond the four unilateral calls above, these are real gaps — not just polish.</p>
+
+<div class="grid-2">
+  <div class="card miss">
+    <h4>COMPONENT STATES — THIN</h4>
+    Only 9 total <code>:hover / :focus / :active / :disabled</code> rules across both files. Brief asked for default + hover + active + focus + disabled + loading for every interactive primitive. They specced default only. Every button, dot, chip, tile needs the full set.
+  </div>
+  <div class="card miss">
+    <h4>NO LOADING SKELETON</h4>
+    Brief deliverable #9 — what the ProjectView looks like when JSON is mid-write or being fetched. Not addressed. Need at minimum a layout-preserving pulse on the box backgrounds.
+  </div>
+  <div class="card miss">
+    <h4>TOOLTIPS ONLY IN PROJECTVIEW</h4>
+    8 tooltips in ProjectView, <strong>zero in the drawer</strong>. Drawer is the densest surface with the most truncation — most needed there. Need a tooltip pattern (hover delay, dark popup, anchored to source element) for truncated tile titles + Pylon shorthand expansion.
+  </div>
+  <div class="card miss">
+    <h4>NO SYNC PING</h4>
+    When shared JSON updates from Nexus → COMSAT (or vice versa), no visual cue that "something just changed elsewhere." A subtle 200ms accent-color pulse on the receiving tile would close the loop. Not addressed.
+  </div>
+  <div class="card miss">
+    <h4>NO DRAG-TO-REPOSITION DRAWER</h4>
+    "Moveable along the edge, snaps to nearest edge" — the adaptive-height drawer is shown but the drag interaction isn't designed (where's the handle? what's the hit area? feedback while dragging?).
+  </div>
+  <div class="card miss">
+    <h4>EMPTY-STATE FOR WORKFLOW ROW</h4>
+    They dropped the workflow-dot row entirely. When re-added (per Unilateral #2), it needs an explicit empty-state: 4 dashed-outline slots, dim, "drag badge here" tooltip on hover.
+  </div>
+  <div class="card miss">
+    <h4>NO FAILURE STATES</h4>
+    Tile when shared JSON is corrupt? Tile when Pathfinder write fails? Tile when Nexus app isn't running but COMSAT thinks a project exists? Link contract spec'd these scenarios; design didn't visualize them.
+  </div>
+  <div class="card miss">
+    <h4>VS CODE STATUS BAR BADGES</h4>
+    Brief had badges flowing from COMSAT palette → VS Code status bar via extension. Drawer file shows the source. Neither file shows the VS Code-side render — what the badge looks like rendered as a VSCode StatusBarItem.
+  </div>
+  <div class="card miss">
+    <h4>SOUND DESIGN HOOKS</h4>
+    StarCraft sound sources memory exists. Brief flagged as out-of-scope but should at minimum specify: 3 named events (perm needed / build complete / error) with mappable triggers in the UI, so audio can wire later without code changes.
+  </div>
+  <div class="card flag">
+    <h4>BRAND MARK FOR NEXUS (⌬)</h4>
+    The Orbitron + ⌬ glyph reads great in the screenshot, but the ⌬ is a Unicode codepoint, not an SVG. Final brand mark should be a proper SVG so it renders consistently across web, native, VS Code activity bar, dock badge, etc.
+  </div>
+  <div class="card flag">
+    <h4>SCALE / DENSITY TOGGLE</h4>
+    Brief had density / spacing notes. Shipped design is one density. For Vertical mode at min width 300px and Drawer expanded at 256px tight, may need a "comfortable / compact / dense" toggle once real content density is felt during build.
+  </div>
+  <div class="card flag">
+    <h4>ICONOGRAPHY FOR METHOD TAGS</h4>
+    Done-When method tags are currently text labels (<code>MANUAL / URL / SHELL / FILE</code>). Brief asked for SVG icons. They flagged this as polish; I'd say it's load-bearing for at-a-glance scanning.
+  </div>
+</div>
+
+<p style="margin-top:20px; font-size:13px; color:var(--text-soft);">
+  <strong>Net:</strong> The shipped design is a strong reference for the <em>standard</em> state of every component. Hover / focus / disabled / loading / error / sync states are mostly absent. Build can start anyway — these emerge during implementation and can be added in a focused second pass. But know they're missing so they don't get assumed-complete.
+</p>
+
+</div>
+
 <!-- =================== WHAT YOU SHOULD DO NEXT =================== -->
 <h2>What to do next</h2>
 <div class="hud"><span class="corner-tr"></span><span class="corner-bl"></span>
