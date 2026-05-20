@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>COMSAT v4 — VS Code Surface</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+  :root {
+    --bg: #04060a;
+    --bg-2: #08101a;
+    --surface: #182228;
+    --surface-2: #1f2d33;
+    --line: rgba(46,212,122,0.20);
+    --line-strong: rgba(46,212,122,0.40);
+    --text: #edeef3;
+    --muted: #9097a0;
+    --faded: rgba(237,238,243,0.58);
+    --grid: rgba(46,212,122,0.12);
+    --grid-major: rgba(46,212,122,0.22);
+    --glow: 0.55;
+
+    --accent: #2ed47a;
+    --cook:   #ff8c2a;
+    --attn:   #f5c423;
+    --signal: #00b8d4;
+    --warn:   #f5c423;
+    --danger: #e53935;
+    --pink:   #ff6f9b;
+
+    --ws-overmind: #d35400;
+    --ws-hpfhq:    #008b8b;
+
+    --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+    --font-mono: "Share Tech Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --font-display: "Orbitron", "Eurostile", system-ui, sans-serif;
+    --font-ui: "Rajdhani", "Eurostile", system-ui, sans-serif;
+    /* VS Code system font for the mock */
+    --font-vscode: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    --font-vscode-mono: "SF Mono", Menlo, Consolas, monospace;
+  }
+  [data-theme="light"] {
+    --bg: #ece8d8;
+    --bg-2: #e6e2d0;
+    --surface: #ffffff;
+    --surface-2: #f6f3e7;
+    --line: rgba(26,26,26,0.14);
+    --line-strong: rgba(26,26,26,0.38);
+    --text: #161616;
+    --muted: #4f4f4f;
+    --faded: rgba(22,22,22,0.50);
+    --grid: rgba(26,26,26,0.06);
+    --grid-major: rgba(26,26,26,0.13);
+    --glow: 0;
+    --accent: #1f9d54;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background-color: var(--bg); color: var(--text); font-family: var(--font-sans); min-height: 100%; transition: background-color 180ms linear, color 180ms linear; }
+  body {
+    background-image:
+      radial-gradient(ellipse at 50% -10%, color-mix(in srgb, var(--accent) 8%, transparent) 0%, transparent 50%),
+      linear-gradient(var(--grid-major) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: auto, 160px 160px, 160px 160px, 32px 32px, 32px 32px;
+    background-attachment: fixed;
+    padding: 28px 36px 96px;
+    min-width: 1320px;
+  }
+
+  /* mast */
+  .mast { display: flex; align-items: baseline; gap: 22px; padding: 0 8px 14px; margin-bottom: 32px; border-bottom: 1px solid var(--line); position: relative; }
+  .mast .brand { font-family: var(--font-display); font-size: 18px; font-weight: 900; letter-spacing: 0.36em; color: var(--accent); text-transform: uppercase; text-shadow: 0 0 calc(1px * var(--glow)) color-mix(in srgb, var(--accent) 95%, transparent), 0 0 calc(6px * var(--glow)) color-mix(in srgb, var(--accent) 50%, transparent); }
+  .mast .ver { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.20em; text-transform: uppercase; }
+  .mast .ver em { color: var(--accent); font-style: normal; }
+  .mast .crumb { margin-left: auto; font-family: var(--font-mono); font-size: 10px; color: var(--faded); letter-spacing: 0.18em; text-transform: uppercase; }
+  .mast .crumb .tick { display: inline-block; width: 6px; height: 6px; background: var(--accent); margin-right: 8px; vertical-align: 1px; box-shadow: 0 0 calc(6px * var(--glow)) var(--accent); }
+  .mast::after { content:""; position:absolute; left:0; right:0; bottom:-1px; height:1px; background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 45%, transparent), transparent); }
+  .theme-toggle { display: inline-flex; margin-left: 16px; border: 1px solid var(--line-strong); border-radius: 2px; overflow: hidden; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; }
+  .theme-toggle button { background: transparent; border: none; padding: 4px 9px 3px; color: var(--faded); cursor: pointer; font: inherit; letter-spacing: inherit; }
+  .theme-toggle button.on { background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); }
+  .theme-toggle button + button { border-left: 1px solid var(--line-strong); }
+
+  /* section */
+  .section { margin-bottom: 48px; }
+  .section-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 6px; }
+  .section-head .ix { font-family: var(--font-mono); font-size: 11px; color: var(--accent); letter-spacing: 0.22em; padding: 3px 8px; border: 1px solid var(--line-strong); border-radius: 2px; }
+  .section-head h2 { font-family: var(--font-ui); font-weight: 700; font-size: 22px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text); }
+  .section-head h2 .sep { color: var(--muted); margin: 0 8px; font-weight: 400; }
+  .section-sub { font-size: 13px; color: var(--text); opacity: 0.82; margin: 6px 0 24px; max-width: 800px; line-height: 1.6; }
+  .section-sub b { color: var(--accent); font-weight: 600; }
+  .section-sub code { font-family: var(--font-mono); font-size: 11.5px; color: var(--text); background: color-mix(in srgb, var(--text) 6%, transparent); padding: 1px 5px; border-radius: 2px; }
+
+  /* ════════════════ VS CODE CHROME ════════════════ */
+  .vscode {
+    background: #1e1e1e;
+    border: 1px solid #2d2d2d;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.55);
+    color: #cccccc;
+    font-family: var(--font-vscode);
+    font-size: 13px;
+  }
+  /* title bar */
+  .vsc-titlebar {
+    height: 30px;
+    background: #181818;
+    display: flex; align-items: center;
+    padding: 0 12px;
+    border-bottom: 1px solid #2d2d2d;
+    gap: 8px;
+  }
+  .vsc-titlebar .lights { display: flex; gap: 6px; }
+  .vsc-titlebar .lights span { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+  .vsc-titlebar .lights .r { background: #ff5f57; }
+  .vsc-titlebar .lights .y { background: #febc2e; }
+  .vsc-titlebar .lights .g { background: #28c840; }
+  .vsc-titlebar .title { flex: 1; text-align: center; font-size: 12px; color: #858585; letter-spacing: 0.04em; }
+  /* main row */
+  .vsc-main { display: flex; height: 440px; }
+  /* activity bar */
+  .vsc-activity {
+    width: 48px;
+    background: #181818;
+    display: flex; flex-direction: column;
+    padding: 6px 0;
+    border-right: 1px solid #2d2d2d;
+  }
+  .vsc-act-item {
+    width: 48px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    color: #858585; cursor: pointer; position: relative;
+  }
+  .vsc-act-item:hover { color: #ffffff; }
+  .vsc-act-item.active { color: #ffffff; }
+  .vsc-act-item.active::before { content:""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: #ffffff; }
+  /* sidebar */
+  .vsc-sidebar {
+    width: 240px;
+    background: #1e1e1e;
+    border-right: 1px solid #2d2d2d;
+    padding: 10px 12px;
+    overflow: auto;
+  }
+  .vsc-sidebar h4 { font-size: 11px; letter-spacing: 0.16em; color: #858585; text-transform: uppercase; font-weight: 400; margin-bottom: 10px; }
+  .vsc-sidebar .nx-title { font-weight: 600; color: #ffffff; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .vsc-sidebar .nx-ws { font-size: 11px; color: #cccccc; opacity: 0.7; }
+  .vsc-sidebar hr { border: none; border-top: 1px solid #2d2d2d; margin: 12px 0; }
+  .vsc-sidebar .stage-lbl { font-family: var(--font-vscode-mono); font-size: 10px; letter-spacing: 0.10em; color: #858585; text-transform: uppercase; margin-bottom: 6px; }
+  .vsc-sidebar .stage-now { color: #d35400; font-weight: 600; }
+  .vsc-sidebar .dw-list { display: flex; flex-direction: column; gap: 4px; font-size: 11.5px; }
+  .vsc-sidebar .dw-item { display: flex; align-items: center; gap: 7px; padding: 3px 4px; border-radius: 2px; }
+  .vsc-sidebar .dw-item .box { width: 11px; height: 11px; border: 1px solid #858585; border-radius: 2px; display: inline-flex; align-items: center; justify-content: center; color: #2ed47a; flex-shrink: 0; }
+  .vsc-sidebar .dw-item.done .box { border-color: #2ed47a; background: rgba(46,212,122,0.2); }
+  .vsc-sidebar .dw-item.done .box::after { content:"✓"; font-size: 9px; }
+  .vsc-sidebar .dw-item.done { opacity: 0.65; }
+  .vsc-sidebar .dw-item.done .text { text-decoration: line-through; }
+  /* editor */
+  .vsc-editor {
+    flex: 1;
+    background: #1e1e1e;
+    padding: 10px 14px;
+    font-family: var(--font-vscode-mono);
+    font-size: 13px;
+    line-height: 1.55;
+    overflow: auto;
+    color: #d4d4d4;
+  }
+  .vsc-editor .ln { color: #858585; display: inline-block; width: 28px; text-align: right; margin-right: 12px; user-select: none; }
+  .vsc-editor .kw { color: #569cd6; }
+  .vsc-editor .fn { color: #dcdcaa; }
+  .vsc-editor .st { color: #ce9178; }
+  .vsc-editor .co { color: #6a9955; }
+  .vsc-editor .nm { color: #b5cea8; }
+  /* status bar */
+  .vsc-status {
+    height: 22px;
+    background: #007acc;
+    display: flex; align-items: center;
+    padding: 0;
+    font-size: 12px;
+    color: #ffffff;
+    font-family: var(--font-vscode);
+  }
+  .vsc-status .item {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 0 8px;
+    height: 100%;
+    cursor: pointer;
+    transition: background 80ms linear;
+  }
+  .vsc-status .item:hover { background: rgba(255,255,255,0.12); }
+  .vsc-status .item svg { width: 14px; height: 14px; }
+  .vsc-status .left { display: flex; align-items: center; height: 100%; }
+  .vsc-status .sp { flex: 1; }
+  .vsc-status .right { display: flex; align-items: center; height: 100%; }
+  .vsc-status .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 0 8px;
+    height: 100%;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 80ms linear;
+    position: relative;
+  }
+  .vsc-status .badge:hover { background: rgba(255,255,255,0.16); }
+  .vsc-status .badge svg { width: 13px; height: 13px; }
+  /* badge tones */
+  .vsc-status .badge.hmn  { color: #ffaecd; }
+  .vsc-status .badge.hld  { color: #ff7878; }
+  .vsc-status .badge.stby { color: #5cf0a0; }
+  .vsc-status .badge.cl   { color: #ffb874; }
+  .vsc-status .badge.cx   { color: #5ce0f0; }
+  .vsc-status .badge.attn { color: #ffeb6b; }
+  .vsc-status .badge.cook { color: #ffb874; }
+  /* nexus mark in workspace name */
+  .vsc-status .ws-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 0 10px;
+    height: 100%;
+    background: rgba(0,0,0,0.18);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .vsc-status .ws-tag:hover { background: rgba(0,0,0,0.28); }
+  .vsc-status .ws-tag svg { width: 13px; height: 13px; }
+
+  /* divider hairline between badges */
+  .vsc-status .div { width: 1px; height: 14px; background: rgba(255,255,255,0.22); margin: 0 2px; align-self: center; }
+
+  /* ════════════════ palette ════════════════ */
+  .palette {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+  }
+  [data-theme="light"] .palette { box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .pal-cell {
+    padding: 24px 22px 18px;
+    border-right: 1px dotted var(--line);
+    border-bottom: 1px dotted var(--line);
+    display: flex; flex-direction: column;
+    gap: 14px;
+    min-height: 240px;
+  }
+  .pal-cell:nth-child(3n) { border-right: none; }
+  .pal-cell:nth-last-child(-n+3) { border-bottom: none; }
+  .pal-cell .top { display: flex; align-items: center; gap: 12px; }
+  .pal-cell .dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+  .pal-cell .nm { font-family: var(--font-ui); font-weight: 700; font-size: 14px; letter-spacing: 0.02em; }
+  .pal-cell .desc { font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); line-height: 1.55; letter-spacing: 0.04em; }
+  /* preview chip — matches the real VS Code render */
+  .pal-cell .preview-bar {
+    height: 22px;
+    background: #007acc;
+    display: inline-flex;
+    border-radius: 2px;
+    align-items: center;
+    align-self: flex-start;
+    overflow: hidden;
+  }
+  .pal-cell .preview-bar .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 0 8px;
+    height: 100%;
+    font-family: var(--font-vscode);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: #ffffff;
+  }
+  .pal-cell .preview-bar .badge svg { width: 13px; height: 13px; }
+  .pal-cell .tt {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    line-height: 1.55;
+    padding: 8px 10px;
+    background: var(--bg-2);
+    border-left: 2px solid color-mix(in srgb, var(--accent) 40%, transparent);
+    border-radius: 0 2px 2px 0;
+  }
+  .pal-cell .tt b { color: var(--text); font-weight: 400; }
+  .pal-cell .tt .label { color: var(--accent); display: block; margin-bottom: 4px; font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; }
+
+  /* anatomy */
+  .anatomy {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    background: var(--surface);
+    border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+    border-radius: 4px;
+    padding: 32px 36px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+  }
+  [data-theme="light"] .anatomy { box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .anatomy .big-preview {
+    background: #007acc;
+    border-radius: 4px;
+    padding: 24px 28px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .anatomy .big-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px;
+    color: #ffaecd;
+    font-family: var(--font-vscode);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    background: rgba(255,255,255,0.10);
+    border-radius: 3px;
+  }
+  .anatomy .big-badge svg { width: 22px; height: 22px; }
+  .anatomy .spec { font-family: var(--font-mono); font-size: 11px; color: var(--muted); line-height: 1.7; letter-spacing: 0.04em; }
+  .anatomy .spec .k { color: var(--accent); display: inline-block; min-width: 100px; }
+  .anatomy .spec .v { color: var(--text); }
+
+  /* notes */
+  .notes { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 18px; }
+  .note { font-family: var(--font-mono); font-size: 11px; color: var(--muted); line-height: 1.65; padding-left: 14px; position: relative; }
+  .note::before { content: "▸"; position: absolute; left: 0; top: 1px; color: var(--accent); font-size: 10px; }
+  .note b { color: var(--text); font-weight: 400; }
+  .note .h { font-family: var(--font-ui); color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; display: block; margin-bottom: 4px; }
+  .note kbd { display: inline-block; padding: 1px 5px; border: 1px solid var(--line-strong); border-radius: 2px; color: var(--accent); font-size: 10px; font-family: var(--font-mono); }
+  .note code { font-family: var(--font-mono); font-size: 10.5px; color: var(--text); background: color-mix(in srgb, var(--text) 6%, transparent); padding: 1px 4px; border-radius: 2px; }
+</style>
+</head>
+<body>
+
+  <header class="mast">
+    <span class="brand">COMSAT</span>
+    <span class="ver">V4 · VS CODE SURFACE <em>R.01</em></span>
+    <span class="crumb"><span class="tick"></span>STATUS-BAR BADGES &middot; Q7</span>
+    <div class="theme-toggle" id="themeToggle">
+      <button data-theme="dark" class="on">DARK</button>
+      <button data-theme="light">LIGHT</button>
+    </div>
+  </header>
+
+  <!-- ════════════════ 01 · CONCEPT ════════════════ -->
+  <section class="section" data-screen-label="01 VS Code surface concept">
+    <div class="section-head"><span class="ix">01</span><h2>Concept</h2></div>
+    <p class="section-sub">When a workflow badge is dragged from the COMSAT palette onto a VS Code window, it renders as a <code>StatusBarItem</code> in that window's status bar. VS Code constrains the API: <b>foreground color is free</b>, background only via two theme tokens, optional codicon prefix, tooltip is MarkdownString. Design works inside those constraints.</p>
+  </section>
+
+  <!-- ════════════════ 02 · ANATOMY ════════════════ -->
+  <section class="section" data-screen-label="02 Badge anatomy">
+    <div class="section-head"><span class="ix">02</span><h2>Anatomy</h2></div>
+    <p class="section-sub">Single badge enlarged 3&times; for inspection. The base unit at real size is <b>22 px tall</b> &mdash; the height of the VS Code status bar.</p>
+
+    <div class="anatomy">
+      <div class="big-preview">
+        <span class="big-badge">
+          <!-- person codicon analogue -->
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5" r="2.4"/><path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5"/></svg>
+          HMN
+        </span>
+      </div>
+      <div class="spec">
+        <div><span class="k">type</span><span class="v"><code>vscode.StatusBarAlignment.Right</code></span></div>
+        <div><span class="k">priority</span><span class="v">100 base &middot; +1 per badge so order is stable</span></div>
+        <div><span class="k">label</span><span class="v"><code>$(person) HMN</code> &mdash; codicon prefix + 3-letter code</span></div>
+        <div><span class="k">color</span><span class="v">workflow color (here: pink <code>#ffaecd</code>)</span></div>
+        <div><span class="k">background</span><span class="v">VS Code default &mdash; we don't override</span></div>
+        <div><span class="k">tooltip</span><span class="v">MarkdownString (see &sect;04)</span></div>
+        <div><span class="k">command</span><span class="v"><code>comsat.badge.invoke</code> &middot; routes to badge action</span></div>
+      </div>
+    </div>
+
+    <div class="notes">
+      <div class="note">
+        <span class="h">Why 3-letter codes</span>
+        Short enough to fit 4 badges in a single status-bar row without crowding the right-side built-ins (git sync, errors, position). Distinguishable at a glance: <b>HMN / HLD / STBY / ATTN / CL / CX</b>. Avoids single-character ambiguity ("H" could be human, hold, or hot).
+      </div>
+      <div class="note">
+        <span class="h">Why color-on-color, not chip-on-chip</span>
+        VS Code lets us set <b>foreground</b> via <code>StatusBarItem.color</code> but only allows <code>error/warning</code> backgrounds. We use the foreground freely (workflow color text on the user's status-bar bg) and leave background to the user's theme. Looks native, never fights the OS chrome.
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 03 · BADGE PALETTE ════════════════ -->
+  <section class="section" data-screen-label="03 Badge palette">
+    <div class="section-head"><span class="ix">03</span><h2>Palette<span class="sep">·</span>Six badges</h2></div>
+    <p class="section-sub">Three <b>workflow</b> badges (user intent), two <b>engine pins</b> (runtime hint), one <b>status</b> badge (system signal). Each cell shows the preview as it would render inside a VS Code status bar at real size.</p>
+
+    <div class="palette">
+
+      <!-- HMN -->
+      <div class="pal-cell">
+        <div class="top">
+          <span class="dot" style="background: var(--pink)"></span>
+          <span class="nm" style="color: var(--pink)">HMN &middot; Human in loop</span>
+        </div>
+        <div class="preview-bar">
+          <span class="badge" style="color: #ffaecd">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5" r="2.4"/><path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5"/></svg>
+            HMN
+          </span>
+        </div>
+        <div class="desc">Agent paused; a human needs to review or decide. Click to surface what's blocking.</div>
+        <div class="tt">
+          <span class="label">Tooltip</span>
+          <b>Human in loop</b><br>
+          Agent waiting on review.<br>
+          Click to open in Nexus.
+        </div>
+      </div>
+
+      <!-- HLD -->
+      <div class="pal-cell">
+        <div class="top">
+          <span class="dot" style="background: var(--danger)"></span>
+          <span class="nm" style="color: var(--danger)">HLD &middot; On hold</span>
+        </div>
+        <div class="preview-bar">
+          <span class="badge" style="color: #ff7878">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3.5" y="3.5" width="9" height="9"/></svg>
+            HLD
+          </span>
+        </div>
+        <div class="desc">Workspace explicitly paused. No agent action permitted; user must unblock.</div>
+        <div class="tt">
+          <span class="label">Tooltip</span>
+          <b>On hold</b><br>
+          Paused 18m ago.<br>
+          Click to resume.
+        </div>
+      </div>
+
+      <!-- STBY -->
+      <div class="pal-cell">
+        <div class="top">
+          <span class="dot" style="background: var(--accent)"></span>
+          <span class="nm" style="color: var(--accent)">STBY &middot; Standby</span>
+        </div>
+        <div class="preview-bar">
+          <span class="badge" style="color: #5cf0a0">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><polyline points="3 8 7 12 13 4"/></svg>
+            STBY
+          </span>
+        </div>
+        <div class="desc">Pinned standby acknowledgment &mdash; "say the word." Optional; default agent-idle doesn't need this badge.</div>
+        <div class="tt">
+          <span class="label">Tooltip</span>
+          <b>Standing by</b><br>
+          Ready for next instruction.
+        </div>
+      </div>
+
+      <!-- ATTN -->
+      <div class="pal-cell">
+        <div class="top">
+          <span class="dot" style="background: var(--attn); animation: blink 1.2s infinite;"></span>
+          <span class="nm" style="color: var(--attn)">ATTN &middot; Attention</span>
+        </div>
+        <div class="preview-bar">
+          <span class="badge" style="color: #ffeb6b">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M4 6a4 4 0 0 1 8 0v3l1.5 2.5h-11L4 9z"/><path d="M6.5 12a1.5 1.5 0 0 0 3 0"/></svg>
+            ATTN
+          </span>
+        </div>
+        <div class="desc">VS Code-side action needed (build failed, test red, port conflict). System-set, not user-pinned.</div>
+        <div class="tt">
+          <span class="label">Tooltip</span>
+          <b>Needs attention</b><br>
+          Build failed: 2 type errors.<br>
+          Click to open Problems panel.
+        </div>
+      </div>
+
+      <!-- CL -->
+      <div class="pal-cell">
+        <div class="top">
+          <span class="dot" style="background: var(--cook)"></span>
+          <span class="nm" style="color: var(--cook)">CL &middot; Claude pinned</span>
+        </div>
+        <div class="preview-bar">
+          <span class="badge" style="color: #ffb874">
+            <svg viewBox="0 0 16 16" fill="currentColor"><g transform="translate(8 8)"><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z"/><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z" transform="rotate(45)"/><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z" transform="rotate(90)"/><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z" transform="rotate(135)"/><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z" transform="rotate(180)"/><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z" transform="rotate(225)"/><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z" transform="rotate(270)"/><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z" transform="rotate(315)"/></g></svg>
+            CL
+          </span>
+        </div>
+        <div class="desc">Workspace pinned to <b>Claude</b>. New sessions auto-route to CL. Stays orange even while idle.</div>
+        <div class="tt">
+          <span class="label">Tooltip</span>
+          <b>Claude pinned</b><br>
+          Engine route: Claude Code<br>
+          Click to switch engine.
+        </div>
+      </div>
+
+      <!-- CX -->
+      <div class="pal-cell">
+        <div class="top">
+          <span class="dot" style="background: var(--signal)"></span>
+          <span class="nm" style="color: var(--signal)">CX &middot; Codex pinned</span>
+        </div>
+        <div class="preview-bar">
+          <span class="badge" style="color: #5ce0f0">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><g transform="translate(8 8)"><line x1="-5" y1="0" x2="5" y2="0"/><line x1="-5" y1="0" x2="5" y2="0" transform="rotate(60)"/><line x1="-5" y1="0" x2="5" y2="0" transform="rotate(120)"/></g></svg>
+            CX
+          </span>
+        </div>
+        <div class="desc">Workspace pinned to <b>Codex</b>. New sessions auto-route to CX. Stays cyan even while idle.</div>
+        <div class="tt">
+          <span class="label">Tooltip</span>
+          <b>Codex pinned</b><br>
+          Engine route: OpenAI Codex<br>
+          Click to switch engine.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="notes">
+      <div class="note">
+        <span class="h">Workflow vs engine vs status</span>
+        <b>Workflow</b> badges (HMN/HLD/STBY) reflect <b>user intent</b> &mdash; pinned by drag. <b>Engine pins</b> (CL/CX) reflect <b>routing preference</b> &mdash; pinned by the user too, but the system honors them automatically. <b>Status</b> badges (ATTN) are <b>system-set</b> &mdash; user can't drag them, they appear when a condition is met and clear when resolved.
+      </div>
+      <div class="note">
+        <span class="h">Why no workspace color in the badge text</span>
+        Each badge uses its <b>workflow color</b>, not the workspace's color. Workspace identity lives in the <code>ws-tag</code> (see &sect;04) &mdash; that's the segment that wears the workspace tint. Badges = state, not identity. Mixing them would create double-encoded info.
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 04 · TOOLTIP FORMAT ════════════════ -->
+  <section class="section" data-screen-label="04 Tooltip format">
+    <div class="section-head"><span class="ix">04</span><h2>Tooltip<span class="sep">·</span>Format</h2></div>
+    <p class="section-sub">Each badge's tooltip uses a 3-line MarkdownString: <b>name</b>, <b>state line</b>, <b>action hint</b>. Standardised across all six badges so the user learns the rhythm once.</p>
+
+    <div style="background: var(--surface); border: 1px solid color-mix(in srgb, var(--text) 14%, transparent); border-radius: 4px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.35); font-family: var(--font-mono); font-size: 12px; color: var(--text); line-height: 1.6;">
+<pre style="background: #181818; color: #d4d4d4; padding: 16px 20px; border-radius: 3px; overflow-x: auto; font-size: 11.5px; line-height: 1.5; white-space: pre;">item.tooltip = <span style="color:#ce9178">new MarkdownString</span>(
+  <span style="color:#ce9178">`**${name}**\n` +</span>
+  <span style="color:#ce9178">`${stateLine}\n` +</span>
+  <span style="color:#569cd6">${actionHint && `\n[${actionHint}](command:${cmd})`}</span>
+);
+item.tooltip.isTrusted = <span style="color:#569cd6">true</span>; <span style="color:#6a9955">// allow command links</span></pre>
+
+      <div style="margin-top: 16px; font-family: var(--font-mono); font-size: 11px; color: var(--muted); line-height: 1.7;">
+        <div><span style="color: var(--accent); display: inline-block; min-width: 100px">name</span><span style="color: var(--text)">bold title &mdash; "Human in loop", "On hold", etc.</span></div>
+        <div><span style="color: var(--accent); display: inline-block; min-width: 100px">state line</span><span style="color: var(--text)">one-line context &mdash; "Paused 18m ago", "Build failed: 2 type errors"</span></div>
+        <div><span style="color: var(--accent); display: inline-block; min-width: 100px">action hint</span><span style="color: var(--text)">command link &mdash; "Click to resume" / "Click to open Problems panel"</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 05 · 4 BADGES PINNED · CLOSE-UP ════════════════ -->
+  <section class="section" data-screen-label="05 Status bar close-up">
+    <div class="section-head"><span class="ix">05</span><h2>Status&nbsp;bar<span class="sep">·</span>Close-up</h2></div>
+    <p class="section-sub">Just the bottom strip, rendered at native size. <b>HMN + HLD + CL + ATTN</b> pinned on an HPFHQ Consolidation workspace. Order: <b>workspace tag &middot; system-pinned engines &middot; user-pinned workflow &middot; system-set status</b>.</p>
+
+    <div style="background: var(--surface); border: 1px solid color-mix(in srgb, var(--text) 14%, transparent); border-radius: 4px; padding: 30px; box-shadow: 0 2px 12px rgba(0,0,0,0.35);">
+      <!-- left side typical, right side our badges -->
+      <div style="background: #1e1e1e; border-radius: 4px 4px 0 0; padding: 28px 0 22px 0; display: flex; align-items: flex-end; justify-content: center; min-height: 80px;">
+        <div style="color: #858585; font-family: var(--font-vscode-mono); font-size: 11px; letter-spacing: 0.04em;">// editor area &mdash; truncated for emphasis</div>
+      </div>
+      <div class="vsc-status" style="border-radius: 0 0 4px 4px;">
+        <!-- left -->
+        <div class="left">
+          <span class="item">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="6" cy="4" r="1.5"/><circle cx="6" cy="12" r="1.5"/><circle cx="12" cy="8" r="1.5"/><path d="M6 5.5v5M6 12a3 3 0 0 0 3-3V5M9 5h2"/></svg>
+            main
+          </span>
+          <span class="item"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 11l-2-2 2-2M12 5l2 2-2 2M9 4l-2 8"/></svg> 0 ↓ 0 ↑</span>
+          <span class="item"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="6"/><path d="M8 5v3M8 11h0"/></svg> 0</span>
+          <span class="item"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 12l4-8 4 8M3.5 9.5h5"/></svg> 2</span>
+        </div>
+        <span class="sp"></span>
+        <!-- right -->
+        <div class="right">
+          <span class="ws-tag" title="HPFHQ Consolidation · Overmind">
+            <span class="nx-bullet" style="color: #ffae5e">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M 12 2.5 L 20.227 7.25 L 20.227 16.75 L 12 21.5 L 3.773 16.75 L 3.773 7.25 Z"/><circle cx="12" cy="12" r="2.4" fill="currentColor"/></svg>
+            </span>
+            HQc
+          </span>
+          <span class="div"></span>
+          <span class="badge cl" title="Claude pinned">
+            <svg viewBox="0 0 16 16" fill="currentColor"><g transform="translate(8 8)"><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z"/><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z" transform="rotate(45)"/><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z" transform="rotate(90)"/><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z" transform="rotate(135)"/><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z" transform="rotate(180)"/><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z" transform="rotate(225)"/><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z" transform="rotate(270)"/><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z" transform="rotate(315)"/></g></svg>
+            CL
+          </span>
+          <span class="badge hmn" title="Human in loop">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5" r="2.4"/><path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5"/></svg>
+            HMN
+          </span>
+          <span class="badge hld" title="On hold">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3.5" y="3.5" width="9" height="9"/></svg>
+            HLD
+          </span>
+          <span class="badge attn" title="Needs attention" style="background: rgba(245,196,35,0.18)">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M4 6a4 4 0 0 1 8 0v3l1.5 2.5h-11L4 9z"/><path d="M6.5 12a1.5 1.5 0 0 0 3 0"/></svg>
+            ATTN
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="notes">
+      <div class="note">
+        <span class="h">Workspace tag at lead position</span>
+        The <code>ws-tag</code> sits leftmost in our cluster (priority 200). It carries the <b>NEXUS mark</b> in workspace color + shorthand. Acts as the anchor between the workspace and its badge cluster. Click = open the project in Nexus.
+      </div>
+      <div class="note">
+        <span class="h">ATTN gets a subtle background</span>
+        ATTN is the only badge with <code>backgroundColor: 'statusBarItem.warningBackground'</code> applied &mdash; using the one VS-Code-approved background to make system-set urgency unmissable. All others use plain foreground color on the user's theme bg.
+      </div>
+      <div class="note">
+        <span class="h">Order rule</span>
+        <b>ws-tag &middot; engine pins &middot; workflow badges &middot; status badges</b>. Codified via VS Code's <code>priority</code> (200 / 150&ndash;140 / 130&ndash;110 / 100). Stable across reloads; the engine you've pinned doesn't shuffle position when a workflow badge appears.
+      </div>
+      <div class="note">
+        <span class="h">Truncation under width pressure</span>
+        If the editor's status bar runs out of room (lots of git, errors, warnings), VS Code right-truncates from the leftmost item. Our cluster is right-aligned and high-priority so it survives. If absolute width pressure hits, drop the labels first and keep just icons (codicons render at 14&times;14, ~20 px wide each).
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 06 · FULL VS CODE WINDOW ════════════════ -->
+  <section class="section" data-screen-label="06 Full window">
+    <div class="section-head"><span class="ix">06</span><h2>Full&nbsp;window<span class="sep">·</span>In situ</h2></div>
+    <p class="section-sub">Full VS Code chrome render &mdash; activity bar with Nexus icon pinned, Nexus sidebar pane open, editor showing the file under work, and the four-badge cluster live in the status bar.</p>
+
+    <div class="vscode">
+      <div class="vsc-titlebar">
+        <div class="lights"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+        <div class="title">hpfhq-consolidation &mdash; src/cockpit/metrics.ts</div>
+      </div>
+      <div class="vsc-main">
+        <div class="vsc-activity">
+          <!-- explorer -->
+          <div class="vsc-act-item" title="Explorer"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><polyline points="14 3 14 8 19 8"/></svg></div>
+          <!-- search -->
+          <div class="vsc-act-item" title="Search"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg></div>
+          <!-- scm -->
+          <div class="vsc-act-item" title="Source control"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="14" r="2.5"/><path d="M6 8.5v7M6 18a6 6 0 0 0 6-6V8M12 8h3.5"/></svg></div>
+          <!-- NEXUS -->
+          <div class="vsc-act-item active" title="Nexus">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M 12 2.5 L 20.227 7.25 L 20.227 16.75 L 12 21.5 L 3.773 16.75 L 3.773 7.25 Z"/><circle cx="12" cy="12" r="2.4" fill="currentColor"/></svg>
+          </div>
+          <!-- extensions -->
+          <div class="vsc-act-item" title="Extensions"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="6" height="6"/><rect x="13" y="5" width="6" height="6"/><rect x="5" y="13" width="6" height="6"/><path d="M15 13v6h4a2 2 0 0 0 2-2v-4z"/></svg></div>
+        </div>
+        <div class="vsc-sidebar">
+          <h4>NEXUS</h4>
+          <div class="nx-title">
+            <span style="color: var(--ws-overmind); font-size: 9px;">●</span>
+            HPFHQ Consolidation Plan
+          </div>
+          <div class="nx-ws">Workspace &middot; Overmind &middot; <span style="color: #ffae5e">HQc</span></div>
+          <hr>
+          <div class="stage-lbl">Active stage</div>
+          <div class="stage-now">01 &middot; Helper layer</div>
+          <hr>
+          <div class="stage-lbl">Done-when &middot; 4/7</div>
+          <div class="dw-list">
+            <div class="dw-item done"><span class="box"></span><span class="text">Brandon test passes</span></div>
+            <div class="dw-item done"><span class="box"></span><span class="text">Dictionary tab live</span></div>
+            <div class="dw-item done"><span class="box"></span><span class="text">Zero drift</span></div>
+            <div class="dw-item done"><span class="box"></span><span class="text">ESLint blocks silo</span></div>
+            <div class="dw-item"><span class="box"></span><span class="text">curl /ceo → 404</span></div>
+            <div class="dw-item"><span class="box"></span><span class="text">Overseer green tile</span></div>
+            <div class="dw-item"><span class="box"></span><span class="text">Manifest fresh</span></div>
+          </div>
+        </div>
+        <div class="vsc-editor">
+          <div><span class="ln">1</span><span class="co">// Cockpit metric facade — single source</span></div>
+          <div><span class="ln">2</span><span class="kw">import</span> { <span class="fn">metricSource</span> } <span class="kw">from</span> <span class="st">"@/lib/cockpit/metrics"</span>;</div>
+          <div><span class="ln">3</span></div>
+          <div><span class="ln">4</span><span class="kw">export function</span> <span class="fn">resolveMetric</span>(id: <span class="kw">string</span>) {</div>
+          <div><span class="ln">5</span>&nbsp;&nbsp;<span class="kw">const</span> source = <span class="fn">metricSource</span>(id);</div>
+          <div><span class="ln">6</span>&nbsp;&nbsp;<span class="kw">if</span> (!source) <span class="kw">throw new</span> <span class="fn">Error</span>(<span class="st">`Unknown metric: </span>${id}<span class="st">`</span>);</div>
+          <div><span class="ln">7</span>&nbsp;&nbsp;<span class="kw">return</span> source;</div>
+          <div><span class="ln">8</span>}</div>
+          <div><span class="ln">9</span></div>
+          <div><span class="ln">10</span><span class="co">// TODO(HQc): wire dictionary tab onClick → resolveMetric</span></div>
+        </div>
+      </div>
+      <!-- STATUS BAR -->
+      <div class="vsc-status">
+        <div class="left">
+          <span class="item"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="6" cy="4" r="1.5"/><circle cx="6" cy="12" r="1.5"/><circle cx="12" cy="8" r="1.5"/><path d="M6 5.5v5M6 12a3 3 0 0 0 3-3V5M9 5h2"/></svg> main</span>
+          <span class="item"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 11l-2-2 2-2M12 5l2 2-2 2M9 4l-2 8"/></svg> 0 ↓ 0 ↑</span>
+          <span class="item"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="6"/><path d="M8 5v3M8 11h0"/></svg> 0</span>
+          <span class="item"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 12l4-8 4 8M3.5 9.5h5"/></svg> 2</span>
+          <span class="item">Ln 10, Col 38</span>
+          <span class="item">Spaces: 2</span>
+          <span class="item">UTF-8</span>
+          <span class="item">TypeScript</span>
+        </div>
+        <span class="sp"></span>
+        <div class="right">
+          <span class="ws-tag" title="HPFHQ Consolidation · Overmind">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#ffae5e"><path d="M 12 2.5 L 20.227 7.25 L 20.227 16.75 L 12 21.5 L 3.773 16.75 L 3.773 7.25 Z"/><circle cx="12" cy="12" r="2.4" fill="currentColor"/></svg>
+            HQc
+          </span>
+          <span class="div"></span>
+          <span class="badge cl" title="Claude pinned">
+            <svg viewBox="0 0 16 16" fill="currentColor"><g transform="translate(8 8)"><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z"/><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z" transform="rotate(45)"/><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z" transform="rotate(90)"/><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z" transform="rotate(135)"/><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z" transform="rotate(180)"/><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z" transform="rotate(225)"/><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z" transform="rotate(270)"/><path d="M0 -6.5 L0.9 -1.3 L0 0 L-0.9 -1.3 Z" transform="rotate(315)"/></g></svg>
+            CL
+          </span>
+          <span class="badge hmn" title="Human in loop">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5" r="2.4"/><path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5"/></svg>
+            HMN
+          </span>
+          <span class="badge hld" title="On hold">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3.5" y="3.5" width="9" height="9"/></svg>
+            HLD
+          </span>
+          <span class="badge attn" title="Needs attention" style="background: rgba(245,196,35,0.20)">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><path d="M4 6a4 4 0 0 1 8 0v3l1.5 2.5h-11L4 9z"/><path d="M6.5 12a1.5 1.5 0 0 0 3 0"/></svg>
+            ATTN
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="notes">
+      <div class="note">
+        <span class="h">Drag &amp; drop entrypoint</span>
+        Badge palette opens from the COMSAT tile shield. Dragging a badge over a VS Code window highlights the window with an accent-green outline; releasing pins the badge for that workspace. To remove: right-click the badge &rarr; "Unpin from workspace."
+      </div>
+      <div class="note">
+        <span class="h">Visibility persistence</span>
+        Pinned badges persist in the workspace's <code>.json</code> file (the same shared store COMSAT reads). On VS Code reload, badges reappear in the same order via stored priorities. Unpinning a badge removes it from the json entry.
+      </div>
+      <div class="note">
+        <span class="h">Click handlers</span>
+        Each badge maps to a command. Defaults: <b>HMN</b> &rarr; open Nexus &middot; <b>HLD</b> &rarr; resume workspace &middot; <b>STBY</b> &rarr; no-op (informational only) &middot; <b>ATTN</b> &rarr; open Problems panel &middot; <b>CL / CX</b> &rarr; switch engine command. Command IDs land under <code>comsat.badge.*</code> namespace.
+      </div>
+      <div class="note">
+        <span class="h">Theme compatibility</span>
+        Tested foreground colors hold contrast on the default Dark+, Light+, and Monokai themes. <b>Dracula</b> + <b>Solarized Light</b> may need a contrast-adjusted variant of the pink &mdash; document but don't ship until users hit it.
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      var key = "comsat_v4_theme";
+      var saved = localStorage.getItem(key);
+      if (saved === "light" || saved === "dark") {
+        document.documentElement.setAttribute("data-theme", saved);
+      }
+      var toggle = document.getElementById("themeToggle");
+      function sync() {
+        var t = document.documentElement.getAttribute("data-theme") || "dark";
+        toggle.querySelectorAll("button").forEach(function (b) {
+          b.classList.toggle("on", b.dataset.theme === t);
+        });
+      }
+      toggle.addEventListener("click", function (e) {
+        var b = e.target.closest("button");
+        if (!b) return;
+        var t = b.dataset.theme;
+        if (t === "dark") document.documentElement.removeAttribute("data-theme");
+        else document.documentElement.setAttribute("data-theme", t);
+        localStorage.setItem(key, t);
+        sync();
+      });
+      sync();
+    })();
+  </script>
+  <style>
+    @keyframes blink { 0%, 40% { opacity:1; } 60%,100% { opacity:0.30; } }
+  </style>
+
+</body>
+</html>

@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>COMSAT v4 — Brand &amp; Icons</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+  :root {
+    --bg: #04060a;
+    --bg-2: #08101a;
+    --surface: #182228;
+    --surface-2: #1f2d33;
+    --line: rgba(46,212,122,0.20);
+    --line-strong: rgba(46,212,122,0.40);
+    --text: #edeef3;
+    --muted: #9097a0;
+    --faded: rgba(237,238,243,0.58);
+    --grid: rgba(46,212,122,0.12);
+    --grid-major: rgba(46,212,122,0.22);
+    --glow: 0.55;
+
+    --accent: #2ed47a;
+    --cook:   #ff8c2a;
+    --signal: #00b8d4;
+    --warn:   #f5c423;
+    --danger: #e53935;
+
+    --ws-overmind: #d35400;
+    --ws-hpfhq:    #008b8b;
+    --ws-debugs:   #6b7280;
+    --ws-scratch:  #d4a017;
+    --ws-bite:     #228b22;
+    --ws-medus:    #6c3baa;
+
+    --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+    --font-mono: "Share Tech Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --font-display: "Orbitron", "Eurostile", system-ui, sans-serif;
+    --font-ui: "Rajdhani", "Eurostile", system-ui, sans-serif;
+  }
+  [data-theme="light"] {
+    --bg: #ece8d8;
+    --bg-2: #e6e2d0;
+    --surface: #ffffff;
+    --surface-2: #f6f3e7;
+    --line: rgba(26,26,26,0.14);
+    --line-strong: rgba(26,26,26,0.38);
+    --text: #161616;
+    --muted: #4f4f4f;
+    --faded: rgba(22,22,22,0.50);
+    --grid: rgba(26,26,26,0.06);
+    --grid-major: rgba(26,26,26,0.13);
+    --glow: 0;
+    --accent: #1f9d54;
+    --cook: #c84c0a;
+    --signal: #008599;
+    --warn: #b88a07;
+    --danger: #c8262b;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background-color: var(--bg); color: var(--text); font-family: var(--font-sans); min-height: 100%; transition: background-color 180ms linear, color 180ms linear; }
+  body {
+    background-image:
+      radial-gradient(ellipse at 50% -10%, color-mix(in srgb, var(--accent) 8%, transparent) 0%, transparent 50%),
+      linear-gradient(var(--grid-major) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: auto, 160px 160px, 160px 160px, 32px 32px, 32px 32px;
+    background-attachment: fixed;
+    padding: 28px 36px 96px;
+    min-width: 1320px;
+  }
+
+  /* mast */
+  .mast { display: flex; align-items: baseline; gap: 22px; padding: 0 8px 14px; margin-bottom: 32px; border-bottom: 1px solid var(--line); position: relative; }
+  .mast .brand { font-family: var(--font-display); font-size: 18px; font-weight: 900; letter-spacing: 0.36em; color: var(--accent); text-transform: uppercase; text-shadow: 0 0 calc(1px * var(--glow)) color-mix(in srgb, var(--accent) 95%, transparent), 0 0 calc(6px * var(--glow)) color-mix(in srgb, var(--accent) 50%, transparent); }
+  .mast .ver { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.20em; text-transform: uppercase; }
+  .mast .ver em { color: var(--accent); font-style: normal; }
+  .mast .crumb { margin-left: auto; font-family: var(--font-mono); font-size: 10px; color: var(--faded); letter-spacing: 0.18em; text-transform: uppercase; }
+  .mast .crumb .tick { display: inline-block; width: 6px; height: 6px; background: var(--accent); margin-right: 8px; vertical-align: 1px; box-shadow: 0 0 calc(6px * var(--glow)) var(--accent); }
+  .mast::after { content:""; position:absolute; left:0; right:0; bottom:-1px; height:1px; background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 45%, transparent), transparent); }
+  .theme-toggle { display: inline-flex; margin-left: 16px; border: 1px solid var(--line-strong); border-radius: 2px; overflow: hidden; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; }
+  .theme-toggle button { background: transparent; border: none; padding: 4px 9px 3px; color: var(--faded); cursor: pointer; font: inherit; letter-spacing: inherit; }
+  .theme-toggle button.on { background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); }
+  .theme-toggle button + button { border-left: 1px solid var(--line-strong); }
+
+  /* section */
+  .section { margin-bottom: 48px; }
+  .section-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 6px; }
+  .section-head .ix { font-family: var(--font-mono); font-size: 11px; color: var(--accent); letter-spacing: 0.22em; padding: 3px 8px; border: 1px solid var(--line-strong); border-radius: 2px; }
+  .section-head h2 { font-family: var(--font-ui); font-weight: 700; font-size: 22px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text); }
+  .section-head h2 .sep { color: var(--muted); margin: 0 8px; font-weight: 400; }
+  .section-sub { font-size: 13px; color: var(--text); opacity: 0.82; margin: 6px 0 24px; max-width: 800px; line-height: 1.6; }
+  .section-sub b { color: var(--accent); font-weight: 600; }
+  .section-sub code { font-family: var(--font-mono); font-size: 11.5px; color: var(--text); background: color-mix(in srgb, var(--text) 6%, transparent); padding: 1px 5px; border-radius: 2px; }
+
+  /* card */
+  .card { background: var(--surface); border: 1px solid color-mix(in srgb, var(--text) 14%, transparent); border-radius: 4px; padding: 28px 32px; box-shadow: 0 2px 12px rgba(0,0,0,0.35); }
+  [data-theme="light"] .card { box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+
+  /* nexus mark base */
+  .nx { color: var(--accent); display: inline-block; }
+  .nx svg { display: block; }
+
+  /* hero render */
+  .hero {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .hero-mark { display: flex; align-items: center; justify-content: center; padding: 40px; background: var(--bg-2); border-radius: 4px; }
+  .hero-spec { font-family: var(--font-mono); font-size: 11px; color: var(--muted); line-height: 1.7; letter-spacing: 0.04em; }
+  .hero-spec .k { color: var(--accent); display: inline-block; min-width: 110px; }
+  .hero-spec .v { color: var(--text); }
+
+  /* variants grid */
+  .var-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .var-cell {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: flex-end;
+    gap: 14px;
+    padding: 36px 24px 14px;
+    background: var(--surface);
+    border-right: 1px dotted var(--line);
+    border-bottom: 1px dotted var(--line);
+    position: relative;
+    min-height: 180px;
+  }
+  .var-cell:nth-child(4n) { border-right: none; }
+  .var-cell:nth-last-child(-n+4) { border-bottom: none; }
+  .var-cell .label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--faded);
+    text-transform: uppercase;
+    padding-top: 8px;
+    border-top: 1px dotted var(--line);
+    width: 100%;
+    text-align: center;
+  }
+
+  /* size scale */
+  .scale {
+    display: flex; gap: 24px; align-items: flex-end;
+    padding: 32px 24px;
+    background: var(--surface);
+    border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+    border-radius: 4px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+  }
+  [data-theme="light"] .scale { box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .scale-step { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .scale-step .mark-host { display: flex; align-items: center; justify-content: center; padding: 16px; background: var(--bg-2); border-radius: 3px; }
+  .scale-step .px { font-family: var(--font-mono); font-size: 10px; color: var(--accent); letter-spacing: 0.18em; text-transform: uppercase; }
+  .scale-step .px b { color: var(--text); font-weight: 400; }
+
+  /* background tests */
+  .bg-tests {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0;
+    border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .bg-cell { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 28px 16px 16px; min-height: 140px; border-right: 1px solid color-mix(in srgb, var(--text) 14%, transparent); position: relative; }
+  .bg-cell:last-child { border-right: none; }
+  .bg-cell .ctx { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.7; }
+
+  /* VS Code activity bar mock */
+  .vsbar-mock {
+    display: flex; align-items: stretch;
+    background: #1e1e1e;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.5);
+    border: 1px solid #2d2d2d;
+  }
+  .vsbar {
+    width: 48px;
+    background: #181818;
+    display: flex; flex-direction: column;
+    padding: 6px 0;
+    border-right: 1px solid #2d2d2d;
+  }
+  .vsbar-item {
+    width: 48px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    color: #858585;
+    cursor: pointer;
+    position: relative;
+    transition: color 80ms linear;
+  }
+  .vsbar-item:hover { color: #ffffff; }
+  .vsbar-item.active { color: #ffffff; }
+  .vsbar-item.active::before {
+    content:""; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 2px; background: #ffffff;
+  }
+  .vsbar-pane {
+    width: 280px; min-height: 320px;
+    background: #1e1e1e; color: #cccccc;
+    padding: 16px 14px;
+    font-family: "Segoe UI", "SF Pro Text", system-ui, sans-serif;
+    font-size: 12px;
+  }
+  .vsbar-pane h4 { font-size: 11px; letter-spacing: 0.16em; color: #858585; text-transform: uppercase; font-weight: 400; margin-bottom: 12px; }
+
+  /* method icon grid */
+  .method-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--surface);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+  }
+  [data-theme="light"] .method-grid { box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .method-cell {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 12px;
+    padding: 30px 18px 18px;
+    border-right: 1px dotted var(--line);
+    min-height: 200px;
+    position: relative;
+  }
+  .method-cell:last-child { border-right: none; }
+  .method-cell .sizes { display: flex; align-items: flex-end; gap: 18px; }
+  .method-cell .size-host { display: flex; align-items: center; justify-content: center; padding: 8px 10px; background: var(--bg-2); border-radius: 2px; min-width: 36px; }
+  .method-cell .name {
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .method-cell .px-label { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.10em; color: var(--faded); }
+  .method-icon { color: currentColor; display: inline-block; }
+  .method-icon.url { color: var(--signal); }
+  .method-icon.shell { color: var(--accent); }
+  .method-icon.file { color: var(--warn); }
+  .method-icon.manual { color: var(--text); }
+  .method-cell .delta {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+    text-align: center;
+    max-width: 180px;
+    margin-top: 4px;
+  }
+
+  /* method in context — done-when list re-render */
+  .dw {
+    display: flex; flex-direction: column; gap: 6px;
+    background: var(--surface);
+    border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+    border-radius: 4px;
+    padding: 14px 18px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+  }
+  [data-theme="light"] .dw { box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .dw-item {
+    display: grid; grid-template-columns: 18px 1fr auto;
+    gap: 10px; align-items: center;
+    padding: 6px 8px;
+    border-radius: 3px;
+    font-size: 13px;
+    color: var(--text);
+  }
+  .dw-item:hover { background: color-mix(in srgb, var(--text) 4%, transparent); }
+  .dw-item.done { opacity: 0.72; }
+  .dw-item.done .text { text-decoration: line-through; text-decoration-color: color-mix(in srgb, var(--accent) 60%, transparent); }
+  .dw-item .box { width: 14px; height: 14px; border: 1px solid var(--muted); border-radius: 2px; display: inline-flex; align-items: center; justify-content: center; color: var(--accent); }
+  .dw-item.done .box { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 18%, transparent); }
+  .dw-item.done .box::after { content:"✓"; font-size: 11px; font-weight: 700; }
+  .dw-item .method-tag {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: var(--font-mono);
+    font-size: 9.5px; letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 3px 7px 2px 5px;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    color: var(--faded);
+  }
+  .dw-item .method-tag svg { width: 11px; height: 11px; }
+  .dw-item .method-tag.url   { color: var(--signal); border-color: color-mix(in srgb, var(--signal) 32%, transparent); }
+  .dw-item .method-tag.shell { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 32%, transparent); }
+  .dw-item .method-tag.file  { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 32%, transparent); }
+
+  /* source dump */
+  .src {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 14px 16px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.55;
+    color: var(--text);
+    letter-spacing: 0;
+    overflow-x: auto;
+    white-space: pre;
+    margin-top: 16px;
+  }
+  .src .c { color: var(--muted); }
+  .src .t { color: var(--accent); }
+  .src .a { color: var(--cook); }
+  .src .s { color: var(--signal); }
+
+  /* notes */
+  .notes { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 18px; }
+  .note { font-family: var(--font-mono); font-size: 11px; color: var(--muted); line-height: 1.65; padding-left: 14px; position: relative; }
+  .note::before { content: "▸"; position: absolute; left: 0; top: 1px; color: var(--accent); font-size: 10px; }
+  .note b { color: var(--text); font-weight: 400; }
+  .note .h { font-family: var(--font-ui); color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; display: block; margin-bottom: 4px; }
+  .note kbd { display: inline-block; padding: 1px 5px; border: 1px solid var(--line-strong); border-radius: 2px; color: var(--accent); font-size: 10px; font-family: var(--font-mono); }
+  .note code { font-family: var(--font-mono); font-size: 10.5px; color: var(--text); background: color-mix(in srgb, var(--text) 6%, transparent); padding: 1px 4px; border-radius: 2px; }
+</style>
+</head>
+<body>
+
+  <header class="mast">
+    <span class="brand">COMSAT</span>
+    <span class="ver">V4 · BRAND &amp; ICONS <em>R.01</em></span>
+    <span class="crumb"><span class="tick"></span>NEXUS MARK + METHOD ICONS</span>
+    <div class="theme-toggle" id="themeToggle">
+      <button data-theme="dark" class="on">DARK</button>
+      <button data-theme="light">LIGHT</button>
+    </div>
+  </header>
+
+  <!-- ════════════════ 01 · NEXUS MARK · CONCEPT ════════════════ -->
+  <section class="section" data-screen-label="01 Nexus mark · concept">
+    <div class="section-head"><span class="ix">01</span><h2>Nexus<span class="sep">·</span>Mark<span class="sep">·</span>Concept</h2></div>
+    <p class="section-sub">Hexagonal hub with central node. The hex is a network cell, the central dot is the convergence point &mdash; a <b>nexus</b>. Single-stroke geometry, scales clean from 16 px to 48 px, reads as a silhouette at any size.</p>
+
+    <div class="card">
+      <div class="hero">
+        <div class="hero-mark">
+          <span class="nx" style="color: var(--accent)">
+            <!-- canonical solid mark @ 96px -->
+            <svg width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="miter">
+              <!-- outer hexagon -->
+              <path d="M 12 2.5 L 20.227 7.25 L 20.227 16.75 L 12 21.5 L 3.773 16.75 L 3.773 7.25 Z"/>
+              <!-- inner hex (75% size) -->
+              <path d="M 12 6.5 L 17.629 9.75 L 17.629 14.25 L 12 17.5 L 6.371 14.25 L 6.371 9.75 Z" opacity="0.5"/>
+              <!-- central node -->
+              <circle cx="12" cy="12" r="2" fill="currentColor"/>
+            </svg>
+          </span>
+        </div>
+        <div class="hero-spec">
+          <div><span class="k">geometry</span><span class="v">regular hexagon, vertex-up, viewBox 24&times;24</span></div>
+          <div><span class="k">outer hex</span><span class="v">radius 9.5 (vertices at &plusmn;8.227, &plusmn;4.75)</span></div>
+          <div><span class="k">inner hex</span><span class="v">radius 7.0 (vertices at &plusmn;6.062, &plusmn;3.5) &middot; 50% opacity</span></div>
+          <div><span class="k">central node</span><span class="v">filled circle r=2</span></div>
+          <div><span class="k">stroke</span><span class="v">1.5 px at 24 px (scales with viewBox)</span></div>
+          <div><span class="k">color</span><span class="v"><code>currentColor</code> &mdash; one ink, no fills except the node</span></div>
+          <div><span class="k">file</span><span class="v">monochrome SVG, no embedded fonts, no clipping</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 02 · MARK VARIANTS ════════════════ -->
+  <section class="section" data-screen-label="02 Mark variants">
+    <div class="section-head"><span class="ix">02</span><h2>Variants</h2></div>
+    <p class="section-sub">Four variants of the mark family. <b>Solid</b> is the default. <b>Outline</b> drops the filled center node to outline-only (use on small icon bars). <b>Monogram</b> is just the mark, no chrome. <b>Wordmark</b> pairs the mark with the NEXUS lockup in Orbitron.</p>
+
+    <div class="var-grid">
+      <!-- SOLID -->
+      <div class="var-cell">
+        <span class="nx" style="color: var(--accent)">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M 12 2.5 L 20.227 7.25 L 20.227 16.75 L 12 21.5 L 3.773 16.75 L 3.773 7.25 Z"/>
+            <path d="M 12 6.5 L 17.629 9.75 L 17.629 14.25 L 12 17.5 L 6.371 14.25 L 6.371 9.75 Z" opacity="0.5"/>
+            <circle cx="12" cy="12" r="2" fill="currentColor"/>
+          </svg>
+        </span>
+        <div class="label">SOLID</div>
+      </div>
+      <!-- OUTLINE -->
+      <div class="var-cell">
+        <span class="nx" style="color: var(--accent)">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M 12 2.5 L 20.227 7.25 L 20.227 16.75 L 12 21.5 L 3.773 16.75 L 3.773 7.25 Z"/>
+            <path d="M 12 6.5 L 17.629 9.75 L 17.629 14.25 L 12 17.5 L 6.371 14.25 L 6.371 9.75 Z" opacity="0.5"/>
+            <circle cx="12" cy="12" r="2"/>
+          </svg>
+        </span>
+        <div class="label">OUTLINE</div>
+      </div>
+      <!-- MONOGRAM -->
+      <div class="var-cell">
+        <span class="nx" style="color: var(--accent)">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M 12 2.5 L 20.227 7.25 L 20.227 16.75 L 12 21.5 L 3.773 16.75 L 3.773 7.25 Z"/>
+            <circle cx="12" cy="12" r="2.4" fill="currentColor"/>
+          </svg>
+        </span>
+        <div class="label">MONOGRAM</div>
+      </div>
+      <!-- WORDMARK -->
+      <div class="var-cell">
+        <span class="nx" style="color: var(--accent); display: inline-flex; align-items: center; gap: 12px;">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M 12 2.5 L 20.227 7.25 L 20.227 16.75 L 12 21.5 L 3.773 16.75 L 3.773 7.25 Z"/>
+            <path d="M 12 6.5 L 17.629 9.75 L 17.629 14.25 L 12 17.5 L 6.371 14.25 L 6.371 9.75 Z" opacity="0.5"/>
+            <circle cx="12" cy="12" r="2" fill="currentColor"/>
+          </svg>
+          <span style="font-family: var(--font-display); font-weight: 900; font-size: 18px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--accent); text-shadow: 0 0 calc(1px * var(--glow)) currentColor, 0 0 calc(6px * var(--glow)) color-mix(in srgb, currentColor 50%, transparent);">NEXUS</span>
+        </span>
+        <div class="label">WORDMARK</div>
+      </div>
+    </div>
+
+    <div class="notes">
+      <div class="note">
+        <span class="h">Use cases</span>
+        <b>Solid</b> &mdash; default app icon, ProjectView header, COMSAT chip launch.
+        <b>Outline</b> &mdash; small monochrome contexts, VS Code activity bar variant (see &sect;05).
+        <b>Monogram</b> &mdash; favicon, sticker, sub-pixel renders where the inner hex would alias.
+        <b>Wordmark</b> &mdash; splash screens, about dialogs, README headers.
+      </div>
+      <div class="note">
+        <span class="h">When to drop the inner hex</span>
+        Below <b>20 px</b>, the inner hexagon at 50% opacity stops reading and starts looking like noise. Use the Monogram variant (single hex + node) below 20 px. Solid variant kicks in at <b>20 px+</b>.
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 03 · SIZE SCALE ════════════════ -->
+  <section class="section" data-screen-label="03 Size scale">
+    <div class="section-head"><span class="ix">03</span><h2>Size<span class="sep">·</span>Scale</h2></div>
+    <p class="section-sub">Optical adjustments per size. <b>16 px / 24 px</b> use the Monogram (no inner hex). <b>32 px / 48 px</b> use the Solid (inner hex + node). Stroke widths normalised in the viewBox so the line weight stays visually consistent across renders.</p>
+
+    <div class="scale">
+      <div class="scale-step">
+        <div class="mark-host">
+          <span class="nx" style="color: var(--accent)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M 12 2.5 L 20.227 7.25 L 20.227 16.75 L 12 21.5 L 3.773 16.75 L 3.773 7.25 Z"/>
+              <circle cx="12" cy="12" r="2.8" fill="currentColor"/>
+            </svg>
+          </span>
+        </div>
+        <div class="px"><b>16</b> px</div>
+        <div style="font-family: var(--font-mono); font-size: 9px; color: var(--faded); letter-spacing: 0.06em; max-width: 90px; text-align: center; line-height: 1.4">monogram &middot; 2.5 stroke</div>
+      </div>
+      <div class="scale-step">
+        <div class="mark-host">
+          <span class="nx" style="color: var(--accent)">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M 12 2.5 L 20.227 7.25 L 20.227 16.75 L 12 21.5 L 3.773 16.75 L 3.773 7.25 Z"/>
+              <circle cx="12" cy="12" r="2.4" fill="currentColor"/>
+            </svg>
+          </span>
+        </div>
+        <div class="px"><b>24</b> px</div>
+        <div style="font-family: var(--font-mono); font-size: 9px; color: var(--faded); letter-spacing: 0.06em; max-width: 90px; text-align: center; line-height: 1.4">monogram &middot; 2 stroke</div>
+      </div>
+      <div class="scale-step">
+        <div class="mark-host">
+          <span class="nx" style="color: var(--accent)">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M 12 2.5 L 20.227 7.25 L 20.227 16.75 L 12 21.5 L 3.773 16.75 L 3.773 7.25 Z"/>
+              <path d="M 12 6.5 L 17.629 9.75 L 17.629 14.25 L 12 17.5 L 6.371 14.25 L 6.371 9.75 Z" opacity="0.5"/>
+              <circle cx="12" cy="12" r="2" fill="currentColor"/>
+            </svg>
+          </span>
+        </div>
+        <div class="px"><b>32</b> px</div>
+        <div style="font-family: var(--font-mono); font-size: 9px; color: var(--faded); letter-spacing: 0.06em; max-width: 90px; text-align: center; line-height: 1.4">solid &middot; 1.5 stroke</div>
+      </div>
+      <div class="scale-step">
+        <div class="mark-host">
+          <span class="nx" style="color: var(--accent)">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25">
+              <path d="M 12 2.5 L 20.227 7.25 L 20.227 16.75 L 12 21.5 L 3.773 16.75 L 3.773 7.25 Z"/>
+              <path d="M 12 6.5 L 17.629 9.75 L 17.629 14.25 L 12 17.5 L 6.371 14.25 L 6.371 9.75 Z" opacity="0.5"/>
+              <circle cx="12" cy="12" r="1.8" fill="currentColor"/>
+            </svg>
+          </span>
+        </div>
+        <div class="px"><b>48</b> px</div>
+        <div style="font-family: var(--font-mono); font-size: 9px; color: var(--faded); letter-spacing: 0.06em; max-width: 90px; text-align: center; line-height: 1.4">solid &middot; 1.25 stroke</div>
+      </div>
+      <div class="scale-step">
+        <div class="mark-host" style="padding: 22px">
+          <span class="nx" style="color: var(--accent)">
+            <svg width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+              <path d="M 12 2.5 L 20.227 7.25 L 20.227 16.75 L 12 21.5 L 3.773 16.75 L 3.773 7.25 Z"/>
+              <path d="M 12 6.5 L 17.629 9.75 L 17.629 14.25 L 12 17.5 L 6.371 14.25 L 6.371 9.75 Z" opacity="0.5"/>
+              <circle cx="12" cy="12" r="1.6" fill="currentColor"/>
+            </svg>
+          </span>
+        </div>
+        <div class="px"><b>96</b> px</div>
+        <div style="font-family: var(--font-mono); font-size: 9px; color: var(--faded); letter-spacing: 0.06em; max-width: 90px; text-align: center; line-height: 1.4">solid &middot; 1 stroke</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 04 · BACKGROUND TESTS ════════════════ -->
+  <section class="section" data-screen-label="04 Background tests">
+    <div class="section-head"><span class="ix">04</span><h2>On<span class="sep">·</span>Background</h2></div>
+    <p class="section-sub">Mark uses <code>currentColor</code> so it adopts whatever color the parent assigns. Below: accent green on dark / on light / on each workspace tint, and white-on-workspace for high-contrast contexts.</p>
+
+    <div class="bg-tests">
+      <div class="bg-cell" style="background: #04060a"><span class="nx" style="color: var(--accent)"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25"><path d="M 12 2.5 L 20.227 7.25 L 20.227 16.75 L 12 21.5 L 3.773 16.75 L 3.773 7.25 Z"/><path d="M 12 6.5 L 17.629 9.75 L 17.629 14.25 L 12 17.5 L 6.371 14.25 L 6.371 9.75 Z" opacity="0.5"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg></span><span class="ctx" style="color:#fff">on bg-dark</span></div>
+      <div class="bg-cell" style="background: #fafaf7"><span class="nx" style="color: #1f9d54"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25"><path d="M 12 2.5 L 20.227 7.25 L 20.227 16.75 L 12 21.5 L 3.773 16.75 L 3.773 7.25 Z"/><path d="M 12 6.5 L 17.629 9.75 L 17.629 14.25 L 12 17.5 L 6.371 14.25 L 6.371 9.75 Z" opacity="0.5"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg></span><span class="ctx" style="color:#1a1a1a">on bg-light</span></div>
+      <div class="bg-cell" style="background: var(--ws-overmind)"><span class="nx" style="color: #ffffff"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25"><path d="M 12 2.5 L 20.227 7.25 L 20.227 16.75 L 12 21.5 L 3.773 16.75 L 3.773 7.25 Z"/><path d="M 12 6.5 L 17.629 9.75 L 17.629 14.25 L 12 17.5 L 6.371 14.25 L 6.371 9.75 Z" opacity="0.5"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg></span><span class="ctx" style="color:#fff">on overmind</span></div>
+      <div class="bg-cell" style="background: var(--ws-hpfhq)"><span class="nx" style="color: #ffffff"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25"><path d="M 12 2.5 L 20.227 7.25 L 20.227 16.75 L 12 21.5 L 3.773 16.75 L 3.773 7.25 Z"/><path d="M 12 6.5 L 17.629 9.75 L 17.629 14.25 L 12 17.5 L 6.371 14.25 L 6.371 9.75 Z" opacity="0.5"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg></span><span class="ctx" style="color:#fff">on hpfhq</span></div>
+      <div class="bg-cell" style="background: var(--ws-bite)"><span class="nx" style="color: #ffffff"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25"><path d="M 12 2.5 L 20.227 7.25 L 20.227 16.75 L 12 21.5 L 3.773 16.75 L 3.773 7.25 Z"/><path d="M 12 6.5 L 17.629 9.75 L 17.629 14.25 L 12 17.5 L 6.371 14.25 L 6.371 9.75 Z" opacity="0.5"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg></span><span class="ctx" style="color:#fff">on bite</span></div>
+      <div class="bg-cell" style="background: var(--ws-medus)"><span class="nx" style="color: #ffffff"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.25"><path d="M 12 2.5 L 20.227 7.25 L 20.227 16.75 L 12 21.5 L 3.773 16.75 L 3.773 7.25 Z"/><path d="M 12 6.5 L 17.629 9.75 L 17.629 14.25 L 12 17.5 L 6.371 14.25 L 6.371 9.75 Z" opacity="0.5"/><circle cx="12" cy="12" r="1.8" fill="currentColor"/></svg></span><span class="ctx" style="color:#fff">on medus</span></div>
+    </div>
+
+    <div class="notes" style="grid-template-columns: 1fr;">
+      <div class="note">
+        <span class="h">Color rules</span>
+        On any dark or workspace-color background &rarr; <b>white</b>. On any light background &rarr; <b>accent green</b> (or workspace color, when the mark represents the workspace identity itself). On the COMSAT brand surface specifically &rarr; <b>accent green</b>. Don't render the mark in any other color &mdash; always one of (white, accent, workspace).
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 05 · VS CODE ACTIVITY BAR ════════════════ -->
+  <section class="section" data-screen-label="05 VS Code activity bar">
+    <div class="section-head"><span class="ix">05</span><h2>VS&nbsp;Code<span class="sep">·</span>Activity bar variant</h2></div>
+    <p class="section-sub">VS Code activity bar icons are 24 px monochrome silhouettes. Use the <b>Outline</b> variant with stroke 1.75 and the central node enlarged to r=2.4 so it reads as a clear dot at 24 px. Sample render shown in the VS Code chrome mock below.</p>
+
+    <div style="padding: 24px; background: var(--surface); border: 1px solid color-mix(in srgb, var(--text) 14%, transparent); border-radius: 4px; display: flex; align-items: flex-start; gap: 32px; box-shadow: 0 2px 12px rgba(0,0,0,0.35);">
+      <div class="vsbar-mock">
+        <div class="vsbar">
+          <!-- Explorer (VS Code default) -->
+          <div class="vsbar-item" title="Explorer">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><polyline points="14 3 14 8 19 8"/></svg>
+          </div>
+          <!-- Search -->
+          <div class="vsbar-item" title="Search">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg>
+          </div>
+          <!-- Source Control -->
+          <div class="vsbar-item" title="Source control">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="14" r="2.5"/><path d="M6 8.5v7M6 18a6 6 0 0 0 6-6V8M12 8h3.5"/></svg>
+          </div>
+          <!-- NEXUS — outline variant @ 24px in white -->
+          <div class="vsbar-item active" title="Nexus">
+            <span class="nx" style="color: currentColor">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                <path d="M 12 2.5 L 20.227 7.25 L 20.227 16.75 L 12 21.5 L 3.773 16.75 L 3.773 7.25 Z"/>
+                <circle cx="12" cy="12" r="2.4" fill="currentColor"/>
+              </svg>
+            </span>
+          </div>
+          <!-- Extensions -->
+          <div class="vsbar-item" title="Extensions">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="6" height="6"/><rect x="13" y="5" width="6" height="6"/><rect x="5" y="13" width="6" height="6"/><path d="M15 13v6h4a2 2 0 0 0 2-2v-4z"/></svg>
+          </div>
+        </div>
+        <div class="vsbar-pane">
+          <h4>NEXUS</h4>
+          <div style="color: #ffffff; font-weight: 600; font-size: 13px;">HPFHQ Consolidation Plan</div>
+          <div style="color: #cccccc; font-size: 11px; margin-top: 4px; opacity: 0.7">Workspace · Overmind</div>
+          <div style="height: 1px; background: #2d2d2d; margin: 14px 0;"></div>
+          <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.10em; color: #858585; text-transform: uppercase; margin-bottom: 8px;">Active stage</div>
+          <div style="color: #ffffff;">01 · Helper layer</div>
+        </div>
+      </div>
+
+      <div style="font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.04em; line-height: 1.65; max-width: 380px; padding-left: 22px; border-left: 1px dashed color-mix(in srgb, var(--accent) 30%, transparent);">
+        <div style="font-family: var(--font-ui); font-weight: 700; font-size: 12px; color: var(--accent); letter-spacing: 0.10em; text-transform: uppercase; margin-bottom: 8px">SPEC</div>
+        <div><b style="color: var(--text); font-weight: 400">variant:</b> Outline (monogram form)</div>
+        <div><b style="color: var(--text); font-weight: 400">size:</b> 22 px inside the 24 px viewBox (1 px padding)</div>
+        <div><b style="color: var(--text); font-weight: 400">stroke:</b> 1.75 px &mdash; matches VS Code's built-in icons (1.5&ndash;1.75 range)</div>
+        <div><b style="color: var(--text); font-weight: 400">node:</b> filled r=2.4 (slightly larger than canonical 2.0) so it reads at 22 px without aliasing</div>
+        <div><b style="color: var(--text); font-weight: 400">color:</b> always <code>currentColor</code> &mdash; inherits #858585 inactive / #ffffff active per VS Code theme tokens</div>
+        <div><b style="color: var(--text); font-weight: 400">no glow:</b> VS Code activity bar disallows decorative effects. Mark stands on geometry alone.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 06 · METHOD ICONS ════════════════ -->
+  <section class="section" data-screen-label="06 Method icons">
+    <div class="section-head"><span class="ix">06</span><h2>Done-When<span class="sep">·</span>Method icons</h2></div>
+    <p class="section-sub">Four icons replacing the text method tags. Single style family: <b>12 px primary</b>, 1.4 stroke at 12 px (scales with viewBox 16&times;16), square caps, no fills, no rounded corners. Each tag picks up its method's brand color from the existing token set.</p>
+
+    <div class="method-grid">
+
+      <!-- MANUAL -->
+      <div class="method-cell">
+        <div class="sizes">
+          <div class="size-host"><span class="method-icon manual"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5" r="2.4"/><path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5"/></svg></span></div>
+          <div class="size-host"><span class="method-icon manual"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5" r="2.4"/><path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5"/></svg></span></div>
+          <div class="size-host"><span class="method-icon manual"><svg width="36" height="36" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5" r="2.4"/><path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5"/></svg></span></div>
+        </div>
+        <div class="px-label">12 &middot; 20 &middot; 36 px</div>
+        <div class="name" style="color: var(--text)">MANUAL</div>
+        <div class="delta">Person silhouette &mdash; "a human verifies this." Head + shoulders, no body detail.</div>
+      </div>
+
+      <!-- URL -->
+      <div class="method-cell">
+        <div class="sizes">
+          <div class="size-host"><span class="method-icon url"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"><path d="M7 9.5l-1.5 1.5a2.121 2.121 0 1 1-3-3L4 6.5"/><path d="M9 6.5L10.5 5a2.121 2.121 0 1 1 3 3L12 9.5"/><line x1="6.5" y1="9.5" x2="9.5" y2="6.5"/></svg></span></div>
+          <div class="size-host"><span class="method-icon url"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"><path d="M7 9.5l-1.5 1.5a2.121 2.121 0 1 1-3-3L4 6.5"/><path d="M9 6.5L10.5 5a2.121 2.121 0 1 1 3 3L12 9.5"/><line x1="6.5" y1="9.5" x2="9.5" y2="6.5"/></svg></span></div>
+          <div class="size-host"><span class="method-icon url"><svg width="36" height="36" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"><path d="M7 9.5l-1.5 1.5a2.121 2.121 0 1 1-3-3L4 6.5"/><path d="M9 6.5L10.5 5a2.121 2.121 0 1 1 3 3L12 9.5"/><line x1="6.5" y1="9.5" x2="9.5" y2="6.5"/></svg></span></div>
+        </div>
+        <div class="px-label">12 &middot; 20 &middot; 36 px</div>
+        <div class="name" style="color: var(--signal)">URL</div>
+        <div class="delta">Chain link &mdash; classic hypertext glyph. Two ovals joined at a 45&deg; angle.</div>
+      </div>
+
+      <!-- SHELL -->
+      <div class="method-cell">
+        <div class="sizes">
+          <div class="size-host"><span class="method-icon shell"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"><path d="M3 5l3 3-3 3"/><line x1="8" y1="11.5" x2="13" y2="11.5"/></svg></span></div>
+          <div class="size-host"><span class="method-icon shell"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"><path d="M3 5l3 3-3 3"/><line x1="8" y1="11.5" x2="13" y2="11.5"/></svg></span></div>
+          <div class="size-host"><span class="method-icon shell"><svg width="36" height="36" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"><path d="M3 5l3 3-3 3"/><line x1="8" y1="11.5" x2="13" y2="11.5"/></svg></span></div>
+        </div>
+        <div class="px-label">12 &middot; 20 &middot; 36 px</div>
+        <div class="name" style="color: var(--accent)">SHELL</div>
+        <div class="delta">Prompt chevron + cursor line &mdash; <code>&gt;_</code>. Universally read as "terminal."</div>
+      </div>
+
+      <!-- FILE -->
+      <div class="method-cell">
+        <div class="sizes">
+          <div class="size-host"><span class="method-icon file"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square" stroke-linejoin="miter"><path d="M4 2.5h5l3 3v8a0 0 0 0 1 0 0H4z"/><polyline points="9 2.5 9 5.5 12 5.5"/></svg></span></div>
+          <div class="size-host"><span class="method-icon file"><svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square" stroke-linejoin="miter"><path d="M4 2.5h5l3 3v8a0 0 0 0 1 0 0H4z"/><polyline points="9 2.5 9 5.5 12 5.5"/></svg></span></div>
+          <div class="size-host"><span class="method-icon file"><svg width="36" height="36" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square" stroke-linejoin="miter"><path d="M4 2.5h5l3 3v8a0 0 0 0 1 0 0H4z"/><polyline points="9 2.5 9 5.5 12 5.5"/></svg></span></div>
+        </div>
+        <div class="px-label">12 &middot; 20 &middot; 36 px</div>
+        <div class="name" style="color: var(--warn)">FILE</div>
+        <div class="delta">Document with corner fold &mdash; the most legible "file exists" glyph at small sizes.</div>
+      </div>
+
+    </div>
+
+    <div class="notes">
+      <div class="note">
+        <span class="h">Style rules</span>
+        <b>viewBox 16&times;16</b>, stroke 1.4, square line caps, miter joins. No fills, no rounded corners, no decorative elements. Each icon sits inside a 12&times;12 visual bbox with 2 px padding on all sides.
+      </div>
+      <div class="note">
+        <span class="h">Color binding</span>
+        Each icon uses <code>currentColor</code> &mdash; the method tag chip sets its own color via class (<code>.method-tag.url</code>, etc) and the icon inherits. <b>Manual = text</b>, <b>URL = signal cyan</b>, <b>Shell = accent green</b>, <b>File = warn amber</b>.
+      </div>
+      <div class="note">
+        <span class="h">Pixel-grid alignment at 12 px</span>
+        Geometry chosen so every stroke lands on a half-pixel boundary at 12 px target size (viewBox 16 = 0.75 scale). Avoids the half-pixel blur that kills small icons.
+      </div>
+      <div class="note">
+        <span class="h">Drop-in replacement</span>
+        Existing CSS class <code>.method</code> on Done-When tags can keep its layout &mdash; only swap the text for the <code>&lt;svg&gt;</code> inline. Add a class to color-code. See &sect;07 for the resulting list.
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 07 · METHOD ICONS IN CONTEXT ════════════════ -->
+  <section class="section" data-screen-label="07 Method icons in context">
+    <div class="section-head"><span class="ix">07</span><h2>In&nbsp;context<span class="sep">·</span>Done-When list</h2></div>
+    <p class="section-sub">The ProjectView Done-When list re-rendered with icon tags instead of text tags. Compare against the v1 list in the original ProjectView file.</p>
+
+    <div class="dw">
+      <div class="dw-item done">
+        <span class="box"></span>
+        <span class="text">Brandon test passes</span>
+        <span class="method-tag"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5" r="2.4"/><path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5"/></svg>manual</span>
+      </div>
+      <div class="dw-item done">
+        <span class="box"></span>
+        <span class="text">Dictionary tab live</span>
+        <span class="method-tag url"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"><path d="M7 9.5l-1.5 1.5a2.121 2.121 0 1 1-3-3L4 6.5"/><path d="M9 6.5L10.5 5a2.121 2.121 0 1 1 3 3L12 9.5"/><line x1="6.5" y1="9.5" x2="9.5" y2="6.5"/></svg>url</span>
+      </div>
+      <div class="dw-item done">
+        <span class="box"></span>
+        <span class="text">Zero drift (fixture diff)</span>
+        <span class="method-tag shell"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"><path d="M3 5l3 3-3 3"/><line x1="8" y1="11.5" x2="13" y2="11.5"/></svg>shell</span>
+      </div>
+      <div class="dw-item done">
+        <span class="box"></span>
+        <span class="text">ESLint blocks silo metric</span>
+        <span class="method-tag shell"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"><path d="M3 5l3 3-3 3"/><line x1="8" y1="11.5" x2="13" y2="11.5"/></svg>shell</span>
+      </div>
+      <div class="dw-item">
+        <span class="box"></span>
+        <span class="text">curl /ceo → 404</span>
+        <span class="method-tag url"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"><path d="M7 9.5l-1.5 1.5a2.121 2.121 0 1 1-3-3L4 6.5"/><path d="M9 6.5L10.5 5a2.121 2.121 0 1 1 3 3L12 9.5"/><line x1="6.5" y1="9.5" x2="9.5" y2="6.5"/></svg>url</span>
+      </div>
+      <div class="dw-item">
+        <span class="box"></span>
+        <span class="text">Overseer green tile</span>
+        <span class="method-tag"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5" r="2.4"/><path d="M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5"/></svg>manual</span>
+      </div>
+      <div class="dw-item">
+        <span class="box"></span>
+        <span class="text">Manifest fresh (4 tables)</span>
+        <span class="method-tag file"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square" stroke-linejoin="miter"><path d="M4 2.5h5l3 3v8a0 0 0 0 1 0 0H4z"/><polyline points="9 2.5 9 5.5 12 5.5"/></svg>file</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 08 · SVG SOURCE ════════════════ -->
+  <section class="section" data-screen-label="08 SVG source">
+    <div class="section-head"><span class="ix">08</span><h2>Source<span class="sep">·</span>Drop-in SVG</h2></div>
+    <p class="section-sub">Copy-paste ready. All marks use <code>currentColor</code> and <code>viewBox="0 0 24 24"</code> (nexus) or <code>"0 0 16 16"</code> (method icons) so they scale freely.</p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+
+      <div>
+        <div style="font-family: var(--font-ui); font-weight: 700; font-size: 13px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px">Nexus &middot; solid</div>
+<pre class="src">&lt;<span class="t">svg</span> <span class="a">viewBox</span>=<span class="s">"0 0 24 24"</span> <span class="a">fill</span>=<span class="s">"none"</span> <span class="a">stroke</span>=<span class="s">"currentColor"</span> <span class="a">stroke-width</span>=<span class="s">"1.5"</span>&gt;
+  &lt;<span class="t">path</span> <span class="a">d</span>=<span class="s">"M 12 2.5 L 20.227 7.25 L 20.227 16.75 L 12 21.5 L 3.773 16.75 L 3.773 7.25 Z"</span>/&gt;
+  &lt;<span class="t">path</span> <span class="a">d</span>=<span class="s">"M 12 6.5 L 17.629 9.75 L 17.629 14.25 L 12 17.5 L 6.371 14.25 L 6.371 9.75 Z"</span> <span class="a">opacity</span>=<span class="s">"0.5"</span>/&gt;
+  &lt;<span class="t">circle</span> <span class="a">cx</span>=<span class="s">"12"</span> <span class="a">cy</span>=<span class="s">"12"</span> <span class="a">r</span>=<span class="s">"2"</span> <span class="a">fill</span>=<span class="s">"currentColor"</span>/&gt;
+&lt;/<span class="t">svg</span>&gt;</pre>
+      </div>
+
+      <div>
+        <div style="font-family: var(--font-ui); font-weight: 700; font-size: 13px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px">Nexus &middot; monogram (16 / 24 px)</div>
+<pre class="src">&lt;<span class="t">svg</span> <span class="a">viewBox</span>=<span class="s">"0 0 24 24"</span> <span class="a">fill</span>=<span class="s">"none"</span> <span class="a">stroke</span>=<span class="s">"currentColor"</span> <span class="a">stroke-width</span>=<span class="s">"2"</span>&gt;
+  &lt;<span class="t">path</span> <span class="a">d</span>=<span class="s">"M 12 2.5 L 20.227 7.25 L 20.227 16.75 L 12 21.5 L 3.773 16.75 L 3.773 7.25 Z"</span>/&gt;
+  &lt;<span class="t">circle</span> <span class="a">cx</span>=<span class="s">"12"</span> <span class="a">cy</span>=<span class="s">"12"</span> <span class="a">r</span>=<span class="s">"2.4"</span> <span class="a">fill</span>=<span class="s">"currentColor"</span>/&gt;
+&lt;/<span class="t">svg</span>&gt;</pre>
+      </div>
+
+      <div>
+        <div style="font-family: var(--font-ui); font-weight: 700; font-size: 13px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px">Method &middot; manual</div>
+<pre class="src">&lt;<span class="t">svg</span> <span class="a">viewBox</span>=<span class="s">"0 0 16 16"</span> <span class="a">fill</span>=<span class="s">"none"</span> <span class="a">stroke</span>=<span class="s">"currentColor"</span> <span class="a">stroke-width</span>=<span class="s">"1.4"</span>&gt;
+  &lt;<span class="t">circle</span> <span class="a">cx</span>=<span class="s">"8"</span> <span class="a">cy</span>=<span class="s">"5"</span> <span class="a">r</span>=<span class="s">"2.4"</span>/&gt;
+  &lt;<span class="t">path</span> <span class="a">d</span>=<span class="s">"M3 14c0-2.8 2.2-5 5-5s5 2.2 5 5"</span>/&gt;
+&lt;/<span class="t">svg</span>&gt;</pre>
+      </div>
+
+      <div>
+        <div style="font-family: var(--font-ui); font-weight: 700; font-size: 13px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px">Method &middot; url</div>
+<pre class="src">&lt;<span class="t">svg</span> <span class="a">viewBox</span>=<span class="s">"0 0 16 16"</span> <span class="a">fill</span>=<span class="s">"none"</span> <span class="a">stroke</span>=<span class="s">"currentColor"</span> <span class="a">stroke-width</span>=<span class="s">"1.4"</span> <span class="a">stroke-linecap</span>=<span class="s">"square"</span>&gt;
+  &lt;<span class="t">path</span> <span class="a">d</span>=<span class="s">"M7 9.5l-1.5 1.5a2.121 2.121 0 1 1-3-3L4 6.5"</span>/&gt;
+  &lt;<span class="t">path</span> <span class="a">d</span>=<span class="s">"M9 6.5L10.5 5a2.121 2.121 0 1 1 3 3L12 9.5"</span>/&gt;
+  &lt;<span class="t">line</span> <span class="a">x1</span>=<span class="s">"6.5"</span> <span class="a">y1</span>=<span class="s">"9.5"</span> <span class="a">x2</span>=<span class="s">"9.5"</span> <span class="a">y2</span>=<span class="s">"6.5"</span>/&gt;
+&lt;/<span class="t">svg</span>&gt;</pre>
+      </div>
+
+      <div>
+        <div style="font-family: var(--font-ui); font-weight: 700; font-size: 13px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px">Method &middot; shell</div>
+<pre class="src">&lt;<span class="t">svg</span> <span class="a">viewBox</span>=<span class="s">"0 0 16 16"</span> <span class="a">fill</span>=<span class="s">"none"</span> <span class="a">stroke</span>=<span class="s">"currentColor"</span> <span class="a">stroke-width</span>=<span class="s">"1.4"</span> <span class="a">stroke-linecap</span>=<span class="s">"square"</span>&gt;
+  &lt;<span class="t">path</span> <span class="a">d</span>=<span class="s">"M3 5l3 3-3 3"</span>/&gt;
+  &lt;<span class="t">line</span> <span class="a">x1</span>=<span class="s">"8"</span> <span class="a">y1</span>=<span class="s">"11.5"</span> <span class="a">x2</span>=<span class="s">"13"</span> <span class="a">y2</span>=<span class="s">"11.5"</span>/&gt;
+&lt;/<span class="t">svg</span>&gt;</pre>
+      </div>
+
+      <div>
+        <div style="font-family: var(--font-ui); font-weight: 700; font-size: 13px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px">Method &middot; file</div>
+<pre class="src">&lt;<span class="t">svg</span> <span class="a">viewBox</span>=<span class="s">"0 0 16 16"</span> <span class="a">fill</span>=<span class="s">"none"</span> <span class="a">stroke</span>=<span class="s">"currentColor"</span> <span class="a">stroke-width</span>=<span class="s">"1.4"</span> <span class="a">stroke-linecap</span>=<span class="s">"square"</span>&gt;
+  &lt;<span class="t">path</span> <span class="a">d</span>=<span class="s">"M4 2.5h5l3 3v8a0 0 0 0 1 0 0H4z"</span>/&gt;
+  &lt;<span class="t">polyline</span> <span class="a">points</span>=<span class="s">"9 2.5 9 5.5 12 5.5"</span>/&gt;
+&lt;/<span class="t">svg</span>&gt;</pre>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      var key = "comsat_v4_theme";
+      var saved = localStorage.getItem(key);
+      if (saved === "light" || saved === "dark") {
+        document.documentElement.setAttribute("data-theme", saved);
+      }
+      var toggle = document.getElementById("themeToggle");
+      function sync() {
+        var t = document.documentElement.getAttribute("data-theme") || "dark";
+        toggle.querySelectorAll("button").forEach(function (b) {
+          b.classList.toggle("on", b.dataset.theme === t);
+        });
+      }
+      toggle.addEventListener("click", function (e) {
+        var b = e.target.closest("button");
+        if (!b) return;
+        var t = b.dataset.theme;
+        if (t === "dark") document.documentElement.removeAttribute("data-theme");
+        else document.documentElement.setAttribute("data-theme", t);
+        localStorage.setItem(key, t);
+        sync();
+      });
+      sync();
+    })();
+  </script>
+
+</body>
+</html>

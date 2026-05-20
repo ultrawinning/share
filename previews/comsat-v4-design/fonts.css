@@ -1,0 +1,43 @@
+/* ============================================================
+   COMSAT Radar — local fonts (SIL OFL)
+   Drop this into any HTML via <link rel="stylesheet" href="…/fonts.css"/>
+   ============================================================ */
+
+/* Orbitron — variable, weight axis 400–900 */
+@font-face {
+  font-family: "Orbitron";
+  src: url("./fonts/Orbitron-VariableFont_wght.ttf") format("truetype-variations"),
+       url("./fonts/Orbitron-VariableFont_wght.ttf") format("truetype");
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Rajdhani — static weights 400/500/600/700 */
+@font-face {
+  font-family: "Rajdhani";
+  src: url("./fonts/Rajdhani-Regular.ttf") format("truetype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Rajdhani";
+  src: url("./fonts/Rajdhani-Medium.ttf") format("truetype");
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Rajdhani";
+  src: url("./fonts/Rajdhani-SemiBold.ttf") format("truetype");
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Rajdhani";
+  src: url("./fonts/Rajdhani-Bold.ttf") format("truetype");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+
+/* Share Tech Mono — single weight */
+@font-face {
+  font-family: "Share Tech Mono";
+  src: url("./fonts/ShareTechMono-Regular.ttf") format("truetype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}

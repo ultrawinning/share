@@ -1,0 +1,1358 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>COMSAT v4 — States &amp; Patterns</title>
+<link rel="stylesheet" href="fonts.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+<style>
+  /* ═══════════════ tokens (mirror of both other files) ═══════════════ */
+  :root {
+    --bg: #04060a;
+    --bg-2: #08101a;
+    --surface: #182228;
+    --surface-2: #1f2d33;
+    --line: rgba(46,212,122,0.20);
+    --line-strong: rgba(46,212,122,0.40);
+    --text: #edeef3;
+    --muted: #9097a0;
+    --faded: rgba(237,238,243,0.58);
+    --grid: rgba(46,212,122,0.12);
+    --grid-major: rgba(46,212,122,0.22);
+    --dot-bg: rgba(255,255,255,0.06);
+    --glow: 0.55;
+
+    --accent: #2ed47a;
+    --cook:   #ff8c2a;
+    --attn:   #f5c423;
+    --warn:   #f5c423;
+    --danger: #e53935;
+    --signal: #00b8d4;
+    --pink:   #ff6f9b;
+
+    --ws-overmind: #d35400;
+    --ws-hpfhq:    #008b8b;
+    --ws-debugs:   #6b7280;
+    --ws-scratch:  #d4a017;
+    --ws-bite:     #228b22;
+    --ws-medus:    #6c3baa;
+
+    --tier-0: #8a93a3;
+    --tier-1: #2ed47a;
+    --tier-2: #5b8cff;
+    --tier-3: #7c5cff;
+    --tier-4: #c084ff;
+
+    --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+    --font-mono: "Share Tech Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --font-display: "Orbitron", "Eurostile", system-ui, sans-serif;
+    --font-ui: "Rajdhani", "Eurostile", system-ui, sans-serif;
+    --font-arcade: "Press Start 2P", "Courier New", monospace;
+  }
+  [data-theme="light"] {
+    --bg: #ece8d8;
+    --bg-2: #e6e2d0;
+    --surface: #ffffff;
+    --surface-2: #f6f3e7;
+    --line: rgba(26,26,26,0.14);
+    --line-strong: rgba(26,26,26,0.38);
+    --text: #161616;
+    --muted: #4f4f4f;
+    --faded: rgba(22,22,22,0.50);
+    --grid: rgba(26,26,26,0.06);
+    --grid-major: rgba(26,26,26,0.13);
+    --dot-bg: rgba(26,26,26,0.08);
+    --glow: 0;
+    --accent: #1f9d54;
+    --cook: #c84c0a;
+    --attn: #b88a07;
+    --warn: #b88a07;
+    --danger: #c8262b;
+    --signal: #008599;
+    --pink: #d63566;
+    --tier-0: #66705e;
+    --tier-1: #1f9d54;
+    --tier-2: #2b62d8;
+    --tier-3: #5a3fcc;
+    --tier-4: #883fc8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background-color: var(--bg); color: var(--text); font-family: var(--font-sans); min-height: 100%; transition: background-color 180ms linear, color 180ms linear; }
+
+  body {
+    background-image:
+      radial-gradient(ellipse at 50% -10%, color-mix(in srgb, var(--accent) 8%, transparent) 0%, transparent 50%),
+      linear-gradient(var(--grid-major) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: auto, 160px 160px, 160px 160px, 32px 32px, 32px 32px;
+    background-attachment: fixed;
+    padding: 28px 36px 96px;
+    min-width: 1320px;
+  }
+
+  /* ═══════════════ mast ═══════════════ */
+  .mast {
+    display: flex; align-items: baseline; gap: 22px;
+    padding: 0 8px 14px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  .mast .brand {
+    font-family: var(--font-display);
+    font-size: 18px; font-weight: 900;
+    letter-spacing: 0.36em;
+    color: var(--accent);
+    text-transform: uppercase;
+    text-shadow: 0 0 calc(1px * var(--glow)) color-mix(in srgb, var(--accent) 95%, transparent),
+                 0 0 calc(6px * var(--glow)) color-mix(in srgb, var(--accent) 50%, transparent);
+  }
+  .mast .ver { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.20em; text-transform: uppercase; }
+  .mast .ver em { color: var(--accent); font-style: normal; }
+  .mast .crumb { margin-left: auto; font-family: var(--font-mono); font-size: 10px; color: var(--faded); letter-spacing: 0.18em; text-transform: uppercase; }
+  .mast .crumb .tick { display: inline-block; width: 6px; height: 6px; background: var(--accent); margin-right: 8px; vertical-align: 1px; box-shadow: 0 0 calc(6px * var(--glow)) var(--accent); }
+  .mast::after { content:""; position:absolute; left:0; right:0; bottom:-1px; height:1px; background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 45%, transparent), transparent); }
+  .theme-toggle { display: inline-flex; margin-left: 16px; border: 1px solid var(--line-strong); border-radius: 2px; overflow: hidden; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; }
+  .theme-toggle button { background: transparent; border: none; padding: 4px 9px 3px; color: var(--faded); cursor: pointer; font: inherit; letter-spacing: inherit; }
+  .theme-toggle button.on { background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); }
+  .theme-toggle button + button { border-left: 1px solid var(--line-strong); }
+
+  /* table-of-contents */
+  .toc {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 6px 18px;
+    font-family: var(--font-mono);
+    font-size: 10.5px; letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 40px;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+    border-radius: 4px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+  }
+  [data-theme="light"] .toc { box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .toc a { color: var(--muted); text-decoration: none; display: flex; gap: 8px; align-items: baseline; padding: 2px 0; }
+  .toc a:hover { color: var(--accent); }
+  .toc a .n { color: var(--accent); width: 24px; }
+  .toc a span:last-child { color: var(--text); }
+
+  /* ═══════════════ section ═══════════════ */
+  .section { margin-bottom: 48px; }
+  .section-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 6px; }
+  .section-head .ix { font-family: var(--font-mono); font-size: 11px; color: var(--accent); letter-spacing: 0.22em; padding: 3px 8px; border: 1px solid var(--line-strong); border-radius: 2px; }
+  .section-head h2 { font-family: var(--font-ui); font-weight: 700; font-size: 22px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text); }
+  .section-head h2 .sep { color: var(--muted); margin: 0 8px; font-weight: 400; }
+  .section-sub { font-size: 13px; color: var(--text); opacity: 0.82; margin: 6px 0 24px; max-width: 800px; line-height: 1.6; }
+  .section-sub b { color: var(--accent); font-weight: 600; }
+  .section-sub code { font-family: var(--font-mono); font-size: 11.5px; color: var(--text); background: color-mix(in srgb, var(--text) 6%, transparent); padding: 1px 5px; border-radius: 2px; }
+
+  /* ═══════════════ states matrix ═══════════════ */
+  .matrix {
+    display: grid;
+    background: var(--surface);
+    border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+  }
+  [data-theme="light"] .matrix { box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .matrix .head {
+    display: contents;
+  }
+  .matrix .head > div {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--faded);
+    padding: 10px 14px 8px;
+    background: var(--bg-2);
+    border-bottom: 1px solid var(--line);
+  }
+  .matrix .row-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 18px 14px;
+    background: color-mix(in srgb, var(--bg-2) 60%, transparent);
+    border-bottom: 1px dotted var(--line);
+    border-right: 1px solid var(--line);
+    display: flex; align-items: center;
+  }
+  .matrix .cell {
+    padding: 18px 14px;
+    border-bottom: 1px dotted var(--line);
+    border-right: 1px dotted var(--line);
+    display: flex; align-items: center; justify-content: center;
+    min-height: 60px;
+    position: relative;
+  }
+  .matrix .cell:last-child { border-right: none; }
+  .matrix > div:nth-last-child(-n+7) { border-bottom: none; }
+  .matrix .row-label.last { border-bottom: none; }
+  .matrix .delta {
+    position: absolute;
+    bottom: 6px; left: 14px;
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.06em;
+    color: var(--faded);
+    opacity: 0.75;
+  }
+  .matrix.cols-7 { grid-template-columns: 110px repeat(6, 1fr); }
+  .matrix.cols-5 { grid-template-columns: 110px repeat(4, 1fr); }
+  .matrix.cols-6 { grid-template-columns: 130px repeat(5, 1fr); }
+
+  /* ═══════════════ tokens display ═══════════════ */
+  .tokens {
+    display: flex; flex-direction: column; gap: 4px;
+    margin-top: 12px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    line-height: 1.55;
+  }
+  .tokens .k { color: var(--accent); display: inline-block; min-width: 88px; }
+  .tokens .v { color: var(--text); }
+  .tokens .pill { display: inline-block; padding: 1px 6px; border: 1px solid var(--line); border-radius: 2px; color: var(--text); margin-right: 4px; font-size: 10px; }
+
+  /* ═══════════════ primitives: BUTTONS ═══════════════ */
+  .btn {
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: 12.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    line-height: 1;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: background 80ms linear, border-color 80ms linear, color 80ms linear, box-shadow 80ms linear;
+    user-select: none;
+  }
+  .btn-primary {
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    color: var(--accent);
+    border-color: var(--accent);
+    box-shadow: inset 0 0 10px color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+  .btn-primary.is-hover    { background: color-mix(in srgb, var(--accent) 22%, transparent); box-shadow: inset 0 0 10px color-mix(in srgb, var(--accent) 22%, transparent), 0 0 calc(8px * var(--glow)) color-mix(in srgb, var(--accent) 30%, transparent); }
+  .btn-primary.is-focus    { box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent), inset 0 0 10px color-mix(in srgb, var(--accent) 18%, transparent); outline: none; }
+  .btn-primary.is-active   { background: color-mix(in srgb, var(--accent) 30%, transparent); transform: translateY(0.5px); box-shadow: inset 0 1px 3px color-mix(in srgb, var(--accent) 30%, transparent); }
+  .btn-primary.is-disabled { opacity: 0.42; cursor: not-allowed; box-shadow: none; }
+  .btn-primary.is-loading  { color: transparent; position: relative; }
+  .btn-primary.is-loading::after {
+    content:""; position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px;
+    border: 1.5px solid color-mix(in srgb, var(--accent) 30%, transparent);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .btn-secondary {
+    background: color-mix(in srgb, var(--text) 5%, transparent);
+    color: var(--text);
+    border-color: color-mix(in srgb, var(--text) 22%, transparent);
+  }
+  .btn-secondary.is-hover    { background: color-mix(in srgb, var(--text) 10%, transparent); border-color: color-mix(in srgb, var(--text) 36%, transparent); }
+  .btn-secondary.is-focus    { box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 28%, transparent); outline: none; }
+  .btn-secondary.is-active   { background: color-mix(in srgb, var(--text) 16%, transparent); transform: translateY(0.5px); }
+  .btn-secondary.is-disabled { opacity: 0.42; cursor: not-allowed; }
+  .btn-secondary.is-loading  { color: transparent; position: relative; }
+  .btn-secondary.is-loading::after {
+    content:""; position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px;
+    border: 1.5px solid color-mix(in srgb, var(--text) 30%, transparent);
+    border-top-color: var(--text);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+
+  /* ═══════════════ primitives: DOTS ═══════════════ */
+  .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex-shrink: 0; transition: all 80ms linear; }
+  .dot.cook    { background: var(--cook); box-shadow: 0 0 calc(5px * var(--glow)) var(--cook); animation: dot-pulse 2s ease-in-out infinite; }
+  .dot.attn    { background: var(--attn); box-shadow: 0 0 calc(5px * var(--glow)) color-mix(in srgb, var(--attn) 70%, transparent); animation: dot-blink 1.2s ease-in-out infinite; }
+  .dot.standby { background: var(--accent); box-shadow: 0 0 calc(3px * var(--glow)) color-mix(in srgb, var(--accent) 80%, transparent); }
+  .dot.is-hover    { transform: scale(1.18); box-shadow: 0 0 calc(7px * var(--glow)) currentColor; }
+  .dot.is-focus    { box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent), 0 0 calc(5px * var(--glow)) currentColor; }
+  .dot.is-disabled { background: var(--faded) !important; box-shadow: none !important; animation: none !important; opacity: 0.45; }
+  @keyframes dot-pulse { 0%,100% { opacity:1; transform: scale(1); } 50% { opacity:0.55; transform: scale(0.92); } }
+  @keyframes dot-blink { 0%, 40% { opacity:1; } 60%,100% { opacity:0.30; } }
+
+  /* workflow slots */
+  .wf-slot {
+    width: 10px; height: 10px; border-radius: 50%;
+    border: 1px dashed color-mix(in srgb, var(--text) 24%, transparent);
+    background: transparent;
+    box-sizing: border-box;
+    display: inline-block;
+    transition: all 100ms linear;
+  }
+  .wf-slot.standby { background: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 70%, #000); }
+  .wf-slot.human   { background: var(--pink);   border: 1px solid color-mix(in srgb, var(--pink) 70%, #000); }
+  .wf-slot.hold    { background: var(--danger); border: 1px solid color-mix(in srgb, var(--danger) 70%, #000); }
+  .wf-slot.is-hover { transform: scale(1.18); }
+  .wf-slot.is-focus { box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent); }
+  .wf-slot.is-drop  { border: 1.5px solid var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent), 0 0 calc(8px * var(--glow)) color-mix(in srgb, var(--accent) 35%, transparent); }
+
+  /* ═══════════════ primitives: ENGINES ═══════════════ */
+  .engine {
+    width: 16px; height: 16px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: color-mix(in srgb, var(--text) 35%, transparent);
+    flex-shrink: 0;
+    transition: color 80ms linear, filter 80ms linear, transform 80ms linear;
+  }
+  .engine svg { width: 16px; height: 16px; display: block; }
+  .engine.cl.on { color: var(--cook);   filter: drop-shadow(0 0 calc(3px * var(--glow)) color-mix(in srgb, var(--cook) 55%, transparent)); }
+  .engine.cx.on { color: var(--signal); filter: drop-shadow(0 0 calc(3px * var(--glow)) color-mix(in srgb, var(--signal) 55%, transparent)); }
+  .engine.is-hover    { transform: scale(1.12); }
+  .engine.is-focus    { outline: 2px solid color-mix(in srgb, var(--accent) 35%, transparent); outline-offset: 2px; border-radius: 2px; }
+  .engine.is-disabled { color: var(--faded); filter: none; opacity: 0.45; }
+
+  /* 3P arcade */
+  .arc-3p {
+    font-family: var(--font-arcade);
+    font-size: 7px;
+    line-height: 1;
+    padding: 3px 4px 3px;
+    border: 1px solid var(--faded);
+    border-radius: 2px;
+    color: var(--faded);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    display: inline-block;
+    transition: all 100ms linear;
+  }
+  .arc-3p.on { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 50%, transparent); background: color-mix(in srgb, var(--accent) 10%, transparent); }
+  .arc-3p.is-hover    { border-color: var(--accent); color: var(--accent); }
+  .arc-3p.is-focus    { box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent); outline: none; }
+  .arc-3p.is-active   { background: color-mix(in srgb, var(--accent) 22%, transparent); }
+  .arc-3p.is-disabled { opacity: 0.42; }
+
+  /* shield */
+  .shield {
+    width: 20px; height: 20px;
+    border-radius: 3px;
+    border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+    color: var(--faded);
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    background: transparent;
+    transition: all 100ms linear;
+  }
+  .shield svg { width: 11px; height: 12px; }
+  .shield.is-hover    { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 50%, transparent); background: color-mix(in srgb, var(--accent) 8%, transparent); }
+  .shield.is-focus    { box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent); outline: none; }
+  .shield.is-active   { background: color-mix(in srgb, var(--accent) 18%, transparent); }
+  .shield.is-disabled { opacity: 0.42; cursor: not-allowed; }
+
+  /* ═══════════════ pills ═══════════════ */
+  .pill { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.10em; text-transform: uppercase; padding: 3px 8px 2px; border: 1px solid var(--line); border-radius: 3px; color: var(--text); display: inline-flex; align-items: center; gap: 5px; line-height: 1; transition: all 100ms linear; }
+  .pill.is-hover    { border-color: var(--line-strong); background: color-mix(in srgb, var(--text) 4%, transparent); }
+  .pill.is-focus    { box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent); outline: none; }
+  .pill.is-active   { background: color-mix(in srgb, var(--accent) 14%, transparent); border-color: var(--accent); color: var(--accent); }
+  .pill.is-disabled { opacity: 0.42; }
+  /* lock variants */
+  .pill.lock { color: color-mix(in srgb, var(--ws-overmind) 50%, var(--text) 50%); background: color-mix(in srgb, var(--ws-overmind) 12%, transparent); border-color: color-mix(in srgb, var(--ws-overmind) 36%, transparent); }
+  .pill.lock svg { width: 10px; height: 10px; }
+  .pill.lock.soft { color: var(--muted); background: color-mix(in srgb, var(--text) 4%, transparent); border-color: var(--line); }
+  /* shorthand */
+  .pill.shorthand { font-family: var(--font-ui); font-weight: 800; font-size: 12px; letter-spacing: -0.02em; text-transform: uppercase; color: color-mix(in srgb, var(--ws-overmind) 60%, var(--text) 40%); padding: 3px 7px; border-radius: 2px; }
+  .pill.shorthand.pylon { font-weight: 700; font-size: 11.5px; color: color-mix(in srgb, var(--ws-debugs) 55%, var(--text) 45%); }
+  /* breadcrumb */
+  .pill.crumb { border: none; padding: 2px 0; color: var(--faded); }
+  .pill.crumb.active { color: var(--accent); }
+  .pill.crumb-sep { color: var(--faded); opacity: 0.4; padding: 0 4px; border: none; }
+
+  /* ═══════════════ tiles ═══════════════ */
+  /* collapsed (drawer row) */
+  .cb {
+    height: 26px;
+    display: flex; align-items: center;
+    gap: 6px; padding: 0 8px 0 0;
+    position: relative;
+    background: var(--surface);
+    border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+    border-radius: 0 4px 4px 0;
+    border-left: none;
+    width: 110px;
+    transition: all 100ms linear;
+    cursor: pointer;
+  }
+  .cb::before { content:""; width: 4px; height: 100%; background: var(--ws); flex-shrink: 0; }
+  .cb.nexus::before { width: 6px; }
+  .cb::after { content:""; position: absolute; inset: 0 0 0 0; background: linear-gradient(90deg, color-mix(in srgb, var(--ws) 18%, transparent) 0%, color-mix(in srgb, var(--ws) 6%, transparent) 60%, transparent 100%); pointer-events: none; }
+  .cb-dot { width: 7px; height: 7px; border-radius: 50%; margin-left: 4px; position: relative; z-index: 1; }
+  .cb-sh { font-family: var(--font-ui); font-weight: 700; font-size: 13px; letter-spacing: -0.02em; color: color-mix(in srgb, var(--ws) 62%, var(--text) 38%); line-height: 1; position: relative; z-index: 1; }
+  .cb.nexus .cb-sh { font-weight: 800; font-size: 13.5px; color: color-mix(in srgb, var(--ws) 72%, var(--text) 28%); }
+  .cb.is-hover  { background: var(--surface-2); transform: translateX(2px); }
+  .cb.is-focus  { box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 38%, transparent); outline: none; }
+  .cb.is-active { background: var(--surface-2); transform: translateX(0); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ws) 50%, transparent); }
+  .cb.is-dragging { box-shadow: 0 12px 32px rgba(0,0,0,0.55); transform: scale(1.04); cursor: grabbing; }
+
+  /* ═══════════════ expanded work view (re-used from drawer file, scaled) ═══════════════ */
+  .wv {
+    --ws: var(--ws-debugs);
+    position: relative;
+    background: var(--surface);
+    border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+    border-radius: 4px;
+    padding: 9px 10px 8px;
+    display: flex; flex-direction: column; gap: 7px;
+    overflow: hidden;
+    width: 256px;
+    transition: all 120ms linear;
+  }
+  .wv::before { content:""; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--ws); border-radius: 4px 4px 0 0; z-index: 2; }
+  .wv.nexus::before { height: 4px; }
+  .wv::after { content:""; position: absolute; inset: 0; background: var(--ws); opacity: 0.035; pointer-events: none; border-radius: 4px; }
+  .wv.nexus::after { opacity: 0.055; }
+  .wv.is-hover { background: var(--surface-2); }
+  .wv.is-focus { box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 38%, transparent); }
+  .wv.is-perm  { border-color: color-mix(in srgb, var(--warn) 36%, transparent); }
+  .wv.is-error { border-color: color-mix(in srgb, var(--danger) 50%, transparent); }
+  .wv.is-cooking { border-color: color-mix(in srgb, var(--cook) 35%, transparent); }
+  .wv.is-stale { opacity: 0.62; }
+
+  .wv-head { display: flex; align-items: center; gap: 6px; position: relative; z-index: 1; padding-top: 3px; }
+  .wv-head .cs { font-family: var(--font-ui); font-size: 13px; font-weight: 800; letter-spacing: -0.02em; color: color-mix(in srgb, var(--ws) 55%, var(--text) 45%); text-transform: uppercase; line-height: 1; padding-right: 4px; }
+  .wv.nexus .wv-head .cs { font-weight: 900; font-size: 14px; color: color-mix(in srgb, var(--ws) 68%, var(--text) 32%); }
+  .wv-head .sp { flex: 1; }
+  .wv-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .wv-title { font-family: var(--font-ui); font-size: 13.5px; font-weight: 700; line-height: 1.12; color: var(--text); position: relative; z-index: 1; word-break: break-word; }
+  .wv.nexus .wv-title { font-weight: 800; letter-spacing: -0.01em; color: color-mix(in srgb, var(--ws) 35%, var(--text) 65%); }
+  .wv-title .arrow { color: var(--faded); font-size: 0.7em; margin-left: 4px; opacity: 0.6; }
+
+  /* project chip with inner progress */
+  .wv-proj { align-self: stretch; display: flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 10px; color: color-mix(in srgb, var(--ws) 55%, var(--text) 45%); padding: 4px 7px 5px; background: color-mix(in srgb, var(--ws) 14%, transparent); border: 1px solid color-mix(in srgb, var(--ws) 36%, transparent); border-radius: 3px; line-height: 1; position: relative; z-index: 1; }
+  .wv-proj .target { width: 10px; height: 10px; flex-shrink: 0; }
+  .wv-proj .nm-wrap { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  .wv-proj .nm-row { display: flex; align-items: center; gap: 6px; }
+  .wv-proj .nm { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .wv-proj .count { color: var(--text); }
+  .wv-proj .pbar { height: 3px; background: color-mix(in srgb, var(--ws) 14%, rgba(255,255,255,0.05)); border-radius: 1px; overflow: hidden; }
+  .wv-proj .pbar > i { display: block; height: 100%; background: var(--ws); box-shadow: 0 0 calc(4px * var(--glow)) color-mix(in srgb, var(--ws) 55%, transparent); }
+  /* pathfinder stale ribbon on proj chip */
+  .wv-proj.is-stale { border-style: dashed; }
+  .wv-proj.is-stale::after { content: "PATHFINDER STALE"; position: absolute; right: 4px; top: -7px; font-family: var(--font-mono); font-size: 7.5px; letter-spacing: 0.10em; padding: 1px 4px; color: var(--warn); background: var(--surface); border: 1px solid color-mix(in srgb, var(--warn) 50%, transparent); border-radius: 2px; }
+
+  /* perm row */
+  .wv-perm { display: flex; align-items: center; gap: 7px; padding: 5px 7px; background: color-mix(in srgb, var(--cook) 9%, transparent); border: 1px solid color-mix(in srgb, var(--cook) 38%, transparent); border-radius: 3px; font-size: 11px; color: var(--cook); position: relative; z-index: 1; }
+  .wv-perm .ic { font-family: var(--font-mono); font-weight: 700; width: 13px; height: 13px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid currentColor; border-radius: 2px; font-size: 9px; line-height: 1; flex-shrink: 0; }
+  .wv-perm .q { flex: 1; line-height: 1.2; }
+  .wv-perm .ans { display: flex; gap: 4px; flex-shrink: 0; }
+  .wv-perm .ans button { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.10em; padding: 2px 6px 1px; border: 1px solid currentColor; background: transparent; color: var(--cook); border-radius: 2px; cursor: pointer; line-height: 1; }
+  .wv-perm .ans .y { color: var(--accent); border-color: var(--accent); }
+
+  /* workflow row */
+  .wv-wf { display: flex; gap: 4px; padding: 3px 0 2px; position: relative; z-index: 1; }
+  .wv-wf .slot { width: 10px; height: 10px; border-radius: 50%; border: 1px dashed color-mix(in srgb, var(--text) 22%, transparent); box-sizing: border-box; }
+  .wv-wf .slot.standby { background: var(--accent); border: 1px solid color-mix(in srgb, var(--accent) 70%, #000); }
+  .wv-wf .slot.human   { background: var(--pink); border: 1px solid color-mix(in srgb, var(--pink) 70%, #000); }
+  .wv-wf .slot.hold    { background: var(--danger); border: 1px solid color-mix(in srgb, var(--danger) 70%, #000); }
+  .wv-wf.is-drop-target .slot.empty { border: 1.5px solid var(--accent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 18%, transparent); }
+  .wv-wf-label { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.16em; color: var(--muted); text-transform: uppercase; margin-right: 6px; align-self: center; }
+
+  /* foot */
+  .wv-foot { display: flex; align-items: center; gap: 10px; position: relative; z-index: 1; }
+  .wv-foot .lbl { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.16em; color: var(--muted); text-transform: uppercase; }
+  .tier { display: flex; gap: 2px; align-items: center; }
+  .tier .seg { width: 3px; height: 9px; background: color-mix(in srgb, var(--text) 10%, transparent); border-radius: 1px; }
+  .tier .seg.lit { background: var(--tier-c); box-shadow: 0 0 calc(3px * var(--glow)) var(--tier-c); }
+  .tier .tlab { font-family: var(--font-mono); font-size: 8.5px; color: var(--tier-c); margin-left: 4px; letter-spacing: 0.08em; }
+  .ctx-wrap { flex: 1; display: flex; align-items: center; gap: 6px; }
+  .ctx { flex: 1; height: 7px; display: grid; grid-template-columns: repeat(10, 1fr); gap: 2px; }
+  .ctx .seg { background: transparent; border: 1px solid color-mix(in srgb, var(--text) 18%, transparent); border-radius: 1px; }
+  .ctx.ctx-ok   .seg.lit { background: var(--accent); border-color: transparent; }
+  .ctx.ctx-warn .seg.lit { background: var(--warn);   border-color: transparent; }
+  .ctx.ctx-hot  .seg.lit { background: var(--danger); border-color: transparent; }
+  .ctx-pct { font-family: var(--font-mono); font-size: 9.5px; font-variant-numeric: tabular-nums; min-width: 26px; text-align: right; letter-spacing: 0.04em; }
+  .ctx-pct.ctx-ok   { color: var(--accent); }
+  .ctx-pct.ctx-warn { color: var(--warn); }
+  .ctx-pct.ctx-hot  { color: var(--danger); }
+
+  /* failure banner inside tile */
+  .wv-err { display: flex; align-items: center; gap: 6px; padding: 5px 7px; background: color-mix(in srgb, var(--danger) 9%, transparent); border: 1px solid color-mix(in srgb, var(--danger) 45%, transparent); border-radius: 3px; font-family: var(--font-mono); font-size: 10.5px; color: var(--danger); position: relative; z-index: 1; }
+  .wv-err .ic { font-family: var(--font-mono); font-weight: 700; width: 13px; height: 13px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid currentColor; border-radius: 2px; font-size: 9px; line-height: 1; flex-shrink: 0; }
+  .wv-err button { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.10em; padding: 2px 6px 1px; border: 1px solid currentColor; background: transparent; color: currentColor; border-radius: 2px; cursor: pointer; line-height: 1; margin-left: auto; }
+  .wv-offline-chip { font-family: var(--font-mono); font-size: 8.5px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--muted); padding: 2px 5px; border: 1px solid var(--line); border-radius: 2px; margin-left: auto; }
+
+  /* ═══════════════ kanban card ═══════════════ */
+  .kb-card {
+    background: var(--surface);
+    border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+    border-left: 2px solid var(--accent);
+    border-radius: 2px;
+    padding: 8px 10px 9px;
+    font-size: 12px;
+    line-height: 1.35;
+    color: var(--text);
+    width: 200px;
+    cursor: grab;
+    transition: all 100ms linear;
+  }
+  .kb-card .text { display: block; margin-bottom: 3px; }
+  .kb-card .ts { font-family: var(--font-mono); font-size: 9px; color: var(--faded); letter-spacing: 0.10em; text-transform: uppercase; }
+  .kb-card.is-hover    { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.35); }
+  .kb-card.is-focus    { box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 38%, transparent); outline: none; }
+  .kb-card.is-active   { transform: rotate(-1.5deg) scale(1.02); box-shadow: 0 12px 24px rgba(0,0,0,0.45); cursor: grabbing; }
+  .kb-card.is-disabled { opacity: 0.42; }
+  .kb-card.is-loading  { color: transparent; position: relative; }
+  .kb-card.is-loading::before { content:""; position: absolute; inset: 6px 10px; background: color-mix(in srgb, var(--text) 8%, transparent); border-radius: 2px; animation: skel 1.6s linear infinite; }
+  @keyframes skel { 0% { opacity: 0.5; } 50% { opacity: 0.85; } 100% { opacity: 0.5; } }
+
+  /* ═══════════════ tooltip ═══════════════ */
+  .tip-host { position: relative; display: inline-flex; align-items: center; padding: 14px 24px; background: color-mix(in srgb, var(--text) 4%, transparent); border: 1px dashed color-mix(in srgb, var(--text) 14%, transparent); border-radius: 3px; font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); letter-spacing: 0.10em; text-transform: uppercase; cursor: default; }
+  .tip {
+    position: absolute;
+    background: var(--bg-2);
+    border: 1px solid color-mix(in srgb, var(--accent) 60%, transparent);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    padding: 6px 9px 7px;
+    border-radius: 3px;
+    max-width: 240px;
+    line-height: 1.4;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.5);
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 30;
+  }
+  [data-theme="light"] .tip { background: var(--surface); box-shadow: 0 4px 14px rgba(0,0,0,0.18); }
+  .tip .title { font-family: var(--font-ui); font-weight: 700; font-size: 12px; color: var(--text); letter-spacing: 0; text-transform: none; margin-bottom: 2px; display: block; }
+  .tip .meta  { font-size: 9.5px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
+  .tip .arrow { position: absolute; width: 8px; height: 8px; background: var(--bg-2); border: 1px solid color-mix(in srgb, var(--accent) 60%, transparent); transform: rotate(45deg); }
+  [data-theme="light"] .tip .arrow { background: var(--surface); }
+  /* anchors */
+  .tip.t-top    { bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); }
+  .tip.t-top    .arrow { bottom: -5px; left: 50%; transform: translateX(-50%) rotate(45deg); border-top: none; border-left: none; }
+  .tip.t-bot    { top: calc(100% + 8px); left: 50%; transform: translateX(-50%); }
+  .tip.t-bot    .arrow { top: -5px; left: 50%; transform: translateX(-50%) rotate(45deg); border-bottom: none; border-right: none; }
+  .tip.t-right  { left: calc(100% + 8px); top: 50%; transform: translateY(-50%); }
+  .tip.t-right  .arrow { left: -5px; top: 50%; transform: translateY(-50%) rotate(45deg); border-top: none; border-right: none; }
+  .tip.t-left   { right: calc(100% + 8px); top: 50%; transform: translateY(-50%); }
+  .tip.t-left   .arrow { right: -5px; top: 50%; transform: translateY(-50%) rotate(45deg); border-bottom: none; border-left: none; }
+  /* tone variants */
+  .tip.tone-warn   { border-color: color-mix(in srgb, var(--warn) 60%, transparent); }
+  .tip.tone-warn   .arrow { border-color: color-mix(in srgb, var(--warn) 60%, transparent); }
+  .tip.tone-warn   .title { color: var(--warn); }
+  .tip.tone-danger { border-color: color-mix(in srgb, var(--danger) 60%, transparent); }
+  .tip.tone-danger .arrow { border-color: color-mix(in srgb, var(--danger) 60%, transparent); }
+  .tip.tone-danger .title { color: var(--danger); }
+
+  /* ═══════════════ sync ping ═══════════════ */
+  .ping-host {
+    position: relative;
+    padding: 12px;
+    display: inline-block;
+    border-radius: 4px;
+  }
+  .ping-target {
+    position: relative;
+    width: 200px; height: 56px;
+    background: var(--surface);
+    border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+    border-left: 4px solid var(--ws-overmind);
+    border-radius: 3px;
+    padding: 8px 10px;
+    overflow: hidden;
+  }
+  .ping-target .nm { font-family: var(--font-ui); font-weight: 700; font-size: 13px; }
+  .ping-target .sub { font-family: var(--font-mono); font-size: 9.5px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px; }
+  .ping-target.firing::after {
+    content:""; position: absolute; inset: 0;
+    background: color-mix(in srgb, var(--ws-overmind) 30%, transparent);
+    border-radius: 2px;
+    animation: sync-ping 340ms cubic-bezier(.2,.7,.3,1) forwards;
+    pointer-events: none;
+  }
+  @keyframes sync-ping {
+    0%   { opacity: 0.85; }
+    100% { opacity: 0; }
+  }
+  .ping-controls { display: flex; gap: 10px; margin-top: 12px; align-items: center; }
+  .ping-controls button { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.10em; color: var(--accent); background: transparent; border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); padding: 5px 10px; border-radius: 2px; cursor: pointer; text-transform: uppercase; }
+  .ping-controls button:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); border-color: var(--accent); }
+
+  /* ═══════════════ skeleton ═══════════════ */
+  .skel {
+    background: color-mix(in srgb, var(--text) 8%, transparent);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+  }
+  .skel::after {
+    content:""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--text) 6%, transparent) 50%, transparent 100%);
+    animation: shimmer 1.4s linear infinite;
+  }
+  @keyframes shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  .skel-row { display: flex; flex-direction: column; gap: 8px; }
+
+  /* fake nexus header skeleton wrapper */
+  .skel-projhead {
+    border-top: 4px solid var(--ws-overmind);
+    border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+    border-top: 4px solid var(--ws-overmind);
+    border-radius: 4px;
+    background: var(--surface);
+    padding: 18px 22px;
+    box-shadow: 0 6px 24px color-mix(in srgb, var(--ws-overmind) 18%, transparent);
+    width: 720px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .skel-card {
+    background: var(--surface);
+    border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+    border-radius: 4px;
+    padding: 16px 18px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.35);
+    width: 720px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  [data-theme="light"] .skel-card { box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .skel-stack { display: flex; flex-direction: column; gap: 20px; }
+
+  /* drag-target callout (Q6 illustration helper) */
+  .drag-callout { font-family: var(--font-mono); font-size: 10.5px; color: var(--muted); letter-spacing: 0.06em; line-height: 1.5; max-width: 360px; padding-left: 14px; border-left: 1px dashed color-mix(in srgb, var(--accent) 30%, transparent); }
+  .drag-callout b { color: var(--accent); font-weight: 400; }
+
+  /* spec notes */
+  .notes { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 18px; }
+  .note { font-family: var(--font-mono); font-size: 11px; color: var(--muted); line-height: 1.65; padding-left: 14px; position: relative; }
+  .note::before { content: "▸"; position: absolute; left: 0; top: 1px; color: var(--accent); font-size: 10px; }
+  .note b { color: var(--text); font-weight: 400; }
+  .note .h { font-family: var(--font-ui); color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; display: block; margin-bottom: 4px; }
+  .note kbd { display: inline-block; padding: 1px 5px; border: 1px solid var(--line-strong); border-radius: 2px; color: var(--accent); font-size: 10px; font-family: var(--font-mono); letter-spacing: 0.06em; }
+  .note code { font-family: var(--font-mono); font-size: 10.5px; color: var(--text); background: color-mix(in srgb, var(--text) 6%, transparent); padding: 1px 4px; border-radius: 2px; }
+</style>
+</head>
+<body>
+
+  <header class="mast">
+    <span class="brand">COMSAT</span>
+    <span class="ver">V4 · STATES &amp; PATTERNS <em>R.01</em></span>
+    <span class="crumb"><span class="tick"></span>2026.05.20 · DESIGN HANDOFF</span>
+    <div class="theme-toggle" id="themeToggle">
+      <button data-theme="dark" class="on">DARK</button>
+      <button data-theme="light">LIGHT</button>
+    </div>
+  </header>
+
+  <nav class="toc">
+    <a href="#s01"><span class="n">01</span><span>Buttons</span></a>
+    <a href="#s02"><span class="n">02</span><span>Status dots</span></a>
+    <a href="#s03"><span class="n">03</span><span>Workflow slots</span></a>
+    <a href="#s04"><span class="n">04</span><span>Engines &middot; CL / CX / 3P</span></a>
+    <a href="#s05"><span class="n">05</span><span>Shield</span></a>
+    <a href="#s06"><span class="n">06</span><span>Pills</span></a>
+    <a href="#s07"><span class="n">07</span><span>Tile &middot; collapsed</span></a>
+    <a href="#s08"><span class="n">08</span><span>Tile &middot; Nexus vs Pylon</span></a>
+    <a href="#s09"><span class="n">09</span><span>Kanban card</span></a>
+    <a href="#s10"><span class="n">10</span><span>Tooltip</span></a>
+    <a href="#s11"><span class="n">11</span><span>Sync ping</span></a>
+    <a href="#s12"><span class="n">12</span><span>Loading skeleton</span></a>
+    <a href="#s13"><span class="n">13</span><span>Failure states</span></a>
+    <a href="#s14"><span class="n">14</span><span>Drag &middot; spec</span></a>
+  </nav>
+
+  <!-- ════════════════ 01 · BUTTONS ════════════════ -->
+  <section class="section" id="s01" data-screen-label="01 Buttons">
+    <div class="section-head"><span class="ix">01</span><h2>Buttons</h2></div>
+    <p class="section-sub">Primary green (action) and secondary neutral (dismiss / cancel). Every state shown forced via <code>.is-*</code> class for review; production uses real pseudo-classes.</p>
+    <div class="matrix cols-7">
+      <div class="head">
+        <div></div><div>Default</div><div>Hover</div><div>Focus</div><div>Active</div><div>Disabled</div><div>Loading</div>
+      </div>
+      <div class="row-label">Primary</div>
+      <div class="cell"><button class="btn btn-primary">Confirm</button></div>
+      <div class="cell"><button class="btn btn-primary is-hover">Confirm</button><span class="delta">bg +8% &middot; glow on</span></div>
+      <div class="cell"><button class="btn btn-primary is-focus">Confirm</button><span class="delta">ring 2px @ 35%</span></div>
+      <div class="cell"><button class="btn btn-primary is-active">Confirm</button><span class="delta">bg +16% &middot; y +0.5</span></div>
+      <div class="cell"><button class="btn btn-primary is-disabled">Confirm</button><span class="delta">opacity 0.42</span></div>
+      <div class="cell"><button class="btn btn-primary is-loading">Confirm</button><span class="delta">spinner 600ms</span></div>
+      <div class="row-label last">Secondary</div>
+      <div class="cell"><button class="btn btn-secondary">Cancel</button></div>
+      <div class="cell"><button class="btn btn-secondary is-hover">Cancel</button><span class="delta">bg text@10%</span></div>
+      <div class="cell"><button class="btn btn-secondary is-focus">Cancel</button><span class="delta">ring 2px @ 28%</span></div>
+      <div class="cell"><button class="btn btn-secondary is-active">Cancel</button><span class="delta">bg text@16% &middot; y +0.5</span></div>
+      <div class="cell"><button class="btn btn-secondary is-disabled">Cancel</button><span class="delta">opacity 0.42</span></div>
+      <div class="cell"><button class="btn btn-secondary is-loading">Cancel</button><span class="delta">spinner 600ms</span></div>
+    </div>
+    <div class="tokens">
+      <div><span class="k">--font</span><span class="v">var(--font-ui), weight 700, 12.5px, tracking 0.06em, uppercase</span></div>
+      <div><span class="k">--radius</span><span class="v">3px &middot; border 1px</span></div>
+      <div><span class="k">--padding</span><span class="v">8px 14px</span></div>
+      <div><span class="k">--transition</span><span class="v">80ms linear on bg / border-color / color / box-shadow</span></div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 02 · STATUS DOTS ════════════════ -->
+  <section class="section" id="s02" data-screen-label="02 Status dots">
+    <div class="section-head"><span class="ix">02</span><h2>Status<span class="sep">·</span>Dots</h2></div>
+    <p class="section-sub">Three states map to the agent lifecycle: <b>cooking</b> (Claude/Codex working), <b>attention</b> (VS Code-side action needed), <b>standby</b> (idle, "say the word"). All include subtle glow at <code>--glow * Npx</code> &mdash; zero in light mode.</p>
+    <div class="matrix cols-5">
+      <div class="head">
+        <div></div><div>Default</div><div>Hover</div><div>Focus</div><div>Disabled</div>
+      </div>
+      <div class="row-label">Cooking</div>
+      <div class="cell"><span class="dot cook"></span><span class="delta">2s pulse</span></div>
+      <div class="cell"><span class="dot cook is-hover"></span><span class="delta">scale 1.18</span></div>
+      <div class="cell"><span class="dot cook is-focus"></span><span class="delta">ring 2px</span></div>
+      <div class="cell"><span class="dot cook is-disabled"></span><span class="delta">grey, no anim</span></div>
+      <div class="row-label">Attention</div>
+      <div class="cell"><span class="dot attn"></span><span class="delta">1.2s blink</span></div>
+      <div class="cell"><span class="dot attn is-hover"></span><span class="delta">scale 1.18</span></div>
+      <div class="cell"><span class="dot attn is-focus"></span><span class="delta">ring 2px</span></div>
+      <div class="cell"><span class="dot attn is-disabled"></span><span class="delta">grey, no anim</span></div>
+      <div class="row-label last">Standby</div>
+      <div class="cell"><span class="dot standby"></span><span class="delta">static</span></div>
+      <div class="cell"><span class="dot standby is-hover"></span><span class="delta">scale 1.18</span></div>
+      <div class="cell"><span class="dot standby is-focus"></span><span class="delta">ring 2px</span></div>
+      <div class="cell"><span class="dot standby is-disabled"></span><span class="delta">grey</span></div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 03 · WORKFLOW SLOTS ════════════════ -->
+  <section class="section" id="s03" data-screen-label="03 Workflow slots">
+    <div class="section-head"><span class="ix">03</span><h2>Workflow<span class="sep">·</span>Slots</h2></div>
+    <p class="section-sub">The 4-slot row in the expanded tile. Three pinned badge types plus the empty slot (drop target). Confirmed: <b>workflow row is in default expanded view</b>.</p>
+    <div class="matrix cols-5">
+      <div class="head">
+        <div></div><div>Default</div><div>Hover</div><div>Focus</div><div>Drop target</div>
+      </div>
+      <div class="row-label">Standby</div>
+      <div class="cell"><span class="wf-slot standby"></span></div>
+      <div class="cell"><span class="wf-slot standby is-hover"></span><span class="delta">scale 1.18</span></div>
+      <div class="cell"><span class="wf-slot standby is-focus"></span><span class="delta">ring 2px</span></div>
+      <div class="cell"><span class="wf-slot standby is-drop"></span><span class="delta">accent ring 3px</span></div>
+      <div class="row-label">Human</div>
+      <div class="cell"><span class="wf-slot human"></span></div>
+      <div class="cell"><span class="wf-slot human is-hover"></span></div>
+      <div class="cell"><span class="wf-slot human is-focus"></span></div>
+      <div class="cell"><span class="wf-slot human is-drop"></span></div>
+      <div class="row-label">On-hold</div>
+      <div class="cell"><span class="wf-slot hold"></span></div>
+      <div class="cell"><span class="wf-slot hold is-hover"></span></div>
+      <div class="cell"><span class="wf-slot hold is-focus"></span></div>
+      <div class="cell"><span class="wf-slot hold is-drop"></span></div>
+      <div class="row-label last">Empty</div>
+      <div class="cell"><span class="wf-slot"></span><span class="delta">dashed text@24%</span></div>
+      <div class="cell"><span class="wf-slot is-hover"></span></div>
+      <div class="cell"><span class="wf-slot is-focus"></span></div>
+      <div class="cell"><span class="wf-slot is-drop"></span><span class="delta">accent ring &middot; "drop"</span></div>
+    </div>
+
+    <div class="notes" style="grid-template-columns: 1fr;">
+      <div class="note">
+        <span class="h">Q10 &middot; Empty-state in default expanded view</span>
+        <b>Always-on, four dashed circles.</b> No "+ add badge" label clutters the row &mdash; the dashed pattern is the affordance. On parent tile hover, the row stays the same; on direct hover of a slot, the circle pulses subtly (scale + opacity, no color). On dragstart from the shield-opened palette, every empty slot enters <code>is-drop</code> state (accent ring + 3px halo). Drop = badge swaps in, dashed border replaced by solid colored slot. The 8.5px <code>WF</code> label to the row's left is optional &mdash; recommend showing it only on first-run so users know the row is interactive.
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 04 · ENGINES ════════════════ -->
+  <section class="section" id="s04" data-screen-label="04 Engines">
+    <div class="section-head"><span class="ix">04</span><h2>Engines<span class="sep">·</span>CL &middot; CX &middot; 3P</h2></div>
+    <p class="section-sub">Engine indicators are bare SVG icons (no chip wrapper). On-state = brand color fill + drop-shadow. Off-state = grey symbol. 3P uses Press Start 2P only.</p>
+    <div class="matrix cols-6">
+      <div class="head">
+        <div></div><div>Default (off)</div><div>On</div><div>Hover</div><div>Focus</div><div>Disabled</div>
+      </div>
+      <div class="row-label">CL · Claude</div>
+      <div class="cell"><span class="engine cl"><svg viewBox="0 0 24 24" fill="currentColor"><g transform="translate(12 12)"><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(30)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(60)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(90)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(120)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(150)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(180)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(210)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(240)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(270)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(300)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(330)"></path></g></svg></span><span class="delta">grey</span></div>
+      <div class="cell"><span class="engine cl on"><svg viewBox="0 0 24 24" fill="currentColor"><g transform="translate(12 12)"><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(30)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(60)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(90)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(120)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(150)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(180)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(210)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(240)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(270)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(300)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(330)"></path></g></svg></span><span class="delta">cook + glow</span></div>
+      <div class="cell"><span class="engine cl on is-hover"><svg viewBox="0 0 24 24" fill="currentColor"><g transform="translate(12 12)"><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(45)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(90)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(135)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(180)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(225)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(270)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(315)"></path></g></svg></span><span class="delta">scale 1.12</span></div>
+      <div class="cell"><span class="engine cl on is-focus"><svg viewBox="0 0 24 24" fill="currentColor"><g transform="translate(12 12)"><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(45)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(90)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(135)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(180)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(225)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(270)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(315)"></path></g></svg></span><span class="delta">outline @ 35%</span></div>
+      <div class="cell"><span class="engine cl is-disabled"><svg viewBox="0 0 24 24" fill="currentColor"><g transform="translate(12 12)"><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(45)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(90)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(135)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(180)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(225)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(270)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(315)"></path></g></svg></span><span class="delta">faded 0.45</span></div>
+      <div class="row-label">CX · Codex</div>
+      <div class="cell"><span class="engine cx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><g transform="translate(12 12)"><line x1="-8" y1="0" x2="8" y2="0"></line><line x1="-8" y1="0" x2="8" y2="0" transform="rotate(60)"></line><line x1="-8" y1="0" x2="8" y2="0" transform="rotate(120)"></line></g></svg></span></div>
+      <div class="cell"><span class="engine cx on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><g transform="translate(12 12)"><line x1="-8" y1="0" x2="8" y2="0"></line><line x1="-8" y1="0" x2="8" y2="0" transform="rotate(60)"></line><line x1="-8" y1="0" x2="8" y2="0" transform="rotate(120)"></line></g></svg></span><span class="delta">signal + glow</span></div>
+      <div class="cell"><span class="engine cx on is-hover"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><g transform="translate(12 12)"><line x1="-8" y1="0" x2="8" y2="0"></line><line x1="-8" y1="0" x2="8" y2="0" transform="rotate(60)"></line><line x1="-8" y1="0" x2="8" y2="0" transform="rotate(120)"></line></g></svg></span></div>
+      <div class="cell"><span class="engine cx on is-focus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><g transform="translate(12 12)"><line x1="-8" y1="0" x2="8" y2="0"></line><line x1="-8" y1="0" x2="8" y2="0" transform="rotate(60)"></line><line x1="-8" y1="0" x2="8" y2="0" transform="rotate(120)"></line></g></svg></span></div>
+      <div class="cell"><span class="engine cx is-disabled"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><g transform="translate(12 12)"><line x1="-8" y1="0" x2="8" y2="0"></line><line x1="-8" y1="0" x2="8" y2="0" transform="rotate(60)"></line><line x1="-8" y1="0" x2="8" y2="0" transform="rotate(120)"></line></g></svg></span></div>
+      <div class="row-label last">3P · Arcade</div>
+      <div class="cell"><span class="arc-3p">3P</span><span class="delta">dark</span></div>
+      <div class="cell"><span class="arc-3p on">3P</span><span class="delta">accent fill</span></div>
+      <div class="cell"><span class="arc-3p on is-hover">3P</span><span class="delta">border full</span></div>
+      <div class="cell"><span class="arc-3p on is-focus">3P</span></div>
+      <div class="cell"><span class="arc-3p is-disabled">3P</span></div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 05 · SHIELD ════════════════ -->
+  <section class="section" id="s05" data-screen-label="05 Shield">
+    <div class="section-head"><span class="ix">05</span><h2>Shield<span class="sep">·</span>Badge palette trigger</h2></div>
+    <p class="section-sub">Affordance to open the badge palette. Lives in the work-view header far right. Always-on element &mdash; no disabled state inside an active workspace.</p>
+    <div class="matrix cols-5">
+      <div class="head"><div></div><div>Default</div><div>Hover</div><div>Focus</div><div>Active (open)</div></div>
+      <div class="row-label last">Shield</div>
+      <div class="cell"><span class="shield"><svg viewBox="0 0 10 11" fill="none" stroke="currentColor" stroke-width="1"><path d="M5 .8 1 2.2v3.4c0 2.2 1.7 4 4 4.6 2.3-.6 4-2.4 4-4.6V2.2L5 .8z"/></svg></span></div>
+      <div class="cell"><span class="shield is-hover"><svg viewBox="0 0 10 11" fill="none" stroke="currentColor" stroke-width="1"><path d="M5 .8 1 2.2v3.4c0 2.2 1.7 4 4 4.6 2.3-.6 4-2.4 4-4.6V2.2L5 .8z"/></svg></span><span class="delta">bg accent@8%</span></div>
+      <div class="cell"><span class="shield is-focus"><svg viewBox="0 0 10 11" fill="none" stroke="currentColor" stroke-width="1"><path d="M5 .8 1 2.2v3.4c0 2.2 1.7 4 4 4.6 2.3-.6 4-2.4 4-4.6V2.2L5 .8z"/></svg></span></div>
+      <div class="cell"><span class="shield is-active"><svg viewBox="0 0 10 11" fill="none" stroke="currentColor" stroke-width="1"><path d="M5 .8 1 2.2v3.4c0 2.2 1.7 4 4 4.6 2.3-.6 4-2.4 4-4.6V2.2L5 .8z"/></svg></span><span class="delta">bg accent@18%</span></div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 06 · PILLS ════════════════ -->
+  <section class="section" id="s06" data-screen-label="06 Pills">
+    <div class="section-head"><span class="ix">06</span><h2>Pills</h2></div>
+    <p class="section-sub">Shorthand chip (workspace identity), lock chip (project type), and breadcrumb segments.</p>
+    <div class="matrix cols-5">
+      <div class="head"><div></div><div>Default</div><div>Hover</div><div>Focus</div><div>Active</div></div>
+      <div class="row-label">Shorthand &middot; Nexus</div>
+      <div class="cell" style="--ws: var(--ws-overmind)"><span class="pill shorthand">HQc</span></div>
+      <div class="cell"><span class="pill shorthand is-hover">HQc</span></div>
+      <div class="cell"><span class="pill shorthand is-focus">HQc</span></div>
+      <div class="cell"><span class="pill shorthand is-active">HQc</span></div>
+      <div class="row-label">Shorthand &middot; Pylon</div>
+      <div class="cell"><span class="pill shorthand pylon">DBG</span><span class="delta">lighter weight</span></div>
+      <div class="cell"><span class="pill shorthand pylon is-hover">DBG</span></div>
+      <div class="cell"><span class="pill shorthand pylon is-focus">DBG</span></div>
+      <div class="cell"><span class="pill shorthand pylon is-active">DBG</span></div>
+      <div class="row-label">Lock &middot; HARD</div>
+      <div class="cell"><span class="pill lock"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="4.5" width="6" height="4.5" rx="0.5"/><path d="M3.2 4.5V3a1.8 1.8 0 1 1 3.6 0v1.5"/></svg>hard</span></div>
+      <div class="cell"><span class="pill lock is-hover"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="4.5" width="6" height="4.5" rx="0.5"/><path d="M3.2 4.5V3a1.8 1.8 0 1 1 3.6 0v1.5"/></svg>hard</span></div>
+      <div class="cell"><span class="pill lock is-focus"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="4.5" width="6" height="4.5" rx="0.5"/><path d="M3.2 4.5V3a1.8 1.8 0 1 1 3.6 0v1.5"/></svg>hard</span></div>
+      <div class="cell"><span class="pill lock is-active"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="4.5" width="6" height="4.5" rx="0.5"/><path d="M3.2 4.5V3a1.8 1.8 0 1 1 3.6 0v1.5"/></svg>hard</span></div>
+      <div class="row-label">Lock &middot; SOFT</div>
+      <div class="cell"><span class="pill lock soft"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="4.5" width="6" height="4.5" rx="0.5"/><path d="M3.2 4.5V3a1.8 1.8 0 0 1 3.6 0"/></svg>soft</span></div>
+      <div class="cell"><span class="pill lock soft is-hover"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="4.5" width="6" height="4.5" rx="0.5"/><path d="M3.2 4.5V3a1.8 1.8 0 0 1 3.6 0"/></svg>soft</span></div>
+      <div class="cell"><span class="pill lock soft is-focus"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="4.5" width="6" height="4.5" rx="0.5"/><path d="M3.2 4.5V3a1.8 1.8 0 0 1 3.6 0"/></svg>soft</span></div>
+      <div class="cell"><span class="pill lock soft is-active"><svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="4.5" width="6" height="4.5" rx="0.5"/><path d="M3.2 4.5V3a1.8 1.8 0 0 1 3.6 0"/></svg>soft</span></div>
+      <div class="row-label last">Breadcrumb seg</div>
+      <div class="cell"><span class="pill crumb">PROJECTS</span><span class="pill crumb-sep">/</span><span class="pill crumb">ACTIVE</span><span class="pill crumb-sep">/</span><span class="pill crumb active">HPFHQ</span></div>
+      <div class="cell"><span class="pill crumb is-hover" style="color: var(--accent);">PROJECTS</span></div>
+      <div class="cell"><span class="pill crumb is-focus" style="color: var(--accent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent);">PROJECTS</span></div>
+      <div class="cell"><span class="pill crumb active">HPFHQ</span></div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 07 · TILE COLLAPSED ════════════════ -->
+  <section class="section" id="s07" data-screen-label="07 Tile collapsed">
+    <div class="section-head"><span class="ix">07</span><h2>Tile<span class="sep">·</span>Collapsed (drawer row)</h2></div>
+    <p class="section-sub">The continuous ticker row. Hover translates +2 px, focus rings, active maintains translate + inner workspace-color ring, dragging amplifies shadow + scale.</p>
+    <div class="matrix cols-6">
+      <div class="head"><div></div><div>Default</div><div>Hover</div><div>Focus</div><div>Active</div><div>Dragging</div></div>
+      <div class="row-label">Pylon</div>
+      <div class="cell" style="padding-left: 28px"><div class="cb" style="--ws: var(--ws-debugs)"><span class="cb-dot" style="background: var(--cook); box-shadow: 0 0 4px var(--cook)"></span><span class="cb-sh">DBG</span></div></div>
+      <div class="cell" style="padding-left: 28px"><div class="cb is-hover" style="--ws: var(--ws-debugs)"><span class="cb-dot" style="background: var(--cook); box-shadow: 0 0 4px var(--cook)"></span><span class="cb-sh">DBG</span></div></div>
+      <div class="cell" style="padding-left: 28px"><div class="cb is-focus" style="--ws: var(--ws-debugs)"><span class="cb-dot" style="background: var(--cook); box-shadow: 0 0 4px var(--cook)"></span><span class="cb-sh">DBG</span></div></div>
+      <div class="cell" style="padding-left: 28px"><div class="cb is-active" style="--ws: var(--ws-debugs)"><span class="cb-dot" style="background: var(--cook); box-shadow: 0 0 4px var(--cook)"></span><span class="cb-sh">DBG</span></div></div>
+      <div class="cell" style="padding-left: 28px"><div class="cb is-dragging" style="--ws: var(--ws-debugs)"><span class="cb-dot" style="background: var(--cook); box-shadow: 0 0 4px var(--cook)"></span><span class="cb-sh">DBG</span></div></div>
+      <div class="row-label last">Nexus</div>
+      <div class="cell" style="padding-left: 28px"><div class="cb nexus" style="--ws: var(--ws-overmind)"><span class="cb-dot" style="background: var(--cook); box-shadow: 0 0 4px var(--cook)"></span><span class="cb-sh">HQc</span></div></div>
+      <div class="cell" style="padding-left: 28px"><div class="cb nexus is-hover" style="--ws: var(--ws-overmind)"><span class="cb-dot" style="background: var(--cook); box-shadow: 0 0 4px var(--cook)"></span><span class="cb-sh">HQc</span></div></div>
+      <div class="cell" style="padding-left: 28px"><div class="cb nexus is-focus" style="--ws: var(--ws-overmind)"><span class="cb-dot" style="background: var(--cook); box-shadow: 0 0 4px var(--cook)"></span><span class="cb-sh">HQc</span></div></div>
+      <div class="cell" style="padding-left: 28px"><div class="cb nexus is-active" style="--ws: var(--ws-overmind)"><span class="cb-dot" style="background: var(--cook); box-shadow: 0 0 4px var(--cook)"></span><span class="cb-sh">HQc</span></div></div>
+      <div class="cell" style="padding-left: 28px"><div class="cb nexus is-dragging" style="--ws: var(--ws-overmind)"><span class="cb-dot" style="background: var(--cook); box-shadow: 0 0 4px var(--cook)"></span><span class="cb-sh">HQc</span></div></div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 08 · NEXUS vs PYLON expanded ════════════════ -->
+  <section class="section" id="s08" data-screen-label="08 Nexus vs Pylon">
+    <div class="section-head"><span class="ix">08</span><h2>Expanded<span class="sep">·</span>Nexus vs Pylon</h2></div>
+    <p class="section-sub">Q11 verification &mdash; canonical side-by-side reference. Same workspace (Overmind copper) shown on both for direct comparison. <b>Nexus</b> = double 4 px top-line + project chip + heavier title. <b>Pylon</b> = single 2 px top-line, no project chip, lighter title.</p>
+    <div style="display: grid; grid-template-columns: 256px 256px; gap: 32px; padding: 28px 24px; background: var(--surface); border: 1px solid color-mix(in srgb, var(--text) 14%, transparent); border-radius: 4px; box-shadow: 0 2px 12px rgba(0,0,0,0.35);">
+      <!-- Nexus -->
+      <div>
+        <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px">NEXUS &middot; 4px top + chip</div>
+        <div class="wv nexus is-cooking" style="--ws: var(--ws-overmind); --tier-c: var(--tier-2)">
+          <div class="wv-head">
+            <span class="wv-dot" style="background: var(--cook); box-shadow: 0 0 5px var(--cook)"></span>
+            <span class="cs">HQc</span>
+            <span class="sp"></span>
+            <span class="arc-3p">3P</span>
+            <span class="engine cl on"><svg viewBox="0 0 24 24" fill="currentColor"><g transform="translate(12 12)"><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(30)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(60)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(90)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(120)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(150)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(180)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(210)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(240)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(270)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(300)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(330)"></path></g></svg></span>
+            <span class="engine cx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><g transform="translate(12 12)"><line x1="-8" y1="0" x2="8" y2="0"></line><line x1="-8" y1="0" x2="8" y2="0" transform="rotate(60)"></line><line x1="-8" y1="0" x2="8" y2="0" transform="rotate(120)"></line></g></svg></span>
+            <span class="shield"><svg viewBox="0 0 10 11" fill="none" stroke="currentColor" stroke-width="1"><path d="M5 .8 1 2.2v3.4c0 2.2 1.7 4 4 4.6 2.3-.6 4-2.4 4-4.6V2.2L5 .8z"/></svg></span>
+          </div>
+          <div class="wv-title">HPFHQ Consolidation Plan<span class="arrow">↗</span></div>
+          <div class="wv-proj">
+            <svg class="target" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1"><circle cx="5" cy="5" r="3.6"/><circle cx="5" cy="5" r="1.2" fill="currentColor"/><path d="M5 .8v1.6M5 7.6v1.6M.8 5h1.6M7.6 5h1.6"/></svg>
+            <div class="nm-wrap">
+              <div class="nm-row"><span class="nm">HPFHQ Consolidation</span><span class="count">4/7</span></div>
+              <div class="pbar"><i style="width: 57%"></i></div>
+            </div>
+          </div>
+          <div class="wv-wf"><span class="wv-wf-label">WF</span><span class="slot standby"></span><span class="slot human"></span><span class="slot empty"></span><span class="slot empty"></span></div>
+          <div class="wv-foot">
+            <div class="tier"><span class="seg lit"></span><span class="seg lit"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="tlab">T2</span></div>
+            <div class="ctx-wrap">
+              <span class="lbl">CTX</span>
+              <div class="ctx ctx-warn"><span class="seg lit"></span><span class="seg lit"></span><span class="seg lit"></span><span class="seg lit"></span><span class="seg lit"></span><span class="seg lit"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
+              <span class="ctx-pct ctx-warn">60%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Pylon -->
+      <div>
+        <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em; color: var(--accent); text-transform: uppercase; margin-bottom: 8px">PYLON &middot; 2px top, no chip</div>
+        <div class="wv is-cooking" style="--ws: var(--ws-overmind); --tier-c: var(--tier-1)">
+          <div class="wv-head">
+            <span class="wv-dot" style="background: var(--cook); box-shadow: 0 0 5px var(--cook)"></span>
+            <span class="cs">SCAN</span>
+            <span class="sp"></span>
+            <span class="arc-3p">3P</span>
+            <span class="engine cl on"><svg viewBox="0 0 24 24" fill="currentColor"><g transform="translate(12 12)"><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(30)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(60)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(90)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(120)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(150)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(180)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(210)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(240)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(270)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(300)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(330)"></path></g></svg></span>
+            <span class="engine cx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><g transform="translate(12 12)"><line x1="-8" y1="0" x2="8" y2="0"></line><line x1="-8" y1="0" x2="8" y2="0" transform="rotate(60)"></line><line x1="-8" y1="0" x2="8" y2="0" transform="rotate(120)"></line></g></svg></span>
+            <span class="shield"><svg viewBox="0 0 10 11" fill="none" stroke="currentColor" stroke-width="1"><path d="M5 .8 1 2.2v3.4c0 2.2 1.7 4 4 4.6 2.3-.6 4-2.4 4-4.6V2.2L5 .8z"/></svg></span>
+          </div>
+          <div class="wv-title">Quick scan — repo grep</div>
+          <div class="wv-wf"><span class="wv-wf-label">WF</span><span class="slot empty"></span><span class="slot empty"></span><span class="slot empty"></span><span class="slot empty"></span></div>
+          <div class="wv-foot">
+            <div class="tier"><span class="seg lit"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="tlab">T1</span></div>
+            <div class="ctx-wrap">
+              <span class="lbl">CTX</span>
+              <div class="ctx ctx-ok"><span class="seg lit"></span><span class="seg lit"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
+              <span class="ctx-pct ctx-ok">20%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="notes">
+      <div class="note">
+        <span class="h">Top line</span>
+        Nexus = <b>4 px</b> workspace color across the top of the tile. Pylon = <b>2 px</b>. The faint workspace tint on the tile body is also stronger on Nexus (5.5% vs 3.5% opacity).
+      </div>
+      <div class="note">
+        <span class="h">Title weight</span>
+        Nexus title uses <code>font-weight: 800</code> + workspace-color mix in the title color (35% ws / 65% text). Pylon title uses <code>font-weight: 700</code> + pure <code>--text</code>. Same size; Nexus reads heavier and more anchored.
+      </div>
+      <div class="note">
+        <span class="h">Project chip (Nexus only)</span>
+        Nexus has the <b>workspace-tinted project chip with inner progress bar</b> + done-when count. Pylon has no chip because Pylons aren't tied to a Nexus project. Drop in / out of the layout fluidly &mdash; the chip is a discrete element, not a layout dependency.
+      </div>
+      <div class="note">
+        <span class="h">Callsign weight</span>
+        Header callsign uses font-weight 900 / size 14 on Nexus, 800 / size 13 on Pylon. Subtle but it stacks with the other differences for a coherent "Nexus reads heavier" rhythm.
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 09 · KANBAN ════════════════ -->
+  <section class="section" id="s09" data-screen-label="09 Kanban">
+    <div class="section-head"><span class="ix">09</span><h2>Kanban<span class="sep">·</span>Task card</h2></div>
+    <p class="section-sub">Cards in ProjectView tasks columns. Active state used while dragging; loading state replaces text with a shimmer block (mid-write).</p>
+    <div class="matrix cols-7">
+      <div class="head"><div></div><div>Default</div><div>Hover</div><div>Focus</div><div>Active (drag)</div><div>Disabled</div><div>Loading</div></div>
+      <div class="row-label last">Card</div>
+      <div class="cell"><div class="kb-card"><span class="text">Audit cockpit imports</span><span class="ts">created 2d</span></div></div>
+      <div class="cell"><div class="kb-card is-hover"><span class="text">Audit cockpit imports</span><span class="ts">created 2d</span></div></div>
+      <div class="cell"><div class="kb-card is-focus"><span class="text">Audit cockpit imports</span><span class="ts">created 2d</span></div></div>
+      <div class="cell"><div class="kb-card is-active"><span class="text">Audit cockpit imports</span><span class="ts">created 2d</span></div></div>
+      <div class="cell"><div class="kb-card is-disabled"><span class="text">Audit cockpit imports</span><span class="ts">created 2d</span></div></div>
+      <div class="cell"><div class="kb-card is-loading"><span class="text">Audit cockpit imports</span><span class="ts">created 2d</span></div></div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 10 · TOOLTIP ════════════════ -->
+  <section class="section" id="s10" data-screen-label="10 Tooltip">
+    <div class="section-head"><span class="ix">10</span><h2>Tooltip<span class="sep">·</span>Pattern</h2></div>
+    <p class="section-sub">Sci-fi info card. Two-line capacity (title + meta), max 240 px before wrap. Surface uses <code>--bg-2</code> + 1 px accent border + matching diamond arrow. <b>500 ms delay</b> on entry, <b>100 ms</b> on exit, no animation in between.</p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 56px 32px; padding: 60px 24px 80px; background: var(--surface); border: 1px solid color-mix(in srgb, var(--text) 14%, transparent); border-radius: 4px; box-shadow: 0 2px 12px rgba(0,0,0,0.35); justify-items: center;">
+      <!-- top -->
+      <div class="tip-host">
+        hover · top
+        <div class="tip t-top">
+          <span class="title">HPFHQ Consolidation</span>
+          <span class="meta">HQc &middot; OVERMIND #2 &middot; 27m active</span>
+          <span class="arrow"></span>
+        </div>
+      </div>
+      <!-- bottom -->
+      <div class="tip-host">
+        hover · bottom
+        <div class="tip t-bot">
+          <span class="title">Workspace badge</span>
+          <span class="meta">human in loop</span>
+          <span class="arrow"></span>
+        </div>
+      </div>
+      <!-- right -->
+      <div class="tip-host">
+        hover · right
+        <div class="tip t-right">
+          <span class="title">Permission needed</span>
+          <span class="meta">edit file outside repo</span>
+          <span class="arrow"></span>
+        </div>
+      </div>
+      <!-- left -->
+      <div class="tip-host">
+        hover · left
+        <div class="tip t-left">
+          <span class="title">Standby</span>
+          <span class="meta">say the word</span>
+          <span class="arrow"></span>
+        </div>
+      </div>
+
+      <!-- tone warn -->
+      <div class="tip-host">
+        warn tone
+        <div class="tip t-top tone-warn">
+          <span class="title">Pathfinder stale</span>
+          <span class="meta">last sync 8 min ago</span>
+          <span class="arrow"></span>
+        </div>
+      </div>
+      <!-- tone danger -->
+      <div class="tip-host">
+        danger tone
+        <div class="tip t-top tone-danger">
+          <span class="title">JSON corrupt</span>
+          <span class="meta">project file unparseable</span>
+          <span class="arrow"></span>
+        </div>
+      </div>
+      <!-- min content -->
+      <div class="tip-host">
+        single line
+        <div class="tip t-top">
+          <span class="title">Codex idle</span>
+          <span class="arrow"></span>
+        </div>
+      </div>
+      <!-- multi -->
+      <div class="tip-host">
+        multi line
+        <div class="tip t-top" style="white-space: normal; max-width: 220px;">
+          <span class="title">HPFHQ Consolidation Plan</span>
+          <span class="meta">Long workspace title that wraps to two lines.</span>
+          <span class="arrow"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="notes">
+      <div class="note">
+        <span class="h">Anchor + flip rule</span>
+        Default anchor: <b>top</b>. If the tooltip's bounding box clips above the viewport, flip to <b>bottom</b>. If it clips on either side, shift the tooltip horizontally to stay 8 px from the viewport edge while keeping the arrow centered on the anchor element. The flip should be instant on first show (no animation), then sticky for the lifetime of that hover &mdash; don't oscillate.
+      </div>
+      <div class="note">
+        <span class="h">Timing</span>
+        <kbd>500 ms</kbd> before show on hover (filter out drive-by hovers). <kbd>100 ms</kbd> before hide on hover-out, cancelable if the user re-enters the host within that window. No fade in/out &mdash; instant show, instant hide. Aria: <code>aria-describedby</code> + offscreen text mirror so screen readers don't lose the metadata.
+      </div>
+      <div class="note">
+        <span class="h">Primary use &middot; drawer hover</span>
+        Drawer tile hover &rarr; <b>title row</b> = full workspace title (e.g. "HPFHQ Consolidation Plan"). <b>Meta row</b> = `shorthand · workspace name · elapsed`. Lives on the right side of the tile (anchored right) so it doesn't fight the screen edge.
+      </div>
+      <div class="note">
+        <span class="h">Secondary use &middot; workflow dot hover</span>
+        Workflow slot hover &rarr; <b>title</b> = badge name (e.g. "Human in loop"). No meta row for badges &mdash; one line. Anchored top.
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 11 · SYNC PING ════════════════ -->
+  <section class="section" id="s11" data-screen-label="11 Sync ping">
+    <div class="section-head"><span class="ix">11</span><h2>Sync<span class="sep">·</span>Cross-surface update cue</h2></div>
+    <p class="section-sub">When a project's JSON updates from another surface (Nexus &rarr; COMSAT, VS Code &rarr; standalone), the receiving tile flashes a workspace-color wash over its surface. Uses <code>::after</code> overlay so the underlying content is untouched.</p>
+
+    <div style="display: flex; gap: 32px; align-items: flex-start; padding: 32px 24px; background: var(--surface); border: 1px solid color-mix(in srgb, var(--text) 14%, transparent); border-radius: 4px; box-shadow: 0 2px 12px rgba(0,0,0,0.35);">
+      <div>
+        <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em; color: var(--accent); text-transform: uppercase; margin-bottom: 10px">demo &middot; click to fire</div>
+        <div class="ping-host">
+          <div class="ping-target" id="pingDemo">
+            <div class="nm" style="color: color-mix(in srgb, var(--ws-overmind) 60%, var(--text) 40%);">HPFHQ Consolidation</div>
+            <div class="sub">stage 01 &middot; helper layer</div>
+          </div>
+        </div>
+        <div class="ping-controls">
+          <button id="fireBtn">⚡ FIRE PING</button>
+          <button id="fireBurstBtn">⚡⚡⚡ BURST &times; 5</button>
+        </div>
+      </div>
+
+      <div style="font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.04em; line-height: 1.65; max-width: 380px; padding-left: 22px; border-left: 1px dashed color-mix(in srgb, var(--accent) 30%, transparent);">
+        <div style="font-family: var(--font-ui); font-weight: 700; font-size: 12px; color: var(--accent); letter-spacing: 0.10em; text-transform: uppercase; margin-bottom: 8px">SPEC</div>
+        <div><b style="color: var(--text); font-weight: 400">target:</b> full tile/card surface (the workspace-color overlay sits at <code>inset: 0</code>)</div>
+        <div><b style="color: var(--text); font-weight: 400">color:</b> <code>color-mix(--ws 30%, transparent)</code> &mdash; workspace tint, dialed back so it reads as "pulse" not "flash"</div>
+        <div><b style="color: var(--text); font-weight: 400">duration:</b> <kbd style="display: inline-block; padding: 1px 5px; border: 1px solid var(--line-strong); border-radius: 2px; color: var(--accent); font-size: 10px; letter-spacing: 0.06em">340 ms</kbd> &middot; <code>cubic-bezier(.2,.7,.3,1)</code></div>
+        <div><b style="color: var(--text); font-weight: 400">easing:</b> ease-out &mdash; full opacity at t=0, exponential decay to 0 at t=340 ms</div>
+        <div><b style="color: var(--text); font-weight: 400">coalesce:</b> if a second ping fires while the first is mid-animation, <b style="color: var(--text); font-weight: 400">restart it</b> (don't queue). If <b style="color: var(--text); font-weight: 400">3+</b> pings land within 1 s, throttle to one ping per 250 ms.</div>
+        <div><b style="color: var(--text); font-weight: 400">audio:</b> emits <code>event:sync-received</code> on each ping (after throttle).</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 12 · LOADING SKELETON ════════════════ -->
+  <section class="section" id="s12" data-screen-label="12 Loading skeleton">
+    <div class="section-head"><span class="ix">12</span><h2>Loading<span class="sep">·</span>Nexus ProjectView skeleton</h2></div>
+    <p class="section-sub">Layout-preserving. <b>Workspace color renders immediately</b> (top border + drop shadow) so the user knows which project they're loading. Body content placeholders shimmer at 1.4 s linear infinite. Single shared shimmer pattern across every box.</p>
+
+    <div class="skel-stack" style="align-items: flex-start; padding: 24px; background: var(--bg-2); border: 1px solid color-mix(in srgb, var(--text) 14%, transparent); border-radius: 4px;">
+      <!-- skeleton proj-head -->
+      <div class="skel-projhead">
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <div class="skel" style="width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;"></div>
+          <div class="skel" style="width: 320px; height: 26px; border-radius: 3px;"></div>
+          <div style="flex: 1"></div>
+          <div class="skel" style="width: 58px; height: 22px; border-radius: 3px;"></div>
+        </div>
+        <div class="skel" style="height: 32px; border-radius: 3px;"></div>
+        <div class="skel" style="width: 380px; height: 12px; border-radius: 2px;"></div>
+      </div>
+
+      <!-- skeleton goal -->
+      <div class="skel-card">
+        <div style="display: flex; gap: 22px; align-items: flex-start;">
+          <div class="skel" style="width: 50px; height: 12px; flex-shrink: 0;"></div>
+          <div style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
+            <div class="skel" style="height: 17px;"></div>
+            <div class="skel" style="height: 17px; width: 80%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- skeleton stages -->
+      <div class="skel-card">
+        <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 8px;">
+          <div class="skel" style="width: 30px; height: 14px;"></div>
+          <div class="skel" style="width: 100px; height: 12px;"></div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 0; border-top: 1px solid var(--line); padding-top: 12px;">
+          <div style="padding: 8px 8px; border-right: 1px solid var(--line);"><div class="skel" style="width: 18px; height: 10px; margin-bottom: 4px"></div><div class="skel" style="width: 80%; height: 13px;"></div><div class="skel" style="width: 50%; height: 10px; margin-top: 6px"></div></div>
+          <div style="padding: 8px 8px; border-right: 1px solid var(--line); background: color-mix(in srgb, var(--ws-overmind) 6%, transparent);"><div class="skel" style="width: 18px; height: 10px; margin-bottom: 4px"></div><div class="skel" style="width: 80%; height: 13px;"></div><div class="skel" style="width: 50%; height: 10px; margin-top: 6px"></div></div>
+          <div style="padding: 8px 8px; border-right: 1px solid var(--line);"><div class="skel" style="width: 18px; height: 10px; margin-bottom: 4px"></div><div class="skel" style="width: 80%; height: 13px;"></div><div class="skel" style="width: 50%; height: 10px; margin-top: 6px"></div></div>
+          <div style="padding: 8px 8px; border-right: 1px solid var(--line);"><div class="skel" style="width: 18px; height: 10px; margin-bottom: 4px"></div><div class="skel" style="width: 80%; height: 13px;"></div><div class="skel" style="width: 50%; height: 10px; margin-top: 6px"></div></div>
+          <div style="padding: 8px 8px; border-right: 1px solid var(--line);"><div class="skel" style="width: 18px; height: 10px; margin-bottom: 4px"></div><div class="skel" style="width: 80%; height: 13px;"></div><div class="skel" style="width: 50%; height: 10px; margin-top: 6px"></div></div>
+          <div style="padding: 8px 8px; border-right: 1px solid var(--line);"><div class="skel" style="width: 18px; height: 10px; margin-bottom: 4px"></div><div class="skel" style="width: 80%; height: 13px;"></div><div class="skel" style="width: 50%; height: 10px; margin-top: 6px"></div></div>
+          <div style="padding: 8px 8px;"><div class="skel" style="width: 18px; height: 10px; margin-bottom: 4px"></div><div class="skel" style="width: 80%; height: 13px;"></div><div class="skel" style="width: 50%; height: 10px; margin-top: 6px"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="notes">
+      <div class="note">
+        <span class="h">Order of appearance</span>
+        <b>(1)</b> Project head renders immediately (workspace color top border + drop-shadow + title-as-skeleton). <b>(2)</b> All body cards render with their final dimensions + shimmer placeholders. <b>(3)</b> Cards swap to real content as data arrives, one at a time. The page never reflows during load.
+      </div>
+      <div class="note">
+        <span class="h">Shimmer mechanics</span>
+        Base: <code>text @ 8%</code> fill. Overlay: <code>linear-gradient(90deg, transparent, text @ 6%, transparent)</code> sliding left-to-right at <kbd>1.4s</kbd> linear infinite. Single keyframe, single pattern, reused everywhere. <b>Three light-dark cycles ≈ 4.2s</b> &mdash; if data takes longer than that, swap to a quieter pulse (no slide) to signal "still loading, but not stuck."
+      </div>
+      <div class="note">
+        <span class="h">Stage pipeline preserves active marker</span>
+        Even during load, the active stage's copper tint renders so the user lands on the "which stage am I on" hint immediately &mdash; only the labels are skeleton.
+      </div>
+      <div class="note">
+        <span class="h">Mid-write skeleton</span>
+        When the file is being saved (not loaded), the page replaces just the changing block (e.g. the Done-When list) with shimmer placeholders matching the previous content height. Header + other cards stay live. <kbd>800ms</kbd> minimum show time so writes don't feel snappy-but-suspicious.
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════ 13 · FAILURE STATES ════════════════ -->
+  <section class="section" id="s13" data-screen-label="13 Failure states">
+    <div class="section-head"><span class="ix">13</span><h2>Failure<span class="sep">·</span>Three tile renderings</h2></div>
+    <p class="section-sub">Per Q3 &mdash; how COMSAT tiles look in three specific failure modes.</p>
+
+    <div style="display: grid; grid-template-columns: 256px 256px 256px; gap: 32px; padding: 28px 24px; background: var(--surface); border: 1px solid color-mix(in srgb, var(--text) 14%, transparent); border-radius: 4px; box-shadow: 0 2px 12px rgba(0,0,0,0.35);">
+
+      <!-- a) JSON corrupt -->
+      <div>
+        <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em; color: var(--danger); text-transform: uppercase; margin-bottom: 8px">A &middot; JSON corrupt</div>
+        <div class="wv is-error" style="--ws: var(--ws-overmind); --tier-c: var(--tier-2)">
+          <div class="wv-head">
+            <span class="wv-dot" style="background: var(--danger); box-shadow: 0 0 5px var(--danger); animation: dot-blink 0.6s infinite"></span>
+            <span class="cs" style="color: var(--danger)">HQc</span>
+            <span class="sp"></span>
+            <span class="shield"><svg viewBox="0 0 10 11" fill="none" stroke="currentColor" stroke-width="1"><path d="M5 .8 1 2.2v3.4c0 2.2 1.7 4 4 4.6 2.3-.6 4-2.4 4-4.6V2.2L5 .8z"/></svg></span>
+          </div>
+          <div class="wv-title" style="color: var(--text); opacity: 0.72">HPFHQ Consolidation Plan</div>
+          <div class="wv-err">
+            <span class="ic">!</span>
+            <span class="q">JSON unparseable</span>
+            <button>open file</button>
+          </div>
+          <div class="wv-foot">
+            <div class="tier"><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="tlab" style="color: var(--faded)">—</span></div>
+            <div class="ctx-wrap">
+              <span class="lbl">CTX</span>
+              <div class="ctx"><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
+              <span class="ctx-pct" style="color: var(--faded)">—</span>
+            </div>
+          </div>
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 10px; color: var(--muted); margin-top: 10px; line-height: 1.55; letter-spacing: 0.04em;">Red border &middot; danger dot pulses fast (0.6s) &middot; title muted &middot; inline error banner with file-open CTA &middot; tier and CTX go dark with em-dash &mdash; we don't have data to render them.</div>
+      </div>
+
+      <!-- b) Pathfinder stale -->
+      <div>
+        <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em; color: var(--warn); text-transform: uppercase; margin-bottom: 8px">B &middot; Pathfinder stale</div>
+        <div class="wv nexus is-cooking" style="--ws: var(--ws-overmind); --tier-c: var(--tier-2)">
+          <div class="wv-head">
+            <span class="wv-dot" style="background: var(--cook); box-shadow: 0 0 5px var(--cook)"></span>
+            <span class="cs">HQc</span>
+            <span class="sp"></span>
+            <span class="arc-3p">3P</span>
+            <span class="engine cl on"><svg viewBox="0 0 24 24" fill="currentColor"><g transform="translate(12 12)"><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(30)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(60)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(90)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(120)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(150)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(180)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(210)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(240)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(270)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(300)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(330)"></path></g></svg></span>
+            <span class="engine cx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><g transform="translate(12 12)"><line x1="-8" y1="0" x2="8" y2="0"></line><line x1="-8" y1="0" x2="8" y2="0" transform="rotate(60)"></line><line x1="-8" y1="0" x2="8" y2="0" transform="rotate(120)"></line></g></svg></span>
+            <span class="shield"><svg viewBox="0 0 10 11" fill="none" stroke="currentColor" stroke-width="1"><path d="M5 .8 1 2.2v3.4c0 2.2 1.7 4 4 4.6 2.3-.6 4-2.4 4-4.6V2.2L5 .8z"/></svg></span>
+          </div>
+          <div class="wv-title">HPFHQ Consolidation Plan<span class="arrow">↗</span></div>
+          <div class="wv-proj is-stale">
+            <svg class="target" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1"><circle cx="5" cy="5" r="3.6"/><circle cx="5" cy="5" r="1.2" fill="currentColor"/><path d="M5 .8v1.6M5 7.6v1.6M.8 5h1.6M7.6 5h1.6"/></svg>
+            <div class="nm-wrap">
+              <div class="nm-row"><span class="nm">HPFHQ Consolidation</span><span class="count">4/7</span></div>
+              <div class="pbar"><i style="width: 57%"></i></div>
+            </div>
+          </div>
+          <div class="wv-foot">
+            <div class="tier"><span class="seg lit"></span><span class="seg lit"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="tlab">T2</span></div>
+            <div class="ctx-wrap">
+              <span class="lbl">CTX</span>
+              <div class="ctx ctx-warn"><span class="seg lit"></span><span class="seg lit"></span><span class="seg lit"></span><span class="seg lit"></span><span class="seg lit"></span><span class="seg lit"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
+              <span class="ctx-pct ctx-warn">60%</span>
+            </div>
+          </div>
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 10px; color: var(--muted); margin-top: 10px; line-height: 1.55; letter-spacing: 0.04em;">Tile renders normally &mdash; Pathfinder being out of sync is not a tile-blocking error. Only the <b style="color: var(--warn); font-weight: 400">project chip</b> shows the stale state: dashed border + tiny ribbon "PATHFINDER STALE" tucked above the chip's right corner. On hover, tooltip surfaces last sync timestamp.</div>
+      </div>
+
+      <!-- c) Nexus offline -->
+      <div>
+        <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em; color: var(--muted); text-transform: uppercase; margin-bottom: 8px">C &middot; Nexus offline</div>
+        <div class="wv nexus" style="--ws: var(--ws-overmind); --tier-c: var(--tier-2)">
+          <div class="wv-head">
+            <span class="wv-dot" style="background: var(--accent); box-shadow: 0 0 3px var(--accent)"></span>
+            <span class="cs">HQc</span>
+            <span class="sp"></span>
+            <span class="arc-3p">3P</span>
+            <span class="engine cl"><svg viewBox="0 0 24 24" fill="currentColor"><g transform="translate(12 12)"><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(30)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(60)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(90)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(120)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(150)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(180)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(210)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(240)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(270)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(300)"></path><path d="M0 -10 L1.4 -2 L0 0 L-1.4 -2 Z" transform="rotate(330)"></path></g></svg></span>
+            <span class="engine cx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><g transform="translate(12 12)"><line x1="-8" y1="0" x2="8" y2="0"></line><line x1="-8" y1="0" x2="8" y2="0" transform="rotate(60)"></line><line x1="-8" y1="0" x2="8" y2="0" transform="rotate(120)"></line></g></svg></span>
+            <span class="wv-offline-chip">NEXUS &middot; OFFLINE</span>
+          </div>
+          <div class="wv-title">HPFHQ Consolidation Plan</div>
+          <div class="wv-proj" style="opacity: 0.65">
+            <svg class="target" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1"><circle cx="5" cy="5" r="3.6"/><circle cx="5" cy="5" r="1.2" fill="currentColor"/><path d="M5 .8v1.6M5 7.6v1.6M.8 5h1.6M7.6 5h1.6"/></svg>
+            <div class="nm-wrap">
+              <div class="nm-row"><span class="nm">HPFHQ Consolidation</span><span class="count">4/7</span></div>
+              <div class="pbar"><i style="width: 57%; opacity: 0.7"></i></div>
+            </div>
+          </div>
+          <div class="wv-foot">
+            <div class="tier"><span class="seg lit"></span><span class="seg lit"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="tlab">T2</span></div>
+            <div class="ctx-wrap">
+              <span class="lbl">CTX</span>
+              <div class="ctx ctx-warn"><span class="seg lit"></span><span class="seg lit"></span><span class="seg lit"></span><span class="seg lit"></span><span class="seg lit"></span><span class="seg lit"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
+              <span class="ctx-pct ctx-warn">60%</span>
+            </div>
+          </div>
+        </div>
+        <div style="font-family: var(--font-mono); font-size: 10px; color: var(--muted); margin-top: 10px; line-height: 1.55; letter-spacing: 0.04em;">Tile renders correctly with last-known data (COMSAT reads the file fine). <b style="color: var(--text); font-weight: 400">Shield slot</b> is replaced by a small <code>NEXUS · OFFLINE</code> chip &mdash; the badge-palette affordance is dead while Nexus is dead, so we use that slot to flag it. Project chip dimmed to 65% to convey "stale-ish but not broken." Clicking the chip still opens Nexus (boots it).</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════ 14 · DRAG SPEC ════════════════ -->
+  <section class="section" id="s14" data-screen-label="14 Drag spec">
+    <div class="section-head"><span class="ix">14</span><h2>Drawer<span class="sep">·</span>Drag-to-reposition</h2></div>
+    <p class="section-sub">Q6 &mdash; pure interaction spec, no visual cells (the drag is the interaction; there's nothing to render statically beyond the dragging state already shown in §07).</p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+      <div class="note">
+        <span class="h">Grab zones</span>
+        Whole drawer is draggable when grabbed near <b>(a)</b> the top or bottom 12 px of the bar, OR <b>(b)</b> anywhere on the workspace-bar gutter (leftmost 6 px of any row). Tile rows themselves are <b>not</b> drag handles &mdash; clicks on tiles route to expand. Cursor changes to <code>grab</code> on those zones, <code>grabbing</code> while held.
+      </div>
+      <div class="note">
+        <span class="h">Hot zone &middot; snap targets</span>
+        <b>18 px from each screen edge</b> counts as snappable. Dragging within a hot zone shows a 2 px accent-green ghost rail along that edge. All four edges show ghost rails on drag-start so all snap targets are visible up-front.
+      </div>
+      <div class="note">
+        <span class="h">In-flight feedback</span>
+        Drawer detaches from its current edge, gains <code>box-shadow: 0 12px 32px rgba(0,0,0,0.55)</code>, and shows a 1 px dashed outline indicating "in transit." Tile contents stay legible (drawer doesn't go ghost / semi-transparent).
+      </div>
+      <div class="note">
+        <span class="h">Snap animation</span>
+        <kbd>220ms cubic-bezier(.2,.8,.2,1)</kbd> &mdash; same easing as every other transition in the design system. The workspace bar reorients to the new edge (left edge &rarr; right edge means the bar swings to what's now the screen-edge side). Drawer geometry mirrors if needed.
+      </div>
+      <div class="note">
+        <span class="h">Multi-monitor</span>
+        Crossing a display boundary while dragging re-renders ghost rails on the new display's edges. Snap takes effect on the display the cursor is on at release. <b>Per-display dock edge memory</b> &mdash; each monitor remembers its own preferred edge in the user's settings.
+      </div>
+      <div class="note">
+        <span class="h">Cancel</span>
+        <kbd>Esc</kbd> during drag returns drawer to its previous position with <b>no animation</b> (instant revert &mdash; signals "cancel" clearly vs the smooth snap-to-target).
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // theme toggle
+    (function () {
+      var key = "comsat_v4_theme";
+      var saved = localStorage.getItem(key);
+      if (saved === "light" || saved === "dark") {
+        document.documentElement.setAttribute("data-theme", saved);
+      }
+      var toggle = document.getElementById("themeToggle");
+      function sync() {
+        var t = document.documentElement.getAttribute("data-theme") || "dark";
+        toggle.querySelectorAll("button").forEach(function (b) {
+          b.classList.toggle("on", b.dataset.theme === t);
+        });
+      }
+      toggle.addEventListener("click", function (e) {
+        var b = e.target.closest("button");
+        if (!b) return;
+        var t = b.dataset.theme;
+        if (t === "dark") document.documentElement.removeAttribute("data-theme");
+        else document.documentElement.setAttribute("data-theme", t);
+        localStorage.setItem(key, t);
+        sync();
+      });
+      sync();
+    })();
+
+    // sync ping demo
+    (function () {
+      var target = document.getElementById("pingDemo");
+      var fire = document.getElementById("fireBtn");
+      var burst = document.getElementById("fireBurstBtn");
+      function flash() {
+        target.classList.remove("firing");
+        // restart animation
+        void target.offsetWidth;
+        target.classList.add("firing");
+        setTimeout(function () { target.classList.remove("firing"); }, 380);
+      }
+      fire && fire.addEventListener("click", flash);
+      burst && burst.addEventListener("click", function () {
+        var i = 0;
+        var t = setInterval(function () {
+          flash();
+          i++;
+          if (i >= 5) clearInterval(t);
+        }, 250); // throttled per spec
+      });
+    })();
+  </script>
+
+</body>
+</html>
