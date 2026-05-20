@@ -4,7 +4,7 @@ The YOLO build is finished when EVERY criterion below passes. Each criterion has
 
 **This file IS the dogfood project.** When the YOLO completes phase 8, the Nexus app contains a project called "COMSAT v4 rebuild" whose `doneWhen` array is exactly this file, parsed into criterion objects. Auto-checks tick every 60s. The Complete-project button activates only when all criteria pass.
 
-Total: **52 criteria across 8 phases.** Author: 2026-05-20.
+Total: **58 criteria across 8 phases** (52 original + 6 GPU-burn guards added 2026-05-20 after `/mac-diagnose` flagged COMSAT v3 burning 27% CPU sustained on the GPU helper — see [[feedback-comsat-v3-gpu-burn]]). Author: 2026-05-20.
 
 ---
 
@@ -85,6 +85,12 @@ Total: **52 criteria across 8 phases.** Author: 2026-05-20.
 | 6.12 | Pylon click → scratchpad opens for that workspace | `manual` | click → see scratchpad with workspace shorthand |
 | 6.13 | Nexus tile project chip click → opens Nexus via `nexus://` URL | `manual` | click → Nexus app foregrounds + loads project |
 | 6.14 | Workflow-dot row visible in default expanded view (4 empty dashed slots) | `manual` | confirmed |
+| 6.15 | **GPU helper CPU < 2% sustained over 5min idle** | `shell` | `npm run profile` — measures GPU + renderer CPU, asserts both thresholds, exits non-zero on breach |
+| 6.16 | All raf / CSS animations gated by Page Visibility API | `shell` | grep audit: every `requestAnimationFrame` is wrapped in `useVisibility()` or paused via `document.visibilityState` |
+| 6.17 | No `backdrop-filter` in production CSS | `shell` | `! grep -r 'backdrop-filter' src/styles/ src/components/` |
+| 6.18 | All `setInterval` ≥ 1000ms (or explicit PERF justification comment) | `shell` | grep audit |
+| 6.19 | All `fs.watch` debounced ≥ 500ms via wrapper helper | `shell` | grep audit |
+| 6.20 | Hidden window destroys (not just hides); re-creates on expand | `shell` | grep `BrowserWindow.destroy` in collapse path; no `.hide()` for the expanded window |
 
 ## Phase 7 — VS Code extension extended
 
