@@ -6,22 +6,13 @@
 <title>Cockpit Design Decisions — Pre-Build Lock List</title>
 <style>
   :root {
-    --ink: #111418;
-    --ink-soft: #4a5260;
-    --ink-faint: #8a93a3;
-    --bg: #ffffff;
-    --bg-soft: #f6f7f9;
-    --bg-code: #f0f2f5;
-    --border: #e3e6eb;
-    --border-strong: #cdd2da;
-    --accent: #1f6feb;
-    --accent-soft: #e7f0ff;
-    --warn-bg: #fff8e6;
-    --warn-border: #f0c95a;
-    --good-bg: #f0faf2;
-    --good-border: #a8d8b0;
-    --bad-bg: #fff0f0;
-    --bad-border: #f0a8a8;
+    --ink: #111418; --ink-soft: #4a5260; --ink-faint: #8a93a3;
+    --bg: #ffffff; --bg-soft: #f6f7f9; --bg-code: #f0f2f5;
+    --border: #e3e6eb; --border-strong: #cdd2da;
+    --accent: #1f6feb; --accent-soft: #e7f0ff;
+    --warn-bg: #fff8e6; --warn-border: #f0c95a;
+    --good-bg: #f0faf2; --good-border: #a8d8b0;
+    --bad-bg: #fff0f0; --bad-border: #f0a8a8;
     --mono: "SF Mono", "JetBrains Mono", "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
     --sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", system-ui, sans-serif;
   }
@@ -48,18 +39,21 @@
   .decision-card { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 8px; padding: 18px 22px; margin: 0 0 24px; }
   .decision-card.locked { background: var(--good-bg); border-color: var(--good-border); }
   .decision-card.pending { background: var(--warn-bg); border-color: var(--warn-border); }
-  .recommendation { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 10px 14px; margin: 10px 0; border-radius: 0 6px 6px 0; }
-  .recommendation strong { display: block; margin-bottom: 4px; font-weight: 600; }
+  .decision-card.new-question { background: var(--accent-soft); border-color: #bdd4f3; }
+  .answer { background: white; border-left: 3px solid var(--good-border); padding: 10px 14px; margin: 10px 0; border-radius: 0 6px 6px 0; }
+  .answer strong { display: block; margin-bottom: 4px; font-weight: 600; color: #2e6a3d; }
+  .original-rec { background: var(--bg-code); padding: 8px 12px; margin: 10px 0; border-radius: 4px; font-size: 13px; color: var(--ink-soft); }
+  .original-rec strong { color: var(--ink-soft); font-weight: 600; }
+  blockquote { margin: 0 0 14px; padding: 8px 14px; border-left: 3px solid var(--border-strong); color: var(--ink-soft); font-style: italic; }
   .src { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); margin-top: 8px; }
   .tag { display: inline-block; font-family: var(--mono); font-size: 11px; padding: 2px 8px; border-radius: 10px; background: var(--bg-soft); color: var(--ink-soft); border: 1px solid var(--border); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 500; vertical-align: 1px; margin-left: 8px; }
   .tag.locked { background: var(--good-bg); color: #2e6a3d; border-color: var(--good-border); }
-  .tag.pending { background: var(--warn-bg); color: #8a6700; border-color: var(--warn-border); }
   .tag.research { background: var(--accent-soft); color: #1f4f9e; border-color: #bdd4f3; }
-  .tag.contradicts { background: var(--bad-bg); color: #a13030; border-color: var(--bad-border); }
+  .tag.scope-expansion { background: #ffe9d9; color: #a14a16; border-color: #f0b48f; }
+  .tag.new { background: var(--accent-soft); color: #1f4f9e; border-color: #bdd4f3; }
   a.anchor { color: var(--ink-faint); text-decoration: none; margin-left: 6px; font-size: 12px; }
   a.anchor:hover { color: var(--accent); }
   a.ext { color: var(--accent); text-decoration: none; border-bottom: 1px solid #bdd4f3; }
-  blockquote { margin: 0 0 14px; padding: 8px 14px; border-left: 3px solid var(--border-strong); color: var(--ink-soft); font-style: italic; }
   footer.doc { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 12px; color: var(--ink-faint); line-height: 1.7; }
   @media (max-width: 640px) { .wrap { padding: 24px 16px 64px; } header.doc h1 { font-size: 22px; } }
 </style>
@@ -68,28 +62,29 @@
 <div class="wrap">
 
 <header class="doc">
-  <h1>Cockpit Design Decisions — Pre-Build Lock List</h1>
+  <h1>Cockpit Design Decisions — Lock List <span style="font-size:14px;color:#2e6a3d;background:var(--good-bg);padding:3px 10px;border-radius:12px;border:1px solid var(--good-border);vertical-align:4px;margin-left:8px;font-weight:500;">10/10 RESOLVED</span></h1>
   <div class="meta">
-    <strong>Status</strong> &nbsp;Pre-build lock list — every item needs Emil-explicit decision before Phase 1 commits<br>
-    <strong>Source</strong> &nbsp;<code>feedback_finalize_cockpit_design_before_build</code> + UX research agent output (2026-05-20)<br>
-    <strong>Companion</strong> &nbsp;<a class="ext" href="../cockpit-canon-constraints/">cockpit-canon-constraints</a> (rule audit) &nbsp;·&nbsp; <a class="ext" href="../cockpit-metric-registry/">cockpit-metric-registry</a> (Sheet starter)<br>
-    <strong>Build state</strong> &nbsp;Paused per <code>feedback_manual_map_first_holds_build</code> — resumes after Figjam map + this lock list resolved
+    <strong>Status</strong> &nbsp;All 10 decisions resolved 2026-05-20 — 4 surfaced new scope expansions (flagged below)<br>
+    <strong>Source</strong> &nbsp;UX research output + Emil locks 2026-05-20<br>
+    <strong>Companion</strong> &nbsp;<a class="ext" href="../cockpit-canon-constraints/">cockpit-canon-constraints</a> · <a class="ext" href="https://docs.google.com/spreadsheets/d/1h02pdlACInKIBtMhY3YeZex6gBPvdyyqlLTGBVMs6EM/edit">cockpit metric Sheet (HPF REDO)</a> · <a class="ext" href="../overseer-cockpit-handover/">Overseer handover</a><br>
+    <strong>Build state</strong> &nbsp;Paused — v2 plan revision needed against locks + new scope; resumes after revision + Figjam map
   </div>
 </header>
 
 <nav class="toc">
   <h2>Decisions</h2>
   <ol>
-    <li><a href="#d1">Tooltip pattern (LOCKED via research)</a></li>
-    <li><a href="#d2">Period / date controls (LOCKED via research)</a></li>
-    <li><a href="#d3">Kanban filter + sort (LOCKED — but contradicts your benchmark)</a></li>
-    <li><a href="#d4">Visibility / tier rules (pending)</a></li>
-    <li><a href="#d5">Source / weakness badge inline (pending)</a></li>
-    <li><a href="#d6">Drill-down behavior (pending)</a></li>
-    <li><a href="#d7">Period comparison default (pending)</a></li>
-    <li><a href="#d8">Pacing display selection (pending)</a></li>
-    <li><a href="#d9">Number-correctness contract (pending)</a></li>
-    <li><a href="#d10">Refresh cadence + "as of" indicator (pending)</a></li>
+    <li><a href="#d1">Tooltip pattern (research-locked)</a></li>
+    <li><a href="#d2">Period / date controls (research-locked)</a></li>
+    <li><a href="#d3">Kanban filter + sort (research-locked, Linear not Trello)</a></li>
+    <li><a href="#d4">Visibility / tier rules — LOCKED</a></li>
+    <li><a href="#d5">Source badge + click destination — LOCKED + NEW ARCHITECTURE</a></li>
+    <li><a href="#d6">Drill-down behavior — LOCKED</a></li>
+    <li><a href="#d7">Period comparison default — LOCKED + NEW SCOPE (goals layer)</a></li>
+    <li><a href="#d8">Pacing display — LOCKED + pending comparison-pattern research</a></li>
+    <li><a href="#d9">Number-correctness contract — LOCKED (Overseer, not Telegram)</a></li>
+    <li><a href="#d10">Refresh cadence — LOCKED with cost constraint</a></li>
+    <li><a href="#newscope">New scope surfaced by these answers</a></li>
   </ol>
 </nav>
 
@@ -97,165 +92,183 @@
 
 <div class="decision-card locked">
 <h3 class="dec" id="d1"><span class="num">D1</span>Tooltip pattern <span class="tag locked">locked</span> <span class="tag research">research</span> <a class="anchor" href="#d1">#</a></h3>
-
-<p><strong>Decision:</strong> Click-to-open <code>(i)</code> icon after every metric label. Opens a popover (200–320px) anchored to the icon. Contains four required fields:</p>
-
-<ol>
-  <li>One-sentence plain-English definition</li>
-  <li>Formula or source logic ("Sum of leads where booked=true, bucketed by typeform_submitted_at")</li>
-  <li>"As of [timestamp]" — when the metric was last computed</li>
-  <li>"Not the same as [other metric] because [reason]" — for any metric that has a near-namesake on another cockpit</li>
-</ol>
-
-<p>Bottom of popover links to the full dictionary tab. Mobile: tap = bottom sheet (slides up 40% of viewport).</p>
-
-<div class="recommendation">
-  <strong>Source: Amplitude</strong>
-  Amplitude's <code>(i)</code> icon pattern is best-in-class. Hover-only tooltips fail on touch, fail on dense grids, and don't hold the 80–150 words a definition needs. Both lessons-locked (2026-04-07) and the research converge here. The v2 plan's original Radix hover proposal is wrong — overruled.
-</div>
-
-<p>HPFHQ already has a working reference: <code>components/dashboard/DashboardMetricCard.tsx:255-277</code> implements <code>TooltipButton</code> click-toggle. Copy that pattern into the cockpit primitive.</p>
-
-<p class="src">Research source: Amplitude out-of-the-box metrics; ChartMogul MRR/ARR/Churn popovers; Datadog Metrics Summary.</p>
+<p><strong>Decision:</strong> Click-to-open <code>(i)</code> icon after every metric label. Opens popover with 4 fields: definition / formula / "as of [timestamp]" / "differs from X because Y". Bottom of popover links to the central dictionary surface (see D5). Mobile: tap = bottom sheet.</p>
+<p class="src">Source: Amplitude. Reference impl: <code>components/dashboard/DashboardMetricCard.tsx:255-277 TooltipButton</code>.</p>
 </div>
 
 <div class="decision-card locked">
 <h3 class="dec" id="d2"><span class="num">D2</span>Period / date controls <span class="tag locked">locked</span> <span class="tag research">research</span> <a class="anchor" href="#d2">#</a></h3>
-
-<p><strong>Decision:</strong> Looker Studio pattern. Single date range control widget in the cockpit header. Contents:</p>
-
-<ul>
-  <li><strong>Preset list grouped by category</strong> with explicit labels and visual separators:
-    <ul>
-      <li><em>Rolling:</em> Today, Yesterday, Last 7 days, Last 28 days, Last 30 days, Last 90 days</li>
-      <li><em>Calendar Week:</em> This week (starts Monday), Last week</li>
-      <li><em>Calendar Month:</em> This month, Last month</li>
-      <li><em>Calendar Quarter/Year:</em> This quarter, Last quarter, This year, Last year</li>
-      <li>Custom</li>
-    </ul>
-  </li>
-  <li><strong>Custom = calendar grid</strong> (click start, click end), NOT two text inputs. Text display of selected range above the grid for confirmation.</li>
-  <li><strong>Comparison period is opt-in,</strong> disabled by default. When enabled, default = "Previous period" (same length, immediately preceding). Other options: same period last year, custom.</li>
-  <li><strong>"Data as of [timestamp]" indicator</strong> near the date control. Not buried in a settings page.</li>
-  <li><strong>Date state in URL.</strong> Bookmarkable, shareable. Reload preserves period.</li>
-  <li><strong>No time-of-day controls.</strong> Day-level granularity is correct for business ops.</li>
-</ul>
-
-<div class="recommendation">
-  <strong>Source: Looker Studio (with grouping pattern from Mixpanel/Amplitude)</strong>
-  Resolves your "date and time settings are not intuitive" complaint directly. The rolling-vs-calendar distinction (Last 7 days vs This week) is the load-bearing UX detail — group them visually so the user sees the difference at-a-glance.
-</div>
-
-<p class="src">Research source: Looker Studio date range control docs; Amplitude/Mixpanel preset grouping conventions.</p>
+<p><strong>Decision:</strong> Looker Studio pattern. Grouped preset list (Rolling / Calendar Week / Calendar Month / Custom) + calendar grid for custom + opt-in comparison + "data as of [ts]" indicator + URL state. No time-of-day.</p>
 </div>
 
 <div class="decision-card locked">
-<h3 class="dec" id="d3"><span class="num">D3</span>Kanban filter + sort <span class="tag locked">locked</span> <span class="tag research">research</span> <span class="tag contradicts">contradicts benchmark</span> <a class="anchor" href="#d3">#</a></h3>
+<h3 class="dec" id="d3"><span class="num">D3</span>Kanban filter + sort <span class="tag locked">locked</span> <span class="tag research">research</span> <a class="anchor" href="#d3">#</a></h3>
+<p><strong>Decision:</strong> Linear's chip-bar pattern (not Trello). Inline persistent chips, multi-select OR-within-AND-across, separate search input, separate sort, URL-persistent, explicit empty state.</p>
+<p>You didn't push back on the Trello→Linear contradiction, so locked as Linear. Setter / Closer / Dialer kanbans all targeted for standardization.</p>
+</div>
 
-<blockquote>You named Trello as the standard. Research found Linear is actually best-in-class for an ops kanban. Trello's filter sidebar wastes real estate; Linear's chip bar is cleaner. Flagging so you can confirm or push back before the Setter Kanban rework.</blockquote>
+<h2 class="section"><span class="num">§2</span>Decisions Emil locked 2026-05-20</h2>
 
-<p><strong>Decision (pending your confirmation):</strong> Linear's filter chip bar pattern. Specifically:</p>
+<div class="decision-card locked">
+<h3 class="dec" id="d4"><span class="num">D4</span>Visibility / tier rules <span class="tag locked">locked</span> <a class="anchor" href="#d4">#</a></h3>
+<div class="answer"><strong>Locked:</strong> Leadership tier sees cockpits. Keep it simple. No per-metric tier-hiding. No separate dictionary-tab tier (inherits cockpit auth).</div>
+<p>Single tier-check at the route level. Brandon = leadership, can see everything on the cockpit + the central dictionary.</p>
+</div>
 
+<div class="decision-card locked">
+<h3 class="dec" id="d5"><span class="num">D5</span>Source badge + click destination <span class="tag locked">locked</span> <span class="tag scope-expansion">scope expansion</span> <a class="anchor" href="#d5">#</a></h3>
+<div class="answer"><strong>Locked:</strong> Inline source dot on every tile (per source dropdown — Stripe / GHL / Sheets etc). Click on the tooltip / (i) icon takes user to the central dictionary surface — NOT a per-cockpit tab. Single shared dictionary with sections + search + deep-link per metric. Tooltip click deep-links straight to the specific metric's entry.</div>
+
+<div class="original-rec"><strong>(My prior rec was per-cockpit dictionary tab — overruled. Centralized + searchable + deep-linked is the architecture.)</strong></div>
+
+<p><strong>New architecture:</strong></p>
 <ul>
-  <li><strong>Inline chip bar (not sidebar).</strong> Press <code>F</code> to open a command-style picker. Active filters render as chips in a persistent bar directly under the view header. Each chip shows dimension + value with a clickable <code>×</code>. Bar disappears when zero filters active.</li>
-  <li><strong>Multi-select OR within dimension, AND across dimensions.</strong> Sarah + Juan in Assignee = either. Adding Priority = Urgent narrows to those with both. Correct for sales kanban use case.</li>
-  <li><strong>Search-within-cards is a SEPARATE text input,</strong> not part of the filter picker. Different interaction class.</li>
-  <li><strong>Sort is a separate control</strong> from filters (one Sort button, separate location). Manual drag-to-reorder is global state — automatically disabled (greyed handles) when any sort is active.</li>
-  <li><strong>Filter state persists in URL.</strong> Sales managers can share "Sarah's overdue follow-ups" as a link.</li>
-  <li><strong>Empty state must be explicit:</strong> "No cards match your current filters" + "Clear filters" button. Don't show empty columns silently (Trello fails here).</li>
+  <li>Route: probably <code>/cockpit/dictionary</code> (or just <code>/dictionary</code>) — single page.</li>
+  <li>Sections: Marketing / Sales / Settings / Workstation (per cockpit, but on one page — collapsible).</li>
+  <li>Search box at the top (instant filter as you type).</li>
+  <li>Deep-link friendly: URL fragment per metric (e.g. <code>/cockpit/dictionary#marketing.leads_booked</code>).</li>
+  <li>Source: reads <code>metric_definitions</code> table (which is fed by the cockpit metric Sheet — <a class="ext" href="https://docs.google.com/spreadsheets/d/1h02pdlACInKIBtMhY3YeZex6gBPvdyyqlLTGBVMs6EM/edit">HPF REDO</a>).</li>
+  <li>Tooltip (D1) "View full definition →" link points at <code>/cockpit/dictionary#&lt;metric_id&gt;</code>.</li>
 </ul>
 
-<div class="recommendation">
-  <strong>Source: Linear (chip bar) + Notion (sort/drag interaction)</strong>
-  This applies to Setter Kanban (the cited "horrible" surface), Closer Kanban, and Dialer Kanban. Standardize the same pattern across all three workstations.
+<p>Scope expansion impact: drops per-cockpit dictionary tab from Phase 3 work, adds single dictionary page. Net wash on effort.</p>
 </div>
 
-<p class="src">Research source: Linear filters docs; Trello filter sidebar (anti-pattern); Notion sort/drag interaction.</p>
+<div class="decision-card locked">
+<h3 class="dec" id="d6"><span class="num">D6</span>Drill-down behavior <span class="tag locked">locked</span> <a class="anchor" href="#d6">#</a></h3>
+<div class="answer"><strong>Locked:</strong> (b) Filter table = KpiCard click default. (c) Navigate to detail = click on the (i) tooltip / dictionary link path.</div>
+<p>Clean separation: clicking the TILE = filter the lead/EOD table inline; clicking the (i) = open the popover + optionally drill to the dictionary entry. Modal is OUT.</p>
 </div>
 
-<h2 class="section"><span class="num">§2</span>Decisions pending your call</h2>
+<div class="decision-card locked">
+<h3 class="dec" id="d7"><span class="num">D7</span>Period comparison default <span class="tag locked">locked</span> <span class="tag scope-expansion">scope expansion</span> <a class="anchor" href="#d7">#</a></h3>
+<div class="answer"><strong>Locked:</strong> Goal default, AND Last Mo + 3mo Avg + Same Period Last Year must be toggleable on the tile ALONGSIDE the goal. <strong>NEW REQUIREMENT:</strong> goals need a canonical store with edit history + multi-source attribution (meeting / manual / external edits), modeled on the existing compass system (needs fine-tuning).</div>
 
-<div class="decision-card pending">
-<h3 class="dec" id="d4"><span class="num">D4</span>Visibility / tier rules <span class="tag pending">pending</span> <a class="anchor" href="#d4">#</a></h3>
-<p><strong>Question:</strong> Three sub-decisions.</p>
+<p><strong>Scope expansion — separate workstream:</strong></p>
+<ul>
+  <li>Cockpit pacing targets currently live in thin <code>cockpit_targets</code> Supabase table edited via <code>/cockpit/settings</code>. No history, no source attribution.</li>
+  <li>New canonical layer: append-only goal history with source enum (<code>meeting</code> | <code>manual</code> | <code>external</code>) + <code>source_ref</code> (meeting ID / Sheet edit ID / etc).</li>
+  <li>Bi-directional Sheet sync — Sheet edits push to DB; DB edits reflect on regenerate.</li>
+  <li>Compass-pattern audit needed FIRST — extract the existing compass pattern, then extend.</li>
+  <li>Saved as <code>project-cockpit-canonical-goals-layer</code> memory — queue as v3 plan (out of v2 consolidation scope).</li>
+</ul>
+
+<p>Tile UX: comparison toggle on each tile (Goal / Last Mo / 3mo / Same Period LY). Tooltip surfaces "Goal: $X set by [source] on [date] · history" — provenance is part of definition.</p>
+</div>
+
+<div class="decision-card locked">
+<h3 class="dec" id="d8"><span class="num">D8</span>Pacing display + comparison delta <span class="tag locked">locked</span> <span class="tag research">research</span> <a class="anchor" href="#d8">#</a></h3>
+<div class="answer"><strong>Locked:</strong> No pacing on percentages. Inline +/- delta vs comparison on every tile. UX research returned — four sub-decisions all confirmed against canonical patterns.</div>
+
+<h4 style="margin-top:14px;margin-bottom:6px;font-weight:600;font-size:14px;">Comparison option set (D8.1)</h4>
+<p style="margin-bottom:10px;">Lock to <strong>four</strong> options: <strong>Previous Month (default)</strong>, <strong>Same Month Last Year</strong>, <strong>Trailing 3-Month Average</strong>, <strong>vs Goal</strong>. Drop generic "previous period" — redundant at monthly cadence and confusing on custom ranges. Source: convergence across Looker Studio + Mixpanel + Amplitude + ChartMogul + Power BI.</p>
+
+<h4 style="margin-top:14px;margin-bottom:6px;font-weight:600;font-size:14px;">Delta surface (D8.2)</h4>
+<p style="margin-bottom:10px;">Inline on the tile, both absolute and relative if space allows. Source: Datadog Query Value widget pattern. Anti-pattern (rejected): tooltip-only delta.</p>
+
+<h4 style="margin-top:14px;margin-bottom:6px;font-weight:600;font-size:14px;">Percent vs percentage points (D8.3) — the "don't do dumb shit" rule</h4>
+<p style="margin-bottom:10px;"><strong>Rule:</strong> when the metric is itself a percentage (close rate, show rate, cancel rate), delta is in <strong>percentage points (pp)</strong>, NOT percent. Close rate 28% → 32% = <code>+4pp</code>, not <code>+14%</code>. Most tools botch this by default — Mixpanel + Looker Studio both wrong out of the box.</p>
+<p style="margin-bottom:10px;"><strong>Schema-level implementation:</strong> every metric row gets a <code>metric_type</code> column with values <code>currency | count | rate | ratio</code>. Rendering reads this:</p>
+<ul>
+<li><code>metric_type=rate</code> → delta computed as <code>current - comparison</code>, displayed as <code>+4pp</code></li>
+<li><code>metric_type=currency</code> or <code>count</code> → delta computed as relative percent, displayed as <code>+12%</code></li>
+<li><code>metric_type=ratio</code> → display as <code>x</code> multiplier delta</li>
+</ul>
+
+<h4 style="margin-top:14px;margin-bottom:6px;font-weight:600;font-size:14px;">Direction-of-good (D8.4) — schema addition</h4>
+<p style="margin-bottom:10px;">Cancel rate trending DOWN is good. Refund rate down is good. CAC down is good. Green-up/red-down hardcoding is wrong for ~20–30% of ops metrics.</p>
+<p style="margin-bottom:10px;"><strong>Schema-level implementation:</strong> every metric row gets a <code>good_direction</code> column with values <code>up | down</code> (default <code>up</code>). Rendering inverts color + arrow when <code>down</code>. Source: Mixpanel Metric Trees polarity field + Power BI Zebra BI Cards <code>polarity</code>.</p>
+<p style="margin-bottom:10px;"><strong>Metrics to flag <code>down</code> in our Sheet:</strong> <code>sales.cancelled</code>, <code>sales.no_shows</code>, <code>sales.quick_dqs</code>, <code>sales.cancel_rate</code>, <code>marketing.cost_per_lead</code>, <code>marketing.cost_per_call</code>.</p>
+
+<h4 style="margin-top:14px;margin-bottom:6px;font-weight:600;font-size:14px;">Comparison selector UI (D8.5)</h4>
+<p style="margin-bottom:10px;">Cockpit-level toggle (one control switches all tiles together) — Brandon glances and goes, single mental frame. Per-tile override capability in the data model from day one (you'll want it eventually), but the UI surfaces only the cockpit-level toggle in v1. Source: Looker Studio cockpit-level pattern; Datadog hybrid pattern.</p>
+
+<h4 style="margin-top:14px;margin-bottom:6px;font-weight:600;font-size:14px;">Same Period Last Year — calendar irregularities (D8.6)</h4>
+<ul>
+<li><strong>MTD vs SPLY:</strong> May 1–20, 2025 (calendar-locked, not rolling).</li>
+<li><strong>Calendar quarter:</strong> Q2 2026 vs Q2 2025 aligned by date.</li>
+<li><strong>Leap year Feb 29:</strong> clamp to Feb 28 (PostgreSQL <code>DATE_ADD INTERVAL -1 YEAR</code> does this by default — correct).</li>
+<li><strong>Do NOT implement WTD vs SPLY</strong> — week boundaries shift 1–2 days year-over-year, no clean comparison exists.</li>
+<li><strong>UI obligation:</strong> surface the exact comparison window ("Compare with: May 1–20, 2025") — don't make Brandon do the math.</li>
+</ul>
+
+<div class="callout warn"><strong>Sheet schema additions needed:</strong> 2 new columns on every metric row — <code>metric_type</code> (<code>currency|count|rate|ratio</code>) and <code>good_direction</code> (<code>up|down|N/A</code>). I'll re-push the Sheet with these populated after your confirm. Quick to apply — already know the per-metric defaults.</div>
+</div>
+
+<div class="decision-card locked">
+<h3 class="dec" id="d9"><span class="num">D9</span>Number-correctness contract <span class="tag locked">locked</span> <a class="anchor" href="#d9">#</a></h3>
+<div class="answer"><strong>Locked:</strong> (c) Last-known value + "as of [timestamp]" updated to show stale time. Overseer surfaces failures in a section of its dashboard — see the <a class="ext" href="../overseer-cockpit-handover/">Overseer handover doc</a> for the full integration.</div>
+
+<p>NOT Telegram. Overseer is the alerting surface. Codex audit commissioned 2026-05-20 to enumerate every Telegram-as-alerting reference in HPFHQ code/docs and propose replacement language — pending results.</p>
+</div>
+
+<div class="decision-card locked">
+<h3 class="dec" id="d10"><span class="num">D10</span>Refresh cadence — with cost constraint <span class="tag locked">locked</span> <a class="anchor" href="#d10">#</a></h3>
+<div class="answer"><strong>Locked:</strong> Auto-refresh OK in principle but no API/cost burn. Refresh-on-tab-focus + server-side cache with short TTL.</div>
+
+<p><strong>Implementation:</strong></p>
+<ul>
+  <li><strong>Server-side cache</strong> on the cockpit page-level data fetcher — 5min TTL. Heavy queries (count-via-head, EOD aggregates, ad-snapshot rollups) hit cache. One actual DB query per metric per 5min regardless of how many users open the cockpit.</li>
+  <li><strong>Client refresh on tab focus only</strong> (not timer polling). When you switch back to the cockpit tab from another tab, it re-fetches — which mostly hits cache, cheap. When the tab is idle in the background, zero requests.</li>
+  <li><strong>Manual "refresh now" button</strong> bypasses cache (forces fresh fetch). For the case Brandon wants the latest before a call.</li>
+  <li><strong>Per-source "as of" indicators</strong> at the top of the cockpit ("Ads: 6h ago · EOD: live · Payments: live"). Surfaces freshness per data class.</li>
+</ul>
+
+<div class="original-rec"><strong>(My prior rec was timer-polling every 5 min — would have burned requests on idle tabs. Overruled.)</strong></div>
+</div>
+
+<h2 class="section" id="newscope"><span class="num">§3</span>New scope surfaced — needs separate handling</h2>
+
+<div class="decision-card new-question">
+<h3 class="dec"><span class="num">N1</span>Central dictionary surface architecture <span class="tag new">new</span></h3>
+<p>D5 introduced a single shared dictionary (not per-cockpit tab). Open questions for the build:</p>
+<ul>
+  <li>Route: <code>/cockpit/dictionary</code> or top-level <code>/dictionary</code> or <code>/canon</code>?</li>
+  <li>Section organisation: one page with collapsible per-cockpit sections, or per-cockpit tabs within the dictionary page?</li>
+  <li>Search: client-side instant filter or server-side query?</li>
+  <li>Tier: leadership (per D4) — confirmed but worth re-stating.</li>
+</ul>
+<p>To resolve in v2 plan revision (or Figjam map).</p>
+</div>
+
+<div class="decision-card new-question">
+<h3 class="dec"><span class="num">N2</span>Compass-pattern audit for goals layer <span class="tag new">new</span></h3>
+<p>D7's canonical goals layer "modeled on the existing compass system we have, which we need to fine-tune." Before designing schema:</p>
+<ul>
+  <li>Audit existing compass system (<code>/compass</code> route, <code>lib/compass/</code>, <code>state/compass/CLAUDE.md</code>).</li>
+  <li>Extract the goal-tracking pattern (audit log + multi-source attribution + bi-directional sync).</li>
+  <li>Identify what compass needs "fine-tuning" — folds into the same workstream.</li>
+  <li>Propose: extend compass to handle cockpit goals OR build a sibling layer that shares the same shape.</li>
+</ul>
+<p>To resolve in v3 plan (canonical goals layer) — out of v2 cockpit consolidation scope.</p>
+</div>
+
+<div class="decision-card new-question">
+<h3 class="dec"><span class="num">N3</span>Period-comparison UX standards <span class="tag new">new</span></h3>
+<p>D8 — UX research agent running. Specifically researching: where delta surfaces, percent-vs-pp distinction, per-tile vs cockpit toggle, "same period last year" implementation, direction-of-good handling. Results fold into D8 + design-decisions Sheet <code>_meta</code> tab when agent returns.</p>
+</div>
+
+<div class="decision-card new-question">
+<h3 class="dec"><span class="num">N4</span>Overseer cockpit-alerting handover <span class="tag new">new</span></h3>
+<p>D9 + your Telegram cleanup directive — Overseer needs a dedicated section for cockpit failure surfacing. Handover doc for Overseer's owner: <a class="ext" href="../overseer-cockpit-handover/">share/temp/overseer-cockpit-handover/</a> — written for forwarding.</p>
+<p>Codex audit-only pass running in background — will enumerate every Telegram-as-alerting reference in HPFHQ + propose replacement language. Audit results inform the code cleanup (separate from this design doc).</p>
+</div>
+
+<h2 class="section"><span class="num">§4</span>What's next</h2>
+
 <ol>
-  <li>Which tier(s) see each cockpit? Marketing cockpit = leadership? team? both? Same for sales, settings.</li>
-  <li>Does the dictionary tab inherit the cockpit's auth tier, or have its own (e.g., always-leadership-visible even if the cockpit is team-readable)?</li>
-  <li>Are some metrics tier-hidden? (e.g., cash collected hidden from non-leadership viewing the sales cockpit)</li>
+  <li><strong>Figjam map</strong> — your visual session covering UI layout, drill-down, nav between cockpit ↔ dictionary, kanban chip-bar mockup.</li>
+  <li><strong>UX research return</strong> — period-comparison patterns fold into D8.</li>
+  <li><strong>Codex Telegram audit return</strong> — feeds the cleanup PR + the Overseer handover.</li>
+  <li><strong>v2 plan revision</strong> against all locks + new scope (N1 dictionary architecture + N3 comparison patterns). N2 (compass goals) + N4 (Overseer handover) split into separate workstreams.</li>
+  <li><strong>Resume build</strong> at the revised Phase 0 (re-fixture with correct counts + canonical timestamp columns).</li>
 </ol>
-<div class="recommendation"><strong>Recommendation:</strong> Marketing + sales cockpits = leadership-tier read; settings = super_admin write + leadership read. Dictionary tab = inherits cockpit tier (Brandon at leadership needs it). No tier-hidden metrics — if someone can see the cockpit, they see all tiles. Tier-hidden metrics create the same "what does this number mean" surprise we're trying to fix.</div>
-</div>
-
-<div class="decision-card pending">
-<h3 class="dec" id="d5"><span class="num">D5</span>Source / weakness badge inline <span class="tag pending">pending</span> <a class="anchor" href="#d5">#</a></h3>
-<p><strong>Question:</strong> Does every metric tile render an inline source-dot + weakness indicator? Or is that info dictionary-only (accessed via the <code>(i)</code> popover)?</p>
-<div class="recommendation"><strong>Recommendation:</strong> Source dot inline (small colored dot matching <code>SOURCE_COLORS</code> from <code>lib/design-tokens.ts</code>) — gives at-a-glance "this comes from Stripe / GHL / Sheets". Weakness indicator NOT inline — surfaces in the <code>(i)</code> popover when present. Inline weakness would create visual noise on every tile.</div>
-</div>
-
-<div class="decision-card pending">
-<h3 class="dec" id="d6"><span class="num">D6</span>Drill-down behavior <span class="tag pending">pending</span> <a class="anchor" href="#d6">#</a></h3>
-<p><strong>Question:</strong> Clicking a KpiCard does what? Three options:</p>
-<ul>
-  <li>(a) Opens a modal with detail rows + breakdowns</li>
-  <li>(b) Filters the lead/EOD table below to that metric's population (active behavior on marketing today)</li>
-  <li>(c) Navigates to a dedicated metric-detail route</li>
-</ul>
-<div class="recommendation"><strong>Recommendation:</strong> (b) for marketing (already implemented + working), (b) for sales (currently doesn't exist — add). (a) modal adds new surface; (c) navigates away from the cockpit context — both wrong. (b) keeps the drill-down inline and uses the existing detail table real estate.</div>
-</div>
-
-<div class="decision-card pending">
-<h3 class="dec" id="d7"><span class="num">D7</span>Period comparison default <span class="tag pending">pending</span> <a class="anchor" href="#d7">#</a></h3>
-<p><strong>Question:</strong> The pacing rows have a toggle: Goal / Last Mo / 3mo Avg. Which is the default view on first cockpit load?</p>
-<div class="recommendation"><strong>Recommendation:</strong> Goal. The cockpit is for pacing toward a target. Last Mo and 3mo Avg are diagnostic ("am I trending up or down") — secondary. Goal answers "where am I vs where I need to be" — primary. Per [[feedback-usability-over-looking-cool]] the cockpit is operational, not analytical.</div>
-</div>
-
-<div class="decision-card pending">
-<h3 class="dec" id="d8"><span class="num">D8</span>Pacing display selection <span class="tag pending">pending</span> <a class="anchor" href="#d8">#</a></h3>
-<p><strong>Question:</strong> Which tiles get a pacing display, which form (<code>PacingInline</code> vs <code>PacingBar</code>), and which get no pacing at all?</p>
-<div class="recommendation"><strong>Recommendation:</strong> All KPI tiles that have a target (marketing.spend, marketing.leads_booked, sales.cash_collected, sales.cash_contracted, sales.calls_scheduled, sales.close_rate, sales.net_show_rate) get pacing. Use <code>PacingInline</code> (compact, single row, more density) by default — matches your <code>feedback-usability-over-looking-cool</code> + <code>project-comsat-wireframe-lean-mode</code> direction. <code>PacingBar</code> reserved for the dedicated pacing panel if one exists (large hero pacing for headline cash metric).</div>
-</div>
-
-<div class="decision-card pending">
-<h3 class="dec" id="d9"><span class="num">D9</span>Number-correctness contract <span class="tag pending">pending</span> <a class="anchor" href="#d9">#</a></h3>
-<p><strong>Question:</strong> When data is stale, partially-fetched, or a source errored, what does the tile show?</p>
-<ul>
-  <li>(a) Last known value with a stale-indicator badge</li>
-  <li>(b) "—" or "loading" placeholder</li>
-  <li>(c) Last known value with the "as of [timestamp]" updated to show the stale time</li>
-  <li>(d) Silent: show old value, trust the cron</li>
-</ul>
-<div class="recommendation"><strong>Recommendation:</strong> (c). Per rule-28 (no silent failures) the cockpit cannot show old data silently. The "as of" timestamp surfaces stale data naturally — if the cockpit shows "Cash Collected $41K (as of 14h ago)" the user knows the cron broke. Pair with Overseer alerting at the source — Telegram fires when the cron fails, the cockpit just reflects the truth.</div>
-</div>
-
-<div class="decision-card pending">
-<h3 class="dec" id="d10"><span class="num">D10</span>Refresh cadence + "as of" indicator <span class="tag pending">pending</span> <a class="anchor" href="#d10">#</a></h3>
-<p><strong>Question:</strong> Two sub-questions.</p>
-<ol>
-  <li>Server-side refresh on page load only (current behavior), or auto-refresh every N minutes via polling/SWR?</li>
-  <li>"Data as of" indicator — page-level (one timestamp for the whole cockpit) or per-source (separate timestamps for ad data, EOD data, payment data)?</li>
-</ol>
-<div class="recommendation"><strong>Recommendation:</strong> (1) Auto-refresh every 5 minutes on the cockpit page, with a manual "refresh now" button. Current `AutoRefresh` wrapper (30 min) too slow for a live ops dashboard during business hours. (2) Per-source. One indicator per source group at the top of the cockpit (e.g., "Ads: 6h ago · EOD: live · Payments: live"). Looker Studio convention. Surfaces freshness per data class so users know which numbers to trust.</div>
-</div>
-
-<h2 class="section"><span class="num">§3</span>How to use this doc</h2>
-
-<p>For each pending decision (D4–D10): read the recommendation, react, and reply with one of:</p>
-
-<ul>
-  <li><strong>"D4: agree"</strong> — recommendation locks, gets written to <code>_meta.csv</code> on the Sheet</li>
-  <li><strong>"D4: change to X"</strong> — your version locks, written to <code>_meta.csv</code></li>
-  <li><strong>"D4: needs more thought"</strong> — stays pending, but flag what additional info you need</li>
-</ul>
-
-<p>D1–D3 are research-locked, but flag if you disagree with D3 (the Trello → Linear contradiction).</p>
-
-<p>Once all 10 are resolved, the cockpit-canon v2 plan gets revised against this lock list + the constraints doc + your Figjam map, then build resumes at Phase 1 (rework against the canonical-registry model in <code>metric_definitions</code>).</p>
 
 <footer class="doc">
-Locked &nbsp;<span class="tag locked">locked</span> · Pending &nbsp;<span class="tag pending">pending</span> · Research-driven &nbsp;<span class="tag research">research</span> · Contradicts named benchmark &nbsp;<span class="tag contradicts">contradicts benchmark</span>
+Locked &nbsp;<span class="tag locked">locked</span> · Research-driven &nbsp;<span class="tag research">research</span> · Scope expansion &nbsp;<span class="tag scope-expansion">scope expansion</span> · New question &nbsp;<span class="tag new">new</span>
 <br><br>
-UX research output: <code>tasks/a54bd61fa3378ec7c.output</code> (Linear / Looker Studio / Amplitude patterns)<br>
-Memory: <code>feedback-standardize-to-industry-best-ux-patterns</code>, <code>feedback-finalize-cockpit-design-before-build</code>
+UX research output: <code>tasks/a54bd61fa3378ec7c.output</code> (Linear / Looker Studio / Amplitude)<br>
+Memory: <code>feedback-overseer-not-telegram-as-alerting-source</code>, <code>project-cockpit-canonical-goals-layer</code>, <code>feedback-push-directly-to-given-sheet-id</code>
 </footer>
 
 </div>

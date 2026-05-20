@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Overseer + HPFHQ Cockpit Alerting — Handover</title>
+<style>
+  :root {
+    --ink: #111418; --ink-soft: #4a5260; --ink-faint: #8a93a3;
+    --bg: #ffffff; --bg-soft: #f6f7f9; --bg-code: #f0f2f5;
+    --border: #e3e6eb; --accent: #1f6feb; --accent-soft: #e7f0ff;
+    --good-bg: #f0faf2; --good-border: #a8d8b0;
+    --warn-bg: #fff8e6; --warn-border: #f0c95a;
+    --mono: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--sans); color: var(--ink); background: var(--bg); line-height: 1.6; font-size: 16px; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 48px 32px 96px; }
+  header.doc { border-bottom: 1px solid var(--border); padding-bottom: 24px; margin-bottom: 32px; }
+  header.doc h1 { font-size: 26px; margin: 0 0 8px; letter-spacing: -0.01em; line-height: 1.25; }
+  header.doc .meta { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); line-height: 1.8; }
+  header.doc .meta strong { color: var(--ink); font-weight: 600; }
+  h2 { font-size: 20px; margin: 40px 0 12px; padding-top: 12px; border-top: 2px solid var(--ink); }
+  h2 .num { color: var(--ink-faint); font-family: var(--mono); font-size: 15px; margin-right: 8px; font-weight: 500; }
+  h3 { font-size: 16px; margin: 24px 0 8px; font-weight: 600; }
+  p { margin: 0 0 14px; }
+  ul, ol { margin: 0 0 14px; padding-left: 24px; }
+  li { margin: 4px 0; }
+  code { font-family: var(--mono); font-size: 13px; background: var(--bg-code); padding: 1px 5px; border-radius: 3px; }
+  pre { background: var(--bg-code); border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; overflow-x: auto; font-size: 13px; line-height: 1.5; margin: 0 0 16px; }
+  pre code { background: none; padding: 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 0 0 20px; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  th { background: var(--bg-soft); font-weight: 600; color: var(--ink-soft); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .callout { border-left: 3px solid var(--accent); background: var(--accent-soft); padding: 12px 16px; border-radius: 0 6px 6px 0; margin: 0 0 20px; font-size: 14px; }
+  .callout.good { border-left-color: var(--good-border); background: var(--good-bg); }
+  .callout.warn { border-left-color: var(--warn-border); background: var(--warn-bg); }
+  .callout strong { display: block; margin-bottom: 4px; font-weight: 600; }
+  footer.doc { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 12px; color: var(--ink-faint); line-height: 1.7; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="doc">
+  <h1>Overseer + HPFHQ Cockpit Alerting — Handover</h1>
+  <div class="meta">
+    <strong>From</strong> &nbsp;Emil (HPFHQ owner) — 2026-05-20<br>
+    <strong>For</strong> &nbsp;Overseer's owner / maintainer<br>
+    <strong>Context</strong> &nbsp;HPFHQ cockpit consolidation Phase 0.5 — design lock around number-correctness + failure surfacing<br>
+    <strong>Subject</strong> &nbsp;Overseer is the alerting surface for HPFHQ cockpit failures. Here's what Overseer needs to do for the cockpits and how the data flows.
+  </div>
+</header>
+
+<h2><span class="num">§1</span>The decision</h2>
+
+<p>HPFHQ's marketing + sales cockpits (with setter/dialer/closer workstations to follow) are being consolidated as the canonical operational surfaces. As part of that, we locked a number-correctness contract: when cockpit data is stale, partially-fetched, or a data source has errored, the cockpit shows the last-known value with an <strong>"as of [timestamp]"</strong> updated to surface the staleness. The cockpit does not hide problems silently.</p>
+
+<p><strong>Overseer is the surface where failures are noticed and routed.</strong> Not Telegram, not Slack-direct, not console logs. Overseer is the dashboard the team checks when something looks wrong, and Overseer is where alerting routes converge before fanning out to wherever they need to go (Slack channel, on-call person, etc).</p>
+
+<div class="callout warn">
+<strong>Important context:</strong> The HPFHQ codebase has historically used <code>lib/telegram.ts:reportFailure()</code> as the "alert this failed" helper. The function actually posts to <code>/api/triage/intake</code> (not directly to Telegram), but the misleading naming has created a pattern where docs + plans reference "Telegram alerts" when describing the alerting topology. We're cleaning that up — a Codex audit is enumerating every Telegram-as-alerting reference in the HPFHQ code/docs for replacement. The cleanup PR will land separately from this handover.
+</div>
+
+<h2><span class="num">§2</span>What Overseer needs to do for HPFHQ cockpits</h2>
+
+<p>Four monitoring tasks. All passive — Overseer reads from existing HPFHQ Supabase tables + does HTTP health-checks. No writes to HPFHQ data.</p>
+
+<h3>2.1 — Health-check the 5 live surfaces</h3>
+
+<p>HTTP <code>GET</code> against each surface every N minutes (suggest 5min during business hours, 30min off-hours). 200 status = green. Anything else = surface health alert.</p>
+
+<table>
+<thead><tr><th>Surface</th><th>URL pattern</th><th>Auth</th></tr></thead>
+<tbody>
+<tr><td>Marketing cockpit</td><td><code>/cockpit/marketing</code></td><td>Leadership-tier cookie (use service token for health-checks)</td></tr>
+<tr><td>Sales cockpit</td><td><code>/cockpit/sales</code></td><td>Leadership-tier cookie</td></tr>
+<tr><td>Settings cockpit</td><td><code>/cockpit/settings</code></td><td>Leadership-tier cookie</td></tr>
+<tr><td>Closer workstation (sample one)</td><td><code>/closer/[name]</code> (use a stable test closer)</td><td>Portal-tier</td></tr>
+<tr><td>Setter workstation (sample one)</td><td><code>/setter/[name]</code></td><td>Portal-tier</td></tr>
+<tr><td>Dialer workstation (sample one)</td><td><code>/dialer/[name]</code></td><td>Portal-tier</td></tr>
+</tbody>
+</table>
+
+<p>Recommend exposing simple <code>/api/health/cockpit</code> + <code>/api/health/workstation</code> JSON endpoints in HPFHQ that return <code>{status: "ok" | "degraded" | "down", checks: {...}}</code>, gated by a service token. Overseer hits the JSON endpoints rather than scraping HTML. We can build those when Overseer is ready to consume them — flag and I'll spec.</p>
+
+<h3>2.2 — Cron failure detection</h3>
+
+<p>HPFHQ has ~40 scheduled crons in Vercel. The cockpits depend on ~5 of them:</p>
+
+<table>
+<thead><tr><th>Cron</th><th>Schedule</th><th>What breaks if it fails</th></tr></thead>
+<tbody>
+<tr><td><code>ad-snapshot</code></td><td>Daily 06:00 UTC</td><td>Marketing cockpit ad spend stale; per-campaign breakdown stale</td></tr>
+<tr><td><code>metric-snapshots</code></td><td>Daily 07:30 UTC</td><td>Morning Prep, scorecard, hub key-metrics, daily-summary, Nova vocabulary all stale</td></tr>
+<tr><td><code>sync-setter-reactions</code></td><td>Every 30min</td><td>Setter workstation Slack reaction sync stale</td></tr>
+<tr><td><code>missing-fields-alert</code></td><td>Daily 14:05 UTC</td><td>Lead-data quality alerts delayed</td></tr>
+<tr><td><code>showed-classification</code></td><td>Daily</td><td>Sales cockpit showed/no-show classification drift</td></tr>
+</tbody>
+</table>
+
+<p><strong>Detection mechanism:</strong> HPFHQ writes cron run records to a <code>cron_runs</code> table (already exists). Each row has <code>cron_name, started_at, finished_at, status, error_message</code>. Overseer polls this table: any cron without a successful run within (expected_interval × 1.5) = failure surface. Specific query shape:</p>
+
+<pre><code>SELECT cron_name, MAX(finished_at) AS last_success
+FROM cron_runs
+WHERE status = 'ok'
+GROUP BY cron_name;
+-- compare each last_success against expected_interval per cron_name</code></pre>
+
+<p>HPFHQ side TBD: expose <code>/api/health/crons</code> JSON if Overseer prefers polling that vs the table directly. Flag your preference.</p>
+
+<h3>2.3 — Webhook receipt gap detection</h3>
+
+<p>HPFHQ logs every webhook receipt to a <code>webhook_receipts</code> table via <code>logWebhookReceipt()</code> in webhook routes. Sources: GHL, Fanbasis, Stripe, Typeform, Meta, ManyChat.</p>
+
+<p><strong>Detection mechanism:</strong> Overseer polls receipts grouped by source. During business hours (e.g. Mon–Sat 09:00–22:00 local time), if any of {GHL, Fanbasis, Stripe, Typeform} has zero receipts in the last 2 hours, surface a gap alert. Off-hours threshold = 6 hours.</p>
+
+<p>Why this matters: in 2026-04 we had a 3-day silent failure where Fanbasis webhook env vars were set wrong with a trailing whitespace — Brandon noticed because closer EOD digests stopped firing. Webhook gap detection from Overseer side would have caught it in ≤2h.</p>
+
+<h3>2.4 — "As of" indicator data source</h3>
+
+<p>The cockpit shows "Ads: 6h ago · EOD: live · Payments: live" indicators per data source. These read from the same data Overseer is polling — likely makes sense for the cockpit to query a single endpoint that Overseer also writes to (or for both to read the same source-freshness materialized view).</p>
+
+<p>Suggested shape: <code>data_source_freshness</code> view with columns <code>(source, last_write_at, status)</code>. Cockpit reads for the indicator; Overseer reads for the dashboard tile.</p>
+
+<h2><span class="num">§3</span>Where this lives in Overseer's dashboard</h2>
+
+<p>Suggested layout — one section per HPFHQ subsystem:</p>
+
+<ul>
+  <li><strong>HPFHQ → Surfaces</strong> — 6 tiles (marketing, sales, settings cockpits + closer/setter/dialer workstations). Green/red per HTTP health.</li>
+  <li><strong>HPFHQ → Crons</strong> — table of cron_name + last_success + status. Sorted by most-overdue.</li>
+  <li><strong>HPFHQ → Webhooks</strong> — per-source last receipt + status. Same shape as the cron table.</li>
+  <li><strong>HPFHQ → Data freshness</strong> — per-source last write timestamp; mirrors what the cockpit "as of" indicators show.</li>
+</ul>
+
+<p>Each section's tile color + alert routing inherits Overseer's existing conventions. No new alerting infrastructure on HPFHQ side beyond the existing tables/views.</p>
+
+<h2><span class="num">§4</span>Integration shape — HPFHQ ↔ Overseer</h2>
+
+<div class="callout">
+<strong>Read-only by default.</strong> Overseer pulls from HPFHQ — HPFHQ does not push to Overseer. Lower coupling, no new HPFHQ outbound integrations to maintain.
+</div>
+
+<p>Two options for how Overseer reads:</p>
+
+<table>
+<thead><tr><th>Option</th><th>Mechanism</th><th>Pros / Cons</th></tr></thead>
+<tbody>
+<tr><td>A — Direct Supabase</td><td>Overseer has its own service-role key for the HPFHQ Supabase project; queries <code>cron_runs</code>, <code>webhook_receipts</code>, <code>data_source_freshness</code> directly.</td><td><strong>Pros:</strong> minimal HPFHQ work, no new endpoints. <strong>Cons:</strong> Overseer carries HPFHQ secrets; schema changes in HPFHQ can break Overseer silently.</td></tr>
+<tr><td>B — HTTP JSON endpoints</td><td>HPFHQ exposes <code>/api/health/crons</code>, <code>/api/health/webhooks</code>, <code>/api/health/data-freshness</code> gated by a service token; Overseer polls these.</td><td><strong>Pros:</strong> HPFHQ owns the contract; schema changes hidden behind the JSON. <strong>Cons:</strong> ~3 new endpoints to maintain.</td></tr>
+</tbody>
+</table>
+
+<p>Recommend B — slightly more HPFHQ-side work but cleaner contract. Endpoints are thin (SQL → JSON). Flag your preference and I'll spec.</p>
+
+<h2><span class="num">§5</span>What I need from you</h2>
+
+<ol>
+  <li><strong>Confirm or push back</strong> on the four monitoring tasks (§2.1–2.4) — does Overseer have capacity for these? Anything missing?</li>
+  <li><strong>Pick Option A or B</strong> (§4) for the integration shape.</li>
+  <li><strong>Confirm Overseer dashboard layout</strong> (§3) — does an "HPFHQ" parent section with 4 sub-tiles fit the existing Overseer UI, or do you organize differently?</li>
+  <li><strong>Alerting routes</strong> — when something surfaces in the HPFHQ section, where does Overseer route the alert (Slack channel, on-call, email)? Not for me to dictate, just need to know so the HPFHQ cockpit handover docs can describe the loop end-to-end.</li>
+  <li><strong>Timing</strong> — HPFHQ Phase 6 of the cockpit consolidation plan is when this lands. Sequence: HPFHQ exposes the endpoints/tables → Overseer wires them up → smoke test. ETA TBD per Overseer's own roadmap.</li>
+</ol>
+
+<div class="callout good">
+<strong>What you don't need to worry about:</strong> the cockpit canonical layer rework, the dictionary surface, the Sheet, the goals layer. Those are HPFHQ-internal work. Your scope is just the failure surfacing.
+</div>
+
+<footer class="doc">
+HPFHQ cockpit consolidation plan: <code>docs/plans/2026-05-19-hpfhq-consolidation-cockpit-canon.md</code><br>
+Phase 0.5 audit constraints: <a href="../cockpit-canon-constraints/">share/temp/cockpit-canon-constraints/</a><br>
+Design decisions lock list: <a href="../cockpit-design-decisions/">share/temp/cockpit-design-decisions/</a><br>
+Cockpit metric Sheet (HPF REDO): <a href="https://docs.google.com/spreadsheets/d/1h02pdlACInKIBtMhY3YeZex6gBPvdyyqlLTGBVMs6EM/edit">1h02pdlACInKIBtMhY3YeZex6gBPvdyyqlLTGBVMs6EM</a>
+</footer>
+
+</div>
+</body>
+</html>
