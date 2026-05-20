@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cockpit Canon — Phase 0.5 Constraints + v2 Plan Amendments</title>
+<style>
+  :root {
+    --ink: #111418;
+    --ink-soft: #4a5260;
+    --ink-faint: #8a93a3;
+    --bg: #ffffff;
+    --bg-soft: #f6f7f9;
+    --bg-code: #f0f2f5;
+    --border: #e3e6eb;
+    --border-strong: #cdd2da;
+    --accent: #1f6feb;
+    --accent-soft: #e7f0ff;
+    --warn-bg: #fff8e6;
+    --warn-border: #f0c95a;
+    --bad-bg: #fff0f0;
+    --bad-border: #f0a8a8;
+    --good-bg: #f0faf2;
+    --good-border: #a8d8b0;
+    --mono: "SF Mono", "JetBrains Mono", "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.6;
+    font-size: 16px;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 48px 32px 96px; }
+  header.doc {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 24px;
+    margin-bottom: 32px;
+  }
+  header.doc h1 {
+    font-size: 28px;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+  header.doc .meta {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.8;
+  }
+  header.doc .meta strong { color: var(--ink); font-weight: 600; }
+  .toc {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 0 0 40px;
+  }
+  .toc h2 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    margin: 0 0 12px;
+    font-weight: 600;
+  }
+  .toc ol {
+    margin: 0;
+    padding-left: 22px;
+    font-size: 14px;
+    line-height: 1.9;
+  }
+  .toc a { color: var(--ink); text-decoration: none; }
+  .toc a:hover { color: var(--accent); text-decoration: underline; }
+  h2.section {
+    font-size: 22px;
+    margin: 56px 0 16px;
+    padding-top: 12px;
+    border-top: 2px solid var(--ink);
+    letter-spacing: -0.01em;
+  }
+  h2.section .num {
+    color: var(--ink-faint);
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 500;
+    margin-right: 10px;
+  }
+  h3.sub {
+    font-size: 16px;
+    margin: 32px 0 12px;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  h3.sub .num {
+    color: var(--ink-faint);
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    margin-right: 8px;
+  }
+  p { margin: 0 0 14px; }
+  ul, ol { margin: 0 0 14px; padding-left: 26px; }
+  li { margin: 4px 0; }
+  code {
+    font-family: var(--mono);
+    font-size: 13px;
+    background: var(--bg-code);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  pre {
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 16px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0 0 16px;
+  }
+  pre code { background: none; padding: 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin: 0 0 20px;
+  }
+  th, td {
+    text-align: left;
+    vertical-align: top;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    background: var(--bg-soft);
+    font-weight: 600;
+    color: var(--ink-soft);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--border-strong);
+  }
+  td code { font-size: 12px; }
+  .num-col { width: 36px; color: var(--ink-faint); font-family: var(--mono); }
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    margin: 0 0 20px;
+    font-size: 14px;
+  }
+  .callout.warn { border-left-color: var(--warn-border); background: var(--warn-bg); }
+  .callout.bad { border-left-color: var(--bad-border); background: var(--bad-bg); }
+  .callout.good { border-left-color: var(--good-border); background: var(--good-bg); }
+  .callout strong { display: block; margin-bottom: 4px; font-weight: 600; }
+  .tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: var(--bg-soft);
+    color: var(--ink-soft);
+    border: 1px solid var(--border);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+    vertical-align: 1px;
+  }
+  .tag.conflict { background: var(--bad-bg); color: #a13030; border-color: var(--bad-border); }
+  .tag.silent { background: var(--warn-bg); color: #8a6700; border-color: var(--warn-border); }
+  .tag.complies { background: var(--good-bg); color: #2e6a3d; border-color: var(--good-border); }
+  .tag.reuse { background: var(--accent-soft); color: #1f4f9e; border-color: #bdd4f3; }
+  a.anchor { color: var(--ink-faint); text-decoration: none; margin-left: 6px; font-size: 12px; }
+  a.anchor:hover { color: var(--accent); }
+  a.ext { color: var(--accent); text-decoration: none; border-bottom: 1px solid #bdd4f3; }
+  a.ext:hover { border-bottom-color: var(--accent); }
+  footer.doc {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+    line-height: 1.7;
+  }
+  @media (max-width: 640px) {
+    .wrap { padding: 24px 16px 64px; }
+    header.doc h1 { font-size: 22px; }
+    table { font-size: 13px; }
+    th, td { padding: 8px 8px; }
+    pre { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="doc">
+  <h1>Cockpit Canon — Phase 0.5 Constraints + v2 Plan Amendments</h1>
+  <div class="meta">
+    <strong>Status</strong> &nbsp;AUDIT COMPLETE — informs Emil's manual Figjam/Miro map + v2 plan revision<br>
+    <strong>Source plan</strong> &nbsp;<code>docs/plans/2026-05-19-hpfhq-consolidation-cockpit-canon.md</code><br>
+    <strong>Audit method</strong> &nbsp;3 parallel Explore agents covering <code>lib/</code>, <code>components/</code> + <code>design-system/</code>, and <code>architecture-rules</code> + <code>CLAUDE</code> + <code>state</code> + <code>lessons</code> + <code>docs/</code><br>
+    <strong>Output</strong> &nbsp;This document + a revised v2 plan after the map lands
+  </div>
+</header>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#s1">Executive summary</a></li>
+    <li><a href="#s2">Top critical findings (must address before build)</a></li>
+    <li><a href="#s3">Existing infrastructure to reuse</a></li>
+    <li><a href="#s4">Silent gaps the v2 plan must address</a></li>
+    <li><a href="#s5">v2 plan amendments by phase</a></li>
+    <li><a href="#s6">Open questions for the Figjam/Miro map</a></li>
+    <li><a href="#s7">Resumption protocol</a></li>
+  </ol>
+</nav>
+
+<h2 class="section" id="s1"><span class="num">§1</span>Executive summary <a class="anchor" href="#s1">#</a></h2>
+
+<p>The v2 plan is strategically correct — consolidate not rebuild, cockpit as new canon, phased sequencing, Overseer monitoring-only — but tactically thin on rule alignment. Three failure modes if we build as-currently-specified:</p>
+
+<ol>
+  <li><strong>Parallel metric registry conflict.</strong> <code>CLAUDE.md</code> and <code>docs/extension-contracts.md</code> both designate <code>metric_definitions</code> + <code>lib/metrics.generated.ts</code> as the canonical registry. v2 builds a parallel <code>lib/cockpit/metrics/registry.ts</code> with a parallel <code>MetricDef</code> interface. This is the Frankenstein trap.</li>
+  <li><strong>Helpers re-implement what <code>lib/hq/queries.ts</code> already does.</strong> <code>getHqSnapshot()</code> is a working KPI/pacing/projection/comparison engine for the <code>/hq</code> cockpit. v2 helpers would re-implement the same shape. Extend, don't duplicate.</li>
+  <li><strong>Lessons + integration rules silently ignored.</strong> Lead-date column is <code>typeform_submitted_at</code> not <code>created_at</code> (lessons-locked 2026-04-21). Hover tooltips for info-dense content are unreliable (lessons-locked 2026-04-07). Integration docs are required reading per CLAUDE.md non-negotiable rule. v2 plan addresses none of these.</li>
+</ol>
+
+<div class="callout">The fix is plan amendment, not abandonment. The strategic direction stands. Tactics need to comply with what already exists.</div>
+
+<h2 class="section" id="s2"><span class="num">§2</span>Top critical findings <a class="anchor" href="#s2">#</a></h2>
+
+<table>
+<thead>
+<tr><th class="num-col">#</th><th>Finding</th><th>Source</th><th>v2 plan action</th></tr>
+</thead>
+<tbody>
+<tr><td class="num-col">2.1</td><td><code>metric_definitions</code> is THE canonical registry per <code>CLAUDE.md §Known gotchas</code>. v2's <code>lib/cockpit/metrics/registry.ts</code> is a <span class="tag conflict">conflict</span>, not an addition.</td><td>CLAUDE.md, extension-contracts</td><td>Drop the parallel registry. Add cockpit metrics as rows in <code>metric_definitions</code>. Regenerate types via <code>npm run gen:metrics:db</code>. Tooltip + dictionary read from <code>METRIC_DEFINITION_MAP</code>.</td></tr>
+<tr><td class="num-col">2.2</td><td><code>lib/hq/queries.ts:getHqSnapshot()</code> already implements KPI + pacing + 3-month avg + projected EOM + comparison modes + error/cron/vendor panels. v2 helpers would parallel it.</td><td>Audit Agent A</td><td>EXTEND <code>lib/hq/queries.ts</code> with <code>getMarketingCockpitSnapshot()</code> + <code>getSalesCockpitSnapshot()</code>. Use <code>HqKpiMetric</code> shape directly.</td></tr>
+<tr><td class="num-col">2.3</td><td><code>MetricResult</code> (<code>lib/metric-sources.ts:69</code>) already has <code>weaknesses</code> + <code>user_facing_note</code> fields — exactly the tooltip + differs-from fields v2 wanted.</td><td>Audit Agent A</td><td>Use existing fields. If a <code>differsFrom</code> array is genuinely needed, extend <code>buildResult()</code> at <code>lib/metric-sources.ts:461</code> — don't create a parallel shape.</td></tr>
+<tr><td class="num-col">2.4</td><td><strong>Lessons-locked: <code>created_at</code> is NOT the canonical lead date.</strong> Order is <code>typeform_submitted_at &gt; call_date &gt; created_at</code>.</td><td>tasks/lessons.md 2026-04-21</td><td><code>leads-booked.ts</code> spec is wrong. Either use <code>typeform_submitted_at</code> or document why <code>created_at</code> is correct for THIS metric specifically. Fix BEFORE coding.</td></tr>
+<tr><td class="num-col">2.5</td><td><strong>Lessons-locked: hover tooltips unreliable for info-dense content.</strong> v2 proposes Radix hover tooltip for metric definitions.</td><td>tasks/lessons.md 2026-04-07</td><td>Switch to click-toggle pattern, OR verify Radix hover behavior on touch devices and against the lesson context. <code>components/dashboard/DashboardMetricCard.tsx:TooltipButton</code> is the reference click-toggle implementation.</td></tr>
+<tr><td class="num-col">2.6</td><td>Extension contract "Adding a New Metric" (6 steps) is <strong>skipped entirely</strong> by v2.</td><td>docs/extension-contracts.md</td><td>v2 must either (a) follow all 6 steps, or (b) document formal deviation with rationale. Cannot silently bypass.</td></tr>
+<tr><td class="num-col">2.7</td><td><code>components/primitives/</code> directory <strong>does not exist</strong> — architecture-rules cites a phantom path. Blessed primitives are split: <code>components/cockpit/primitives.tsx</code> (KpiCard, FunnelStep, etc.) and <code>components/ui/MetricCardSurface.tsx</code>.</td><td>Audit Agent B</td><td>Correct all v2 references. Decide if cockpit primitives migrate toward MetricCardSurface or stay separate.</td></tr>
+<tr><td class="num-col">2.8</td><td><strong>HQ cockpit uses MetricCardSurface, NOT KpiCard.</strong> v2 claim "KpiCard is shared across HQ" is wrong.</td><td>Audit Agent B</td><td>Don't add <code>metricId</code> to KpiCard expecting HQ to benefit. HQ migration is separate.</td></tr>
+<tr><td class="num-col">2.9</td><td><code>components/ui/tabs.tsx</code> was <strong>deliberately archived</strong>. No live tabs wrapper.</td><td>Audit Agent B</td><td>New HPF-themed tabs wrapper must be authored for the dictionary tab. Don't restore the archived shadcn version (wrong CSS vars).</td></tr>
+<tr><td class="num-col">2.10</td><td>Two parallel tooltip conventions in repo: shadcn wrapper (off-brand colors) vs raw <code>TooltipPrimitive</code> with HPF-themed arrow (<code>lead-card-primitives.tsx</code>). v2 doesn't pick one.</td><td>Audit Agent B</td><td>Pick the HPF-themed pattern. Override shadcn defaults with HPF tokens or use Radix primitives directly.</td></tr>
+</tbody>
+</table>
+
+<h2 class="section" id="s3"><span class="num">§3</span>Existing infrastructure to reuse <a class="anchor" href="#s3">#</a></h2>
+
+<h3 class="sub" id="s3-1"><span class="num">3.1</span>lib/ — domain + utilities <a class="anchor" href="#s3-1">#</a></h3>
+
+<table>
+<thead><tr><th>Module</th><th>What it does</th><th>v2 plan implication</th></tr></thead>
+<tbody>
+<tr><td><code>lib/metric-sources.ts</code></td><td>Single live-compute dispatcher. <code>computeMetrics()</code> reads <code>metric_definitions</code>, calls named SOURCE_FUNCTIONS, applies FORMULAS. Severity: critical.</td><td><span class="tag reuse">reuse</span> Cockpits should call through <code>computeMetrics()</code>, not direct Supabase.</td></tr>
+<tr><td><code>lib/metrics.generated.ts</code></td><td>Auto-gen TS types from <code>metric_definitions</code> table. Exports <code>MetricKey</code>, <code>MetricDefinitionEntry</code>, <code>METRIC_DEFINITION_MAP</code> (O(1) lookup).</td><td><span class="tag reuse">reuse</span> Use <code>MetricKey</code> as the typed key on <code>KpiCard</code>'s <code>metricId</code> prop.</td></tr>
+<tr><td><code>lib/metrics/compute.ts</code></td><td>Snapshot formula runner — <code>computeView()</code>, <code>computeAll()</code>.</td><td><span class="tag reuse">reuse</span> Derived metrics use this; do not reimplement formula logic.</td></tr>
+<tr><td><code>lib/metrics/helpers.ts</code></td><td><code>formatMetric(value, unit)</code>, <code>getPacingText()</code>.</td><td><span class="tag reuse">reuse</span></td></tr>
+<tr><td><code>lib/metrics/sources.ts</code></td><td><code>SECTION_CONFIG</code>, <code>SECTION_ORDER</code>, <code>MULTI_SOURCE_GROUPS</code>.</td><td><span class="tag reuse">reuse</span> Multi-source toggle pattern lives here.</td></tr>
+<tr><td><code>lib/data-registry.ts</code></td><td><code>BUSINESS_AREAS</code>, <code>DATA_SOURCES</code>, <code>HIVE_DOMAINS</code>.</td><td><span class="tag reuse">reuse</span> Validate new MetricDef IDs against these enums.</td></tr>
+<tr><td><code>lib/hq/queries.ts</code></td><td><code>getHqSnapshot()</code> — full HQ cockpit query layer with KPIs, pacing, 3-mo avg, error/fix/cron panels. <code>HqKpiMetric</code> type.</td><td><span class="tag reuse">EXTEND</span> The closest existing thing to v2's cockpit metric layer.</td></tr>
+<tr><td><code>lib/telegram.ts:82</code></td><td><code>reportFailure(source, message, context?)</code> — canonical rule-28 helper. Routes to triage intake.</td><td><span class="tag reuse">reuse</span> Wrap every cockpit metric fetcher. Do NOT build a new error wrapper.</td></tr>
+<tr><td><code>lib/db/scoped.ts:45-53</code></td><td><code>scopedSelect()</code> already accepts <code>{ count, head }</code> passthrough.</td><td><span class="tag reuse">reuse</span> Use for cockpit count queries.</td></tr>
+<tr><td><code>lib/sources/*.ts</code></td><td>All cockpit-relevant adapters exist: ghl, stripe, sheets, meta, fathom, fulfillment, etc.</td><td><span class="tag reuse">reuse</span> Wire through these; don't fetch external APIs from cockpit helpers.</td></tr>
+<tr><td><code>lib/supabase.ts</code></td><td><code>createServerClient()</code> is the only server-side entry.</td><td><span class="tag reuse">reuse</span> No second wrapper.</td></tr>
+<tr><td><code>lib/cockpit.ts</code> (flat file)</td><td><code>Period</code> type + <code>periodToDateRange()</code> + <code>daysInRange()</code>.</td><td><span class="tag reuse">reuse</span> Keep. New <code>lib/cockpit/metrics/</code> subdir sits alongside, doesn't replace.</td></tr>
+<tr><td><code>lib/sales/helpers.ts</code></td><td><code>fmt$()</code>, <code>fmtPct()</code>, <code>fmtN()</code>, <code>fmtAge()</code>, <code>fmtKrValue()</code>, <code>pacingColor()</code>, <code>pacingLabel()</code>.</td><td><span class="tag reuse">reuse</span> More comprehensive than <code>metrics/helpers.ts</code>.</td></tr>
+<tr><td><code>lib/leads/stage.ts</code></td><td><code>computeStageUpdates()</code> — lead state machine.</td><td><span class="tag reuse">reuse</span> Document retro-set rule (<code>closed||showed → booked=true</code>) in registry definition.</td></tr>
+<tr><td><code>lib/access-map.ts</code>, <code>lib/auth-cookie.ts</code></td><td>Canonical tier-check pattern for server components.</td><td><span class="tag reuse">reuse</span> Leadership-tier dictionary tab gate.</td></tr>
+<tr><td><code>lib/metric-helpers.ts</code></td><td><code>getSourceColor()</code>, <code>formatAge()</code>, <code>getPastValue()</code>, <code>computeDelta()</code>.</td><td><span class="tag reuse">reuse</span> Tile delta + source badge rendering.</td></tr>
+</tbody>
+</table>
+
+<h3 class="sub" id="s3-2"><span class="num">3.2</span>Pagination — gap confirmed <a class="anchor" href="#s3-2">#</a></h3>
+
+<p>No generic Supabase paginator exists. The 1000-row cap fix DOES need a new helper, but tightly scoped. Two options:</p>
+<ul>
+  <li><strong>Option A:</strong> New <code>lib/cockpit/paginate.ts</code> with a single <code>paginateAll&lt;T&gt;()</code> function that loops <code>.range()</code> until empty. Genuinely new, justified.</li>
+  <li><strong>Option B (recommended):</strong> Route every cockpit count through <code>count: 'exact', head: true</code> and never need pagination for tile values; only paginate the drill-down lead list (less frequent need). Less new infrastructure, smaller surface area.</li>
+</ul>
+
+<h3 class="sub" id="s3-3"><span class="num">3.3</span>Components — what's actually blessed <a class="anchor" href="#s3-3">#</a></h3>
+
+<table>
+<thead><tr><th>Path</th><th>Purpose</th><th>v2 plan implication</th></tr></thead>
+<tbody>
+<tr><td><code>components/cockpit/primitives.tsx</code></td><td>KpiCard, FunnelStep, Section, PeriodSelector, AuditCard, PacingInline, PacingBar, Delta. Used by marketing/sales/dialer EOD.</td><td>Extend KpiCard with <code>metricId?</code> + <code>tooltip?</code>. Do not add to MetricCardSurface separately.</td></tr>
+<tr><td><code>components/ui/MetricCardSurface.tsx</code></td><td>Used by <code>/dashboard</code> and HQ cockpit. Already has tooltip support.</td><td>OUT OF v2 SCOPE — different card system, different cockpit migration.</td></tr>
+<tr><td><code>components/ui/tooltip.tsx</code></td><td>shadcn wrapper, uses <code>bg-popover</code> (wrong color for HPF).</td><td>Override with HPF tokens before use.</td></tr>
+<tr><td><code>components/shared/lead-card-primitives.tsx:25-42</code></td><td>Raw <code>TooltipPrimitive</code> + HPF-themed <code>#1A1D25</code> arrow. <strong>Closer to correct.</strong></td><td>Pattern to copy for cockpit tooltips.</td></tr>
+<tr><td><code>components/dashboard/DashboardMetricCard.tsx:255-277</code></td><td><code>TooltipButton</code> — click-toggle definition tooltip already working. <strong>Reference implementation.</strong></td><td>Copy this pattern for KpiCard tooltip. Click-toggle aligns with the hover-unreliable lesson.</td></tr>
+<tr><td><code>components/settings/MetricSourcesTable.tsx</code></td><td>Renders <code>/api/metric-definitions</code> data. Existing definition explainer.</td><td>Dictionary tab must integrate with this, not parallel it.</td></tr>
+<tr><td><code>app/(cockpit)/cockpit/settings/client.tsx</code></td><td>Local <code>METRIC_DEFS</code> const (11 entries) parallel to <code>metric_definitions</code>.</td><td>Deprecate the local const in the same PR as dictionary tab.</td></tr>
+<tr><td><code>app/(main)/fulfillment/page.tsx:78</code></td><td>Local <code>KpiCard</code> with <code>tooltip</code> → <code>title=</code> HTML attribute (anti-pattern).</td><td>Migrate to shared primitive simultaneously.</td></tr>
+<tr><td><code>components/ui/PasswordGate.tsx</code></td><td>Blessed unified auth gate.</td><td>Cockpit is already gated at route level — dictionary tab inherits. No new gate.</td></tr>
+</tbody>
+</table>
+
+<h3 class="sub" id="s3-4"><span class="num">3.4</span>Design tokens — what exists <a class="anchor" href="#s3-4">#</a></h3>
+
+<p><code>lib/design-tokens.ts</code> exports <code>HPF_THEME</code>, <code>SPACING</code>, <code>RADIUS</code>, <code>SHADOW</code>, <code>MOTION</code>, <code>DEPT_COLORS</code>, <code>PRIORITY_COLORS</code>, <code>STATUS_COLORS</code>, <code>SOURCE_COLORS</code>, <code>PLATFORM_COLORS</code>. Tailwind config maps these to classes like <code>hpf-card</code>, <code>hpf-green</code>, <code>status-success</code>.</p>
+
+<div class="callout warn"><strong>Missing from Tailwind:</strong> <code>greenGlow</code>, <code>greenFaint</code>, <code>borderDim</code>, <code>cardDeep</code> — only available as raw hex via <code>HPF_THEME</code> in <code>style={}</code>. Tooltip + dictionary tab must use these (rule: no hardcoded hex, severity medium).</div>
+
+<div class="callout warn"><strong>Conflict in CLAUDE.md vs codebase:</strong> Design system docs say green <code>#2ED47A</code> is "logo-only, not a button background, not a link color." Codebase uses green freely as active card borders, pacing bars, delta-up states, AuditCard metric color. v2 should follow codebase practice (green = accent), not the doc.</div>
+
+<h2 class="section" id="s4"><span class="num">§4</span>Silent gaps the v2 plan must address <a class="anchor" href="#s4">#</a></h2>
+
+<table>
+<thead><tr><th>Gap</th><th>Source</th><th>Action</th></tr></thead>
+<tbody>
+<tr><td>Phase exit criteria missing <code>npm run lint:route-drift</code></td><td>extension-contracts verification checklist</td><td>Add to Phase 5</td></tr>
+<tr><td>Phase exit criteria missing <code>npm run lint:manifest-drift</code></td><td>extension-contracts</td><td>Add to Phase 5 + Phase 6</td></tr>
+<tr><td>Phase exit criteria missing <code>npm run lint:direct-writes</code></td><td>extension-contracts</td><td>Add to every phase that creates lib files</td></tr>
+<tr><td>Phase exit criteria missing <code>npm run lint:memory</code></td><td>extension-contracts + memory.hotfiles.json</td><td>Add to every phase</td></tr>
+<tr><td><code>bash scripts/smoke-test-closer.sh</code> missing</td><td>CLAUDE.md verification rule</td><td>Add to Phase 2 + Phase 3 exit criteria</td></tr>
+<tr><td><code>memory.hotfiles.json</code> not updated</td><td>architecture-rules.json R13</td><td>Add entries for <code>registry.ts</code>, <code>CockpitDictionary.tsx</code>, large helper files</td></tr>
+<tr><td><code>docs/architecture/manifest.json</code> components section not updated</td><td>architecture-rules.json R14</td><td>Add <code>lib/cockpit/metrics/</code> subsystem entry; update <code>read_by</code> for <code>ad_snapshots</code>, <code>closer_eod_entries</code>, <code>leads</code></td></tr>
+<tr><td><code>/cockpit/settings</code> not addressed in Phase 3</td><td>state/SETTING.md</td><td>Third cockpit surface — wire tooltips/dictionary here too</td></tr>
+<tr><td>GHL Phase 7 depends on Overseer 48h stable → v2 Phase 6 critical-path</td><td>GHL plan + Overseer build state</td><td>Document sequencing constraint in v2 plan</td></tr>
+<tr><td>Overseer Layer 1 partially built — <code>handoff-overseer-build-2026-05-19.md</code></td><td>Active handoff</td><td>Phase 6 must extend Layer 1 work, not start fresh</td></tr>
+<tr><td>Integration docs not cited</td><td>CLAUDE.md non-negotiable rule</td><td>Plan must direct builder to read <code>knowledge/integrations/{ghl,stripe,fanbasis}.md</code> before helper writes</td></tr>
+<tr><td><code>state/SALES.md</code> + <code>state/MARKETING.md</code> not queued for post-ship update</td><td>state/*.md convention</td><td>Add to Phase 6 exit criteria via build-complete skill</td></tr>
+<tr><td>UTM reliability boundary (pre-March 30) not documented in marketing helpers</td><td>state/MARKETING.md</td><td>Note in <code>leads-booked.ts</code> + <code>ad-spend.ts</code> registry definition fields</td></tr>
+<tr><td>React hook-placement risk on KpiCard/FunnelStep extension</td><td>tasks/lessons.md 2026-04-15 (React #310)</td><td>Any <code>useState</code> added must be before conditional returns</td></tr>
+<tr><td>Pre-commit hook insertion point not specified</td><td>Audit Agent C</td><td>Insert cockpit inline-query block BEFORE final <code>exit 0</code> in <code>business/</code> section</td></tr>
+<tr><td><code>lib/data-registry.ts</code> enums not validated against new metric IDs</td><td>architecture-rules.json R12</td><td>Validate MetricDef.id format against <code>BUSINESS_AREAS</code></td></tr>
+<tr><td><code>lib/closes.ts</code> helper source priority not documented</td><td>CLAUDE.md §Sales data rules §1-2</td><td>Fanbasis → Stripe → Slack priority embedded in helper</td></tr>
+<tr><td><code>lib/closes.ts</code> must use live Stripe API not backfill table</td><td>CLAUDE.md §Sales data rules §5</td><td>Spec must specify</td></tr>
+<tr><td>LB90 exclusion regex not in <code>closes.ts</code> spec</td><td>CLAUDE.md §Sales data rules §4</td><td>Embed in helper</td></tr>
+<tr><td><code>MetricResult</code> <code>weaknesses</code> field already exists for tooltip use</td><td>Audit Agent A</td><td>Use it; don't define parallel field</td></tr>
+</tbody>
+</table>
+
+<h2 class="section" id="s5"><span class="num">§5</span>v2 plan amendments by phase <a class="anchor" href="#s5">#</a></h2>
+
+<h3 class="sub" id="s5-0"><span class="num">5.0</span>Phase 0 (DONE — fixture committed) <a class="anchor" href="#s5-0">#</a></h3>
+<ul>
+  <li><strong>Amend:</strong> Re-run fixture using <code>count: 'exact', head: true</code> to capture TRUE counts, not the buggy 1000-cap output. Record both <code>current_buggy_display</code> and <code>true_counts</code> so Phase 2 diff has correct baseline.</li>
+  <li><strong>Amend:</strong> Add <code>lead_date_column_decision</code> field to fixture noting which timestamp column was used (per lessons 2026-04-21 — <code>typeform_submitted_at &gt; call_date &gt; created_at</code>).</li>
+</ul>
+
+<h3 class="sub" id="s5-1"><span class="num">5.1</span>Phase 1 (helpers) — major rework <a class="anchor" href="#s5-1">#</a></h3>
+<ul>
+  <li><strong>Major rework:</strong> Drop <code>lib/cockpit/metrics/registry.ts</code> as a standalone construct. Add cockpit metrics as rows in <code>metric_definitions</code> table. Use <code>MetricKey</code> from <code>lib/metrics.generated.ts</code> as the typed identifier. EXTEND <code>lib/hq/queries.ts</code> with <code>getMarketingCockpitSnapshot()</code> + <code>getSalesCockpitSnapshot()</code>.</li>
+  <li><strong>Drop:</strong> <code>lib/cockpit/metrics/*.ts</code> per-metric files as designed. Replace with two snapshot functions in <code>lib/hq/queries.ts</code> (or a sibling <code>lib/cockpit/queries.ts</code> if file-size warrants split).</li>
+  <li><strong>Add:</strong> Tight <code>paginateAll&lt;T&gt;()</code> helper in <code>lib/cockpit/paginate.ts</code> for the drill-down lead list only.</li>
+  <li><strong>Update:</strong> Each metric's <code>metric_definitions</code> row gets <code>weaknesses</code> (for differs-from prose), <code>user_facing_note</code> (for tooltip text), <code>definition</code>, <code>unit</code>, <code>target</code>, <code>section</code>, <code>expected_source</code>. Use these existing fields, not new ones.</li>
+  <li><strong>Verification:</strong> Add <code>npm run lint:direct-writes</code>, <code>npm run lint:memory</code> to exit criteria.</li>
+</ul>
+
+<h3 class="sub" id="s5-2"><span class="num">5.2</span>Phase 2 (cockpit migration) <a class="anchor" href="#s5-2">#</a></h3>
+<ul>
+  <li><strong>Add:</strong> Three cockpits now in scope: marketing, sales, AND <code>/cockpit/settings</code>.</li>
+  <li><strong>Add:</strong> Migration must read integration docs (<code>knowledge/integrations/{ghl,stripe,fanbasis}.md</code>) before changing any query.</li>
+  <li><strong>Add:</strong> <code>bash scripts/smoke-test-closer.sh</code> to exit criteria.</li>
+  <li><strong>Document:</strong> UTM reliability boundary in marketing helper comments.</li>
+  <li><strong>Confirm:</strong> Lead-date column decision per lessons 2026-04-21.</li>
+</ul>
+
+<h3 class="sub" id="s5-3"><span class="num">5.3</span>Phase 3 (tooltip + dictionary) <a class="anchor" href="#s5-3">#</a></h3>
+<ul>
+  <li><strong>Change pattern:</strong> Click-toggle tooltip (per lessons 2026-04-07), not hover. Use <code>components/dashboard/DashboardMetricCard.tsx:TooltipButton</code> as reference.</li>
+  <li><strong>Add:</strong> HPF-themed <code>components/ui/tabs.tsx</code> wrapper (the archived shadcn version is unsuitable).</li>
+  <li><strong>Add:</strong> HPF token overrides for tooltip background if using <code>components/ui/tooltip.tsx</code>.</li>
+  <li><strong>Add:</strong> Fulfillment local <code>KpiCard</code> migration (currently uses <code>title=</code> anti-pattern).</li>
+  <li><strong>Drop:</strong> "shared across HQ cockpit" claim — HQ uses MetricCardSurface separately.</li>
+  <li><strong>Wire:</strong> <code>CockpitDictionary</code> reads <code>METRIC_DEFINITION_MAP</code> filtered by section. Deprecate <code>app/(cockpit)/cockpit/settings/client.tsx:METRIC_DEFS</code> local const.</li>
+</ul>
+
+<h3 class="sub" id="s5-4"><span class="num">5.4</span>Phase 4 (enforcement) <a class="anchor" href="#s5-4">#</a></h3>
+<ul>
+  <li><strong>Specify:</strong> Pre-commit hook insertion point — before final <code>exit 0</code> in <code>business/</code> section of <code>.git/hooks/pre-commit</code>.</li>
+  <li><strong>Extend:</strong> Cockpit ESLint rule scope to include settings cockpit.</li>
+</ul>
+
+<h3 class="sub" id="s5-5"><span class="num">5.5</span>Phase 5 (dead surface deletion) <a class="anchor" href="#s5-5">#</a></h3>
+<ul>
+  <li><strong>Add:</strong> <code>npm run lint:route-drift</code> + <code>npm run lint:manifest-drift</code> to exit criteria.</li>
+  <li><strong>Reaffirm:</strong> <code>/dashboard</code>, <code>/hq</code>, <code>/ccc</code>, legacy <code>/sales</code>/<code>/marketing</code> require per-route audit before deletion (existing plan language preserved).</li>
+</ul>
+
+<h3 class="sub" id="s5-6"><span class="num">5.6</span>Phase 6 (manifest + Overseer) <a class="anchor" href="#s5-6">#</a></h3>
+<ul>
+  <li><strong>Add:</strong> Sequencing constraint — Phase 6 is on the critical path for GHL Phase 7 (which requires Overseer ≥48h stable).</li>
+  <li><strong>Coordinate:</strong> With <code>handoff-overseer-build-2026-05-19.md</code> — extend Layer 1 work, don't start fresh.</li>
+  <li><strong>Add:</strong> Manifest <code>read_by</code> updates for <code>ad_snapshots</code>, <code>closer_eod_entries</code>, <code>leads</code>.</li>
+  <li><strong>Add:</strong> <code>lib/cockpit/</code> subsystem entry to manifest components section.</li>
+  <li><strong>Add:</strong> <code>state/SALES.md</code> + <code>state/MARKETING.md</code> updates via build-complete skill.</li>
+</ul>
+
+<h2 class="section" id="s6"><span class="num">§6</span>Open questions for the Figjam/Miro map <a class="anchor" href="#s6">#</a></h2>
+
+<p>The visual map is where you (Emil) ground-truth all of this. Specific questions the map should resolve:</p>
+
+<ol>
+  <li><strong>Does cockpit canon = <code>metric_definitions</code> + extended <code>lib/hq/queries.ts</code>?</strong> Or is there a reason to keep a parallel registry I'm missing?</li>
+  <li><strong>KpiCard family — should it converge with MetricCardSurface, or stay as the cockpit-scoped sibling?</strong> Two card systems exist today.</li>
+  <li><strong>Tooltip — click-toggle or hover?</strong> Lessons say click; v2 said hover.</li>
+  <li><strong><code>/cockpit/settings</code> — does dictionary tab apply here too?</strong> If yes, three cockpits in Phase 3 scope.</li>
+  <li><strong>What's the right home for cockpit query functions</strong> — extend <code>lib/hq/queries.ts</code> (which mixes HQ + cockpit concerns) or create <code>lib/cockpit/queries.ts</code> (cleaner but duplicates <code>getHqSnapshot</code> shape)?</li>
+  <li><strong>Overseer integration</strong> — extend the in-flight Layer 1 build, or wait for it to land first?</li>
+  <li><strong>Workstation rollout</strong> — when do closer/setter/dialer get the same canon treatment? Out of this plan, but the map should show the future state.</li>
+</ol>
+
+<h2 class="section" id="s7"><span class="num">§7</span>Resumption protocol <a class="anchor" href="#s7">#</a></h2>
+
+<p>When the map lands (URL, screenshot, or description):</p>
+<ol>
+  <li>Read/view the map.</li>
+  <li>Revise the v2 plan against the map + these constraints (the map wins where they conflict).</li>
+  <li>Re-run <code>/audit-architecture</code> on the revised plan if substantial changes.</li>
+  <li>Resume build at the revised Phase 0 (re-fixture with corrected counts).</li>
+</ol>
+
+<div class="callout good"><strong>Build state:</strong> paused per <code>feedback_manual_map_first_holds_build</code>. No code changes in <code>lib/</code> or <code>components/</code>. Phase 0 fixture from earlier still committed (will be re-run with correct counts as the first move after the map lands).</div>
+
+<footer class="doc">
+Tag legend &nbsp;
+<span class="tag reuse">reuse</span> use as-is &nbsp;
+<span class="tag conflict">conflict</span> plan disagrees with existing rule &nbsp;
+<span class="tag silent">silent</span> plan doesn't address &nbsp;
+<span class="tag complies">complies</span> plan matches existing rule
+<br><br>
+Source markdown: <code>docs/plans/2026-05-19-cockpit-canon-constraints.md</code> &nbsp;·&nbsp;
+v2 plan (under revision): <code>docs/plans/2026-05-19-hpfhq-consolidation-cockpit-canon.md</code>
+</footer>
+
+</div>
+</body>
+</html>
