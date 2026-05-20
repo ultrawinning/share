@@ -1,0 +1,9 @@
+metric_id,label,cockpit,section,kind,definition,source_table,timestamp_column,filter,unit,target,differs_from,weakness,status,computed_in,notes
+closer.todays_calls,Today's Calls,closer-workstation,KPI,base,"Calls on the closer's calendar today.",closer_eod_entries,call_date,call_date = today AND closer_name = current,#,N/A,,,draft-stub,TBD,Out of v2 consolidation scope — placeholder for workstation rollout phase.
+closer.mtd_calls,MTD Calls,closer-workstation,KPI,base,"Closer's MTD scheduled/taken/closed.",closer_eod_entries,call_date,closer_name = current,#,N/A,,,draft-stub,TBD,
+closer.followup_pipeline,Follow-Up Pipeline,closer-workstation,Pipeline,base,"Leads in closer's follow-up pipeline.",sales_followup_pipeline,(stage_updated_at),closer_name = current,#,N/A,,,draft-stub,TBD,
+setter.kanban_lanes,Kanban Lane Counts,setter-workstation,Pipeline,base,"Lead counts per kanban lane.",lead_pipeline,(stage_updated_at),setter_name = current,#,N/A,,,draft-stub,TBD,Filter+sort UX rework queued — see UX research output.
+setter.todays_inbox,Today's Inbox,setter-workstation,KPI,base,"New leads received today.",leads,typeform_submitted_at,today AND assigned setter,#,N/A,,,draft-stub,TBD,
+setter.mtd_booked,MTD Setter Booked,setter-workstation,KPI,base,"Setter's MTD bookings.",setter_eod_entries,call_date,setter_name = current,#,N/A,,,draft-stub,TBD,
+dialer.kanban_lanes,Dialer Kanban Lane Counts,dialer-workstation,Pipeline,base,"Lead counts per dialer kanban lane.",lead_pipeline,(stage_updated_at),dialer_name = current,#,N/A,,,draft-stub,TBD,
+dialer.todays_dials,Today's Dials,dialer-workstation,KPI,base,"Dial attempts today.",dialer_eod_entries,call_date,call_date = today AND dialer_name = current,#,N/A,,,draft-stub,TBD,

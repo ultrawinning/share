@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cockpit Design Decisions — Pre-Build Lock List</title>
+<style>
+  :root {
+    --ink: #111418;
+    --ink-soft: #4a5260;
+    --ink-faint: #8a93a3;
+    --bg: #ffffff;
+    --bg-soft: #f6f7f9;
+    --bg-code: #f0f2f5;
+    --border: #e3e6eb;
+    --border-strong: #cdd2da;
+    --accent: #1f6feb;
+    --accent-soft: #e7f0ff;
+    --warn-bg: #fff8e6;
+    --warn-border: #f0c95a;
+    --good-bg: #f0faf2;
+    --good-border: #a8d8b0;
+    --bad-bg: #fff0f0;
+    --bad-border: #f0a8a8;
+    --mono: "SF Mono", "JetBrains Mono", "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--sans); color: var(--ink); background: var(--bg); line-height: 1.6; font-size: 16px; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 48px 32px 96px; }
+  header.doc { border-bottom: 1px solid var(--border); padding-bottom: 24px; margin-bottom: 32px; }
+  header.doc h1 { font-size: 28px; margin: 0 0 8px; letter-spacing: -0.01em; line-height: 1.25; }
+  header.doc .meta { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); line-height: 1.8; }
+  header.doc .meta strong { color: var(--ink); font-weight: 600; }
+  .toc { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin: 0 0 40px; }
+  .toc h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-soft); margin: 0 0 12px; font-weight: 600; }
+  .toc ol { margin: 0; padding-left: 22px; font-size: 14px; line-height: 1.9; }
+  .toc a { color: var(--ink); text-decoration: none; }
+  .toc a:hover { color: var(--accent); text-decoration: underline; }
+  h2.section { font-size: 22px; margin: 56px 0 16px; padding-top: 12px; border-top: 2px solid var(--ink); letter-spacing: -0.01em; }
+  h2.section .num { color: var(--ink-faint); font-family: var(--mono); font-size: 16px; font-weight: 500; margin-right: 10px; }
+  h3.dec { font-size: 17px; margin: 32px 0 8px; color: var(--ink); font-weight: 600; }
+  h3.dec .num { color: var(--ink-faint); font-family: var(--mono); font-size: 14px; font-weight: 500; margin-right: 8px; }
+  p { margin: 0 0 14px; }
+  ul, ol { margin: 0 0 14px; padding-left: 24px; }
+  li { margin: 4px 0; }
+  code { font-family: var(--mono); font-size: 13px; background: var(--bg-code); padding: 1px 5px; border-radius: 3px; }
+  .decision-card { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 8px; padding: 18px 22px; margin: 0 0 24px; }
+  .decision-card.locked { background: var(--good-bg); border-color: var(--good-border); }
+  .decision-card.pending { background: var(--warn-bg); border-color: var(--warn-border); }
+  .recommendation { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 10px 14px; margin: 10px 0; border-radius: 0 6px 6px 0; }
+  .recommendation strong { display: block; margin-bottom: 4px; font-weight: 600; }
+  .src { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); margin-top: 8px; }
+  .tag { display: inline-block; font-family: var(--mono); font-size: 11px; padding: 2px 8px; border-radius: 10px; background: var(--bg-soft); color: var(--ink-soft); border: 1px solid var(--border); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 500; vertical-align: 1px; margin-left: 8px; }
+  .tag.locked { background: var(--good-bg); color: #2e6a3d; border-color: var(--good-border); }
+  .tag.pending { background: var(--warn-bg); color: #8a6700; border-color: var(--warn-border); }
+  .tag.research { background: var(--accent-soft); color: #1f4f9e; border-color: #bdd4f3; }
+  .tag.contradicts { background: var(--bad-bg); color: #a13030; border-color: var(--bad-border); }
+  a.anchor { color: var(--ink-faint); text-decoration: none; margin-left: 6px; font-size: 12px; }
+  a.anchor:hover { color: var(--accent); }
+  a.ext { color: var(--accent); text-decoration: none; border-bottom: 1px solid #bdd4f3; }
+  blockquote { margin: 0 0 14px; padding: 8px 14px; border-left: 3px solid var(--border-strong); color: var(--ink-soft); font-style: italic; }
+  footer.doc { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 12px; color: var(--ink-faint); line-height: 1.7; }
+  @media (max-width: 640px) { .wrap { padding: 24px 16px 64px; } header.doc h1 { font-size: 22px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="doc">
+  <h1>Cockpit Design Decisions — Pre-Build Lock List</h1>
+  <div class="meta">
+    <strong>Status</strong> &nbsp;Pre-build lock list — every item needs Emil-explicit decision before Phase 1 commits<br>
+    <strong>Source</strong> &nbsp;<code>feedback_finalize_cockpit_design_before_build</code> + UX research agent output (2026-05-20)<br>
+    <strong>Companion</strong> &nbsp;<a class="ext" href="../cockpit-canon-constraints/">cockpit-canon-constraints</a> (rule audit) &nbsp;·&nbsp; <a class="ext" href="../cockpit-metric-registry/">cockpit-metric-registry</a> (Sheet starter)<br>
+    <strong>Build state</strong> &nbsp;Paused per <code>feedback_manual_map_first_holds_build</code> — resumes after Figjam map + this lock list resolved
+  </div>
+</header>
+
+<nav class="toc">
+  <h2>Decisions</h2>
+  <ol>
+    <li><a href="#d1">Tooltip pattern (LOCKED via research)</a></li>
+    <li><a href="#d2">Period / date controls (LOCKED via research)</a></li>
+    <li><a href="#d3">Kanban filter + sort (LOCKED — but contradicts your benchmark)</a></li>
+    <li><a href="#d4">Visibility / tier rules (pending)</a></li>
+    <li><a href="#d5">Source / weakness badge inline (pending)</a></li>
+    <li><a href="#d6">Drill-down behavior (pending)</a></li>
+    <li><a href="#d7">Period comparison default (pending)</a></li>
+    <li><a href="#d8">Pacing display selection (pending)</a></li>
+    <li><a href="#d9">Number-correctness contract (pending)</a></li>
+    <li><a href="#d10">Refresh cadence + "as of" indicator (pending)</a></li>
+  </ol>
+</nav>
+
+<h2 class="section"><span class="num">§1</span>Decisions resolved by UX research</h2>
+
+<div class="decision-card locked">
+<h3 class="dec" id="d1"><span class="num">D1</span>Tooltip pattern <span class="tag locked">locked</span> <span class="tag research">research</span> <a class="anchor" href="#d1">#</a></h3>
+
+<p><strong>Decision:</strong> Click-to-open <code>(i)</code> icon after every metric label. Opens a popover (200–320px) anchored to the icon. Contains four required fields:</p>
+
+<ol>
+  <li>One-sentence plain-English definition</li>
+  <li>Formula or source logic ("Sum of leads where booked=true, bucketed by typeform_submitted_at")</li>
+  <li>"As of [timestamp]" — when the metric was last computed</li>
+  <li>"Not the same as [other metric] because [reason]" — for any metric that has a near-namesake on another cockpit</li>
+</ol>
+
+<p>Bottom of popover links to the full dictionary tab. Mobile: tap = bottom sheet (slides up 40% of viewport).</p>
+
+<div class="recommendation">
+  <strong>Source: Amplitude</strong>
+  Amplitude's <code>(i)</code> icon pattern is best-in-class. Hover-only tooltips fail on touch, fail on dense grids, and don't hold the 80–150 words a definition needs. Both lessons-locked (2026-04-07) and the research converge here. The v2 plan's original Radix hover proposal is wrong — overruled.
+</div>
+
+<p>HPFHQ already has a working reference: <code>components/dashboard/DashboardMetricCard.tsx:255-277</code> implements <code>TooltipButton</code> click-toggle. Copy that pattern into the cockpit primitive.</p>
+
+<p class="src">Research source: Amplitude out-of-the-box metrics; ChartMogul MRR/ARR/Churn popovers; Datadog Metrics Summary.</p>
+</div>
+
+<div class="decision-card locked">
+<h3 class="dec" id="d2"><span class="num">D2</span>Period / date controls <span class="tag locked">locked</span> <span class="tag research">research</span> <a class="anchor" href="#d2">#</a></h3>
+
+<p><strong>Decision:</strong> Looker Studio pattern. Single date range control widget in the cockpit header. Contents:</p>
+
+<ul>
+  <li><strong>Preset list grouped by category</strong> with explicit labels and visual separators:
+    <ul>
+      <li><em>Rolling:</em> Today, Yesterday, Last 7 days, Last 28 days, Last 30 days, Last 90 days</li>
+      <li><em>Calendar Week:</em> This week (starts Monday), Last week</li>
+      <li><em>Calendar Month:</em> This month, Last month</li>
+      <li><em>Calendar Quarter/Year:</em> This quarter, Last quarter, This year, Last year</li>
+      <li>Custom</li>
+    </ul>
+  </li>
+  <li><strong>Custom = calendar grid</strong> (click start, click end), NOT two text inputs. Text display of selected range above the grid for confirmation.</li>
+  <li><strong>Comparison period is opt-in,</strong> disabled by default. When enabled, default = "Previous period" (same length, immediately preceding). Other options: same period last year, custom.</li>
+  <li><strong>"Data as of [timestamp]" indicator</strong> near the date control. Not buried in a settings page.</li>
+  <li><strong>Date state in URL.</strong> Bookmarkable, shareable. Reload preserves period.</li>
+  <li><strong>No time-of-day controls.</strong> Day-level granularity is correct for business ops.</li>
+</ul>
+
+<div class="recommendation">
+  <strong>Source: Looker Studio (with grouping pattern from Mixpanel/Amplitude)</strong>
+  Resolves your "date and time settings are not intuitive" complaint directly. The rolling-vs-calendar distinction (Last 7 days vs This week) is the load-bearing UX detail — group them visually so the user sees the difference at-a-glance.
+</div>
+
+<p class="src">Research source: Looker Studio date range control docs; Amplitude/Mixpanel preset grouping conventions.</p>
+</div>
+
+<div class="decision-card locked">
+<h3 class="dec" id="d3"><span class="num">D3</span>Kanban filter + sort <span class="tag locked">locked</span> <span class="tag research">research</span> <span class="tag contradicts">contradicts benchmark</span> <a class="anchor" href="#d3">#</a></h3>
+
+<blockquote>You named Trello as the standard. Research found Linear is actually best-in-class for an ops kanban. Trello's filter sidebar wastes real estate; Linear's chip bar is cleaner. Flagging so you can confirm or push back before the Setter Kanban rework.</blockquote>
+
+<p><strong>Decision (pending your confirmation):</strong> Linear's filter chip bar pattern. Specifically:</p>
+
+<ul>
+  <li><strong>Inline chip bar (not sidebar).</strong> Press <code>F</code> to open a command-style picker. Active filters render as chips in a persistent bar directly under the view header. Each chip shows dimension + value with a clickable <code>×</code>. Bar disappears when zero filters active.</li>
+  <li><strong>Multi-select OR within dimension, AND across dimensions.</strong> Sarah + Juan in Assignee = either. Adding Priority = Urgent narrows to those with both. Correct for sales kanban use case.</li>
+  <li><strong>Search-within-cards is a SEPARATE text input,</strong> not part of the filter picker. Different interaction class.</li>
+  <li><strong>Sort is a separate control</strong> from filters (one Sort button, separate location). Manual drag-to-reorder is global state — automatically disabled (greyed handles) when any sort is active.</li>
+  <li><strong>Filter state persists in URL.</strong> Sales managers can share "Sarah's overdue follow-ups" as a link.</li>
+  <li><strong>Empty state must be explicit:</strong> "No cards match your current filters" + "Clear filters" button. Don't show empty columns silently (Trello fails here).</li>
+</ul>
+
+<div class="recommendation">
+  <strong>Source: Linear (chip bar) + Notion (sort/drag interaction)</strong>
+  This applies to Setter Kanban (the cited "horrible" surface), Closer Kanban, and Dialer Kanban. Standardize the same pattern across all three workstations.
+</div>
+
+<p class="src">Research source: Linear filters docs; Trello filter sidebar (anti-pattern); Notion sort/drag interaction.</p>
+</div>
+
+<h2 class="section"><span class="num">§2</span>Decisions pending your call</h2>
+
+<div class="decision-card pending">
+<h3 class="dec" id="d4"><span class="num">D4</span>Visibility / tier rules <span class="tag pending">pending</span> <a class="anchor" href="#d4">#</a></h3>
+<p><strong>Question:</strong> Three sub-decisions.</p>
+<ol>
+  <li>Which tier(s) see each cockpit? Marketing cockpit = leadership? team? both? Same for sales, settings.</li>
+  <li>Does the dictionary tab inherit the cockpit's auth tier, or have its own (e.g., always-leadership-visible even if the cockpit is team-readable)?</li>
+  <li>Are some metrics tier-hidden? (e.g., cash collected hidden from non-leadership viewing the sales cockpit)</li>
+</ol>
+<div class="recommendation"><strong>Recommendation:</strong> Marketing + sales cockpits = leadership-tier read; settings = super_admin write + leadership read. Dictionary tab = inherits cockpit tier (Brandon at leadership needs it). No tier-hidden metrics — if someone can see the cockpit, they see all tiles. Tier-hidden metrics create the same "what does this number mean" surprise we're trying to fix.</div>
+</div>
+
+<div class="decision-card pending">
+<h3 class="dec" id="d5"><span class="num">D5</span>Source / weakness badge inline <span class="tag pending">pending</span> <a class="anchor" href="#d5">#</a></h3>
+<p><strong>Question:</strong> Does every metric tile render an inline source-dot + weakness indicator? Or is that info dictionary-only (accessed via the <code>(i)</code> popover)?</p>
+<div class="recommendation"><strong>Recommendation:</strong> Source dot inline (small colored dot matching <code>SOURCE_COLORS</code> from <code>lib/design-tokens.ts</code>) — gives at-a-glance "this comes from Stripe / GHL / Sheets". Weakness indicator NOT inline — surfaces in the <code>(i)</code> popover when present. Inline weakness would create visual noise on every tile.</div>
+</div>
+
+<div class="decision-card pending">
+<h3 class="dec" id="d6"><span class="num">D6</span>Drill-down behavior <span class="tag pending">pending</span> <a class="anchor" href="#d6">#</a></h3>
+<p><strong>Question:</strong> Clicking a KpiCard does what? Three options:</p>
+<ul>
+  <li>(a) Opens a modal with detail rows + breakdowns</li>
+  <li>(b) Filters the lead/EOD table below to that metric's population (active behavior on marketing today)</li>
+  <li>(c) Navigates to a dedicated metric-detail route</li>
+</ul>
+<div class="recommendation"><strong>Recommendation:</strong> (b) for marketing (already implemented + working), (b) for sales (currently doesn't exist — add). (a) modal adds new surface; (c) navigates away from the cockpit context — both wrong. (b) keeps the drill-down inline and uses the existing detail table real estate.</div>
+</div>
+
+<div class="decision-card pending">
+<h3 class="dec" id="d7"><span class="num">D7</span>Period comparison default <span class="tag pending">pending</span> <a class="anchor" href="#d7">#</a></h3>
+<p><strong>Question:</strong> The pacing rows have a toggle: Goal / Last Mo / 3mo Avg. Which is the default view on first cockpit load?</p>
+<div class="recommendation"><strong>Recommendation:</strong> Goal. The cockpit is for pacing toward a target. Last Mo and 3mo Avg are diagnostic ("am I trending up or down") — secondary. Goal answers "where am I vs where I need to be" — primary. Per [[feedback-usability-over-looking-cool]] the cockpit is operational, not analytical.</div>
+</div>
+
+<div class="decision-card pending">
+<h3 class="dec" id="d8"><span class="num">D8</span>Pacing display selection <span class="tag pending">pending</span> <a class="anchor" href="#d8">#</a></h3>
+<p><strong>Question:</strong> Which tiles get a pacing display, which form (<code>PacingInline</code> vs <code>PacingBar</code>), and which get no pacing at all?</p>
+<div class="recommendation"><strong>Recommendation:</strong> All KPI tiles that have a target (marketing.spend, marketing.leads_booked, sales.cash_collected, sales.cash_contracted, sales.calls_scheduled, sales.close_rate, sales.net_show_rate) get pacing. Use <code>PacingInline</code> (compact, single row, more density) by default — matches your <code>feedback-usability-over-looking-cool</code> + <code>project-comsat-wireframe-lean-mode</code> direction. <code>PacingBar</code> reserved for the dedicated pacing panel if one exists (large hero pacing for headline cash metric).</div>
+</div>
+
+<div class="decision-card pending">
+<h3 class="dec" id="d9"><span class="num">D9</span>Number-correctness contract <span class="tag pending">pending</span> <a class="anchor" href="#d9">#</a></h3>
+<p><strong>Question:</strong> When data is stale, partially-fetched, or a source errored, what does the tile show?</p>
+<ul>
+  <li>(a) Last known value with a stale-indicator badge</li>
+  <li>(b) "—" or "loading" placeholder</li>
+  <li>(c) Last known value with the "as of [timestamp]" updated to show the stale time</li>
+  <li>(d) Silent: show old value, trust the cron</li>
+</ul>
+<div class="recommendation"><strong>Recommendation:</strong> (c). Per rule-28 (no silent failures) the cockpit cannot show old data silently. The "as of" timestamp surfaces stale data naturally — if the cockpit shows "Cash Collected $41K (as of 14h ago)" the user knows the cron broke. Pair with Overseer alerting at the source — Telegram fires when the cron fails, the cockpit just reflects the truth.</div>
+</div>
+
+<div class="decision-card pending">
+<h3 class="dec" id="d10"><span class="num">D10</span>Refresh cadence + "as of" indicator <span class="tag pending">pending</span> <a class="anchor" href="#d10">#</a></h3>
+<p><strong>Question:</strong> Two sub-questions.</p>
+<ol>
+  <li>Server-side refresh on page load only (current behavior), or auto-refresh every N minutes via polling/SWR?</li>
+  <li>"Data as of" indicator — page-level (one timestamp for the whole cockpit) or per-source (separate timestamps for ad data, EOD data, payment data)?</li>
+</ol>
+<div class="recommendation"><strong>Recommendation:</strong> (1) Auto-refresh every 5 minutes on the cockpit page, with a manual "refresh now" button. Current `AutoRefresh` wrapper (30 min) too slow for a live ops dashboard during business hours. (2) Per-source. One indicator per source group at the top of the cockpit (e.g., "Ads: 6h ago · EOD: live · Payments: live"). Looker Studio convention. Surfaces freshness per data class so users know which numbers to trust.</div>
+</div>
+
+<h2 class="section"><span class="num">§3</span>How to use this doc</h2>
+
+<p>For each pending decision (D4–D10): read the recommendation, react, and reply with one of:</p>
+
+<ul>
+  <li><strong>"D4: agree"</strong> — recommendation locks, gets written to <code>_meta.csv</code> on the Sheet</li>
+  <li><strong>"D4: change to X"</strong> — your version locks, written to <code>_meta.csv</code></li>
+  <li><strong>"D4: needs more thought"</strong> — stays pending, but flag what additional info you need</li>
+</ul>
+
+<p>D1–D3 are research-locked, but flag if you disagree with D3 (the Trello → Linear contradiction).</p>
+
+<p>Once all 10 are resolved, the cockpit-canon v2 plan gets revised against this lock list + the constraints doc + your Figjam map, then build resumes at Phase 1 (rework against the canonical-registry model in <code>metric_definitions</code>).</p>
+
+<footer class="doc">
+Locked &nbsp;<span class="tag locked">locked</span> · Pending &nbsp;<span class="tag pending">pending</span> · Research-driven &nbsp;<span class="tag research">research</span> · Contradicts named benchmark &nbsp;<span class="tag contradicts">contradicts benchmark</span>
+<br><br>
+UX research output: <code>tasks/a54bd61fa3378ec7c.output</code> (Linear / Looker Studio / Amplitude patterns)<br>
+Memory: <code>feedback-standardize-to-industry-best-ux-patterns</code>, <code>feedback-finalize-cockpit-design-before-build</code>
+</footer>
+
+</div>
+</body>
+</html>

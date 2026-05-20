@@ -1,0 +1,22 @@
+key,value,notes
+sheet_id,1h02pdlACInKIBtMhY3YeZex6gBPvdyyqlLTGBVMs6EM,The cockpit metric Sheet (HPFHQ workspace)
+owner,emil@hpf,Primary editor
+co_editors,brandon,Read + comment for sales-side metrics
+downstream_consumers,"metric_definitions table; lib/metrics.generated.ts; cockpit dictionary tab; KpiCard tooltip","Updated via npm run gen:metrics:db after Sheet edits"
+generator_script,scripts/sync-cockpit-metrics-from-sheet.ts,TO BE BUILT — Phase 1 of consolidation plan
+last_sync,N/A,Updated by generator script
+design_decision__tooltip_pattern,click-toggle-amplitude-pattern,RESOLVED 2026-05-20 via UX research. Click (i) icon after label → popover with 4 fields (definition / formula / as-of timestamp / differs-from). Hover is dead for analytics. See share/temp/cockpit-design-decisions/.
+design_decision__period_controls,looker-studio-pattern,RESOLVED 2026-05-20 via UX research. Grouped presets (Rolling/Calendar/Custom) + calendar grid for custom + opt-in comparison period + 'data as of' indicator + URL state.
+design_decision__kanban_filter_sort,linear-pattern,RESOLVED 2026-05-20 via UX research. NOTE: research found Linear better-in-class than Trello (Emil's original benchmark) — inline chip bar (not sidebar) + URL-persistent + separate sort + explicit empty state. Setter Kanban rework target.
+design_decision__visibility_per_tier,TBD,Whether dictionary tab inherits cockpit auth or has own gate.
+design_decision__source_badge_inline,TBD,Whether every tile shows source dot inline OR dictionary-only.
+design_decision__drill_down,TBD,Click KpiCard → modal vs filter vs navigate.
+design_decision__period_comparison_default,TBD,Goal / Last Mo / 3mo Avg — which default.
+design_decision__pacing_display,TBD,Which tiles get PacingInline vs PacingBar vs nothing.
+design_decision__lead_date_column,typeform_submitted_at,Locked per lessons 2026-04-21 (typeform_submitted_at > call_date > created_at).
+design_decision__rename_booked,Leads Booked (by signup date),Locked 2026-05-19.
+design_decision__rename_scheduled,Calls Scheduled (by call date),Locked 2026-05-19.
+design_decision__dedup_eod_showed,deduped on (lead_id call_date),Locked 2026-05-19 — align marketing to sales dedup form.
+design_decision__overseer_scope,monitoring + alerts only,Locked 2026-05-19 — not source-of-truth absorption.
+design_decision__direction,consolidate not rebuild,Locked 2026-05-19.
+design_decision__settings_third_cockpit,YES,Locked 2026-05-20 — /cockpit/settings gets dictionary tab too.

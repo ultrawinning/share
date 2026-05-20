@@ -1,0 +1,55 @@
+enum_name,value,description
+cockpit,marketing,Marketing cockpit (/cockpit/marketing)
+cockpit,sales,Sales cockpit (/cockpit/sales)
+cockpit,settings,Settings cockpit (/cockpit/settings)
+cockpit,closer-workstation,Closer workstation (/closer/[name])
+cockpit,setter-workstation,Setter workstation (/setter/[name])
+cockpit,dialer-workstation,Dialer workstation (/dialer/[name])
+cockpit,ceo,DEAD — /ceo (Phase 5 deletion candidate)
+cockpit,cro,DEAD — /cro (Phase 5 deletion candidate)
+cockpit,legacy-dashboard,DEAD — /dashboard (audit required)
+cockpit,hq-cockpit,DEAD — /hq (audit required)
+cockpit,ccc-cockpit,DEAD — /ccc (audit required)
+cockpit,legacy-sales,DEAD — /sales (audit required)
+cockpit,legacy-marketing,DEAD — /marketing (audit required)
+cockpit,architecture,DEAD — /architecture (audit required)
+cockpit,knowledge,DEAD — /knowledge/people
+cockpit,backend,Not user-facing — cron/table/lib entries
+section,KPI,Top tile strip on cockpit
+section,Funnel,Funnel step row
+section,Pacing,Pacing bar row
+section,Breakdown,Per-X table breakdown (campaign/closer/ad)
+section,Comparison,Yesterday / last-month / 3mo-avg cards
+section,Detail,Row-per-record drill-down table
+section,Target,Target value entered in /cockpit/settings
+section,Definitions,Existing settings METRIC_DEFS surface (deprecating)
+section,Pipeline,Workstation pipeline view (kanban lane counts)
+section,Operational,Alerts / data-quality / reconciliation panels
+section,DEPRECATED,Old / nuke tab
+kind,base,Direct query result (count / sum / row)
+kind,derived,Computed from other metrics via formula
+kind,view,Rendering configuration only — not a value
+unit,$,Currency USD
+unit,%,Percentage 0-100
+unit,#,Count
+unit,x,Ratio / multiplier
+unit,N/A,Non-numeric or view-only
+status,live,Currently displayed on a live cockpit
+status,draft,In progress / not yet shipped
+status,live-deprecating,Live but marked for removal in same PR as replacement
+status,audit-required,Likely dead but needs per-route audit before delete
+status,nuke,Confirmed dead — Phase 5 deletion candidate
+status,KEEP,Backend infra mistakenly suspected dead — confirmed load-bearing
+source_table,leads,leads table (Typeform + GHL + payment webhooks)
+source_table,closer_eod_entries,closer EOD entries (closer fills post-call)
+source_table,setter_eod_entries,setter EOD entries
+source_table,dialer_eod_entries,dialer EOD entries
+source_table,ad_snapshots,daily ad-snapshot rows (ad-snapshot cron writes)
+source_table,cockpit_targets,monthly targets (hand-entered via /cockpit/settings)
+source_table,lead_pipeline,unified kanban pipeline state
+source_table,sales_followup_pipeline,follow-up pipeline state
+source_table,metric_snapshots,snapshot rows written by metric-snapshots cron
+source_table,metric_definitions,canonical metric registry (this Sheet generates rows here)
+source_table,stripe,live Stripe API (not stripe_payments backfill table)
+source_table,fanbasis_payments,Fanbasis payment table
+source_table,NULL,Derived / view — no direct table

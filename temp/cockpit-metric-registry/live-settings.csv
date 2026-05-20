@@ -1,0 +1,16 @@
+metric_id,label,cockpit,section,kind,definition,source_table,timestamp_column,filter,unit,target,differs_from,weakness,status,computed_in,notes
+settings.cash_target_realistic,Cash (Realistic),settings,Target,base,"Realistic monthly cash target. Editable in /cockpit/settings.",cockpit_targets,(year+month),,$,N/A,,Hand-entered.,live,TBD,
+settings.cash_target_min,Cash (Min),settings,Target,base,"Floor monthly cash target.",cockpit_targets,(year+month),,$,N/A,,Hand-entered.,live,TBD,
+settings.cash_target_stretch,Cash (Stretch),settings,Target,base,"Stretch monthly cash target.",cockpit_targets,(year+month),,$,N/A,,Hand-entered.,live,TBD,
+settings.contracted_target,Contracted Target,settings,Target,base,"Monthly contracted value target.",cockpit_targets,(year+month),,$,N/A,,Hand-entered.,live,TBD,
+settings.calls_target,Calls Target,settings,Target,base,"Monthly calls-scheduled target.",cockpit_targets,(year+month),,#,N/A,,Hand-entered.,live,TBD,
+settings.cr_target,Close Rate Target,settings,Target,base,"Monthly close-rate target.",cockpit_targets,(year+month),,%,N/A,,Hand-entered.,live,TBD,
+settings.ad_spend_target,Ad Spend Budget,settings,Target,base,"Monthly ad spend budget.",cockpit_targets,(year+month),,$,9000 default,,Hand-entered. Drives marketing.spend_target.,live,TBD,
+settings.roas_target,ROAS Target,settings,Target,base,"Monthly ROAS target.",cockpit_targets,(year+month),,x,4 default,,Hand-entered. Drives marketing.roas comparison.,live,TBD,
+settings.cost_per_lead_target,Cost Per Lead Target,settings,Target,base,"Monthly cost-per-lead target.",cockpit_targets,(year+month),,$,N/A,,Hand-entered.,live,TBD,
+settings.show_rate_target,Show Rate Target,settings,Target,base,"Monthly fulfillment-side show-rate target.",cockpit_targets,(year+month),,%,70 default,,Hand-entered.,live,TBD,
+settings.total_clients_target,Total Clients Target,settings,Target,base,"Monthly fulfillment total-clients target.",cockpit_targets,(year+month),,#,N/A,,Hand-entered.,live,TBD,
+settings.resign_rate_target,Resign Rate Target,settings,Target,base,"Monthly resign-rate target.",cockpit_targets,(year+month),,%,N/A,,Hand-entered.,live,TBD,
+settings.nps_target,NPS Target,settings,Target,base,"NPS target.",cockpit_targets,(year+month),,#,N/A,,Hand-entered.,live,TBD,
+settings.cost_per_call_target,Cost Per Call Target,settings,Target,base,"Monthly cost-per-call target.",cockpit_targets,(year+month),,$,N/A,,Hand-entered.,live,TBD,
+settings.metric_def_explorer,Metric Definition Explorer,settings,Definitions,view,"Existing collapsible list at /cockpit/settings showing 11 metric defs hand-coded in client.tsx. DEPRECATE in same PR as Sheet/dictionary tab — consume from metric_definitions instead.",N/A,N/A,N/A,N/A,N/A,,"Parallel to metric_definitions table — exactly the divergence the Sheet eliminates.",live-deprecating,TBD,Marked for removal Phase 3 of consolidation plan.

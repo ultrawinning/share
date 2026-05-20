@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cockpit Metric Registry — Sheet Starter</title>
+<style>
+  :root {
+    --ink: #111418; --ink-soft: #4a5260; --ink-faint: #8a93a3;
+    --bg: #ffffff; --bg-soft: #f6f7f9; --bg-code: #f0f2f5;
+    --border: #e3e6eb; --border-strong: #cdd2da;
+    --accent: #1f6feb; --accent-soft: #e7f0ff;
+    --warn-bg: #fff8e6; --warn-border: #f0c95a;
+    --good-bg: #f0faf2; --good-border: #a8d8b0;
+    --bad-bg: #fff0f0; --bad-border: #f0a8a8;
+    --mono: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--sans); color: var(--ink); background: var(--bg); line-height: 1.5; font-size: 14px; }
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 40px 24px 96px; }
+  header.doc { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 32px; }
+  header.doc h1 { font-size: 26px; margin: 0 0 8px; letter-spacing: -0.01em; }
+  header.doc .meta { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); line-height: 1.8; }
+  header.doc .meta strong { color: var(--ink); font-weight: 600; }
+  .toc { background: var(--bg-soft); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 0 0 32px; font-size: 13px; }
+  .toc a { color: var(--ink); text-decoration: none; margin-right: 16px; }
+  .toc a:hover { color: var(--accent); text-decoration: underline; }
+  .schema-card { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 14px 18px; margin: 0 0 32px; border-radius: 0 6px 6px 0; font-size: 13px; }
+  .schema-card strong { display: block; margin-bottom: 4px; }
+  h2.tab { font-size: 18px; margin: 48px 0 8px; padding-top: 12px; border-top: 2px solid var(--ink); }
+  h2.tab .num { color: var(--ink-faint); font-family: var(--mono); font-size: 13px; margin-right: 10px; }
+  .tab-meta { font-size: 12px; color: var(--ink-soft); margin: 0 0 12px; }
+  .tab-meta a { color: var(--accent); text-decoration: none; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; font-family: var(--mono); margin: 0 0 24px; }
+  th, td { text-align: left; vertical-align: top; padding: 6px 8px; border: 1px solid var(--border); }
+  th { background: var(--bg-soft); font-weight: 600; color: var(--ink-soft); font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+  td { word-break: break-word; }
+  td .id { color: var(--accent); }
+  td.def { font-family: var(--sans); font-size: 12px; line-height: 1.45; min-width: 220px; }
+  td.diff { font-family: var(--sans); font-size: 12px; line-height: 1.45; min-width: 240px; color: var(--ink-soft); }
+  td.label { font-weight: 600; min-width: 180px; }
+  .scroll-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 6px; margin: 0 0 24px; }
+  .status-live { color: #2e6a3d; }
+  .status-nuke { color: #a13030; }
+  .status-audit { color: #8a6700; }
+  .status-keep { color: #1f4f9e; }
+  .status-draft { color: var(--ink-faint); font-style: italic; }
+  footer.doc { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 12px; color: var(--ink-faint); line-height: 1.7; }
+  a.csv { font-family: var(--mono); font-size: 12px; color: var(--accent); text-decoration: none; border-bottom: 1px solid #bdd4f3; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="doc">
+  <h1>Cockpit Metric Registry — Sheet Starter</h1>
+  <div class="meta">
+    <strong>Target Sheet</strong> &nbsp;<a class="csv" href="https://docs.google.com/spreadsheets/d/1h02pdlACInKIBtMhY3YeZex6gBPvdyyqlLTGBVMs6EM/edit">1h02pdlACInKIBtMhY3YeZex6gBPvdyyqlLTGBVMs6EM</a><br>
+    <strong>Pattern</strong> &nbsp;Librarian three-surface — Sheet = edit · <code>metric_definitions</code> table = consume · cockpit dictionary tab = view<br>
+    <strong>Companion</strong> &nbsp;<a class="csv" href="../cockpit-canon-constraints/">constraints doc</a> &nbsp;·&nbsp; <a class="csv" href="../cockpit-design-decisions/">design-decisions doc</a><br>
+    <strong>Import</strong> &nbsp;In the Sheet, for each tab: <code>File → Import → Upload</code> → pick the CSV → "Replace current sheet" / "Append rows" → set "Convert text to numbers, dates, formulas" OFF (preserves the schema fields exactly)
+  </div>
+</header>
+
+<nav class="toc">
+  Jump to:
+  <a href="#schema">Schema</a>
+  <a href="#t1">Live — Marketing</a>
+  <a href="#t2">Live — Sales</a>
+  <a href="#t3">Live — Settings</a>
+  <a href="#t4">Workstation (draft)</a>
+  <a href="#t5">Old / Nuke</a>
+  <a href="#t6">Lookups</a>
+  <a href="#t7">_meta</a>
+</nav>
+
+<div id="schema" class="schema-card">
+  <strong>Column schema (15 fields per row)</strong>
+  <code>metric_id</code> · <code>label</code> · <code>cockpit</code> · <code>section</code> · <code>kind</code> · <code>definition</code> · <code>source_table</code> · <code>timestamp_column</code> · <code>filter</code> · <code>unit</code> · <code>target</code> · <code>differs_from</code> · <code>weakness</code> · <code>status</code> · <code>computed_in</code> · <code>notes</code>
+  <br><br>
+  <code>differs_from</code> format: <code>other_metric_id::reason; other_metric_id::reason</code>
+</div>
+
+<h2 class="tab" id="t1"><span class="num">Tab 1</span>Live — Marketing</h2>
+<p class="tab-meta">16 metrics · <a class="csv" href="live-marketing.csv">download live-marketing.csv</a></p>
+<div class="scroll-wrap"><table>
+<thead><tr>
+<th>metric_id</th><th>label</th><th>section</th><th>kind</th><th>definition</th><th>source_table</th><th>timestamp_column</th><th>filter</th><th>unit</th><th>differs_from</th><th>weakness</th><th>status</th>
+</tr></thead>
+<tbody>
+<tr><td><span class="id">marketing.spend</span></td><td class="label">Ad Spend</td><td>KPI</td><td>base</td><td class="def">Total ad spend in the period across all paid platforms (Meta primary).</td><td>ad_snapshots</td><td>snapshot_date</td><td>—</td><td>$</td><td>—</td><td>ad_snapshots cron lags up to 24h. Pre-2026-03-30 UTM unreliable.</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">marketing.leads</span></td><td class="label">Leads</td><td>KPI</td><td>base</td><td class="def">Total leads in the period — every Typeform application that produced a leads row.</td><td>leads</td><td>typeform_submitted_at</td><td>—</td><td>#</td><td>—</td><td>Currently bucketed by created_at in code (Phase 2 migration fixes per lessons 2026-04-21). 1000-row cap currently truncates.</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">marketing.leads_qualified</span></td><td class="label">Qualified Leads</td><td>KPI</td><td>base</td><td class="def">Leads meeting qualification criteria (income, fitness goal, decision-maker).</td><td>leads</td><td>typeform_submitted_at</td><td>qualified=true</td><td>#</td><td class="diff">marketing.leads :: qualified is a subset filter on same population</td><td>Rule lives in lib/marketing/qualification.ts.</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">marketing.leads_booked</span></td><td class="label">Leads Booked (by signup date)</td><td>KPI</td><td>base</td><td class="def">Leads that booked a call — counts leads.booked=true bucketed by the date the lead signed up.</td><td>leads</td><td>typeform_submitted_at</td><td>booked=true</td><td>#</td><td class="diff">sales.calls_scheduled :: Sales buckets by call_date (when call is FOR), deduped, ex-reschedules. This buckets by signup date. May 28 signup with June 3 call = May here, June there.</td><td>Retro-set rule: booked also flipped true if lead shows/closes (includes direct DM closes).</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">marketing.leads_paid</span></td><td class="label">Paid Leads</td><td>KPI</td><td>base</td><td class="def">Leads from paid traffic sources (Meta etc).</td><td>leads</td><td>typeform_submitted_at</td><td>is_paid=true</td><td>#</td><td>—</td><td>UTM-source-based via lib/utils.ts:isPaidTraffic().</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">marketing.eod_showed</span></td><td class="label">Showed</td><td>Funnel</td><td>base</td><td class="def">Closer EOD entries with status=showed in period (deduped on lead_id+call_date).</td><td>closer_eod_entries</td><td>call_date</td><td>status='showed'</td><td>#</td><td class="diff">sales.calls_taken :: same underlying query (deduped)</td><td>Pre-Phase-2 was un-deduped on marketing side. Current MTD window: no dupes (38=38).</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">marketing.cost_per_lead</span></td><td class="label">Cost Per Lead</td><td>KPI</td><td>derived</td><td class="def">Total ad spend divided by total leads in the period.</td><td>—</td><td>—</td><td>marketing.spend / marketing.leads</td><td>$</td><td>—</td><td>Sensitive to pre-2026-03-30 UTM reliability boundary.</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">marketing.roas</span></td><td class="label">True ROAS</td><td>KPI</td><td>derived</td><td class="def">Payment-verified cash from paid leads divided by Meta ad spend.</td><td>—</td><td>—</td><td>sum(leads.is_paid AND leads.cash_collected) / marketing.spend</td><td>x</td><td>—</td><td>Only includes paid-traffic leads. Direct + organic excluded by design.</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">marketing.cost_per_call</span></td><td class="label">Cost Per Call</td><td>KPI</td><td>derived</td><td class="def">Ad spend divided by calls booked from paid leads.</td><td>—</td><td>—</td><td>marketing.spend / count(leads is_paid AND booked)</td><td>$</td><td>—</td><td>Excludes calls from organic / direct.</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">marketing.spend_target</span></td><td class="label">Ad Spend Target</td><td>Pacing</td><td>base</td><td class="def">Monthly ad spend budget set in /cockpit/settings.</td><td>cockpit_targets</td><td>(year+month)</td><td>—</td><td>$</td><td>—</td><td>Hand-entered monthly. Default $9000.</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">marketing.leads_target</span></td><td class="label">Leads Target</td><td>Pacing</td><td>derived</td><td class="def">Implied target — last month's leads OR 3mo avg if no explicit target.</td><td>—</td><td>—</td><td>lastMonth.leads OR avg3mo.leads</td><td>#</td><td>—</td><td>No explicit target field — derived from history.</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">marketing.booked_target</span></td><td class="label">Booked Target</td><td>Pacing</td><td>derived</td><td class="def">Implied booked target — last month's booked OR 3mo avg.</td><td>—</td><td>—</td><td>lastMonth.booked OR avg3mo.booked</td><td>#</td><td>—</td><td>Same pattern as leads_target.</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">marketing.qualified_target</span></td><td class="label">Qualified Target</td><td>Pacing</td><td>derived</td><td class="def">Implied qualified target — last month's qualified OR 3mo avg.</td><td>—</td><td>—</td><td>lastMonth.qualified OR avg3mo.qualified</td><td>#</td><td>—</td><td>Same pattern.</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">marketing.per_campaign_breakdown</span></td><td class="label">Per-Campaign Breakdown</td><td>Breakdown</td><td>view</td><td class="def">Spend / leads / booked / closed / cash grouped by campaign_name.</td><td>ad_snapshots</td><td>snapshot_date</td><td>GROUP BY campaign_name</td><td>#</td><td>—</td><td>Campaign-name based; rename mid-period splits rows.</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">marketing.per_ad_breakdown</span></td><td class="label">Per-Ad Breakdown</td><td>Breakdown</td><td>view</td><td class="def">Spend / leads / booked / closed / cash grouped by ad_id within campaign.</td><td>ad_snapshots</td><td>snapshot_date</td><td>GROUP BY ad_id</td><td>#</td><td>—</td><td>Same rename concern.</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">marketing.lead_detail_table</span></td><td class="label">Lead Detail Table</td><td>Detail</td><td>view</td><td class="def">Row-per-lead table at bottom — name, source, badges. Drill-down + qualifying surface.</td><td>leads</td><td>typeform_submitted_at</td><td>(funnelFilter applied)</td><td>—</td><td>—</td><td>Hits 1000-row Supabase cap. Phase 2 fixes via paginateAll().</td><td class="status-live">live</td></tr>
+</tbody></table></div>
+
+<h2 class="tab" id="t2"><span class="num">Tab 2</span>Live — Sales</h2>
+<p class="tab-meta">16 metrics · <a class="csv" href="live-sales.csv">download live-sales.csv</a></p>
+<div class="scroll-wrap"><table>
+<thead><tr>
+<th>metric_id</th><th>label</th><th>section</th><th>kind</th><th>definition</th><th>source_table</th><th>timestamp_column</th><th>filter</th><th>unit</th><th>differs_from</th><th>weakness</th><th>status</th>
+</tr></thead>
+<tbody>
+<tr><td><span class="id">sales.calls_scheduled</span></td><td class="label">Calls Scheduled (by call date)</td><td>KPI</td><td>base</td><td class="def">Pure pre-cancellation count of calls on closer calendar — every EOD entry except rescheduled. Deduped on lead_id+call_date.</td><td>closer_eod_entries</td><td>call_date</td><td>status != 'rescheduled', deduped</td><td>#</td><td class="diff">marketing.leads_booked :: Marketing counts leads.booked=true by signup date. This counts EOD entries by call_date (when call is FOR).</td><td>Requires closer EOD submission. Future-period scheduled calls only count post-EOD.</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">sales.cancelled</span></td><td class="label">Cancelled</td><td>Funnel</td><td>base</td><td class="def">EOD entries with status=cancelled in period.</td><td>closer_eod_entries</td><td>call_date</td><td>status='cancelled'</td><td>#</td><td>—</td><td>Marked by closer at EOD-fill time.</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">sales.no_shows</span></td><td class="label">No-Shows</td><td>Funnel</td><td>base</td><td class="def">EOD entries with status=no_show in period.</td><td>closer_eod_entries</td><td>call_date</td><td>status='no_show'</td><td>#</td><td>—</td><td>—</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">sales.quick_dqs</span></td><td class="label">Quick DQs</td><td>Funnel</td><td>base</td><td class="def">EOD entries with status=quick_dq — prospect DQ'd within first few minutes.</td><td>closer_eod_entries</td><td>call_date</td><td>status='quick_dq'</td><td>#</td><td>—</td><td>Reason in dq_reason field.</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">sales.calls_taken</span></td><td class="label">Calls Taken</td><td>KPI</td><td>base</td><td class="def">EOD entries with status=showed — actual conversations that happened.</td><td>closer_eod_entries</td><td>call_date</td><td>status='showed'</td><td>#</td><td class="diff">marketing.eod_showed :: same underlying query (deduped)</td><td>—</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">sales.closes</span></td><td class="label">Closes</td><td>KPI</td><td>base</td><td class="def">Successful sales — EOD outcome=closed UNION payment-confirmed leads (dedup by lead_id). Payment SoT bridges follow-up closes.</td><td>closer_eod_entries + leads</td><td>call_date + closed_at</td><td>outcome='closed' OR leads.closed=true</td><td>#</td><td>—</td><td>Includes follow-up closes even with no EOD filed.</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">sales.cash_collected</span></td><td class="label">Cash Collected</td><td>KPI</td><td>base</td><td class="def">Sum of revenue from EOD-closed calls + payment-confirmed leads. Live Stripe API (not backfill table).</td><td>closer_eod_entries + leads + stripe</td><td>call_date + closed_at</td><td>outcome='closed'</td><td>$</td><td>—</td><td>LB90 product excluded by description regex (CLAUDE.md §Sales-data §4).</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">sales.cash_contracted</span></td><td class="label">Cash Contracted</td><td>KPI</td><td>base</td><td class="def">Sum of contracted value (full deal size pre-payment-plan).</td><td>closer_eod_entries + leads</td><td>call_date + closed_at</td><td>outcome='closed'</td><td>$</td><td>—</td><td>NOT totalCashContracted (non-number — CLAUDE.md §Sales-data §3).</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">sales.net_show_rate</span></td><td class="label">Net Show Rate</td><td>KPI</td><td>derived</td><td class="def">Calls taken divided by callable (scheduled - cancelled).</td><td>—</td><td>—</td><td>sales.calls_taken / (sales.calls_scheduled - sales.cancelled)</td><td>%</td><td>—</td><td>High cancel volume inflates denominator-adjusted rate.</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">sales.close_rate</span></td><td class="label">Close Rate</td><td>KPI</td><td>derived</td><td class="def">Closes divided by calls taken. Includes follow-up closes.</td><td>—</td><td>—</td><td>sales.closes / sales.calls_taken</td><td>%</td><td>—</td><td>—</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">sales.cancel_rate</span></td><td class="label">Cancel Rate</td><td>KPI</td><td>derived</td><td class="def">Cancellations divided by scheduled.</td><td>—</td><td>—</td><td>sales.cancelled / sales.calls_scheduled</td><td>%</td><td>—</td><td>—</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">sales.per_closer_breakdown</span></td><td class="label">Per-Closer Breakdown</td><td>Breakdown</td><td>view</td><td class="def">Scheduled / showed / closes / close_rate / cash / contracted grouped by closer_name. Sort: closes desc, cash desc.</td><td>closer_eod_entries</td><td>call_date</td><td>GROUP BY closer_name</td><td>—</td><td>—</td><td>Closer-name string-matched. normalizeCloserName() for payment merge.</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">sales.yesterday_snapshot</span></td><td class="label">Yesterday Snapshot</td><td>Comparison</td><td>view</td><td class="def">Yesterday's scheduled / taken / cash — day-over-day movement.</td><td>closer_eod_entries</td><td>call_date</td><td>call_date = yesterday</td><td>—</td><td>—</td><td>—</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">sales.last_month_card</span></td><td class="label">Last Month Card</td><td>Comparison</td><td>view</td><td class="def">Prior-period actuals across all KPIs. Toggle on pacing rows.</td><td>closer_eod_entries + leads</td><td>call_date + closed_at</td><td>prior month</td><td>—</td><td>—</td><td>—</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">sales.three_month_avg_card</span></td><td class="label">3-Month Avg Card</td><td>Comparison</td><td>view</td><td class="def">Trailing 3-month average across all KPIs.</td><td>closer_eod_entries + leads</td><td>call_date + closed_at</td><td>prior 3 months</td><td>—</td><td>—</td><td>Zero-data months bias the average.</td><td class="status-live">live</td></tr>
+<tr><td><span class="id">sales.missing_eod_alerts</span></td><td class="label">Missing EOD Alerts</td><td>Operational</td><td>view</td><td class="def">Closes from payment confirmation with NO matching EOD — flags closers who didn't file EOD.</td><td>leads + closer_eod_entries</td><td>closed_at</td><td>closed=true AND no EOD lead_id match</td><td>—</td><td>—</td><td>—</td><td class="status-live">live</td></tr>
+</tbody></table></div>
+
+<h2 class="tab" id="t3"><span class="num">Tab 3</span>Live — Settings</h2>
+<p class="tab-meta">15 metrics · <a class="csv" href="live-settings.csv">download live-settings.csv</a></p>
+<div class="scroll-wrap"><table>
+<thead><tr>
+<th>metric_id</th><th>label</th><th>section</th><th>kind</th><th>definition</th><th>unit</th><th>notes</th>
+</tr></thead>
+<tbody>
+<tr><td><span class="id">settings.cash_target_realistic</span></td><td class="label">Cash (Realistic)</td><td>Target</td><td>base</td><td class="def">Realistic monthly cash target.</td><td>$</td><td>Hand-entered.</td></tr>
+<tr><td><span class="id">settings.cash_target_min</span></td><td class="label">Cash (Min)</td><td>Target</td><td>base</td><td class="def">Floor monthly cash target.</td><td>$</td><td>Hand-entered.</td></tr>
+<tr><td><span class="id">settings.cash_target_stretch</span></td><td class="label">Cash (Stretch)</td><td>Target</td><td>base</td><td class="def">Stretch monthly cash target.</td><td>$</td><td>Hand-entered.</td></tr>
+<tr><td><span class="id">settings.contracted_target</span></td><td class="label">Contracted Target</td><td>Target</td><td>base</td><td class="def">Monthly contracted value target.</td><td>$</td><td>Hand-entered.</td></tr>
+<tr><td><span class="id">settings.calls_target</span></td><td class="label">Calls Target</td><td>Target</td><td>base</td><td class="def">Monthly calls-scheduled target.</td><td>#</td><td>Hand-entered.</td></tr>
+<tr><td><span class="id">settings.cr_target</span></td><td class="label">Close Rate Target</td><td>Target</td><td>base</td><td class="def">Monthly close-rate target.</td><td>%</td><td>Hand-entered.</td></tr>
+<tr><td><span class="id">settings.ad_spend_target</span></td><td class="label">Ad Spend Budget</td><td>Target</td><td>base</td><td class="def">Monthly ad spend budget. Drives marketing.spend_target.</td><td>$</td><td>Default $9000.</td></tr>
+<tr><td><span class="id">settings.roas_target</span></td><td class="label">ROAS Target</td><td>Target</td><td>base</td><td class="def">Monthly ROAS target. Drives marketing.roas comparison.</td><td>x</td><td>Default 4.</td></tr>
+<tr><td><span class="id">settings.cost_per_lead_target</span></td><td class="label">Cost Per Lead Target</td><td>Target</td><td>base</td><td class="def">Monthly CPL target.</td><td>$</td><td>Hand-entered.</td></tr>
+<tr><td><span class="id">settings.show_rate_target</span></td><td class="label">Show Rate Target</td><td>Target</td><td>base</td><td class="def">Fulfillment-side show-rate target.</td><td>%</td><td>Default 70.</td></tr>
+<tr><td><span class="id">settings.total_clients_target</span></td><td class="label">Total Clients Target</td><td>Target</td><td>base</td><td class="def">Monthly total-clients target.</td><td>#</td><td>Hand-entered.</td></tr>
+<tr><td><span class="id">settings.resign_rate_target</span></td><td class="label">Resign Rate Target</td><td>Target</td><td>base</td><td class="def">Monthly resign-rate target.</td><td>%</td><td>Hand-entered.</td></tr>
+<tr><td><span class="id">settings.nps_target</span></td><td class="label">NPS Target</td><td>Target</td><td>base</td><td class="def">NPS target.</td><td>#</td><td>Hand-entered.</td></tr>
+<tr><td><span class="id">settings.cost_per_call_target</span></td><td class="label">Cost Per Call Target</td><td>Target</td><td>base</td><td class="def">Monthly cost-per-call target.</td><td>$</td><td>Hand-entered.</td></tr>
+<tr><td><span class="id">settings.metric_def_explorer</span></td><td class="label">Metric Definition Explorer</td><td>Definitions</td><td>view</td><td class="def">Existing 11-entry METRIC_DEFS surface in client.tsx. Deprecates in same PR as Sheet/dictionary tab.</td><td>—</td><td>Parallel to metric_definitions table — divergence the Sheet eliminates.</td></tr>
+</tbody></table></div>
+
+<h2 class="tab" id="t4"><span class="num">Tab 4</span>Workstation <span style="font-size:13px;color:var(--ink-faint);font-weight:400;">— draft stubs, out of v2 scope</span></h2>
+<p class="tab-meta">8 stub rows · <a class="csv" href="workstation.csv">download workstation.csv</a> · Pre-populated for future rollout phase.</p>
+<div class="scroll-wrap"><table>
+<thead><tr><th>metric_id</th><th>label</th><th>cockpit</th><th>section</th><th>definition</th><th>status</th></tr></thead>
+<tbody>
+<tr><td><span class="id">closer.todays_calls</span></td><td class="label">Today's Calls</td><td>closer-workstation</td><td>KPI</td><td class="def">Calls on closer's calendar today.</td><td class="status-draft">draft-stub</td></tr>
+<tr><td><span class="id">closer.mtd_calls</span></td><td class="label">MTD Calls</td><td>closer-workstation</td><td>KPI</td><td class="def">Closer's MTD scheduled/taken/closed.</td><td class="status-draft">draft-stub</td></tr>
+<tr><td><span class="id">closer.followup_pipeline</span></td><td class="label">Follow-Up Pipeline</td><td>closer-workstation</td><td>Pipeline</td><td class="def">Leads in closer's follow-up pipeline.</td><td class="status-draft">draft-stub</td></tr>
+<tr><td><span class="id">setter.kanban_lanes</span></td><td class="label">Kanban Lane Counts</td><td>setter-workstation</td><td>Pipeline</td><td class="def">Lead counts per kanban lane. <em>Filter+sort UX rework queued — Linear pattern per UX research.</em></td><td class="status-draft">draft-stub</td></tr>
+<tr><td><span class="id">setter.todays_inbox</span></td><td class="label">Today's Inbox</td><td>setter-workstation</td><td>KPI</td><td class="def">New leads received today.</td><td class="status-draft">draft-stub</td></tr>
+<tr><td><span class="id">setter.mtd_booked</span></td><td class="label">MTD Setter Booked</td><td>setter-workstation</td><td>KPI</td><td class="def">Setter's MTD bookings.</td><td class="status-draft">draft-stub</td></tr>
+<tr><td><span class="id">dialer.kanban_lanes</span></td><td class="label">Dialer Kanban Lane Counts</td><td>dialer-workstation</td><td>Pipeline</td><td class="def">Lead counts per dialer kanban lane.</td><td class="status-draft">draft-stub</td></tr>
+<tr><td><span class="id">dialer.todays_dials</span></td><td class="label">Today's Dials</td><td>dialer-workstation</td><td>KPI</td><td class="def">Dial attempts today.</td><td class="status-draft">draft-stub</td></tr>
+</tbody></table></div>
+
+<h2 class="tab" id="t5"><span class="num">Tab 5</span>Old / Nuke</h2>
+<p class="tab-meta">13 entries · <a class="csv" href="old-nuke.csv">download old-nuke.csv</a> · Retirement queue + KEEP markers for backend that LOOKS dead but isn't.</p>
+<div class="scroll-wrap"><table>
+<thead><tr><th>metric_id</th><th>label</th><th>cockpit</th><th>definition</th><th>status</th></tr></thead>
+<tbody>
+<tr><td><span class="id">ceo.* (all)</span></td><td class="label">All /ceo metrics</td><td>ceo</td><td class="def">Zero inbound hrefs. PlaceholderCard sections shipped broken.</td><td class="status-nuke">nuke</td></tr>
+<tr><td><span class="id">cro.* (all)</span></td><td class="label">All /cro metrics</td><td>cro</td><td class="def">Zero inbound hrefs. Broken PlaceholderCard stubs with hardcoded error messages.</td><td class="status-nuke">nuke</td></tr>
+<tr><td><span class="id">dashboard.* (legacy)</span></td><td class="label">Legacy /dashboard metrics</td><td>legacy-dashboard</td><td class="def">Still in leadership nav. Reads metric_definitions via /api/dashboard.</td><td class="status-audit">audit-required</td></tr>
+<tr><td><span class="id">hq.* (cockpit)</span></td><td class="label">/hq cockpit metrics</td><td>hq-cockpit</td><td class="def">Surface may be dead but reads metric_snapshots which is alive.</td><td class="status-audit">audit-required</td></tr>
+<tr><td><span class="id">ccc.* (cockpit)</span></td><td class="label">/ccc cockpit metrics</td><td>ccc-cockpit</td><td class="def">Codex Cockpit Console. Recent commits mechanical-only. Verify Emil usage.</td><td class="status-audit">audit-required</td></tr>
+<tr><td><span class="id">sales.legacy_page</span></td><td class="label">Legacy /sales page</td><td>legacy-sales</td><td class="def">Pre-cockpit. Last commit was design-token refactor.</td><td class="status-audit">audit-required</td></tr>
+<tr><td><span class="id">marketing.legacy_page</span></td><td class="label">Legacy /marketing page</td><td>legacy-marketing</td><td class="def">Pre-cockpit. Last commit was design-token refactor.</td><td class="status-audit">audit-required</td></tr>
+<tr><td><span class="id">architecture.page</span></td><td class="label">/architecture page</td><td>architecture</td><td class="def">In Tools nav. Codex-migration commits only.</td><td class="status-audit">audit-required</td></tr>
+<tr><td><span class="id">knowledge.people</span></td><td class="label">/knowledge/people</td><td>knowledge</td><td class="def">No nav entry. No inbound hrefs anywhere.</td><td class="status-nuke">nuke</td></tr>
+<tr><td><span class="id">api.closers</span></td><td class="label">/api/closers route</td><td>api-deprecated</td><td class="def">Registry-flagged deprecated. Superseded by /api/sales/closers.</td><td class="status-nuke">nuke</td></tr>
+<tr><td><span class="id">metric_snapshots.cron</span></td><td class="label">metric-snapshots cron</td><td>backend</td><td class="def">Feeds Morning Prep, scorecard, hub key-metrics, daily-summary, Nova. LOAD-BEARING.</td><td class="status-keep">KEEP</td></tr>
+<tr><td><span class="id">metric_definitions.table</span></td><td class="label">metric_definitions table</td><td>backend</td><td class="def">Canonical metric registry per CLAUDE.md. Read by Nova vocabulary + 10+ consumers.</td><td class="status-keep">KEEP</td></tr>
+<tr><td><span class="id">lib.metric_sources</span></td><td class="label">lib/metric-sources.ts</td><td>backend</td><td class="def">Severity-critical. Single dispatch point for /api/ceo + metric-snapshots cron.</td><td class="status-keep">KEEP</td></tr>
+</tbody></table></div>
+
+<h2 class="tab" id="t6"><span class="num">Tab 6</span>Lookups</h2>
+<p class="tab-meta">enum reference · <a class="csv" href="lookups.csv">download lookups.csv</a></p>
+<div class="scroll-wrap"><table>
+<thead><tr><th>enum_name</th><th>value</th><th>description</th></tr></thead>
+<tbody>
+<tr><td>cockpit</td><td>marketing / sales / settings</td><td>Live cockpit surfaces</td></tr>
+<tr><td>cockpit</td><td>{closer,setter,dialer}-workstation</td><td>Workstation surfaces (out of v2 scope, populated for future)</td></tr>
+<tr><td>cockpit</td><td>ceo / cro / legacy-* / hq / ccc / architecture / knowledge</td><td>DEAD or audit-required</td></tr>
+<tr><td>cockpit</td><td>backend</td><td>Non-UI infrastructure rows</td></tr>
+<tr><td>section</td><td>KPI / Funnel / Pacing / Breakdown / Comparison / Detail / Target / Definitions / Pipeline / Operational / DEPRECATED</td><td>Section within cockpit</td></tr>
+<tr><td>kind</td><td>base / derived / view</td><td>Per metric_definitions schema</td></tr>
+<tr><td>unit</td><td>$ / % / # / x / N/A</td><td>Display unit</td></tr>
+<tr><td>status</td><td>live / draft / live-deprecating / audit-required / nuke / KEEP</td><td>Row state</td></tr>
+<tr><td>source_table</td><td>leads / closer_eod_entries / setter_eod_entries / dialer_eod_entries / ad_snapshots / cockpit_targets / lead_pipeline / sales_followup_pipeline / metric_snapshots / metric_definitions / stripe / fanbasis_payments / NULL</td><td>Canonical data source</td></tr>
+</tbody></table></div>
+
+<h2 class="tab" id="t7"><span class="num">Tab 7</span>_meta</h2>
+<p class="tab-meta">frontmatter + design decisions log · <a class="csv" href="_meta.csv">download _meta.csv</a></p>
+<div class="scroll-wrap"><table>
+<thead><tr><th>key</th><th>value</th><th>notes</th></tr></thead>
+<tbody>
+<tr><td>sheet_id</td><td>1h02pdlACInKIBtMhY3YeZex6gBPvdyyqlLTGBVMs6EM</td><td>The cockpit metric Sheet (HPFHQ workspace)</td></tr>
+<tr><td>owner</td><td>emil@hpf</td><td>Primary editor</td></tr>
+<tr><td>co_editors</td><td>brandon</td><td>Read + comment for sales-side metrics</td></tr>
+<tr><td>downstream_consumers</td><td>metric_definitions table; lib/metrics.generated.ts; cockpit dictionary tab; KpiCard tooltip</td><td>Updated via npm run gen:metrics:db after Sheet edits</td></tr>
+<tr><td>generator_script</td><td>scripts/sync-cockpit-metrics-from-sheet.ts</td><td>TO BE BUILT — Phase 1 of consolidation plan</td></tr>
+<tr><td>design_decision__tooltip_pattern</td><td>click-toggle-amplitude-pattern</td><td>RESOLVED 2026-05-20 via UX research. Click (i) icon → popover with 4 fields.</td></tr>
+<tr><td>design_decision__period_controls</td><td>looker-studio-pattern</td><td>RESOLVED 2026-05-20 via UX research. Grouped presets + calendar grid + opt-in comparison.</td></tr>
+<tr><td>design_decision__kanban_filter_sort</td><td>linear-pattern</td><td>RESOLVED 2026-05-20 — NOTE: Linear better than Trello per research. Setter Kanban rework target.</td></tr>
+<tr><td>design_decision__lead_date_column</td><td>typeform_submitted_at</td><td>Locked per lessons 2026-04-21.</td></tr>
+<tr><td>design_decision__rename_booked</td><td>Leads Booked (by signup date)</td><td>Locked 2026-05-19.</td></tr>
+<tr><td>design_decision__rename_scheduled</td><td>Calls Scheduled (by call date)</td><td>Locked 2026-05-19.</td></tr>
+<tr><td>design_decision__dedup_eod_showed</td><td>deduped on (lead_id, call_date)</td><td>Locked 2026-05-19 — align marketing to sales dedup form.</td></tr>
+<tr><td>design_decision__overseer_scope</td><td>monitoring + alerts only</td><td>Locked 2026-05-19.</td></tr>
+<tr><td>design_decision__direction</td><td>consolidate not rebuild</td><td>Locked 2026-05-19.</td></tr>
+<tr><td>design_decision__settings_third_cockpit</td><td>YES</td><td>Locked 2026-05-20 — /cockpit/settings gets dictionary tab too.</td></tr>
+<tr><td>design_decision__visibility_per_tier</td><td>TBD</td><td>D4 in design-decisions doc — awaiting Emil.</td></tr>
+<tr><td>design_decision__source_badge_inline</td><td>TBD</td><td>D5 — awaiting Emil.</td></tr>
+<tr><td>design_decision__drill_down</td><td>TBD</td><td>D6 — awaiting Emil.</td></tr>
+<tr><td>design_decision__period_comparison_default</td><td>TBD</td><td>D7 — awaiting Emil.</td></tr>
+<tr><td>design_decision__pacing_display</td><td>TBD</td><td>D8 — awaiting Emil.</td></tr>
+<tr><td>design_decision__number_correctness_contract</td><td>TBD</td><td>D9 — awaiting Emil.</td></tr>
+<tr><td>design_decision__refresh_cadence</td><td>TBD</td><td>D10 — awaiting Emil.</td></tr>
+</tbody></table></div>
+
+<footer class="doc">
+Status legend &nbsp;<span class="status-live">live</span> · <span class="status-draft">draft-stub</span> · <span class="status-audit">audit-required</span> · <span class="status-nuke">nuke</span> · <span class="status-keep">KEEP (load-bearing)</span>
+<br><br>
+CSV files for import: <a class="csv" href="live-marketing.csv">live-marketing.csv</a> · <a class="csv" href="live-sales.csv">live-sales.csv</a> · <a class="csv" href="live-settings.csv">live-settings.csv</a> · <a class="csv" href="workstation.csv">workstation.csv</a> · <a class="csv" href="old-nuke.csv">old-nuke.csv</a> · <a class="csv" href="lookups.csv">lookups.csv</a> · <a class="csv" href="_meta.csv">_meta.csv</a>
+</footer>
+
+</div>
+</body>
+</html>
