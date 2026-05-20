@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nexus + COMSAT Lean — Wireframes</title>
+  <title>Nexus + COMSAT — Wireframes v2</title>
   <style>
     :root {
       --ink: #1a1a1a;
@@ -11,22 +11,34 @@
       --ink-faint: #999;
       --paper: #fafaf7;
       --rule: #d8d4cc;
-      --accent: #d35400;
       --muted: #e8e6df;
       --muted-bg: #f0eee7;
+
+      /* Status dots */
+      --dot-orange: #ff8c2a;
+      --dot-yellow: #f5c423;
+      --dot-green:  #2ed47a;
+
+      /* Workspace colors (shown across both apps) */
+      --ws-overmind:  #d35400;  /* copper — HPFHQ project workspace */
+      --ws-hpfhq:     #008b8b;  /* teal */
+      --ws-debugs:    #6b7280;  /* gray */
+      --ws-scratch:   #d4a017;  /* yellow ochre */
+      --ws-bite:      #228b22;  /* green */
+      --ws-medus:     #6c3baa;  /* purple */
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink);
       font-family: -apple-system, "SF Pro Text", "Helvetica Neue", sans-serif;
       font-size: 15px; line-height: 1.5;
     }
-    header {
+    header.page {
       position: sticky; top: 0; z-index: 10;
       background: var(--paper); border-bottom: 1px solid var(--rule);
       padding: 16px 24px;
     }
-    header h1 { margin: 0 0 6px 0; font-size: 18px; font-weight: 600; }
-    header .meta { color: var(--ink-soft); font-size: 13px; margin-bottom: 10px; }
+    header.page h1 { margin: 0 0 6px 0; font-size: 18px; font-weight: 600; }
+    header.page .meta { color: var(--ink-soft); font-size: 13px; margin-bottom: 10px; }
     nav { display: flex; flex-wrap: wrap; gap: 12px; font-size: 13px; }
     nav a { color: var(--ink); text-decoration: none; padding: 4px 10px;
       border: 1px solid var(--rule); border-radius: 4px; background: white;
@@ -41,105 +53,173 @@
     .row { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
     .col { flex: 1; min-width: 280px; }
     .annotation { font-size: 12px; color: var(--ink-soft); margin-top: 8px; font-style: italic; }
+    .changed { background: #fffbe5; border-left: 3px solid var(--dot-yellow); padding: 4px 10px; font-size: 12px; }
+    code { font-family: ui-monospace, "SF Mono", monospace; background: var(--muted-bg); padding: 1px 4px; border-radius: 3px; font-size: 90%; }
 
-    /* Wireframe primitives ----- */
-    .frame {
-      background: white; border: 1.5px solid var(--ink);
-      padding: 0; border-radius: 6px; overflow: hidden;
-      box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+    /* ---------- Status dots ---------- */
+    .dot {
+      width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0;
+      background: var(--rule);
     }
-    .frame > header.frame-bar {
-      position: static;
-      background: var(--muted-bg); border-bottom: 1px solid var(--rule);
-      padding: 8px 12px; display: flex; justify-content: space-between;
-      align-items: center; font-size: 12px; color: var(--ink-soft);
+    .dot.orange { background: var(--dot-orange); animation: pulse-orange 2s infinite; }
+    .dot.yellow { background: var(--dot-yellow); animation: blink-yellow 1.2s infinite; }
+    .dot.green  { background: var(--dot-green); }
+    @keyframes pulse-orange {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.55; transform: scale(0.92); }
     }
-    .frame > header.frame-bar .controls {
-      display: flex; gap: 4px;
-    }
-    .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--rule); display: inline-block; }
-    .topbar {
-      background: var(--muted-bg); padding: 6px 12px; border-bottom: 1px solid var(--rule);
-      font-size: 12px; display: flex; gap: 12px; align-items: center; color: var(--ink-soft);
-    }
-    .topbar .right { margin-left: auto; display: flex; gap: 8px; }
-    .body { padding: 16px; min-height: 200px; }
-
-    /* Tile styles ----- */
-    .tile-nexus {
-      border: 1.5px solid var(--ink); border-radius: 6px; padding: 12px;
-      background: white; min-width: 240px;
-    }
-    .tile-nexus .row1 { display: flex; justify-content: space-between; align-items: center;
-      font-size: 11px; color: var(--ink-soft); margin-bottom: 6px;
-    }
-    .tile-nexus .title { font-weight: 600; font-size: 14px; margin-bottom: 8px; }
-    .tile-nexus .chip {
-      background: var(--muted-bg); border: 1px dashed var(--accent); border-radius: 4px;
-      padding: 6px 8px; font-size: 12px; margin-bottom: 6px;
-    }
-    .tile-nexus .progress {
-      height: 4px; background: var(--muted); border-radius: 2px; margin-top: 4px; overflow: hidden;
-    }
-    .tile-nexus .progress > div { height: 100%; background: var(--accent); width: 56%; }
-    .tile-nexus .perm {
-      background: #fff3e0; border: 1px solid var(--accent); border-radius: 4px;
-      padding: 6px 8px; font-size: 12px; margin-bottom: 6px; color: var(--accent);
-    }
-    .tile-nexus .meta { font-size: 11px; color: var(--ink-soft); margin-top: 6px; }
-    .tile-pylon {
-      border: 1px solid var(--ink-faint); border-radius: 4px; padding: 6px 10px;
-      background: white; display: flex; align-items: center; gap: 10px;
-      font-size: 12px; min-width: 180px; min-height: 36px;
-    }
-    .tile-pylon .pylon-tier { color: var(--ink-faint); margin-left: auto; }
-    .pill {
-      display: inline-block; background: var(--muted-bg); border: 1px solid var(--rule);
-      padding: 1px 6px; border-radius: 10px; font-size: 10px; color: var(--ink-soft);
-    }
-    .src-badge {
-      display: inline-block; padding: 1px 5px; border: 1px solid var(--ink); border-radius: 3px;
-      font-size: 10px; font-weight: 600; background: var(--ink); color: white;
-    }
-    .src-badge.off { background: white; color: var(--ink-faint); border-color: var(--ink-faint); }
-
-    /* Radar grid */
-    .radar {
-      display: grid; gap: 12px;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    }
-    .radar .small { grid-column: span 1; }
-
-    /* Vertical / Drawer ----- */
-    .vertical-strip {
-      width: 280px; border: 1.5px solid var(--ink); border-radius: 6px;
-      background: white; padding: 8px; display: flex; flex-direction: column; gap: 8px;
-    }
-    .drawer-collapsed {
-      width: 32px; border: 1.5px solid var(--ink); border-radius: 6px;
-      background: var(--muted-bg); padding: 8px 4px; display: flex; flex-direction: column;
-      gap: 8px; align-items: center; min-height: 240px;
-    }
-    .drawer-collapsed .nub {
-      width: 16px; height: 16px; border: 1px solid var(--ink); border-radius: 3px;
-      background: white; position: relative;
-    }
-    .drawer-collapsed .nub.glow::after {
-      content: ""; position: absolute; right: -3px; top: -3px;
-      width: 6px; height: 6px; background: var(--accent); border-radius: 50%;
+    @keyframes blink-yellow {
+      0%,40%,100% { opacity: 1; }
+      50%,90% { opacity: 0.3; }
     }
 
-    /* Badge popup ----- */
-    .badges-popup {
-      border: 1.5px solid var(--ink); border-radius: 6px; padding: 12px;
-      background: white; font-size: 12px; min-width: 200px;
+    /* ---------- 3P / CL / CX / Shield ---------- */
+    .player3 {
+      font-family: "Press Start 2P", "Courier New", ui-monospace, monospace;
+      font-size: 10px; letter-spacing: 1px; padding: 2px 4px;
+      border: 1px solid currentColor; border-radius: 2px; color: var(--ink-faint);
     }
-    .badges-popup .row { display: flex; justify-content: space-between; padding: 4px 0; }
+    .player3.lit { color: var(--dot-green); border-color: var(--dot-green); text-shadow: 0 0 6px var(--dot-green); }
+    .cl-logo, .cx-logo {
+      width: 18px; height: 18px; border-radius: 4px; display: inline-flex;
+      align-items: center; justify-content: center; font-size: 11px; font-weight: 700;
+      border: 1px solid var(--ink-faint); background: white; color: var(--ink-faint);
+    }
+    .cl-logo.on { background: var(--dot-orange); color: white; border-color: var(--dot-orange); }
+    .cx-logo.on { background: #10a37f; color: white; border-color: #10a37f; }
+    .shield {
+      width: 18px; height: 18px; cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--ink-faint);
+    }
+    .shield svg { width: 16px; height: 16px; }
+    .shield:hover { color: var(--ink); }
 
-    /* Nexus app ----- */
-    .nexus-shell {
+    /* ---------- Drawer (collapsed) ---------- */
+    .drawer {
+      width: 56px; background: var(--muted-bg); border: 1.5px solid var(--ink);
+      border-radius: 6px; padding: 6px 4px;
+      display: flex; flex-direction: column; gap: 6px; align-items: center;
+    }
+    .drawer-tile {
+      width: 44px; padding: 6px 4px 4px 4px; border-radius: 4px; background: white;
+      border: 1px solid var(--ink-faint); position: relative;
+      display: flex; flex-direction: column; gap: 4px; align-items: center;
+    }
+    .drawer-tile .top-line {
+      position: absolute; top: -1px; left: 4px; right: 4px;
+      height: 2px; background: currentColor;
+    }
+    .drawer-tile.nexus .top-line { height: 4px; }   /* double-thickness */
+    .drawer-tile.pylon .top-line { height: 2px; }   /* normal */
+    .drawer-tile .shorthand {
+      font-size: 10px; font-weight: 700; color: var(--ink); letter-spacing: 0.5px;
+      margin-top: 4px;
+    }
+
+    /* ---------- Expanded (work view) tile ---------- */
+    .work-tile {
+      background: white; border: 1px solid var(--ink-faint); border-radius: 6px;
+      padding: 0; overflow: hidden; max-width: 320px;
+    }
+    .work-tile .top-line {
+      height: 2px; background: currentColor;
+    }
+    .work-tile.nexus .top-line { height: 4px; }
+    .work-tile .header {
+      display: flex; align-items: center; gap: 8px; padding: 8px 10px;
+      border-bottom: 1px dashed var(--rule);
+    }
+    .work-tile .header .shorthand-pill {
+      background: var(--muted-bg); border: 1px solid var(--rule);
+      padding: 2px 7px; border-radius: 10px; font-size: 11px; font-weight: 600;
+      color: var(--ink-soft);
+    }
+    .work-tile .header .header-right {
+      margin-left: auto; display: flex; align-items: center; gap: 6px;
+    }
+    .work-tile .title { padding: 6px 10px 0 10px; font-size: 13px; font-weight: 600; }
+    .work-tile .project-chip {
+      margin: 6px 10px 6px 10px; padding: 6px 8px; border-radius: 4px;
+      background: color-mix(in srgb, currentColor 15%, white);
+      border: 1px solid currentColor; font-size: 12px; color: currentColor;
+    }
+    .work-tile .project-chip .progress {
+      height: 4px; background: rgba(255,255,255,0.6); border-radius: 2px; margin-top: 4px; overflow: hidden;
+    }
+    .work-tile .project-chip .progress > div {
+      height: 100%; background: currentColor; width: 56%;
+    }
+    .work-tile .perm-row {
+      margin: 6px 10px 6px 10px; padding: 6px 8px; border-radius: 4px;
+      background: #fff3e0; border: 1px solid var(--dot-orange);
+      font-size: 12px; color: var(--dot-orange);
+    }
+    .work-tile .bottom {
+      display: flex; gap: 12px; align-items: center; padding: 8px 10px;
+      border-top: 1px dashed var(--rule); font-size: 11px; color: var(--ink-soft);
+    }
+    .tier-bar { display: inline-flex; gap: 2px; }
+    .tier-bar i {
+      display: inline-block; width: 3px; height: 10px;
+      background: var(--ink-faint); border-radius: 1px;
+    }
+    .context-bar { display: inline-flex; gap: 2px; }
+    .context-bar i {
+      width: 8px; height: 10px;
+      border: 1px solid var(--ink-faint); border-radius: 1px; background: white;
+    }
+    .context-bar i.fill { background: var(--ink-soft); border-color: var(--ink-soft); }
+
+    /* ---------- Badge palette ---------- */
+    .badge-palette {
       background: white; border: 1.5px solid var(--ink); border-radius: 6px;
-      overflow: hidden;
+      padding: 12px; max-width: 240px;
+    }
+    .badge-palette h5 { margin: 0 0 8px 0; font-size: 11px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.04em; }
+    .badge-palette .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+    .badge {
+      padding: 4px 10px; border-radius: 12px; font-size: 11px;
+      background: var(--muted-bg); border: 1px solid var(--rule); color: var(--ink);
+      cursor: grab; user-select: none;
+    }
+    .badge.standby { background: #e8f6ff; border-color: #5aa7ff; color: #1b5fa3; }
+    .badge.needs-human { background: #fff3e0; border-color: var(--dot-orange); color: #a04a00; }
+    .badge.blocked { background: #ffe5e5; border-color: #d33; color: #a01b1b; }
+    .badge.claude { background: #fff0e8; border-color: var(--dot-orange); color: #a04a00; }
+    .badge.codex { background: #e0f3eb; border-color: #10a37f; color: #0a6e54; }
+
+    /* ---------- Mock VS Code window ---------- */
+    .vscode {
+      background: #1e1e1e; border-radius: 8px; overflow: hidden; min-width: 320px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .vscode .titlebar {
+      background: #2d2d30; color: #ccc; padding: 6px 10px;
+      display: flex; align-items: center; gap: 8px; font-size: 12px;
+    }
+    .vscode .body {
+      background: #1e1e1e; color: #d4d4d4; padding: 16px; min-height: 100px;
+      font-family: ui-monospace, monospace; font-size: 11px;
+    }
+    .vscode .statusbar {
+      background: #007acc; color: white; padding: 4px 10px; font-size: 11px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .vscode .statusbar .vsbadge {
+      background: rgba(0,0,0,0.25); padding: 1px 7px; border-radius: 10px; font-size: 10px;
+      font-weight: 600;
+    }
+
+    /* ---------- Drag/drop arrow ---------- */
+    .drag-arrow {
+      font-size: 28px; color: var(--dot-orange); align-self: center;
+      text-shadow: 0 0 4px rgba(0,0,0,0.05);
+    }
+
+    /* ---------- Nexus shell ---------- */
+    .nexus-shell {
+      background: white; border: 1.5px solid var(--ink); border-radius: 6px; overflow: hidden;
     }
     .nexus-header {
       padding: 14px 20px; border-bottom: 1px solid var(--rule);
@@ -147,47 +227,56 @@
       background: var(--muted-bg);
     }
     .nexus-header .brand { font-weight: 700; font-size: 14px; }
-    .nexus-body { padding: 20px; min-height: 240px; }
+    .nexus-body { padding: 20px; }
 
     .project-card-active {
-      border: 1.5px solid var(--ink); border-radius: 6px; padding: 14px;
+      border: 1px solid var(--ink-faint); border-radius: 6px; padding: 14px;
       background: white; margin-bottom: 10px; position: relative;
     }
+    .project-card-active .top-line {
+      position: absolute; top: -1px; left: -1px; right: -1px;
+      height: 4px; background: currentColor;
+      border-top-left-radius: 6px; border-top-right-radius: 6px;
+    }
     .project-card-active::before {
-      content: "★"; position: absolute; top: 12px; left: -8px;
-      background: var(--accent); color: white; width: 18px; height: 18px;
+      content: "★"; position: absolute; top: 8px; left: -10px;
+      background: currentColor; color: white; width: 18px; height: 18px;
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-size: 12px;
+      font-size: 11px; box-shadow: 0 0 0 2px var(--paper);
     }
     .project-card-active .head { display: flex; justify-content: space-between; align-items: baseline; }
-    .project-card-active .head h3 { margin: 0; font-size: 15px; color: var(--ink); }
-    .project-card-active .wig { color: var(--ink-soft); font-size: 13px; margin: 4px 0 8px 0; }
+    .project-card-active .head h3 { margin: 8px 0 0 0; font-size: 15px; color: var(--ink); }
+    .project-card-active .goal { color: var(--ink-soft); font-size: 13px; margin: 4px 0 8px 0; }
     .project-card-active .progress {
       height: 6px; background: var(--muted); border-radius: 3px; margin-top: 8px; overflow: hidden;
     }
-    .project-card-active .progress > div { height: 100%; background: var(--accent); width: 56%; }
+    .project-card-active .progress > div { height: 100%; background: currentColor; width: 56%; }
     .project-card-archived {
       padding: 8px 14px; color: var(--ink-soft); font-size: 13px;
       border-bottom: 1px solid var(--rule);
     }
 
-    /* Wizard step ----- */
+    /* ---------- Wizard ---------- */
     .wizard {
       background: white; border: 1.5px solid var(--ink); border-radius: 6px; overflow: hidden;
     }
     .wizard .crumbs {
       display: flex; gap: 6px; padding: 14px 20px; border-bottom: 1px solid var(--rule);
-      background: var(--muted-bg); font-size: 12px;
+      background: var(--muted-bg); font-size: 12px; align-items: center;
     }
     .wizard .crumb {
       width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--rule);
       display: flex; align-items: center; justify-content: center;
       color: var(--ink-faint); background: white; font-size: 11px;
     }
-    .wizard .crumb.active { background: var(--accent); color: white; border-color: var(--accent); }
+    .wizard .crumb.active { background: currentColor; color: white; border-color: currentColor; }
     .wizard .crumb.done { background: var(--ink); color: white; border-color: var(--ink); }
     .wizard .step-body { padding: 24px; }
     .wizard h4 { margin: 0 0 4px 0; }
+    .wizard .auto-banner {
+      background: #e8f6ff; border: 1px solid #5aa7ff; padding: 8px 12px; border-radius: 4px;
+      font-size: 12px; color: #1b5fa3; margin-bottom: 12px;
+    }
     .wizard .prompt-card {
       border: 1px solid var(--rule); border-radius: 4px; padding: 12px; background: var(--muted-bg);
       font-family: ui-monospace, "SF Mono", monospace; font-size: 12px; margin: 12px 0;
@@ -197,14 +286,14 @@
       position: absolute; right: 8px; top: 8px; border: 1px solid var(--rule);
       background: white; padding: 4px 10px; font-size: 11px; border-radius: 3px; cursor: pointer;
     }
-    .wizard textarea-stub {
+    .wizard .paste-stub {
       display: block; border: 1px solid var(--rule); border-radius: 4px; padding: 12px;
       background: white; min-height: 80px; font-family: ui-monospace, monospace;
       font-size: 12px; color: var(--ink-faint); margin: 12px 0;
     }
     .wizard .validation { font-size: 12px; margin-top: 8px; }
     .wizard .validation .ok { color: #2e7d32; }
-    .wizard .validation .warn { color: var(--accent); }
+    .wizard .validation .warn { color: var(--dot-orange); }
     .wizard footer {
       padding: 14px 24px; border-top: 1px solid var(--rule); display: flex;
       justify-content: space-between; background: var(--muted-bg);
@@ -213,19 +302,24 @@
       padding: 6px 14px; border-radius: 4px; border: 1px solid var(--ink);
       background: white; cursor: pointer; font-size: 13px;
     }
-    .wizard footer button.primary { background: var(--ink); color: white; }
+    .wizard footer button.primary { background: currentColor; color: white; border-color: currentColor; }
     .wizard footer button[disabled] { opacity: 0.35; cursor: not-allowed; }
 
-    /* ProjectView ----- */
+    /* ---------- ProjectView (color-themed) ---------- */
     .pv-header {
       padding: 16px 20px; border-bottom: 1px solid var(--rule); background: var(--muted-bg);
+      position: relative;
     }
-    .pv-header h2 { margin: 0; font-size: 16px; }
+    .pv-header .top-line {
+      position: absolute; top: -1px; left: -1px; right: -1px;
+      height: 4px; background: currentColor;
+    }
+    .pv-header h2 { margin: 0; font-size: 16px; color: var(--ink); }
     .pv-header .meta { color: var(--ink-soft); font-size: 13px; margin-top: 4px; }
     .pv-progress {
       height: 6px; background: var(--muted); border-radius: 3px; margin-top: 12px; overflow: hidden;
     }
-    .pv-progress > div { height: 100%; background: var(--accent); width: 56%; }
+    .pv-progress > div { height: 100%; background: currentColor; width: 56%; }
     .pv-grid {
       display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; padding: 20px;
     }
@@ -234,14 +328,16 @@
       border: 1px solid var(--rule); border-radius: 4px; padding: 14px; background: white;
     }
     .pv-box h4 { margin: 0 0 10px 0; font-size: 13px; text-transform: uppercase;
-      letter-spacing: 0.04em; color: var(--ink-soft);
+      letter-spacing: 0.04em; color: currentColor;
     }
     .pv-stage-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
     .pv-stage {
       border: 1px solid var(--rule); border-radius: 4px; padding: 8px;
       font-size: 11px; background: white; text-align: center;
     }
-    .pv-stage.active { border-color: var(--accent); background: #fff8f0; }
+    .pv-stage.active {
+      border-color: currentColor; background: color-mix(in srgb, currentColor 8%, white);
+    }
     .pv-stage.done { background: var(--muted-bg); color: var(--ink-soft); }
     .pv-criteria { list-style: none; padding: 0; margin: 0; }
     .pv-criteria li { padding: 4px 0; font-size: 13px; }
@@ -259,20 +355,29 @@
     .handoff { padding: 6px 0; border-bottom: 1px dashed var(--rule); font-size: 13px; }
     .handoff:last-child { border-bottom: none; }
     .handoff .ts { color: var(--ink-faint); font-size: 11px; margin-right: 8px; }
-
     .complete-cta {
       margin: 16px 20px; padding: 16px; text-align: center;
       border: 2px dashed var(--rule); border-radius: 6px; background: white;
       color: var(--ink-faint);
     }
 
-    /* Transformation grid */
-    .transformation {
-      display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 16px; align-items: center;
+    /* ---------- Scratchpad (Pylon click) ---------- */
+    .scratchpad {
+      background: white; border: 1.5px solid var(--ink); border-radius: 6px;
+      overflow: hidden; max-width: 480px;
     }
-    .transformation .arrow { font-size: 24px; color: var(--ink-faint); text-align: center; }
+    .scratchpad .head {
+      padding: 10px 14px; background: var(--muted-bg); border-bottom: 1px solid var(--rule);
+      display: flex; align-items: center; gap: 10px; position: relative;
+    }
+    .scratchpad .head .top-line { position: absolute; top:-1px; left:-1px; right:-1px; height: 2px; background: currentColor; }
+    .scratchpad .body { padding: 14px; min-height: 120px; font-size: 13px; color: var(--ink-faint); font-family: ui-monospace, monospace; }
+    .scratchpad .actions { padding: 10px 14px; border-top: 1px solid var(--rule); background: var(--muted-bg); display: flex; gap: 8px; justify-content: flex-end; }
+    .scratchpad .actions button {
+      padding: 4px 10px; border-radius: 3px; border: 1px solid var(--ink-faint); background: white; font-size: 12px; cursor: pointer;
+    }
 
-    /* Footer */
+    /* ---------- Footer ---------- */
     footer.doc-footer {
       max-width: 1100px; margin: 0 auto; padding: 40px 24px; color: var(--ink-soft);
       border-top: 1px solid var(--rule); font-size: 13px;
@@ -287,268 +392,364 @@
 </head>
 <body>
 
-<header>
-  <h1>Nexus + COMSAT Lean — Wireframes (v1, 2026-05-19)</h1>
-  <div class="meta">Low-fi box wireframes. Iterate on iPad — markup, redline, add notes. No styling commitments yet.</div>
+<header class="page">
+  <h1>Nexus + COMSAT — Wireframes v2 (2026-05-20)</h1>
+  <div class="meta">
+    Changes from v1: <em>fullscreen mode dropped</em> · status dots (orange/yellow/green) · Nexus = double top line · 3P/CL/CX/shield header · 10-bar context fill · workspace color flows through · Pylon → scratchpad on click · "WIG" renamed to "Goal" · badges drag onto VS Code window too.
+  </div>
   <nav>
-    <span class="group">COMSAT lean:</span>
-    <a href="#cm-radar">Radar grid</a>
-    <a href="#cm-tile-anatomy">Tile anatomy</a>
-    <a href="#cm-vertical">Vertical</a>
-    <a href="#cm-drawer">Drawer gold</a>
-    <a href="#cm-badges">Badges popup</a>
+    <span class="group">COMSAT:</span>
+    <a href="#cm-drawer">Drawer (collapsed)</a>
+    <a href="#cm-expanded">Expanded (work view)</a>
+    <a href="#cm-badges">Badge palette + VS Code drop</a>
+    <a href="#cm-colors">Color identity</a>
+    <a href="#cm-pylon-scratch">Pylon scratchpad</a>
     <span class="group">Nexus:</span>
     <a href="#nx-home">Home</a>
-    <a href="#nx-wizard">Wizard</a>
-    <a href="#nx-projectview">ProjectView</a>
+    <a href="#nx-wizard">Wizard (with QoL)</a>
+    <a href="#nx-projectview">ProjectView (themed)</a>
     <a href="#nx-done">Done ceremony</a>
-    <a href="#nx-transform">Transformation</a>
   </nav>
 </header>
 
 <main>
 
-<!-- =========== COMSAT LEAN =========== -->
-
-<section id="cm-radar">
-  <h2>1. COMSAT — Radar grid (fullscreen mode)</h2>
-  <p class="kicker">Mixed Nexus cards + Pylons. The shape of the tile encodes the workspace type. No glow, no hover effects shown — focus on size + content density.</p>
-
-  <div class="frame">
-    <header class="frame-bar">
-      <span>COMSAT — fullscreen</span>
-      <span class="controls">
-        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-      </span>
-    </header>
-    <div class="topbar">
-      <span><strong>comsat</strong></span>
-      <span style="color:var(--ink-faint);">mode ▾</span>
-      <span class="right">⚙ 🔇 <span class="dot" style="background:#3a3;"></span></span>
-    </div>
-    <div class="body">
-      <div class="radar">
-
-        <!-- NEXUS CARD: HPFHQ Consolidation -->
-        <div class="tile-nexus">
-          <div class="row1">
-            <span><span class="pill">Overmind #2</span></span>
-            <span><span class="src-badge">CL</span> <span class="src-badge off">CDX</span> 🔒</span>
-          </div>
-          <div class="title">HPFHQ Consolidation Plan ↗</div>
-          <div class="chip">🎯 HPFHQ Consolidation · 4/7 <div class="progress"><div></div></div></div>
-          <div class="perm">⚠ Edit file outside repo? &nbsp; Y / N</div>
-          <div class="meta">Tier ▍▍▍▍ · Note: lib/cockpit/metrics scaffold</div>
-        </div>
-
-        <!-- NEXUS CARD: Cockpit overhaul (no perm) -->
-        <div class="tile-nexus">
-          <div class="row1">
-            <span><span class="pill">HPFHQ #1</span></span>
-            <span><span class="src-badge off">CL</span> <span class="src-badge">CDX</span> 🔓</span>
-          </div>
-          <div class="title">Closer Cockpit Overhaul</div>
-          <div class="chip">🎯 Closer Cockpit · 2/5 <div class="progress"><div style="width:40%;"></div></div></div>
-          <div class="meta">Tier ▍▍ · Note: dialer EOD parser refactor</div>
-        </div>
-
-        <!-- PYLONS -->
-        <div class="tile-pylon">
-          <span class="pill">Debugs</span>
-          <span>Debug — GHL webhook</span>
-          <span><span class="src-badge">CL</span></span>
-          <span class="pylon-tier">▍</span>
-        </div>
-        <div class="tile-pylon">
-          <span class="pill">Scratch</span>
-          <span>Quick build — sweep</span>
-          <span><span class="src-badge off">CL</span></span>
-          <span class="pylon-tier">▍▍</span>
-        </div>
-        <div class="tile-pylon">
-          <span class="pill">Bite</span>
-          <span>Bite #1</span>
-          <span><span class="src-badge off">CL</span></span>
-          <span class="pylon-tier">▍▍▍</span>
-        </div>
-        <div class="tile-pylon">
-          <span class="pill">Medus</span>
-          <span>Medus #1 (idle)</span>
-          <span><span class="src-badge off">CL</span></span>
-          <span class="pylon-tier">▍</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <p class="annotation">2 Nexus cards (large, multi-row, project chip, optional perm row) + 4 Pylons (single-row, transient). Visual hierarchy emerges from size + content density alone. Annotate where the hierarchy feels wrong — too dominant? Not dominant enough? Pylons too small to read?</p>
-</section>
-
-<section id="cm-tile-anatomy">
-  <h2>2. Tile anatomy — Nexus card vs Pylon</h2>
-  <p class="kicker">Side-by-side at 1:1 scale.</p>
-
-  <div class="row">
-    <div class="col">
-      <h3>Nexus card (dedicated workspace)</h3>
-      <div class="tile-nexus" style="max-width:340px;">
-        <div class="row1">
-          <span><span class="pill">Overmind #2</span></span>
-          <span><span class="src-badge">CL</span> <span class="src-badge off">CDX</span> 🔒</span>
-        </div>
-        <div class="title">HPFHQ Consolidation Plan ↗</div>
-        <div class="chip">🎯 HPFHQ Consolidation · 4/7 <div class="progress"><div></div></div></div>
-        <div class="perm">⚠ Edit file outside repo? &nbsp; Y / N</div>
-        <div class="meta">Tier ▍▍▍▍ · Note: lib/cockpit/metrics scaffold</div>
-      </div>
-      <p class="annotation">~300×180px. Has: category pill, src badges (CL/CDX), lock chip, title, project chip (reads Nexus JSON), perm row when active, tier, note. The project chip is the link to Nexus — click opens nexus://project/&lt;workspaceId&gt;.</p>
-    </div>
-
-    <div class="col">
-      <h3>Pylon (transient workspace)</h3>
-      <div style="display:flex; flex-direction:column; gap:8px; max-width:340px;">
-        <div class="tile-pylon">
-          <span class="pill">Debugs</span>
-          <span>Debug — GHL webhook</span>
-          <span><span class="src-badge">CL</span></span>
-          <span class="pylon-tier">▍</span>
-        </div>
-        <div class="tile-pylon" style="border-color:var(--accent); background:#fff8f0;">
-          <span class="pill">Scratch</span>
-          <span>Perm: Read outside repo? &nbsp; Y / N</span>
-          <span class="pylon-tier">▍▍</span>
-        </div>
-      </div>
-      <p class="annotation">~220×36px. Single-row content. When a perm fires (second example), the tile temporarily expands to 2 lines just enough for Allow/Deny, then collapses back. No project chip — Pylons have no project.</p>
-    </div>
-  </div>
-</section>
-
-<section id="cm-vertical">
-  <h2>3. Vertical mode</h2>
-  <p class="kicker">Always-on narrow strip pinned to edge. Min width ~300px so perm action buttons can breathe. Mixed Nexus cards + Pylons stack vertically.</p>
-
-  <div class="vertical-strip">
-    <div class="topbar" style="padding:6px 8px;">
-      <span><strong>comsat</strong></span>
-      <span class="right">⚙ 🔇</span>
-    </div>
-    <div class="tile-nexus">
-      <div class="row1">
-        <span><span class="pill">Overmind #2</span></span>
-        <span><span class="src-badge">CL</span> 🔒</span>
-      </div>
-      <div class="title">HPFHQ Consolidation ↗</div>
-      <div class="chip">🎯 4/7 <div class="progress"><div></div></div></div>
-    </div>
-    <div class="tile-nexus">
-      <div class="row1">
-        <span><span class="pill">HPFHQ #1</span></span>
-        <span><span class="src-badge">CDX</span> 🔓</span>
-      </div>
-      <div class="title">Closer Cockpit</div>
-      <div class="chip">🎯 2/5 <div class="progress"><div style="width:40%;"></div></div></div>
-    </div>
-    <div class="tile-pylon">
-      <span class="pill">Debugs</span>
-      <span>GHL webhook</span>
-      <span class="pylon-tier">▍</span>
-    </div>
-    <div class="tile-pylon">
-      <span class="pill">Scratch</span>
-      <span>sweep</span>
-      <span class="pylon-tier">▍▍</span>
-    </div>
-    <div class="tile-pylon">
-      <span class="pill">Bite</span>
-      <span>Bite #1</span>
-      <span class="pylon-tier">▍▍▍</span>
-    </div>
-  </div>
-
-  <p class="annotation">Vertical takes Nexus cards as-is (compressed — project chip drops to "4/7" not full title). Pylons stay tiny. Stack order: Nexus cards on top, Pylons below.</p>
-</section>
+<!-- ============== COMSAT ============== -->
 
 <section id="cm-drawer">
-  <h2>4. Drawer collapsed → Drawer expanded (the gold transition)</h2>
-  <p class="kicker">The one interaction worth iterating most. Sketch the trigger (edge hover vs Cmd+drag vs handle click) on top of this.</p>
+  <h2>1. COMSAT — Drawer (collapsed)</h2>
+  <p class="kicker">Always-on edge strip. Adaptive height — grows to fit tiles up to screen height, scrolls beyond. Moveable along the edge but snaps to it.</p>
 
-  <div class="row" style="align-items: stretch;">
+  <div class="row">
     <div>
-      <h3>Collapsed</h3>
-      <div class="drawer-collapsed">
-        <div class="nub" title="Overmind #2"></div>
-        <div class="nub" title="HPFHQ #1"></div>
-        <div class="nub glow" title="Debug — perm active"></div>
-        <div class="nub" title="Scratch"></div>
-        <div class="nub" title="Bite"></div>
+      <h3>Mixed Nexus + Pylons</h3>
+      <div class="drawer">
+        <!-- Nexus card: HPFHQ project. Orange dot = cooking. Double top line. -->
+        <div class="drawer-tile nexus" style="color: var(--ws-overmind);">
+          <span class="top-line"></span>
+          <span class="dot orange" title="Cooking"></span>
+          <span class="shorthand">HQc</span>
+        </div>
+        <!-- Nexus card: Closer cockpit. Green dot = standing by. Double top line. -->
+        <div class="drawer-tile nexus" style="color: var(--ws-hpfhq);">
+          <span class="top-line"></span>
+          <span class="dot green" title="Standing by"></span>
+          <span class="shorthand">CC</span>
+        </div>
+        <!-- Pylon: Debug. Yellow dot = VS Code needs attention. Single top line. -->
+        <div class="drawer-tile pylon" style="color: var(--ws-debugs);">
+          <span class="top-line"></span>
+          <span class="dot yellow" title="VS Code needs attention"></span>
+          <span class="shorthand">DBG</span>
+        </div>
+        <!-- Pylon: Scratch. Green. -->
+        <div class="drawer-tile pylon" style="color: var(--ws-scratch);">
+          <span class="top-line"></span>
+          <span class="dot green"></span>
+          <span class="shorthand">SCR</span>
+        </div>
+        <!-- Pylon: Bite. Green. -->
+        <div class="drawer-tile pylon" style="color: var(--ws-bite);">
+          <span class="top-line"></span>
+          <span class="dot green"></span>
+          <span class="shorthand">B1</span>
+        </div>
+        <!-- Pylon: Medus. Green. -->
+        <div class="drawer-tile pylon" style="color: var(--ws-medus);">
+          <span class="top-line"></span>
+          <span class="dot green"></span>
+          <span class="shorthand">M1</span>
+        </div>
       </div>
-      <p class="annotation">~32px wide. One nub per tile. Orange pip = tile firing (perm / src-badge change). Hover sustained ~200ms → expand.</p>
+      <p class="annotation">~56px wide. Each tile = workspace color (top line) + status dot + user-defined shorthand. Nexus cards = double-thick top line (4px). Pylons = single (2px).</p>
     </div>
-    <div style="font-size:32px; color:var(--ink-faint); align-self:center; margin: 0 8px;">→</div>
+
+    <div style="flex:1; min-width: 280px;">
+      <h3>Drawer rules</h3>
+      <ul style="font-size:13px; color:var(--ink-soft); padding-left:18px;">
+        <li><strong>Top line</strong> = workspace color · double-thickness on Nexus cards</li>
+        <li><strong>Status dot</strong> top-left:
+          <span class="dot orange" style="margin-left:6px;"></span> orange = cooking,
+          <span class="dot yellow" style="margin-left:6px;"></span> yellow = VS Code needs attention,
+          <span class="dot green" style="margin-left:6px;"></span> green = standing by
+        </li>
+        <li><strong>Shorthand</strong> = user-defined per workspace (HQc, CC, DBG, etc). Default if unset = first 2 letters of category</li>
+        <li><strong>Click</strong> tile → focuses bound VS Code window</li>
+        <li><strong>Hover</strong> sustained ~200ms → drawer expands to full work view</li>
+        <li><strong>Drag</strong> the drawer itself → repositions along the edge, snaps to nearest edge</li>
+      </ul>
+      <div class="changed" style="margin-top:12px;">
+        <strong>v1 → v2 changed:</strong> dropped fullscreen mode entirely; drawer collapsed view now carries everything (color + shorthand + dot) instead of just nubs.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cm-expanded">
+  <h2>2. COMSAT — Drawer expanded (the work view)</h2>
+  <p class="kicker">Hover-expanded drawer. Each tile becomes a full work view: header (3P/CL/CX/shield), title row, project chip (Nexus) or perm row (any), bottom row (Tier + Context). NOT a project view — Nexus owns the project surface.</p>
+
+  <div class="row" style="gap:16px;">
+
+    <!-- Nexus card — full work view -->
     <div>
-      <h3>Expanded</h3>
-      <div class="vertical-strip" style="width:300px;">
-        <div class="topbar" style="padding:6px 8px;">
-          <span><strong>comsat</strong></span>
-          <span class="right">📌 ⚙</span>
+      <h3>Nexus tile — work view (color: HPFHQ Consolidation)</h3>
+      <div class="work-tile nexus" style="color: var(--ws-overmind);">
+        <div class="top-line"></div>
+        <div class="header">
+          <span class="dot orange"></span>
+          <span class="shorthand-pill">HQc</span>
+          <span class="header-right">
+            <span class="player3 lit">3P</span>
+            <span class="cl-logo on" title="Claude active">CL</span>
+            <span class="cx-logo" title="Codex idle">CX</span>
+            <span class="shield" title="Open badge palette">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 2v20" stroke-dasharray="2 2"/></svg>
+            </span>
+          </span>
         </div>
-        <div class="tile-nexus">
-          <div class="row1">
-            <span><span class="pill">Overmind #2</span></span>
-            <span>🔒</span>
-          </div>
-          <div class="title">HPFHQ Consolidation</div>
-          <div class="chip">🎯 4/7</div>
+        <div class="title">HPFHQ Consolidation Plan ↗</div>
+        <div class="project-chip">
+          🎯 HPFHQ Consolidation · 4/7
+          <div class="progress"><div></div></div>
         </div>
-        <div class="tile-pylon" style="border-color:var(--accent); background:#fff8f0;">
-          <span class="pill">Debugs</span>
-          <span>Perm: Read outside? Y / N</span>
-        </div>
-        <div class="tile-pylon">
-          <span class="pill">Scratch</span>
-          <span>sweep</span>
+        <div class="perm-row">⚠ Edit file outside repo? &nbsp; Y / N</div>
+        <div class="bottom">
+          <span>Tier <span class="tier-bar"><i></i><i></i><i></i><i></i></span></span>
+          <span>Ctx <span class="context-bar">
+            <i class="fill"></i><i class="fill"></i><i class="fill"></i><i class="fill"></i><i class="fill"></i><i class="fill"></i><i></i><i></i><i></i><i></i>
+          </span> 60%</span>
         </div>
       </div>
-      <p class="annotation">~300px wide slide-in. Same content layout as Vertical mode. Persists until Escape / click-outside. Pin button (📌) anchors it open.</p>
+      <p class="annotation">Header: 3P arcade-font (lit green when 3p agents active), CL (Claude logo, on = orange), CX (Codex logo, on = green), shield icon (opens badge palette). Project chip uses workspace color. Bottom: tier (4-bar) + context (10-bar fill at 60%).</p>
     </div>
+
+    <!-- Pylon — full work view -->
+    <div>
+      <h3>Pylon — work view (color: Debugs, has perm)</h3>
+      <div class="work-tile pylon" style="color: var(--ws-debugs);">
+        <div class="top-line"></div>
+        <div class="header">
+          <span class="dot yellow"></span>
+          <span class="shorthand-pill">DBG</span>
+          <span class="header-right">
+            <span class="player3">3P</span>
+            <span class="cl-logo on">CL</span>
+            <span class="cx-logo">CX</span>
+            <span class="shield">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 2v20" stroke-dasharray="2 2"/></svg>
+            </span>
+          </span>
+        </div>
+        <div class="title">Debug — GHL webhook</div>
+        <!-- NO project chip on Pylons -->
+        <div class="perm-row">⚠ Read outside repo? &nbsp; Y / N</div>
+        <div class="bottom">
+          <span>Tier <span class="tier-bar"><i></i></span></span>
+          <span>Ctx <span class="context-bar">
+            <i class="fill"></i><i class="fill"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </span> 20%</span>
+        </div>
+      </div>
+      <p class="annotation">Pylon = same shell, no project chip. Same header. Only difference from Nexus: top line single thickness + no 🎯 project chip. Perm row appears for any tile when active.</p>
+    </div>
+
+    <!-- Pylon — standing by, no perm -->
+    <div>
+      <h3>Pylon — standing by (no perm)</h3>
+      <div class="work-tile pylon" style="color: var(--ws-scratch);">
+        <div class="top-line"></div>
+        <div class="header">
+          <span class="dot green"></span>
+          <span class="shorthand-pill">SCR</span>
+          <span class="header-right">
+            <span class="player3">3P</span>
+            <span class="cl-logo">CL</span>
+            <span class="cx-logo">CX</span>
+            <span class="shield">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 2v20" stroke-dasharray="2 2"/></svg>
+            </span>
+          </span>
+        </div>
+        <div class="title">Quick build — sweep</div>
+        <div class="bottom">
+          <span>Tier <span class="tier-bar"><i></i><i></i></span></span>
+          <span>Ctx <span class="context-bar">
+            <i class="fill"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </span> 10%</span>
+        </div>
+      </div>
+      <p class="annotation">No perm row when standing by. CL/CX dim (auto-detected: nothing running). Minimal vertical footprint when calm.</p>
+    </div>
+
   </div>
 </section>
 
 <section id="cm-badges">
-  <h2>5. Inline badges popup (replaces palette window)</h2>
-  <p class="kicker">Click on badge area of a tile → inline expand within the tile. Old separate window deleted.</p>
+  <h2>3. Badge palette → drag onto tile OR VS Code window</h2>
+  <p class="kicker">Shield icon opens fixed-size palette. Drag any badge onto the COMSAT tile (pins there) OR onto the bound VS Code window (pinned in VS Code status bar via companion extension). New: VS Code-side surface.</p>
 
-  <div class="row">
-    <div class="col">
-      <h3>Trigger</h3>
-      <div class="tile-nexus" style="max-width:300px;">
-        <div class="row1">
-          <span><span class="pill">Overmind #2</span></span>
-          <span style="border:1px dashed var(--accent); padding:1px 4px; border-radius:3px;"><span class="src-badge">CL</span> ←click</span>
+  <div class="row" style="align-items:flex-start;">
+    <div>
+      <h3>Palette (fixed dimensions)</h3>
+      <div class="badge-palette">
+        <h5>Workflow badges — drag to pin</h5>
+        <div class="badges">
+          <span class="badge standby">Standby</span>
+          <span class="badge needs-human">Needs human</span>
+          <span class="badge blocked">Blocked</span>
+          <span class="badge claude">Claude</span>
+          <span class="badge codex">Codex</span>
+        </div>
+      </div>
+      <p class="annotation">~240×140px. Triggered by shield icon. Click outside to dismiss. Cmd+Shift+B if tile focused.</p>
+    </div>
+
+    <div class="drag-arrow">↘</div>
+
+    <div>
+      <h3>Drop target 1 — COMSAT tile</h3>
+      <div class="work-tile nexus" style="color: var(--ws-overmind); max-width:280px;">
+        <div class="top-line"></div>
+        <div class="header">
+          <span class="dot orange"></span>
+          <span class="shorthand-pill">HQc</span>
+          <span class="header-right">
+            <span class="badge needs-human" style="font-size:10px; padding:2px 6px;">Needs human</span>
+          </span>
         </div>
         <div class="title">HPFHQ Consolidation</div>
-        <div class="chip">🎯 4/7</div>
+        <div class="project-chip">🎯 4/7 <div class="progress"><div></div></div></div>
       </div>
+      <p class="annotation">Badge pins in the header row, replacing CL/CX/shield while visible. Click badge to remove.</p>
     </div>
-    <div class="col">
-      <h3>Popup expanded inline</h3>
-      <div class="badges-popup" style="max-width:240px;">
-        <div class="row"><span>Urgent</span><span>● ○ ○</span></div>
-        <div class="row"><span>Human</span><span>○ ● ○</span></div>
-        <div class="row"><span>Ice</span><span>○ ○ ●</span></div>
-        <div class="row"><span>Source</span><span><span class="src-badge">CL</span> <span class="src-badge off">CDX</span></span></div>
+
+    <div class="drag-arrow">↘</div>
+
+    <div>
+      <h3>Drop target 2 — VS Code window</h3>
+      <div class="vscode">
+        <div class="titlebar">
+          <span>● HPFHQ Consolidation — VS Code</span>
+        </div>
+        <div class="body">
+          <span style="color:#569cd6;">function</span> <span style="color:#dcdcaa;">consolidateMetrics</span>() {<br>
+          &nbsp;&nbsp;<span style="color:#6a9955;">// migrating to lib/cockpit/metrics</span><br>
+          }
+        </div>
+        <div class="statusbar">
+          <span>⎇ main</span>
+          <span class="vsbadge">CL active</span>
+          <span class="vsbadge" style="background: var(--dot-orange);">Needs human</span>
+          <span style="margin-left:auto;">⚠ 0</span>
+        </div>
       </div>
-      <p class="annotation">Sits inside the tile (or anchors above/below if no space). Click outside dismisses. Cmd+Shift+B shortcut when tile focused.</p>
+      <p class="annotation">Companion extension renders the badge in VS Code's status bar (right side). Bidirectional sync with COMSAT — pin in VS Code via Cmd+Shift+P → "Add COMSAT badge: …", or drag from COMSAT palette onto the VS Code window.</p>
     </div>
   </div>
 </section>
 
-<!-- =========== NEXUS =========== -->
+<section id="cm-colors">
+  <h2>4. Workspace color identity (across both apps)</h2>
+  <p class="kicker">Same workspace color flows COMSAT tile → COMSAT chip → Nexus header → Nexus progress bar → Nexus chip backgrounds. Saturation hierarchy keeps things readable.</p>
+
+  <div class="row">
+    <div class="work-tile nexus" style="color: var(--ws-overmind);">
+      <div class="top-line"></div>
+      <div class="header">
+        <span class="dot orange"></span>
+        <span class="shorthand-pill">HQc</span>
+      </div>
+      <div class="title">HPFHQ Consolidation</div>
+      <div class="project-chip">🎯 4/7 <div class="progress"><div></div></div></div>
+    </div>
+    <div class="work-tile nexus" style="color: var(--ws-hpfhq);">
+      <div class="top-line"></div>
+      <div class="header">
+        <span class="dot green"></span>
+        <span class="shorthand-pill">CC</span>
+      </div>
+      <div class="title">Closer Cockpit Overhaul</div>
+      <div class="project-chip">🎯 2/5 <div class="progress"><div style="width:40%;"></div></div></div>
+    </div>
+    <div class="work-tile nexus" style="color: var(--ws-bite);">
+      <div class="top-line"></div>
+      <div class="header">
+        <span class="dot green"></span>
+        <span class="shorthand-pill">BR1</span>
+      </div>
+      <div class="title">Bite Retention Loop</div>
+      <div class="project-chip">🎯 1/4 <div class="progress"><div style="width:25%;"></div></div></div>
+    </div>
+    <div class="work-tile nexus" style="color: var(--ws-medus);">
+      <div class="top-line"></div>
+      <div class="header">
+        <span class="dot orange"></span>
+        <span class="shorthand-pill">M1</span>
+      </div>
+      <div class="title">Medus migration</div>
+      <div class="project-chip">🎯 3/6 <div class="progress"><div style="width:50%;"></div></div></div>
+    </div>
+  </div>
+
+  <table style="margin-top:24px; font-size:13px; border-collapse: collapse; width:100%;">
+    <tr style="background:var(--muted-bg);"><th style="text-align:left; padding:8px;">Surface</th><th style="text-align:left; padding:8px;">Treatment</th></tr>
+    <tr><td style="padding:8px; border-top:1px solid var(--rule);">Tile border (any)</td><td style="padding:8px; border-top:1px solid var(--rule);">workspace color · 80% saturation</td></tr>
+    <tr><td style="padding:8px; border-top:1px solid var(--rule);">Nexus card top line</td><td style="padding:8px; border-top:1px solid var(--rule);">workspace color · full · 4px thickness</td></tr>
+    <tr><td style="padding:8px; border-top:1px solid var(--rule);">Tile bg (subtle tint)</td><td style="padding:8px; border-top:1px solid var(--rule);">workspace color · 5% tint</td></tr>
+    <tr><td style="padding:8px; border-top:1px solid var(--rule);">Nexus ProjectView header accent</td><td style="padding:8px; border-top:1px solid var(--rule);">workspace color · full</td></tr>
+    <tr><td style="padding:8px; border-top:1px solid var(--rule);">Nexus progress bars</td><td style="padding:8px; border-top:1px solid var(--rule);">workspace color · full</td></tr>
+    <tr><td style="padding:8px; border-top:1px solid var(--rule);">Nexus chip / box backgrounds</td><td style="padding:8px; border-top:1px solid var(--rule);">workspace color · 15% tint</td></tr>
+  </table>
+</section>
+
+<section id="cm-pylon-scratch">
+  <h2>5. Pylon click → scratchpad notes</h2>
+  <p class="kicker">Click on Pylon body opens a brief scratchpad. Notes auto-save. Archive → moves note to that workspace's history file.</p>
+
+  <div class="row" style="align-items:flex-start;">
+    <div class="work-tile pylon" style="color: var(--ws-debugs);">
+      <div class="top-line"></div>
+      <div class="header">
+        <span class="dot yellow"></span>
+        <span class="shorthand-pill">DBG</span>
+      </div>
+      <div class="title">Debug — GHL webhook</div>
+      <div class="bottom">
+        <span>Tier <span class="tier-bar"><i></i></span></span>
+        <span>Ctx <span class="context-bar"><i class="fill"></i><i class="fill"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></span>
+      </div>
+    </div>
+
+    <div class="drag-arrow">↘</div>
+
+    <div class="scratchpad" style="color: var(--ws-debugs);">
+      <div class="head">
+        <div class="top-line"></div>
+        <span class="dot yellow"></span>
+        <span class="shorthand-pill">DBG · scratchpad</span>
+        <span style="margin-left:auto; font-size:11px; color:var(--ink-faint);">auto-saves</span>
+      </div>
+      <div class="body">
+        Tried filter "match=lead.created"; webhook fired but missing<br>
+        contact.id. Suspect GHL trigger config drift.<br><br>
+        Next: pull last 5 payloads from raw_webhook_events table.
+      </div>
+      <div class="actions">
+        <button>Open history</button>
+        <button>Archive → history</button>
+      </div>
+    </div>
+  </div>
+
+  <p class="annotation">Same window/popout as Nexus's ProjectView would be for Nexus tiles, but here a simple notes pad. Each workspace has a single live note (auto-saves) + a history of archived notes (accessible via "Open history").</p>
+</section>
+
+<!-- ============== NEXUS ============== -->
 
 <section id="nx-home">
-  <h2>6. Nexus — Home (project list)</h2>
-  <p class="kicker">Active projects on top, archived below. ★ = the focused project (only one can be focused → triggers visibility-wipe in COMSAT).</p>
+  <h2>6. Nexus — Home (with workspace colors)</h2>
+  <p class="kicker">Active + archived projects. Top line color = workspace color. ★ = focused project (triggers visibility-wipe in COMSAT).</p>
 
   <div class="nexus-shell">
     <div class="nexus-header">
@@ -556,30 +757,45 @@
       <button style="padding:6px 12px; border:1px solid var(--ink); background:white; border-radius:4px; cursor:pointer;">+ New project ⌘N</button>
     </div>
     <div class="nexus-body">
-      <h3 style="margin:0 0 12px 0; font-size:12px; text-transform:uppercase; letter-spacing:.04em;">ACTIVE (2)</h3>
+      <h3 style="margin:0 0 12px 0; font-size:12px; text-transform:uppercase; letter-spacing:.04em;">ACTIVE (3)</h3>
 
-      <div class="project-card-active">
+      <div class="project-card-active" style="color: var(--ws-overmind);">
+        <div class="top-line"></div>
         <div class="head">
           <h3>HPFHQ Consolidation Plan</h3>
           <span style="font-size:12px; color:var(--ink-soft);">🔒 hard</span>
         </div>
-        <div class="wig">WIG: Consolidate HPFHQ from two silos to one canonical metric layer with tooltips + dictionary + Overseer monitoring by 2026-05-26</div>
+        <div class="goal">Goal: Consolidate HPFHQ from two silos to one canonical metric layer with tooltips + dictionary + Overseer monitoring by 2026-05-26</div>
         <div style="font-size:12px; color:var(--ink-soft);">
-          Workspace: Overmind #2 &nbsp;·&nbsp; 4/7 done-when &nbsp;·&nbsp; 6 days to deadline
+          Workspace: Overmind #2 · 4/7 done-when · 6 days to deadline
         </div>
         <div class="progress"><div></div></div>
       </div>
 
-      <div class="project-card-active" style="opacity:0.7;">
+      <div class="project-card-active" style="color: var(--ws-hpfhq); opacity:0.85;">
+        <div class="top-line"></div>
         <div class="head">
-          <h3 style="opacity:0.8;">Closer Cockpit Overhaul</h3>
+          <h3 style="color:var(--ink);">Closer Cockpit Overhaul</h3>
           <span style="font-size:12px; color:var(--ink-soft);">🔓 soft</span>
         </div>
-        <div class="wig">WIG: Rebuild closer cockpit tooltips + retention metrics by 2026-06-12</div>
+        <div class="goal">Goal: Rebuild closer cockpit tooltips + retention metrics by 2026-06-12</div>
         <div style="font-size:12px; color:var(--ink-soft);">
-          Workspace: HPFHQ #1 &nbsp;·&nbsp; 2/5 done-when &nbsp;·&nbsp; 23 days to deadline
+          Workspace: HPFHQ #1 · 2/5 done-when · 23 days to deadline
         </div>
         <div class="progress"><div style="width:40%;"></div></div>
+      </div>
+
+      <div class="project-card-active" style="color: var(--ws-bite); opacity:0.85;">
+        <div class="top-line"></div>
+        <div class="head">
+          <h3 style="color:var(--ink);">Bite Retention Loop</h3>
+          <span style="font-size:12px; color:var(--ink-soft);">🔓 soft</span>
+        </div>
+        <div class="goal">Goal: Ship in-app retention loop hitting 40% D7 by 2026-07-01</div>
+        <div style="font-size:12px; color:var(--ink-soft);">
+          Workspace: Bite #1 · 1/4 done-when · 42 days to deadline
+        </div>
+        <div class="progress"><div style="width:25%;"></div></div>
       </div>
 
       <h3 style="margin:24px 0 8px 0; font-size:12px; text-transform:uppercase; letter-spacing:.04em;">ARCHIVED (3)</h3>
@@ -589,14 +805,14 @@
     </div>
   </div>
 
-  <p class="annotation">Only ONE project can be focused (★). Star changes focus, which propagates to COMSAT's visibility-wipe (other tiles muted). Archived = read-only frozen snapshots.</p>
+  <p class="annotation">Each project card top line = workspace color. Click anywhere on a card → ProjectView for that project. ★ on the focused project propagates to COMSAT (focused project's tile pinned slot 1 of the radar).</p>
 </section>
 
 <section id="nx-wizard">
-  <h2>7. Nexus — Wizard step (Step 2 / Charter example)</h2>
-  <p class="kicker">Each step ships a copyable planning prompt + paste-back textarea. Wizard scaffolds a planning conversation, doesn't replace it.</p>
+  <h2>7. Nexus — Wizard (with QoL auto-fill)</h2>
+  <p class="kicker">Step 2 / Charter, but with the new QoL pattern: auto-draft via local-bg, skip-when-content-exists, paste-back validation.</p>
 
-  <div class="wizard">
+  <div class="wizard" style="color: var(--ws-overmind);">
     <div class="crumbs">
       <span class="crumb done">1</span>
       <span class="crumb active">2</span>
@@ -615,53 +831,71 @@
         Extract a minimal PMBOK-style charter from your plan: problem, deliverables, out-of-scope, success criteria, hard constraints.
       </p>
 
-      <div class="prompt-card">
-        <button>📋 Copy</button>
-        You are a project charter assistant for a solo software developer.<br>
-        Read the rough project plan below and extract a minimal PMBOK-style charter…<br>
-        <span style="color:var(--ink-faint);">[expand to read full prompt — ~25 lines]</span>
+      <div class="auto-banner">
+        ✨ <strong>Auto-drafted</strong> from your plan via local-bg --reason. Review and edit. (Plan: <code>let-me-give-you-twinkly-sundae.md</code>)
       </div>
 
-      <p style="margin:0 0 8px 0; font-size:13px; color:var(--ink-soft);">→ Take this prompt to a Claude Code planning session. Paste the JSON output below.</p>
+      <div class="prompt-card">
+        <button>📋 Copy planning prompt</button>
+        You are a project charter assistant for a solo software developer.<br>
+        Read the rough project plan below and extract a minimal PMBOK-style charter…<br>
+        <span style="color:var(--ink-faint);">[expand to read full prompt]</span>
+      </div>
 
-      <div style="border:1px dashed var(--rule); border-radius:4px; padding:12px; background:#fff; min-height:90px; font-family:ui-monospace,monospace; font-size:12px; color:var(--ink-faint);">
-        { "problem_statement": "...", "deliverables": [...], "out_of_scope": [...]<br>
-        &nbsp;<br>
-        [textarea — paste JSON result here]
+      <p style="margin:0 0 8px 0; font-size:13px; color:var(--ink-soft);">→ Auto-draft already pasted below. Edit if needed.</p>
+
+      <div style="border:1px solid var(--rule); border-radius:4px; padding:12px; background:#fff; min-height:90px; font-family:ui-monospace,monospace; font-size:12px; color:var(--ink-soft);">
+        {<br>
+        &nbsp;&nbsp;"problem_statement": "Same metric labels on different cockpits compute from different SQL on different timestamp columns…",<br>
+        &nbsp;&nbsp;"deliverables": ["Canonical metric layer at lib/cockpit/metrics/", "Marketing cockpit migrated", "Sales cockpit migrated", …],<br>
+        &nbsp;&nbsp;"out_of_scope": ["GHL overhaul", "Retiring metric_definitions", …],<br>
+        &nbsp;&nbsp;…<br>
+        }
       </div>
 
       <div class="validation">
-        <span class="ok">✓ Problem statement</span> &nbsp;&nbsp;
-        <span class="ok">✓ ≥1 out-of-scope</span> &nbsp;&nbsp;
-        <span class="warn">⚠ Add at least one measurable success criterion</span>
+        <span class="ok">✓ Problem statement</span>
+        <span class="ok">✓ ≥1 out-of-scope</span>
+        <span class="ok">✓ ≥1 measurable success criterion</span>
+        <span style="color:var(--ink-faint);">All checks pass — auto-draft accepted.</span>
       </div>
     </div>
 
     <footer>
       <button>← Back</button>
-      <button class="primary" disabled>Next →</button>
+      <button class="primary">Next →</button>
     </footer>
   </div>
 
-  <p class="annotation">The "Copy" button puts the prompt on clipboard with workspace + plan placeholders pre-filled. Next is disabled until validation passes. All 8 steps save incremental state — abandon &amp; resume works.</p>
+  <h3 style="margin-top:32px;">QoL improvements (folded into V2)</h3>
+  <ul style="font-size:13px; color:var(--ink-soft);">
+    <li><strong>Auto-detect plan path</strong> on wizard open — scans <code>~/.claude/plans/</code> for workspace-related file</li>
+    <li><strong>Charter auto-draft</strong> — runs prompt via <code>local-bg --reason</code> against plan body; pre-populates textarea</li>
+    <li><strong>Done-when method auto-tag</strong> — parse criterion text → <code>shell</code>/<code>file</code>/<code>url</code>/<code>manual</code>; user confirms</li>
+    <li><strong>Skip when content exists</strong> — if plan already has "Out of scope" section, skip the wizard step that creates it</li>
+    <li><strong>Quick-add task (Cmd+Shift+T)</strong> — drops task into focused Nexus card's Kanban OR current Pylon scratchpad</li>
+  </ul>
+  <p class="annotation">Phase 2: fs.watch plan file → re-parse prompt; lead measure suggestions from plan vocabulary; pre-mortem auto-draft via <code>/pre-mortem</code> skill.</p>
 </section>
 
 <section id="nx-projectview">
-  <h2>8. Nexus — ProjectView (the deep-work surface)</h2>
-  <p class="kicker">Single-page. Exec summary, done-when, stages, lead measures, pre-mortem, tasks, handoffs. The Complete-project button gated by done-when.</p>
+  <h2>8. Nexus — ProjectView (themed to workspace color)</h2>
+  <p class="kicker">Header top line + progress + chip backgrounds all carry workspace color. Single scrollable page, all sections accessible at once.</p>
 
-  <div class="nexus-shell">
+  <div class="nexus-shell" style="color: var(--ws-overmind);">
     <div class="pv-header">
+      <div class="top-line"></div>
       <div style="display:flex; justify-content:space-between; align-items:baseline;">
         <h2>⌬ HPFHQ Consolidation Plan</h2>
         <span style="font-size:12px; color:var(--ink-soft);">🔒 hard &nbsp; [⚙]</span>
       </div>
       <div class="meta">
-        <span class="pill">Overmind #2</span> &nbsp;·&nbsp;
+        <span style="background:color-mix(in srgb, currentColor 15%, white); border:1px solid currentColor; padding:1px 6px; border-radius:10px; font-size:11px; color:currentColor;">Overmind #2 · HQc</span>
+        &nbsp;·&nbsp;
         <a href="#" style="color:var(--ink-soft);">~/.claude/plans/let-me-give-you-twinkly-sundae.md ↗</a>
       </div>
       <div class="meta" style="margin-top:6px;">
-        <strong>WIG:</strong> Consolidate HPFHQ from two silos to one canonical metric layer with tooltips + dictionary + Overseer monitoring by 2026-05-26
+        <strong style="color:var(--ink);">Goal:</strong> Consolidate HPFHQ from two silos to one canonical metric layer with tooltips + dictionary + Overseer monitoring by 2026-05-26
       </div>
       <div class="pv-progress"><div></div></div>
       <div class="meta" style="margin-top:6px;">56% · 4/7 done-when · 6 days to deadline</div>
@@ -671,13 +905,13 @@
 
       <div class="pv-box">
         <h4>EXEC SUMMARY</h4>
-        <p style="font-size:13px; margin:0 0 8px 0;">
+        <p style="font-size:13px; margin:0 0 8px 0; color:var(--ink);">
           <strong>What we're doing:</strong> Consolidate HPFHQ around surfaces that actually work — two cockpits + closer/setter/dialer workstations. Kill /ceo, /cro, /architecture. Build one canonical metric layer + tooltips + dictionary + Overseer monitoring.
         </p>
-        <p style="font-size:13px; margin:0 0 8px 0;">
+        <p style="font-size:13px; margin:0 0 8px 0; color:var(--ink);">
           <strong>Why now:</strong> Brandon-on-call exposed parallel metric registries. Plan-agent pressure-test caught lib/metric-sources.ts misclassification.
         </p>
-        <p style="font-size:13px; margin:0;">
+        <p style="font-size:13px; margin:0; color:var(--ink);">
           <strong>Out of scope:</strong> GHL overhaul, retiring metric_definitions, workstation tooltips, new cockpit features.
         </p>
         <p style="font-size:12px; margin-top:8px; color:var(--ink-faint);"><a href="#">edit plan ↗</a></p>
@@ -686,19 +920,19 @@
       <div class="pv-box">
         <h4>DONE-WHEN (4/7)</h4>
         <ul class="pv-criteria">
-          <li class="done">☑ Brandon test passes</li>
-          <li class="done">☑ Dictionary tab live</li>
-          <li class="done">☑ Zero drift (fixture diff)</li>
-          <li class="done">☑ ESLint blocks silo metric</li>
-          <li>☐ curl /ceo → 404</li>
-          <li>☐ Overseer green tile</li>
-          <li>☐ Manifest fresh (4 tables)</li>
+          <li class="done">☑ Brandon test passes <span style="color:var(--ink-faint); font-size:11px;">manual</span></li>
+          <li class="done">☑ Dictionary tab live <span style="color:var(--ink-faint); font-size:11px;">url</span></li>
+          <li class="done">☑ Zero drift (fixture diff) <span style="color:var(--ink-faint); font-size:11px;">shell</span></li>
+          <li class="done">☑ ESLint blocks silo metric <span style="color:var(--ink-faint); font-size:11px;">shell</span></li>
+          <li style="color:var(--ink);">☐ curl /ceo → 404 <span style="color:var(--ink-faint); font-size:11px;">url</span></li>
+          <li style="color:var(--ink);">☐ Overseer green tile <span style="color:var(--ink-faint); font-size:11px;">manual</span></li>
+          <li style="color:var(--ink);">☐ Manifest fresh (4 tables) <span style="color:var(--ink-faint); font-size:11px;">file</span></li>
         </ul>
-        <p style="font-size:11px; margin-top:8px; color:var(--ink-faint);">[ ↻ run checks ]</p>
+        <p style="font-size:11px; margin-top:8px; color:var(--ink-faint);">[ ↻ run auto-checks ]</p>
       </div>
 
       <div class="pv-box full">
-        <h4>STAGES (parsed from plan) &nbsp; <span style="font-size:11px; color:var(--ink-faint);">[ Re-parse from plan ]</span></h4>
+        <h4>STAGES &nbsp; <span style="font-size:11px; color:var(--ink-faint);">[ Re-parse from plan ]</span></h4>
         <div class="pv-stage-row">
           <div class="pv-stage done">0 · Regression fixture<br><small>done</small></div>
           <div class="pv-stage active">1 · Helper layer<br><small>active</small></div>
@@ -712,17 +946,17 @@
 
       <div class="pv-box">
         <h4>LEAD MEASURES (4DX)</h4>
-        <p style="font-size:13px; margin:0 0 6px 0;">Migrations completed · <strong>2/2 this wk</strong> ✓</p>
-        <p style="font-size:13px; margin:0 0 6px 0;">Criteria/session · <strong>1 / +1</strong> ✓</p>
-        <p style="font-size:13px; margin:0 0 6px 0;">Tooltips wired · <strong>80% of total</strong></p>
+        <p style="font-size:13px; margin:0 0 6px 0; color:var(--ink);">Migrations completed · <strong>2/2 this wk</strong> ✓</p>
+        <p style="font-size:13px; margin:0 0 6px 0; color:var(--ink);">Criteria/session · <strong>1 / +1</strong> ✓</p>
+        <p style="font-size:13px; margin:0 0 6px 0; color:var(--ink);">Tooltips wired · <strong>80% of total</strong></p>
         <div style="height:4px; background:var(--muted); border-radius:2px; margin-top:4px; overflow:hidden;">
-          <div style="height:100%; background:var(--accent); width:80%;"></div>
+          <div style="height:100%; background:currentColor; width:80%;"></div>
         </div>
       </div>
 
       <div class="pv-box">
         <h4>PRE-MORTEM (5 ranked)</h4>
-        <ol style="margin:0; padding-left:18px; font-size:13px;">
+        <ol style="margin:0; padding-left:18px; font-size:13px; color:var(--ink);">
           <li>L4×S5 — Helper 2x estimate; sales cockpit slips</li>
           <li>L3×S5 — Fixture misses edge case; prod breaks</li>
           <li>L4×S3 — ESLint rule has hole</li>
@@ -732,7 +966,7 @@
       </div>
 
       <div class="pv-box full">
-        <h4>TASKS (workspace-scoped Kanban) &nbsp;<span style="font-size:11px; color:var(--ink-faint);">[+ New task]</span></h4>
+        <h4>TASKS &nbsp;<span style="font-size:11px; color:var(--ink-faint);">[+ New task · Cmd+Shift+T]</span></h4>
         <div class="kanban">
           <div class="col">
             <h5>TO DO</h5>
@@ -755,7 +989,7 @@
       </div>
 
       <div class="pv-box full">
-        <h4>HANDOFFS (auto-watched) &nbsp;<span style="font-size:11px; color:var(--ink-faint);">↻ live</span></h4>
+        <h4>HANDOFFS &nbsp;<span style="font-size:11px; color:var(--ink-faint);">↻ live (auto-watched)</span></h4>
         <div class="handoff">
           <span class="ts">2026-05-19 19:42</span> ▸ Conductor + Planner master-card
         </div>
@@ -775,14 +1009,14 @@
     </div>
   </div>
 
-  <p class="annotation">Single scrollable page. No tabs. Everything for staying focused on this project lives here. The Complete button is the only place project ends — gated by done-when checklist passing.</p>
+  <p class="annotation"><strong>"WIG" renamed to "Goal"</strong> per v1 feedback. Workspace color identity flows: top line, header pill border, progress bar, stage-active background tint, lead-measure progress, complete CTA color. Theme is one color per project, applied via CSS custom prop.</p>
 </section>
 
 <section id="nx-done">
-  <h2>9. Nexus — Done ceremony (Screen 1 of 3 — Retrospective)</h2>
-  <p class="kicker">Triggered only when all done-when criteria pass. Three screens: retro → snapshot preview → archive confirm.</p>
+  <h2>9. Nexus — Done ceremony (Screen 1 / Retro)</h2>
+  <p class="kicker">All done-when criteria pass → Complete button enables → 3-screen flow (retro → snapshot preview → archive confirm).</p>
 
-  <div class="nexus-shell">
+  <div class="nexus-shell" style="color: var(--ws-overmind);">
     <div class="nexus-header">
       <span class="brand">⌬ Complete project — HPFHQ Consolidation Plan</span>
       <span style="font-size:12px; color:var(--ink-soft);">Step 1 of 3 · Retro</span>
@@ -790,8 +1024,8 @@
     <div class="nexus-body">
 
       <div class="pv-box" style="margin-bottom:16px;">
-        <h4>WIG ACHIEVED</h4>
-        <p style="font-size:13px; margin:0;">Consolidate HPFHQ from two silos to one canonical metric layer with tooltips + dictionary + Overseer monitoring by 2026-05-26 ✓</p>
+        <h4>GOAL ACHIEVED</h4>
+        <p style="font-size:13px; margin:0; color:var(--ink);">Consolidate HPFHQ from two silos to one canonical metric layer with tooltips + dictionary + Overseer monitoring by 2026-05-26 ✓</p>
         <p style="font-size:12px; margin:6px 0 0 0; color:var(--ink-soft);">All 7 done-when criteria passing. Completed 2 days ahead of deadline.</p>
       </div>
 
@@ -799,7 +1033,7 @@
         <div class="col">
           <div class="pv-box">
             <h4>WHAT GOT DONE</h4>
-            <ul style="margin:0; padding-left:18px; font-size:13px;">
+            <ul style="margin:0; padding-left:18px; font-size:13px; color:var(--ink);">
               <li>7 stages closed</li>
               <li>7/7 done-when criteria passed</li>
               <li>12 migrations completed (target 12)</li>
@@ -810,7 +1044,7 @@
         <div class="col">
           <div class="pv-box">
             <h4>WHAT CARRIED</h4>
-            <ul style="margin:0; padding-left:18px; font-size:13px;">
+            <ul style="margin:0; padding-left:18px; font-size:13px; color:var(--ink);">
               <li>2 open Kanban tasks → archived</li>
               <li>0 pre-mortem risks materialized</li>
               <li>Workstation tooltips deferred (per scope)</li>
@@ -820,77 +1054,27 @@
       </div>
 
       <div class="pv-box" style="margin-top:16px;">
-        <h4>WHAT DID THIS TEACH YOU? (saved to memory)</h4>
+        <h4>WHAT DID THIS TEACH YOU? <span style="font-size:11px; color:var(--ink-faint);">(saved to memory)</span></h4>
         <div style="border:1px dashed var(--rule); border-radius:4px; padding:12px; background:white; min-height:80px; font-size:13px; color:var(--ink-faint);">
-          [textarea — 1-3 sentences. Saves as retro-hpfhq-consolidation in memory.]
+          [textarea — 1-3 sentences. Saves as retro-hpfhq-consolidation in <code>~/.claude/projects/&lt;workspace&gt;/memory/</code>]
         </div>
       </div>
 
     </div>
     <footer style="padding:14px 24px; border-top:1px solid var(--rule); display:flex; justify-content:space-between; background:var(--muted-bg);">
       <button style="padding:6px 14px; border-radius:4px; border:1px solid var(--ink); background:white; cursor:pointer;">Cancel</button>
-      <button style="padding:6px 14px; border-radius:4px; border:1px solid var(--ink); background:var(--ink); color:white; cursor:pointer;">Next: snapshot preview →</button>
+      <button style="padding:6px 14px; border-radius:4px; border:1px solid currentColor; background:currentColor; color:white; cursor:pointer;">Next: snapshot preview →</button>
     </footer>
   </div>
 
-  <p class="annotation">Screen 2 (snapshot preview) shows the frozen-state read-only render. Screen 3 (archive confirm) is a single button. After: tile reverts Nexus card → Pylon (archived variant ✓), Pathfinder context_pack removed, project file moved to .completed/ at mode 0444.</p>
-</section>
-
-<section id="nx-transform">
-  <h2>10. Pylon ↔ Nexus card transformation</h2>
-  <p class="kicker">The moment a workspace becomes (or stops being) a dedicated project. ~300ms ease-out. Highest-value interaction to get right.</p>
-
-  <div class="transformation">
-    <div>
-      <h3>Pylon (no project)</h3>
-      <div class="tile-pylon" style="max-width:240px;">
-        <span class="pill">Overmind #2</span>
-        <span>Overmind #2</span>
-        <span class="pylon-tier">▍▍</span>
-      </div>
-      <p class="annotation">Standard transient tile.</p>
-    </div>
-    <div class="arrow">→</div>
-    <div>
-      <h3>Wizard saves</h3>
-      <div style="text-align:center; padding:20px; border:1px dashed var(--accent); border-radius:6px; background:#fff8f0; max-width:240px; font-size:12px;">
-        Nexus writes<br>
-        <code>~/.dedicated-projects/&lt;wsId&gt;.json</code><br>
-        COMSAT fs.watch fires<br>
-        ~300ms ease-out<br>
-        tile expands ↓
-      </div>
-    </div>
-    <div class="arrow">→</div>
-    <div>
-      <h3>Nexus card (dedicated)</h3>
-      <div class="tile-nexus" style="max-width:240px;">
-        <div class="row1">
-          <span><span class="pill">Overmind #2</span></span>
-          <span><span class="src-badge">CL</span> 🔒</span>
-        </div>
-        <div class="title">HPFHQ Consolidation ↗</div>
-        <div class="chip">🎯 0/7 <div class="progress"><div style="width:0%;"></div></div></div>
-      </div>
-      <p class="annotation">Full anchor tile.</p>
-    </div>
-  </div>
-
-  <p class="annotation" style="margin-top:24px;">Reverse direction on project completion: Nexus card → Pylon (archived ✓). Same animation in reverse. Annotate: should the expanding direction be vertical only, or also horizontal? Should other tiles in the radar visibly move out of the way?</p>
+  <p class="annotation">After confirm: tile transforms Nexus card → archived Pylon (with ✓ badge). Project file moves to <code>~/.dedicated-projects/.completed/&lt;wsId&gt;-&lt;ts&gt;.json</code> at mode 0444. Pathfinder context_pack removed.</p>
 </section>
 
 </main>
 
 <footer class="doc-footer">
-  <p><strong>Iteration notes for iPad:</strong></p>
-  <ul>
-    <li>Mark up what feels wrong with a red pen — size, density, hierarchy</li>
-    <li>Sketch alternative layouts on top where boxes need to move</li>
-    <li>Note any missing UI moments not shown here</li>
-    <li>Flag where the Nexus card vs Pylon distinction breaks down (too similar? too dissimilar?)</li>
-    <li>Sketch the drawer trigger zone (edge hover hot zone width, latency before expand)</li>
-  </ul>
-  <p style="margin-top:16px;">Source: <code>~/Code/overmind/projects/comsat/docs/plans/2026-05-19-wireframe-brief-comsat-lean.md</code> + <code>2026-05-19-wireframe-brief-nexus-projectview.md</code>. Send back annotated screenshots and I'll fold revisions into the HTML.</p>
+  <p><strong>v1 → v2 summary:</strong> fullscreen mode dropped, drawer now carries color/dot/shorthand, status-dot semantics added (orange/yellow/green with animation), Nexus = double top line, 3P/CL/CX/shield header replaces tile chip area, 10-bar context replaces note line, Pylon click = scratchpad (not nothing), badge palette drag onto VS Code window via companion extension, workspace color flows across both apps, "WIG" renamed to "Goal", auto-draft pattern in wizard with QoL hints visible.</p>
+  <p style="margin-top:16px;"><strong>Iteration on iPad:</strong> annotate sections that still feel wrong-shaped. Specifically check: drawer collapsed width (56px enough? too much?), expanded work-view info density (too crowded? not enough?), the badge drop-on-VS-Code interaction (right metaphor?), and the workspace color saturation hierarchy (does Nexus card top line at full saturation feel right, or too loud?).</p>
 </footer>
 
 </body>
