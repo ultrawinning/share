@@ -1,0 +1,7 @@
+# Saved Google Drive pages (contain Google's own embedded API keys → false secret alerts)
+*Google Drive*.html
+*- Google Drive.html
+
+# OS junk
+.DS_Store
+Thumbs.db
