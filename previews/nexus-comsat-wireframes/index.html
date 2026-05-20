@@ -47,8 +47,25 @@
     nav .group { color: var(--ink-faint); padding: 4px 0; }
     main { max-width: 1100px; margin: 0 auto; padding: 32px 24px 120px 24px; }
     section { margin-bottom: 72px; scroll-margin-top: 140px; }
-    h2 { font-size: 22px; margin: 0 0 6px 0; font-weight: 600; }
-    h3 { font-size: 16px; margin: 32px 0 12px 0; font-weight: 600; color: var(--ink-soft); }
+    h2 { font-size: 22px; margin: 0 0 6px 0; font-weight: 600; font-family: ui-monospace, "SF Mono", "JetBrains Mono", monospace; letter-spacing: -0.01em; }
+    h2::before { content: "⎡ "; color: var(--dot-orange); font-weight: 400; }
+    h3 { font-size: 14px; margin: 32px 0 12px 0; font-weight: 600; color: var(--ink-soft); font-family: ui-monospace, monospace; text-transform: uppercase; letter-spacing: 0.04em; }
+    /* sci-fi corner brackets on major frames */
+    .frame, .nexus-shell, .work-tile, .wizard, .layout-config, .vscode-full, .scratchpad, .badge-palette {
+      position: relative;
+    }
+    .frame::before, .nexus-shell::before, .wizard::before, .layout-config::before {
+      content: ""; position: absolute; top: -2px; left: -2px;
+      width: 10px; height: 10px;
+      border-top: 2px solid var(--ink); border-left: 2px solid var(--ink);
+      pointer-events: none;
+    }
+    .frame::after, .nexus-shell::after, .wizard::after, .layout-config::after {
+      content: ""; position: absolute; bottom: -2px; right: -2px;
+      width: 10px; height: 10px;
+      border-bottom: 2px solid var(--ink); border-right: 2px solid var(--ink);
+      pointer-events: none;
+    }
     h2 + .kicker { color: var(--ink-soft); margin: 0 0 24px 0; font-size: 14px; }
     .row { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
     .col { flex: 1; min-width: 280px; }
@@ -86,7 +103,19 @@
       border: 1px solid var(--ink-faint); background: white; color: var(--ink-faint);
     }
     .cl-logo.on { background: var(--dot-orange); color: white; border-color: var(--dot-orange); }
-    .cx-logo.on { background: #10a37f; color: white; border-color: #10a37f; }
+    .cx-logo.on { background: #00b8d4; color: white; border-color: #00b8d4; }
+
+    /* ---- Workflow badge dots (v3 — replaces text chips) ---- */
+    .workflow-dots { display: inline-flex; gap: 4px; }
+    .workflow-dot {
+      width: 8px; height: 8px; border-radius: 50%; display: inline-block;
+      border: 1px solid rgba(0,0,0,0.15);
+    }
+    .wf-standby  { background: var(--dot-yellow); }
+    .wf-human    { background: #ff6f9b; }       /* pink */
+    .wf-onhold   { background: #e53935; }       /* red */
+    .wf-blocked  { background: #e53935; }
+    .wf-empty    { background: transparent; border: 1px dashed rgba(0,0,0,0.2); }
     .shield {
       width: 18px; height: 18px; cursor: pointer;
       display: inline-flex; align-items: center; justify-content: center;
@@ -1217,6 +1246,206 @@
   </div>
 
   <p class="annotation">After confirm: tile transforms Nexus card → archived Pylon (with ✓ badge). Project file moves to <code>~/.dedicated-projects/.completed/&lt;wsId&gt;-&lt;ts&gt;.json</code> at mode 0444. Pathfinder context_pack removed.</p>
+</section>
+
+<section id="badges-dots">
+  <h2>10. Badge dots — two sets, right side of tile</h2>
+  <p class="kicker">v3 refinement: badges render as colored dots on the right edge of the tile header, in TWO conceptual sets. Engine indicators on the left (auto-detected); workflow dots on the right (user-pinned, up to 4).</p>
+
+  <div class="row" style="gap:32px;">
+    <div>
+      <h3>Tile with both badge sets</h3>
+      <div class="work-tile nexus" style="color: var(--ws-overmind); max-width:340px;">
+        <div class="top-line"></div>
+        <div class="header">
+          <span class="dot orange" style="margin-right:2px;"></span>
+          <span class="shorthand-pill">HQc</span>
+          <span class="header-right">
+            <span class="player3 lit">3P</span>
+            <span class="cl-logo on" title="Claude active">CL</span>
+            <span class="cx-logo" title="Codex idle">CX</span>
+            <span class="workflow-dots" style="margin-left:8px; border-left: 1px solid var(--rule); padding-left:8px;">
+              <span class="workflow-dot wf-standby" title="Standby"></span>
+              <span class="workflow-dot wf-human" title="Needs human"></span>
+              <span class="workflow-dot wf-empty"></span>
+              <span class="workflow-dot wf-empty"></span>
+            </span>
+          </span>
+        </div>
+        <div class="title">HPFHQ Consolidation Plan</div>
+        <div class="project-chip">🎯 4/7 <div class="progress"><div></div></div></div>
+        <div class="bottom">
+          <span>Tier <span class="tier-bar"><i></i><i></i><i></i><i></i></span></span>
+          <span>Ctx <span class="context-bar">
+            <i class="fill"></i><i class="fill"></i><i class="fill"></i><i class="fill"></i><i class="fill"></i><i class="fill"></i><i></i><i></i><i></i><i></i>
+          </span> 60%</span>
+        </div>
+      </div>
+      <p class="annotation">Engine set (left of divider): 3P · CL · CX. Auto-detected. Workflow set (right): 4 dot slots. User pins via shield popup or drag from palette.</p>
+    </div>
+
+    <div>
+      <h3>Color key</h3>
+      <table style="font-size:12px; border-collapse: collapse;">
+        <tr><th colspan="2" style="text-align:left; padding:6px 0; font-family:ui-monospace,monospace;">ENGINE</th></tr>
+        <tr><td><span class="cl-logo on" style="width:14px; height:14px; font-size:9px;">CL</span></td><td style="padding:4px 8px;">Claude — Anthropic orange</td></tr>
+        <tr><td><span class="cx-logo on" style="width:14px; height:14px; font-size:9px;">CX</span></td><td style="padding:4px 8px;">Codex — cyan</td></tr>
+        <tr><td><span class="player3 lit">3P</span></td><td style="padding:4px 8px;">3rd-party agents active — phosphor green</td></tr>
+        <tr><th colspan="2" style="text-align:left; padding:14px 0 6px 0; font-family:ui-monospace,monospace;">WORKFLOW (UP TO 4)</th></tr>
+        <tr><td><span class="workflow-dot wf-standby"></span></td><td style="padding:4px 8px;">Standby — yellow</td></tr>
+        <tr><td><span class="workflow-dot wf-human"></span></td><td style="padding:4px 8px;">Needs human — pink</td></tr>
+        <tr><td><span class="workflow-dot wf-onhold"></span></td><td style="padding:4px 8px;">On hold / blocked — red</td></tr>
+        <tr><td><span class="workflow-dot wf-empty"></span></td><td style="padding:4px 8px;">Empty slot</td></tr>
+      </table>
+      <p class="annotation" style="margin-top:12px;">Two sets: engine = runtime state (auto); workflow = intent (user). Different conceptual spaces, different visual rows.</p>
+    </div>
+  </div>
+</section>
+
+<section id="vsc-panel">
+  <h2>11. Nexus VS Code panel</h2>
+  <p class="kicker">Nexus has THREE surfaces — standalone app, this VS Code panel, shared JSON. Panel = webview in companion extension. Subset of ProjectView; full editing redirects to standalone.</p>
+
+  <div class="vscode-full">
+    <div class="titlebar">
+      <span>● HPFHQ Consolidation — Visual Studio Code</span>
+      <span class="tabs">
+        <span class="tab">metrics.ts</span>
+        <span class="tab active">cockpit/index.tsx</span>
+      </span>
+    </div>
+    <div class="pane">
+      <div class="activitybar">
+        <div class="ico">📁</div>
+        <div class="ico">🔍</div>
+        <div class="ico">⎇</div>
+        <div class="ico active" title="Nexus">⌬</div>
+        <div class="ico">⚙</div>
+      </div>
+      <div class="sidebar">
+        <div class="panel-tabs">
+          <span class="tab">Files</span>
+          <span class="tab active">Nexus</span>
+        </div>
+        <div class="nx-panel" style="color: var(--ws-overmind);">
+          <div class="nx-head">
+            <div class="name">⌬ HPFHQ Consolidation</div>
+            <div class="goal">Goal: Consolidate HPFHQ to one canonical metric layer by 2026-05-26</div>
+            <div class="nx-progress"><div></div></div>
+            <div class="nx-meta">56% · 4/7 · 6d to deadline · 🔒 hard</div>
+          </div>
+
+          <div>
+            <h6>Done-when (4/7)</h6>
+            <div class="crit done">☑ Brandon test passes</div>
+            <div class="crit done">☑ Dictionary tab live</div>
+            <div class="crit done">☑ Zero drift (fixture)</div>
+            <div class="crit done">☑ ESLint blocks silo</div>
+            <div class="crit">☐ curl /ceo → 404</div>
+            <div class="crit">☐ Overseer green</div>
+            <div class="crit">☐ Manifest fresh</div>
+            <div style="margin-top:6px; font-size:10px; color:#888;">[ ↻ run checks ]</div>
+          </div>
+
+          <div>
+            <h6>Stage 1 — Helper layer · active</h6>
+            <div class="nx-stage">
+              <div class="nx-task">Audit src/cockpit imports</div>
+              <div class="nx-task">List downstream consumers</div>
+              <div class="nx-task done">Build lib/cockpit/metrics shell</div>
+              <div style="margin-top:4px; font-size:10px; color:#666;">+ Quick task (⌘⇧T)</div>
+            </div>
+          </div>
+
+          <div>
+            <h6>Latest handoffs</h6>
+            <div class="nx-handoff"><span class="ts">05-19 19:42</span>Conductor + Planner master</div>
+            <div class="nx-handoff"><span class="ts">05-18 09:30</span>Relay notes shipped</div>
+            <div class="nx-handoff"><span class="ts">05-17 14:00</span>Player3 routing</div>
+          </div>
+
+          <div class="nx-redirect">
+            Edit charter / wizard → open Nexus app ⌘⇧P
+          </div>
+        </div>
+      </div>
+      <div class="editor">
+        <span style="color:#569cd6;">import</span> { metrics } <span style="color:#569cd6;">from</span> <span style="color:#ce9178;">"@/lib/cockpit/metrics"</span>;<br>
+        <br>
+        <span style="color:#569cd6;">export function</span> <span style="color:#dcdcaa;">CockpitTile</span>({ id }: { id: <span style="color:#4ec9b0;">MetricId</span> }) {<br>
+        &nbsp;&nbsp;<span style="color:#569cd6;">const</span> def = metrics[id];<br>
+        &nbsp;&nbsp;<span style="color:#569cd6;">return</span> &lt;<span style="color:#4ec9b0;">KpiCard</span> metricId={id} /&gt;;<br>
+        }<br>
+        <br>
+        <span style="color:#6a9955;">// migrating from KpiCard label pattern</span>
+      </div>
+    </div>
+    <div class="statusbar">
+      <span>⎇ main</span>
+      <span class="vsbadge">CL active</span>
+      <span class="vsbadge" style="background: rgba(255,140,42,0.4);">🎯 4/7</span>
+      <span class="vsbadge">Needs human</span>
+      <span style="margin-left:auto;">⚠ 0</span>
+    </div>
+  </div>
+
+  <p class="annotation">Activity bar gets a new Nexus icon (⌬). Click → sidebar shows Nexus panel. Same color identity as COMSAT + standalone. Tick a done-when → writes shared JSON → COMSAT chip updates → standalone Nexus updates. Three surfaces, one truth.</p>
+
+  <h3>Panel intentionally lacks</h3>
+  <ul style="font-size:13px; color:var(--ink-soft);">
+    <li>Wizard — full creation/edit in standalone app</li>
+    <li>Full kanban — only current stage's tasks visible</li>
+    <li>Pre-mortem — read-only summary</li>
+    <li>Exec summary editor — read-only display</li>
+  </ul>
+  <p class="annotation">Panel = glance-and-tick. Heavy lifting in standalone Nexus.</p>
+</section>
+
+<section id="vsc-layout">
+  <h2>12. Workspace layout config (per-category VS Code defaults)</h2>
+  <p class="kicker">Solves "VS Code launches in random format". Same companion extension writes chosen layout per COMSAT category on workspace activation. Configured once, applied every time.</p>
+
+  <div class="layout-config">
+    <div class="lc-head">
+      <strong>COMSAT → Settings → Workspace layouts</strong>
+      <div style="font-size:12px; color:var(--ink-soft); margin-top:4px;">
+        Set the VS Code layout each category opens with. Applied by companion extension on workspace activation.
+      </div>
+    </div>
+    <div class="lc-body">
+      <div class="lc-categories">
+        <div class="lc-cat active"><span class="swatch" style="background: var(--ws-overmind);"></span>Overmind</div>
+        <div class="lc-cat"><span class="swatch" style="background: var(--ws-hpfhq);"></span>HPFHQ</div>
+        <div class="lc-cat"><span class="swatch" style="background: var(--ws-bite);"></span>Bite</div>
+        <div class="lc-cat"><span class="swatch" style="background: var(--ws-medus);"></span>Medus</div>
+        <div class="lc-cat"><span class="swatch" style="background: var(--ws-debugs);"></span>Debugs</div>
+        <div class="lc-cat"><span class="swatch" style="background: var(--ws-scratch);"></span>Scratch</div>
+      </div>
+
+      <div class="lc-form">
+        <h3 style="margin-top:0;">Overmind — default layout</h3>
+
+        <div class="row"><label>Sidebar location</label><select><option>Left (default)</option><option>Right</option></select></div>
+        <div class="row"><label>Default sidebar tab</label><select><option>Nexus panel</option><option>File Explorer</option><option>Source Control</option><option>Search</option></select></div>
+        <div class="row"><label>Activity bar visible</label><input type="checkbox" checked></div>
+        <div class="row"><label>Terminal location</label><select><option>Panel (bottom)</option><option>Editor area</option></select></div>
+        <div class="row"><label>Terminal open on launch</label><input type="checkbox" checked></div>
+        <div class="row"><label>Minimap</label><input type="checkbox"></div>
+        <div class="row"><label>Font size</label><input type="number" value="13" style="width:60px;"> px</div>
+        <div class="row"><label>Theme</label><select><option>Default Dark+</option><option>One Dark Pro</option><option>GitHub Dark</option></select></div>
+
+        <div class="lc-preview">
+          <div class="ab">⌬</div>
+          <div class="sb">Nexus<br>panel</div>
+          <div class="ed">// editor</div>
+          <div class="terminal">$ terminal · pre-spawned</div>
+        </div>
+        <p class="annotation" style="margin-top:8px;">Preview shows what an Overmind workspace looks like on launch.</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="annotation">Stored in COMSAT category config. Companion extension writes <code>workbench.*</code>, <code>terminal.integrated.*</code>, <code>editor.*</code> settings into the <code>.code-workspace</code> file on activation. One config per category.</p>
 </section>
 
 </main>
