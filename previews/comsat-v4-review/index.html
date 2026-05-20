@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>COMSAT v4 — Final Thoughts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #04060a;
+      --bg-2: #0c1218;
+      --paper: #0a1018;
+      --rule: #1f2832;
+      --text: #d0d8e0;
+      --text-soft: #8a96a4;
+      --text-faint: #5a6470;
+      --accent: #2ed47a;
+      --cook: #ff8c2a;
+      --attn: #f5c423;
+      --danger: #e53935;
+      --signal: #00b8d4;
+      --copper: #d35400;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; background: var(--bg); color: var(--text);
+      font-family: "Rajdhani", system-ui, sans-serif; font-size: 16px; line-height: 1.55;
+      min-height: 100%;
+      background-image:
+        linear-gradient(to right, rgba(46,212,122,0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(46,212,122,0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+      background-attachment: fixed;
+    }
+    .page { max-width: 980px; margin: 0 auto; padding: 32px 24px 120px; }
+
+    /* ----- HUD frame ----- */
+    .hud {
+      position: relative; border: 1px solid var(--rule); background: var(--paper);
+      padding: 24px 28px; margin-bottom: 24px;
+    }
+    .hud::before, .hud::after,
+    .hud .corner-tr, .hud .corner-bl {
+      content: ""; position: absolute; width: 12px; height: 12px; pointer-events: none;
+    }
+    .hud::before { top:-2px; left:-2px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); }
+    .hud::after  { bottom:-2px; right:-2px; border-bottom: 2px solid var(--accent); border-right: 2px solid var(--accent); }
+    .hud .corner-tr { top:-2px; right:-2px; border-top: 2px solid var(--copper); border-right: 2px solid var(--copper); }
+    .hud .corner-bl { bottom:-2px; left:-2px; border-bottom: 2px solid var(--copper); border-left: 2px solid var(--copper); }
+
+    /* ----- Top bar ----- */
+    .topbar {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 0 16px 0; margin-bottom: 24px;
+      border-bottom: 1px solid var(--rule);
+      font-family: "Share Tech Mono", monospace; font-size: 13px;
+      color: var(--text-soft);
+    }
+    .brand {
+      font-family: "Orbitron", sans-serif; font-weight: 700; letter-spacing: 0.12em;
+      color: var(--accent); font-size: 16px;
+    }
+    .brand .sub { color: var(--text-soft); font-weight: 400; margin-left: 8px; }
+    .pill {
+      padding: 2px 8px; border: 1px solid var(--rule); border-radius: 2px;
+      font-family: "Share Tech Mono", monospace; font-size: 11px;
+      color: var(--text-soft); margin-left: auto;
+    }
+
+    /* ----- Headings ----- */
+    h1 {
+      font-family: "Orbitron", sans-serif; font-weight: 700; font-size: 28px;
+      letter-spacing: 0.04em; margin: 0 0 8px 0; color: var(--text);
+    }
+    h2 {
+      font-family: "Orbitron", sans-serif; font-weight: 600; font-size: 18px;
+      letter-spacing: 0.05em; color: var(--accent);
+      margin: 40px 0 12px 0; text-transform: uppercase;
+    }
+    h2::before { content: "▸ "; color: var(--copper); }
+    h3 {
+      font-family: "Rajdhani", sans-serif; font-weight: 600; font-size: 16px;
+      color: var(--text); margin: 20px 0 6px 0;
+    }
+    .kicker {
+      font-family: "Share Tech Mono", monospace; font-size: 12px;
+      color: var(--text-soft); letter-spacing: 0.04em; margin: 0 0 16px 0;
+    }
+
+    /* ----- Verdict block ----- */
+    .verdict {
+      display: grid; grid-template-columns: 80px 1fr; gap: 16px; align-items: center;
+      padding: 18px 20px; margin-bottom: 24px;
+      border-left: 4px solid var(--accent); background: rgba(46,212,122,0.05);
+    }
+    .verdict .score {
+      font-family: "Orbitron", sans-serif; font-weight: 700; font-size: 32px;
+      color: var(--accent); text-align: center; line-height: 1;
+    }
+    .verdict .score .out { font-size: 14px; color: var(--text-soft); }
+    .verdict .label {
+      font-family: "Share Tech Mono", monospace; font-size: 11px;
+      color: var(--text-soft); letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+    .verdict p { margin: 0; color: var(--text); }
+
+    /* ----- Body content ----- */
+    p { color: var(--text); }
+    p strong { color: var(--text); }
+    code {
+      font-family: "Share Tech Mono", monospace; font-size: 13px;
+      background: var(--bg-2); padding: 1px 6px; border: 1px solid var(--rule);
+      border-radius: 2px; color: var(--accent);
+    }
+    a { color: var(--signal); text-decoration: none; border-bottom: 1px dashed var(--signal); }
+    a:hover { color: var(--accent); border-color: var(--accent); }
+    ul, ol { padding-left: 22px; }
+    li { margin-bottom: 6px; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-2 .card {
+      padding: 14px 16px; border: 1px solid var(--rule); background: var(--bg-2);
+    }
+    .grid-2 .card h4 {
+      font-family: "Share Tech Mono", monospace; font-size: 11px;
+      color: var(--text-soft); letter-spacing: 0.06em; text-transform: uppercase;
+      margin: 0 0 6px 0;
+    }
+    .grid-2 .card.good { border-left: 3px solid var(--accent); }
+    .grid-2 .card.flag { border-left: 3px solid var(--attn); }
+    .grid-2 .card.miss { border-left: 3px solid var(--danger); }
+
+    /* ----- Tables ----- */
+    table {
+      width: 100%; border-collapse: collapse; font-size: 14px; margin: 12px 0;
+    }
+    th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--rule); }
+    th {
+      font-family: "Share Tech Mono", monospace; font-weight: 400; font-size: 11px;
+      letter-spacing: 0.06em; color: var(--text-soft); text-transform: uppercase;
+      background: var(--bg-2);
+    }
+    td .yes { color: var(--accent); }
+    td .no  { color: var(--danger); }
+    td .partial { color: var(--attn); }
+
+    /* ----- Decision callouts ----- */
+    .decisions { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 16px 0; }
+    .decision {
+      display: grid; grid-template-columns: 32px 1fr; gap: 12px; align-items: start;
+      padding: 14px 16px; border: 1px solid var(--rule); background: var(--bg-2);
+      border-left: 3px solid var(--copper);
+    }
+    .decision .num {
+      font-family: "Orbitron", sans-serif; font-weight: 700; font-size: 18px;
+      color: var(--copper); text-align: center;
+    }
+    .decision .q {
+      font-weight: 600; color: var(--text); margin: 0 0 4px 0; font-size: 15px;
+    }
+    .decision .a {
+      color: var(--text-soft); font-size: 14px; margin: 0;
+    }
+    .decision .rec {
+      display: inline-block; margin-top: 6px;
+      font-family: "Share Tech Mono", monospace; font-size: 11px;
+      color: var(--accent); letter-spacing: 0.04em;
+    }
+
+    /* ----- Sequence ----- */
+    .seq { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; margin-top: 12px; }
+    .seq .step {
+      padding: 12px; border: 1px solid var(--rule); background: var(--bg-2);
+      font-family: "Share Tech Mono", monospace; font-size: 12px;
+      position: relative;
+    }
+    .seq .step .n {
+      position: absolute; top: -10px; left: 10px; background: var(--bg);
+      padding: 0 6px; color: var(--copper); font-weight: 700;
+    }
+    .seq .step .title {
+      color: var(--text); font-family: "Rajdhani", sans-serif; font-size: 14px;
+      font-weight: 600; margin-bottom: 4px;
+    }
+    .seq .step .meta { color: var(--text-faint); font-size: 11px; }
+
+    footer.foot {
+      margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--rule);
+      font-family: "Share Tech Mono", monospace; font-size: 11px;
+      color: var(--text-faint); letter-spacing: 0.04em;
+    }
+
+    @media (max-width: 720px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      .verdict { grid-template-columns: 1fr; }
+      .verdict .score { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+<div class="topbar">
+  <span class="brand">COMSAT V4 <span class="sub">/ DESIGN REVIEW</span></span>
+  <span class="pill">2026-05-20 · OPUS 4.7</span>
+</div>
+
+<h1>Final Thoughts on the Design Drop</h1>
+<p class="kicker">Verdict + what landed · open decisions · build sequence</p>
+
+<div class="verdict">
+  <div class="score">9<span class="out">/10</span></div>
+  <div>
+    <div class="label">VERDICT</div>
+    <p><strong>Ship the design system as locked.</strong> The token discipline, type stack, and HUD restraint all hit. Two small unilateral calls need your sign-off (drawer variant, workflow-dot row). The two shipped HTML files are production-ready references. Six components remain to design; sequence them so build doesn't block.</p>
+  </div>
+</div>
+
+<!-- =================== WHAT LANDED =================== -->
+<h2>What landed (and stays)</h2>
+<div class="hud"><span class="corner-tr"></span><span class="corner-bl"></span>
+
+<div class="grid-2">
+  <div class="card good">
+    <h4>TOKEN DISCIPLINE</h4>
+    Every color a CSS var on <code>:root</code> + <code>[data-theme="light"]</code>. No hardcoded hex in component CSS. Workspace color flows via single <code>--ws</code> custom property. Exactly as briefed — this is the foundation.
+  </div>
+  <div class="card good">
+    <h4>TYPE STACK</h4>
+    Orbitron (display) + Rajdhani (ui) + Share Tech Mono (mono) + Press Start 2P (3P only). All locally-served, all OFL-licensed. Reads sci-fi without being neon.
+  </div>
+  <div class="card good">
+    <h4>CTX HEATMAP (NEW)</h4>
+    Not in my brief — they added traffic-light bands on the 10-bar context fill: ≤40% green, 40–75% yellow, 75%+ red. Keep this. Better than my flat-color spec.
+  </div>
+  <div class="card good">
+    <h4>ENGINEERING-GRID BG</h4>
+    32px minor / 160px major grid behind everything. Reads as graph-paper / blueprint. Subtle, restrained, exactly the sci-fi nod I asked for.
+  </div>
+  <div class="card good">
+    <h4>HUD BRACKETS</h4>
+    Corner brackets only on outermost frames (drawer outer, <code>.nexus-app</code> shell). Restraint per the no-glow rule. Got it right.
+  </div>
+  <div class="card good">
+    <h4>THEME TOGGLE + LIGHT MODE</h4>
+    Dark default + paper-on-tan light. localStorage persistence. Both modes look properly considered, not just inverted.
+  </div>
+</div>
+</div>
+
+<!-- =================== UNILATERAL CALLS =================== -->
+<h2>Unilateral calls — need your sign-off</h2>
+<div class="hud"><span class="corner-tr"></span><span class="corner-bl"></span>
+
+<div class="decisions">
+
+  <div class="decision">
+    <div class="num">1</div>
+    <div>
+      <p class="q">Drawer collapsed = continuous ticker (Variant B). Bordered-tile variant dropped.</p>
+      <p class="a">My v3 wireframes had both. They chose the ticker — 50px outer, 24px rows, no inter-row gaps, single horizontal color wash per row. Cleaner ambient density. I agree.</p>
+      <span class="rec">LOCK IT — confirm "ticker only"</span>
+    </div>
+  </div>
+
+  <div class="decision">
+    <div class="num">2</div>
+    <div>
+      <p class="q">Workflow-dot row dropped from expanded work view.</p>
+      <p class="a">CSS exists (<code>.wf .slot.standby/.human/.block</code>), HTML doesn't render it. They flagged it as polish. <strong>This is wrong-shaped</strong> — the two-set badge model (engine + workflow) was load-bearing from your 2026-05-20 feedback. Workflow dots should ship in the default expanded view, empty slots showing as dashed placeholders.</p>
+      <span class="rec">ADD WORKFLOW DOTS BACK — default-on, even when empty</span>
+    </div>
+  </div>
+
+  <div class="decision">
+    <div class="num">3</div>
+    <div>
+      <p class="q">CL/CX marks = stylized house-style approximations, not the real Anthropic / OpenAI logos.</p>
+      <p class="a">The PNGs in <code>uploads/Claude.png</code> + <code>uploads/ChatGpt.png</code> are the official marks they had access to. They chose stylized for trademark safety. <strong>Right call for shipped product</strong> — using official marks invites legal friction. Keep stylized; iterate the marks themselves if they don't read right.</p>
+      <span class="rec">KEEP STYLIZED — refine the glyphs, not the source</span>
+    </div>
+  </div>
+
+  <div class="decision">
+    <div class="num">4</div>
+    <div>
+      <p class="q"><code>--ws-{name}</code> tokens vs single <code>--ws</code> per workspace.</p>
+      <p class="a">They enumerated 6 named tokens (overmind / hpfhq / debugs / scratch / bite / medus). Categories are user-defined and open-ended. <strong>Should be single <code>--ws</code> per workspace</strong>, applied via inline style or data attribute. Drop the named enum.</p>
+      <span class="rec">REFACTOR TO SINGLE --ws PER WORKSPACE</span>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- =================== SHIPPED VS REMAINING =================== -->
+<h2>Shipped vs remaining</h2>
+<div class="hud"><span class="corner-tr"></span><span class="corner-bl"></span>
+
+<table>
+  <thead><tr><th>Component</th><th>State</th><th>Source</th></tr></thead>
+  <tbody>
+    <tr><td>COMSAT drawer — collapsed</td><td class="yes">SHIPPED</td><td>Drawer States.html</td></tr>
+    <tr><td>COMSAT drawer — expanded (work view)</td><td class="yes">SHIPPED</td><td>Drawer States.html</td></tr>
+    <tr><td>Nexus standalone ProjectView</td><td class="yes">SHIPPED</td><td>Nexus ProjectView.html</td></tr>
+    <tr><td>Light + dark theme</td><td class="yes">SHIPPED</td><td>both</td></tr>
+    <tr><td>Workflow-dot row (in default expanded)</td><td class="partial">CSS only — needs HTML</td><td>Drawer States.html</td></tr>
+    <tr><td>Nexus Home (active + archived list)</td><td class="no">PENDING</td><td>wireframe §6</td></tr>
+    <tr><td>Nexus Wizard (8 steps + planning prompts)</td><td class="no">PENDING</td><td>wireframe §7</td></tr>
+    <tr><td>Done ceremony (3-screen flow)</td><td class="no">PENDING</td><td>wireframe §9</td></tr>
+    <tr><td>VS Code Nexus panel (subset webview)</td><td class="no">PENDING</td><td>wireframe §11</td></tr>
+    <tr><td>VS Code per-category layout config</td><td class="no">PENDING</td><td>wireframe §12</td></tr>
+    <tr><td>Badge palette (drag-out)</td><td class="no">PENDING</td><td>wireframe §3</td></tr>
+    <tr><td>Pylon scratchpad</td><td class="no">PENDING</td><td>wireframe §5</td></tr>
+    <tr><td>COMSAT Settings drawer (stripped)</td><td class="no">PENDING</td><td>v3 design</td></tr>
+  </tbody>
+</table>
+
+<p style="font-size:13px; color:var(--text-soft);">
+8 components remaining. ProjectView (the heaviest) is done; remaining are smaller in scope. Recommend a second design pass on the 8, OR start building from the design tokens already locked and iterate visually as components emerge.
+</p>
+
+</div>
+
+<!-- =================== BUILD SEQUENCE =================== -->
+<h2>Recommended build sequence</h2>
+<div class="hud"><span class="corner-tr"></span><span class="corner-bl"></span>
+
+<p>You now have enough locked direction to start building. Suggested ordering:</p>
+
+<div class="seq">
+  <div class="step">
+    <span class="n">01</span>
+    <div class="title">Lift design tokens</div>
+    <div class="meta">Copy <code>:root</code> + <code>[data-theme="light"]</code> from the shipped HTML into a shared tokens file. Same vars in COMSAT Electron + Nexus Electron.</div>
+  </div>
+  <div class="step">
+    <span class="n">02</span>
+    <div class="title">Scaffold Nexus app</div>
+    <div class="meta">New repo <code>~/Code/overmind/projects/nexus/</code>. Electron+Vite+React. Tokens imported.</div>
+  </div>
+  <div class="step">
+    <span class="n">03</span>
+    <div class="title">Build ProjectView</div>
+    <div class="meta">Port the shipped HTML structure to React. Hook up to per-project JSON. Read-only-first slice.</div>
+  </div>
+  <div class="step">
+    <span class="n">04</span>
+    <div class="title">Build Nexus Wizard</div>
+    <div class="meta">8 steps, planning-prompt copy buttons, paste-back validation. Auto-draft via local-bg later.</div>
+  </div>
+  <div class="step">
+    <span class="n">05</span>
+    <div class="title">Nexus Home + Done ceremony</div>
+    <div class="meta">Last two missing Nexus surfaces. Both small; ship together.</div>
+  </div>
+  <div class="step">
+    <span class="n">06</span>
+    <div class="title">COMSAT v4 rebuild — drawer first</div>
+    <div class="meta">New thin drawer (44/32). Read <code>~/.dedicated-projects/*.json</code> for chip render. Kill old surfaces.</div>
+  </div>
+  <div class="step">
+    <span class="n">07</span>
+    <div class="title">Workflow badge dots</div>
+    <div class="meta">Add to default expanded view + drag-out targets (tile + VS Code via extension).</div>
+  </div>
+  <div class="step">
+    <span class="n">08</span>
+    <div class="title">VS Code extension — panel + layout config</div>
+    <div class="meta">Extend the existing companion extension. Panel webview + per-category layout writer.</div>
+  </div>
+</div>
+
+<p style="margin-top:20px; font-size:13px; color:var(--text-soft);">
+  <strong>The recursion holds:</strong> Nexus comes first because the COMSAT v4 rebuild itself is the first dogfood project for Nexus. The COMSAT v4 work gets a dedicated workspace in Nexus, with a charter, done-when criteria, hard lock — and ships from inside the system it's building.
+</p>
+
+</div>
+
+<!-- =================== POLISH ITEMS =================== -->
+<h2>Polish items (carry into build, not blockers)</h2>
+<div class="hud"><span class="corner-tr"></span><span class="corner-bl"></span>
+
+<ul>
+  <li><strong>Done-When method tags</strong> — currently text (<code>MANUAL / URL / SHELL / FILE</code>). Convert to small iconographic SVGs (file icon, terminal icon, link icon, person icon).</li>
+  <li><strong>Pre-mortem rank numbers</strong> — current 16px Orbitron is too restrained. Push to 22-24px, add a "warning level" treatment that pulls eye to top 2 risks.</li>
+  <li><strong>Active stage indicator</strong> — when an agent is actively working a stage, the stage card needs more than copper underline. Cooking dot inside the stage's name, or a subtle scan-bar across the bottom edge.</li>
+  <li><strong>Lock chip — soft variant</strong> — only <code>🔒 hard</code> rendered. Add <code>🔓 soft</code> for non-locked-focus projects.</li>
+  <li><strong>Status dot in stages pipeline</strong> — small cooking dot on the active stage name when an agent is alive there.</li>
+  <li><strong>Sound design hook-up</strong> — the StarCraft sound sources memory exists; wire 3 events: permission needed (CommSat ping), build complete (Mission accomplished), error (Nuclear launch detected).</li>
+</ul>
+
+</div>
+
+<!-- =================== WHAT YOU SHOULD DO NEXT =================== -->
+<h2>What to do next</h2>
+<div class="hud"><span class="corner-tr"></span><span class="corner-bl"></span>
+
+<ol>
+  <li><strong>Sign off on the 4 unilateral calls above</strong> (ticker-only drawer, workflow-dot row added back, stylized CL/CX, single <code>--ws</code>). Most can be a one-line "yes" each.</li>
+  <li><strong>Second design pass on the 8 remaining components</strong>, OR start build now and iterate as we go. My recommendation: start build now using the locked tokens — the remaining components are smaller and the visual language is solid enough that ad-hoc design during build will land cleanly.</li>
+  <li><strong>Scaffold Nexus repo</strong> at <code>~/Code/overmind/projects/nexus/</code> using <code>/new-project</code> skill. Drop tokens file in first. ProjectView is the first build.</li>
+  <li><strong>Dedicate the workspace</strong> that's hosting the COMSAT v4 rebuild to itself — first dogfood project of Nexus is the COMSAT v4 ship. Recursion intentional.</li>
+</ol>
+
+</div>
+
+<footer class="foot">
+  COMSAT V4 · DESIGN REVIEW · 2026-05-20<br>
+  Reviewed against: brief at <code>previews/nexus-comsat-wireframes/design-brief.md</code> · wireframes v3.1 · memory state as of 2026-05-20.<br>
+  Files reviewed: <code>COMSAT v4 - Drawer States.html</code> (1033 lines), <code>COMSAT v4 - Nexus ProjectView.html</code> (1165 lines), <code>HANDOFF.md</code>.<br>
+  /// END OF TRANSMISSION ///
+</footer>
+
+</div>
+</body>
+</html>
