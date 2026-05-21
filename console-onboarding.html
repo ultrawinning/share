@@ -103,6 +103,16 @@
     color: #777;
     font-size: 0.85rem;
   }
+  .callout {
+    background: rgba(46, 212, 122, 0.06);
+    border: 1px solid rgba(46, 212, 122, 0.25);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 0.95rem;
+    color: #bbb;
+  }
+  .callout strong { color: #fff; }
   .do-dont {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -148,39 +158,65 @@
 
 <h2>What is this?</h2>
 <p>CONSOLE is an AI assistant that knows HPF sales operations. It has curated knowledge about GHL workflows, sales metrics, the payment pipeline, Typeform qualification, and your scorecard. For HPF-specific questions, it answers from those files with source citations. For general platform questions (like "how do I do X in GHL"), it can also search the web and combine results with HPF context.</p>
-<p>When it doesn't know something HPF-specific, it flags the gap for Emil. Over time, those gaps get filled and the system gets smarter. Think of it as your Claude that already knows how HPF works.</p>
+<p>It's a knowledge assistant, not a live dashboard — it knows how things work and what the targets are, but it does not have today's live numbers. Those live in the Sales Cockpit.</p>
+<p>When it doesn't know something HPF-specific, it flags the gap for Emil instead of guessing. Over time those gaps get filled and the system gets smarter. Think of it as your Claude that already knows how HPF works.</p>
 
 <h2>Getting started</h2>
+
+<p>You have <strong>two separate logins</strong> — both saved in the 1Password Emil shared with you:</p>
+
+<div class="card-grid">
+  <div class="card">
+    <div class="card-title">1 &middot; Claude account</div>
+    <div class="card-desc">Signs you into Claude. Used in Step 1.</div>
+  </div>
+  <div class="card">
+    <div class="card-title">2 &middot; GitHub account</div>
+    <div class="card-desc">Connects you to the Console. A separate account with its own password — even though it uses the same email address. Used in Step 2.</div>
+  </div>
+</div>
+
+<div class="callout">
+  Same email, <strong>two different accounts</strong>. Mixing them up is the one thing people trip on — Step 1 uses your Claude login, Step 2 uses your GitHub login.
+</div>
 
 <div class="step">
   <span class="step-number">1</span>
   <span class="step-title">Open Claude Code</span>
   <div class="step-body">
-    Go to <a href="https://claude.ai/code" target="_blank">claude.ai/code</a> and sign in with your Claude Team account.
+    Go to <a href="https://claude.ai/code" target="_blank">claude.ai/code</a> and sign in with your <strong>Claude account</strong> (from 1Password).
   </div>
 </div>
 
 <div class="step">
   <span class="step-number">2</span>
-  <span class="step-title">Connect the repo</span>
+  <span class="step-title">Connect GitHub</span>
   <div class="step-body">
-    You should see <strong>HPF-Console-Sales</strong> in the repo selector at the bottom. If you don't, connect your GitHub account first — you'll only see this one repo.
+    When prompted to connect GitHub, sign in with your <strong>GitHub account</strong> — the separate one in 1Password. This account has access to exactly one repository, so there is nothing else to pick.
   </div>
 </div>
 
 <div class="step">
   <span class="step-number">3</span>
-  <span class="step-title">Start a session</span>
+  <span class="step-title">Open the repo</span>
   <div class="step-body">
-    Open a new session and type <code>setup</code>. The assistant will introduce itself and ask you a few questions about your role. Answer honestly — your answers help Emil improve the knowledge base. You only need to do this once.
+    Select <strong>HPF-Console-Sales</strong> in the repository list.
   </div>
 </div>
 
 <div class="step">
   <span class="step-number">4</span>
+  <span class="step-title">Run setup</span>
+  <div class="step-body">
+    Start a session and type <code>console setup</code>. The assistant introduces itself and asks a few questions about your role — answer honestly, it helps Emil improve the knowledge base. You only do this once.
+  </div>
+</div>
+
+<div class="step">
+  <span class="step-number">5</span>
   <span class="step-title">Ask away</span>
   <div class="step-body">
-    Ask any sales ops question. If the answer is in the knowledge files, you'll get it with a source citation. If not, it'll tell you and flag it.
+    Ask any sales ops question. If the answer is in the knowledge files, you get it with a source citation. If not, it tells you and flags the gap.
   </div>
 </div>
 
@@ -232,7 +268,7 @@
       <li>Ask for help drafting your weekly report</li>
       <li>Ask about metric formulas and targets</li>
       <li>Ask "how does X work?" about any sales process</li>
-      <li>Ask general GHL/platform how-to questions</li>
+      <li>Tell it when an answer looks wrong — it logs the correction for Emil</li>
       <li>Use anything you'd use normal Claude for</li>
     </ul>
   </div>
@@ -251,12 +287,12 @@
 
 <div class="card-grid">
   <div class="card">
-    <div class="card-title" style="color: #2ED47A;">setup</div>
+    <div class="card-title" style="color: #2ED47A;">console setup</div>
     <div class="card-desc">First-time setup. Introduces the Console and asks about your role. Run once.</div>
   </div>
   <div class="card">
     <div class="card-title" style="color: #2ED47A;">wrap</div>
-    <div class="card-desc">End-of-session summary. Saves what you discussed, what was answered, and any gaps found. Type before closing a session.</div>
+    <div class="card-desc">End-of-session summary. Saves what you discussed, what was answered, and any gaps found. Type it on its own before closing a session.</div>
   </div>
 </div>
 
