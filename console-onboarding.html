@@ -147,8 +147,8 @@
 <p class="subtitle">Your HPF Sales Operations Assistant — powered by Claude</p>
 
 <h2>What is this?</h2>
-<p>CONSOLE is an AI assistant that knows HPF sales operations. It has access to curated knowledge about GHL workflows, sales metrics, the payment pipeline, Typeform qualification, and your scorecard. It answers from those files — not from the internet, not from guessing.</p>
-<p>When it doesn't know something, it says so and flags the gap for Emil. Over time, those gaps get filled and the system gets smarter.</p>
+<p>CONSOLE is an AI assistant that knows HPF sales operations. It has curated knowledge about GHL workflows, sales metrics, the payment pipeline, Typeform qualification, and your scorecard. For HPF-specific questions, it answers from those files with source citations. For general platform questions (like "how do I do X in GHL"), it can also search the web and combine results with HPF context.</p>
+<p>When it doesn't know something HPF-specific, it flags the gap for Emil. Over time, those gaps get filled and the system gets smarter. Think of it as your Claude that already knows how HPF works.</p>
 
 <h2>Getting started</h2>
 
@@ -172,7 +172,7 @@
   <span class="step-number">3</span>
   <span class="step-title">Start a session</span>
   <div class="step-body">
-    Open a new session and type <code>/start</code>. The assistant will introduce itself and ask you 5 quick questions about your role. Answer honestly — your answers help Emil improve the knowledge base.
+    Open a new session and type <code>/onboarding</code>. The assistant will introduce itself and ask you a few questions about your role. Answer honestly — your answers help Emil improve the knowledge base. You only need to do this once.
   </div>
 </div>
 
@@ -232,6 +232,8 @@
       <li>Ask for help drafting your weekly report</li>
       <li>Ask about metric formulas and targets</li>
       <li>Ask "how does X work?" about any sales process</li>
+      <li>Ask general GHL/platform how-to questions</li>
+      <li>Use anything you'd use normal Claude for</li>
     </ul>
   </div>
   <div class="dont-box">
@@ -239,15 +241,27 @@
     <ul>
       <li>Ask for API keys or webhook secrets</li>
       <li>Ask it to write code or scripts</li>
-      <li>Ask about non-HPF topics</li>
       <li>Paste passwords or sensitive credentials</li>
-      <li>Ask it to guess when it says "I don't know"</li>
+      <li>Ask it to guess about HPF-specific config</li>
     </ul>
   </div>
 </div>
 
+<h2>Commands</h2>
+
+<div class="card-grid">
+  <div class="card">
+    <div class="card-title" style="color: #2ED47A;">/onboarding</div>
+    <div class="card-desc">First-time setup. Introduces the Console and asks about your role. Run once.</div>
+  </div>
+  <div class="card">
+    <div class="card-title" style="color: #2ED47A;">/wrap</div>
+    <div class="card-desc">End-of-session summary. Saves what you discussed, what was answered, and any gaps found. Use before closing a session.</div>
+  </div>
+</div>
+
 <h2>When it can't answer</h2>
-<p>If the assistant says "This isn't covered in my knowledge files" — that's working correctly. It will automatically save a knowledge request that Emil reviews weekly. The more you use it, the more gaps get identified and filled.</p>
+<p>For general platform questions (like "how to connect WhatsApp to GHL"), it searches the web and gives you an answer with HPF context. For HPF-specific questions where the knowledge files don't have the answer, it flags the gap for Emil. The more you use it, the more gaps get identified and filled.</p>
 
 <h2>Escalation</h2>
 <p>If the assistant tells you to escalate to Emil, that means the question involves code, database, API integrations, webhook configuration, targets, compensation, or strategic decisions. Those are outside the ops knowledge base by design.</p>
