@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Boss Scorecard — Brandon Burns</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --surface-2: #1a1a1a;
+    --border: #262626;
+    --text: #e5e5e5;
+    --text-muted: #a3a3a3;
+    --accent: #2ED47A;
+    --accent-dim: rgba(46,212,122,0.12);
+    --red: #ef4444;
+    --amber: #f59e0b;
+    --blue: #3b82f6;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 2rem 1rem;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.02em;
+  }
+  .subtitle {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.5rem;
+  }
+  h2 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 2rem 0 0.75rem;
+    color: var(--accent);
+    letter-spacing: -0.01em;
+  }
+  h3 {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    margin: 1.25rem 0 0.5rem;
+    color: var(--text);
+  }
+  p, li { font-size: 0.875rem; color: var(--text-muted); }
+  .context-box {
+    background: var(--accent-dim);
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.25rem;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--text);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.75rem 0 1.5rem;
+    font-size: 0.8125rem;
+  }
+  th {
+    text-align: left;
+    padding: 0.625rem 0.75rem;
+    background: var(--surface-2);
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 0.625rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  .tag {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .tag-new { background: rgba(59,130,246,0.15); color: var(--blue); }
+  .tag-active { background: var(--accent-dim); color: var(--accent); }
+  .escalation {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 0.75rem 0;
+  }
+  .escalation strong { color: var(--text); }
+  .metric-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 0.5rem 0;
+  }
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+  .report-template {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    white-space: pre-wrap;
+    margin: 0.75rem 0 1.5rem;
+    line-height: 1.7;
+  }
+  .rule {
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+    padding: 0.75rem 1rem;
+    margin: 0.5rem 0;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.8125rem;
+  }
+  .rule strong { color: var(--text); }
+  .rule span { color: var(--text-muted); }
+  ol, ul { padding-left: 1.25rem; margin: 0.5rem 0; }
+  li { margin: 0.25rem 0; }
+  .footer {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: center;
+  }
+  @media (max-width: 640px) {
+    body { padding: 1rem 0.75rem; }
+    h1 { font-size: 1.375rem; }
+    table { font-size: 0.75rem; }
+    th, td { padding: 0.5rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Sales Boss Scorecard</h1>
+<p class="subtitle">Brandon Burns &mdash; Sales Lead / CRO-track &mdash; Effective May 2026</p>
+
+<div class="context-box">
+  <strong>Primary goal:</strong> Brandon absorbs the operational question load that currently routes to Emil from closers, GHL, Meta, marketing agency, and pipeline issues. The scorecard succeeds when Emil stops being the default answer to sales + marketing ops questions.
+</div>
+
+<h2>Ownership Domains</h2>
+
+<h3>Brandon owns (decision authority + accountability)</h3>
+<table>
+  <thead><tr><th>Domain</th><th>What "owns" means</th><th>Status</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Closer operations</strong></td><td>Day-to-day management, coaching, EOD compliance, pipeline hygiene</td><td><span class="tag tag-active">Active</span></td></tr>
+    <tr><td><strong>Dialer (Riley)</strong></td><td>Calls booked, ramp, workflow, daily targets</td><td><span class="tag tag-active">Active</span></td></tr>
+    <tr><td><strong>GHL operations</strong></td><td>All GHL questions, config, automations, pipeline stages. Fix or delegate &mdash; don't route to Emil</td><td><span class="tag tag-new">New</span></td></tr>
+    <tr><td><strong>Meta / paid media liaison</strong></td><td>Primary contact with marketing agency. Own the questions, flag issues, coordinate creative. Emil does genuine tech (CAPI, pixel)</td><td><span class="tag tag-new">New</span></td></tr>
+    <tr><td><strong>Marketing liaison</strong></td><td>Prime liaison between sales and marketing. What's working, what's not, lead quality feedback loop to DJ/agency</td><td><span class="tag tag-new">New</span></td></tr>
+    <tr><td><strong>Pre-call sequence</strong></td><td>Email/SMS before calls, show rate improvement</td><td><span class="tag tag-active">Active</span></td></tr>
+  </tbody>
+</table>
+
+<h3>Emil retains</h3>
+<ul>
+  <li>Monthly cash targets</li>
+  <li>Tech integrations (CAPI, pixel, HPFHQ system builds)</li>
+  <li>Strategic decisions (pricing, product, hiring)</li>
+  <li>DJ relationship (direct report, but Brandon is ops liaison)</li>
+  <li>Payment processor decisions (Fanbasis + Stripe)</li>
+  <li>Dan liaison &mdash; Emil reports to Dan, armed with Brandon's data</li>
+</ul>
+
+<hr class="section-divider">
+
+<h2>The Real Test: Question Absorption</h2>
+<p style="margin-bottom:0.75rem;">Scorecard success = these questions stop reaching Emil:</p>
+
+<table>
+  <thead><tr><th>Question type</th><th>Brandon's job</th><th>Escalate to Emil only when</th></tr></thead>
+  <tbody>
+    <tr><td>GHL config / automations / pipeline</td><td>Fix it or delegate it</td><td>Requires code changes or env vars</td></tr>
+    <tr><td>"Lead didn't show" / "calendar issue"</td><td>Diagnose, fix in GHL, report if systemic</td><td>Pattern affects &gt;20% of calls for a week</td></tr>
+    <tr><td>Meta ad performance questions</td><td>Own the conversation with agency, report summary</td><td>Spend decision &gt;$500/day change or strategy pivot</td></tr>
+    <tr><td>"How does [sales process] work?"</td><td>Answer it. You're the boss</td><td>Never &mdash; if Brandon doesn't know, that's the gap</td></tr>
+    <tr><td>Lead quality complaints</td><td>Quantify (which leads, what's wrong), route to DJ with data</td><td>Only if DJ is unresponsive or pattern is systemic</td></tr>
+    <tr><td>Closer interpersonal / performance issues</td><td>Handle directly, coach, document</td><td>Termination decisions or compensation changes</td></tr>
+  </tbody>
+</table>
+
+<hr class="section-divider">
+
+<h2>Output Metrics</h2>
+<p style="margin-bottom:0.5rem;font-size:0.75rem;color:var(--text-muted);">Monthly review</p>
+<table>
+  <thead><tr><th>Metric</th><th>Definition</th><th>Source</th></tr></thead>
+  <tbody>
+    <tr><td><strong>New Cash Collected</strong></td><td>First payments from leads closed this period</td><td>Fanbasis + Stripe</td></tr>
+    <tr><td><strong>Close Rate</strong></td><td>New closes / new calls taken</td><td>Closer sheet / EOD</td></tr>
+    <tr><td><strong>Net Show Rate</strong></td><td>Calls taken / (scheduled &minus; soft cancels)</td><td>Closer sheet / EOD</td></tr>
+    <tr><td><strong>Soft Cancel Rate</strong></td><td>(Cancelled + quick DQ + no-show) / scheduled</td><td>Closer sheet / EOD</td></tr>
+    <tr><td><strong>Calls Booked (Riley)</strong></td><td>Dialer appointments set per week</td><td>GHL / HPFHQ dialer</td></tr>
+  </tbody>
+</table>
+<p>Targets set monthly by Emil. Brandon's job is to know where he stands at all times &mdash; not wait to be told.</p>
+
+<h2>Input Metrics</h2>
+<p style="margin-bottom:0.5rem;font-size:0.75rem;color:var(--text-muted);">Weekly review</p>
+<table>
+  <thead><tr><th>Metric</th><th>Definition</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Follow-up conversion</strong></td><td>% of follow-ups that convert to close within 14 days</td></tr>
+    <tr><td><strong>Rescheduled completion</strong></td><td>% of rescheduled calls that actually happen</td></tr>
+    <tr><td><strong>Speed-to-lead (dialer)</strong></td><td>Time from lead assignment to Riley's first contact</td></tr>
+    <tr><td><strong>Dialer calls/day</strong></td><td>Riley's daily outbound volume</td></tr>
+    <tr><td><strong>Per-closer close rate</strong></td><td>Individual CR &mdash; Joel vs Brandon</td></tr>
+  </tbody>
+</table>
+
+<h2>Process Metrics</h2>
+<p style="margin-bottom:0.5rem;font-size:0.75rem;color:var(--text-muted);">Weekly review</p>
+<table>
+  <thead><tr><th>Metric</th><th>Definition</th><th>Target</th></tr></thead>
+  <tbody>
+    <tr><td><strong>EOD submission compliance</strong></td><td>% of call days with complete EOD by midnight</td><td>100%</td></tr>
+    <tr><td><strong>GHL questions routed to Emil</strong></td><td>GHL ops questions that reached Emil this week</td><td>0</td></tr>
+    <tr><td><strong>Meta/agency questions routed to Emil</strong></td><td>Agency ops questions that reached Emil this week</td><td>0</td></tr>
+    <tr><td><strong>Pre-call sequence coverage</strong></td><td>% of booked calls receiving email/SMS</td><td>100%</td></tr>
+    <tr><td><strong>Quick DQ spot-check</strong></td><td>Weekly DQ review for legitimacy via Fathom</td><td>Done</td></tr>
+  </tbody>
+</table>
+
+<hr class="section-divider">
+
+<h2>Weekly Report Format</h2>
+<p style="margin-bottom:0.5rem;">Due before Monday 1:1 or Sunday EOD. Emil uses this to prep for Dan syncs.</p>
+<div class="report-template">SALES WEEK &mdash; [date range]
+
+CASH: $XX,XXX MTD ($XXX,XXX target) &mdash; [green/amber/red]
+CALLS: XX taken, XX% show rate, XX% close rate
+CANCEL: XX% soft cancel rate
+
+CLOSES THIS WEEK:
+- [Name] &mdash; $X,XXX &mdash; [PIF/split/4-pay] &mdash; [Joel/Brandon]
+
+RILEY (DIALER):
+- Calls: XX/day &mdash; Appointments set: X
+- Blockers: [none / description]
+
+GHL / META / AGENCY:
+- Issues handled: [list or "none"]
+- Escalations for Emil: [list or "none"]
+
+PIPELINE:
+- Active follow-ups: XX
+- Stale (&gt;7 days no activity): XX
+
+NEXT WEEK FOCUS:
+- [1-2 sentences]</div>
+
+<p><strong>Monthly addition</strong> (first week of new month): month-end actuals vs targets, per-closer breakdown, Riley ramp M/M, one thing that worked, one thing that didn't.</p>
+
+<hr class="section-divider">
+
+<h2>Review Cadence</h2>
+
+<h3>Weekly (1:1 &mdash; 15 min)</h3>
+<ol>
+  <li>Cash MTD vs pacing (green/amber/red)</li>
+  <li>This week: show rate, close rate, cancel rate</li>
+  <li>"What questions came to me this week that should have stopped with you?"</li>
+  <li>Riley update: calls made, appointments set, blockers</li>
+  <li>Follow-up pipeline: how many active, any stale</li>
+  <li>One coaching win or correction</li>
+</ol>
+
+<h3>Monthly (full scorecard &mdash; 30 min)</h3>
+<ol>
+  <li>All output metrics vs targets + M/M trends</li>
+  <li>Per-closer breakdown</li>
+  <li>Riley ramp assessment</li>
+  <li>GHL/Meta/agency ownership review &mdash; is the question load shifting</li>
+  <li>Strategic project status</li>
+  <li>Next month: Emil sets targets, Brandon inputs</li>
+</ol>
+
+<hr class="section-divider">
+
+<h2>Accountability Rules</h2>
+
+<div class="rule"><strong>1. Own the domain, not just the task.</strong> <span>Brandon owns the revenue operation from booked call to cash collected, including the GHL/Meta ops layer that supports it.</span></div>
+<div class="rule"><strong>2. No routing to Emil.</strong> <span>If a closer, Riley, or the agency has a question about sales ops / GHL / Meta performance, Brandon answers it, fixes it, or delegates it. Emil is the escalation path for tech and strategy, not ops.</span></div>
+<div class="rule"><strong>3. Close = money received.</strong> <span>Verbal commits don't count. Payment in Fanbasis or Stripe.</span></div>
+<div class="rule"><strong>4. EOD is non-negotiable.</strong> <span>Missing EODs = flying blind. Two missed in a week = escalation.</span></div>
+<div class="rule"><strong>5. Brandon owns the number.</strong> <span>If Joel underperforms, that's coaching. If Riley isn't ramping, that's management. The scorecard doesn't care who missed &mdash; it cares that the team missed.</span></div>
+<div class="rule"><strong>6. Quantify before complaining.</strong> <span>"Leads were bad" needs: which leads, what was wrong, data sent to DJ. No unsubstantiated quality complaints.</span></div>
+
+<div class="footer">HPF Sales &mdash; Effective May 2026 &mdash; Review monthly</div>
+
+</div>
+</body>
+</html>
