@@ -3,325 +3,380 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>HPF Program Flow</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #0c0d11; color: #e6e8ee; font-family: -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif; padding: 32px 24px 80px; }
-  .hdr { display: flex; align-items: baseline; gap: 16px; margin-bottom: 6px; }
-  .hdr h1 { font-size: 22px; letter-spacing: 0.04em; font-weight: 700; }
-  .hdr .ts { font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: #6b7180; }
-  .sub { font-size: 13px; color: #8a90a0; margin-bottom: 24px; }
-  .legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; font-size: 12px; color: #8a90a0; }
-  .legend span { display: inline-flex; align-items: center; gap: 6px; }
-  .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
-  .flow { display: flex; gap: 20px; align-items: flex-start; overflow-x: auto; padding-bottom: 20px; }
-  .col { flex: 0 0 300px; }
-  .col-head { background: #161820; border: 1px solid #262a35; border-top: 3px solid var(--c); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; }
-  .col-id { font-family: ui-monospace, Menlo, monospace; font-size: 11px; color: #6b7180; }
-  .col-title { font-size: 14px; font-weight: 600; margin: 3px 0 9px; line-height: 1.35; }
-  .col-meta { display: flex; gap: 6px; flex-wrap: wrap; }
-  .chip { font-family: ui-monospace, Menlo, monospace; font-size: 10px; padding: 2px 7px; border-radius: 10px; letter-spacing: 0.03em; }
-  .chip-dim { background: #21242e; color: #8a90a0; }
-  .col-body { display: flex; flex-direction: column; }
-  .connector { width: 2px; height: 14px; background: #2b2f3a; margin: 0 auto; }
-  .phase { background: #161820; border: 1px solid #262a35; border-left: 3px solid var(--c); border-radius: 9px; padding: 12px 14px; }
-  .phase.glow { box-shadow: 0 0 0 1px var(--c)33, 0 4px 18px -6px var(--c)55; }
-  .phase-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-  .phase-order { font-family: ui-monospace, Menlo, monospace; font-size: 11px; color: #6b7180; }
-  .phase-status { font-family: ui-monospace, Menlo, monospace; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 9px; border: 1px solid; letter-spacing: 0.05em; }
-  .phase-name { font-size: 12.5px; line-height: 1.4; color: #cfd3dd; }
-  .dep { margin-top: 7px; font-family: ui-monospace, Menlo, monospace; font-size: 10.5px; color: #e8554d; }
-  .gate { display: flex; gap: 11px; background: #14161d; border: 1px dashed; border-radius: 9px; padding: 11px 13px; margin: 4px 0; }
-  .gate-ok { border-color: #2ed47a88; box-shadow: 0 0 0 1px #2ed47a22; }
-  .gate-bad { border-color: #e8554d88; box-shadow: 0 0 16px -4px #e8554d66; }
-  .gate-diamond { font-size: 18px; line-height: 1; }
-  .gate-label { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; }
-  .gate-ok .gate-label { color: #2ed47a; }
-  .gate-bad .gate-label { color: #e8554d; }
-  .gate-detail { font-size: 10.5px; color: #8a90a0; margin-top: 3px; line-height: 1.4; }
-  .gate-link { font-size: 10px; color: #5b9bd5; text-decoration: none; }
-  .foot { margin-top: 32px; font-size: 11px; color: #5a6072; font-family: ui-monospace, Menlo, monospace; line-height: 1.7; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0c0d11;color:#e6e8ee;font-family:-apple-system,BlinkMacSystemFont,"Inter",system-ui,sans-serif;padding:30px 24px 80px}
+  .hdr{display:flex;align-items:baseline;gap:14px;margin-bottom:4px}
+  .hdr h1{font-size:22px;letter-spacing:.04em;font-weight:800}
+  .hdr .ts{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#6b7180}
+  .hdr .live{font-family:ui-monospace,Menlo,monospace;font-size:11px;padding:2px 9px;border-radius:10px;background:#f0b34a22;color:#f0b34a;border:1px solid #f0b34a55}
+  .strip{background:#14161d;border:1px solid #262a35;border-radius:9px;padding:13px 16px;margin:14px 0 20px;font-size:12.5px;color:#a8aebc;line-height:1.6}
+  .strip b{color:#e6e8ee}
+  .strip .loop{font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:#8a90a0;margin-top:6px;display:block}
+  .legends{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+  .legendrow{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:#8a90a0}
+  .lg{display:inline-flex;align-items:center;gap:6px}
+  .lg b{color:#e6e8ee}
+  .dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+  .flow{display:flex;gap:20px;align-items:flex-start;overflow-x:auto;padding-bottom:20px}
+  .col{flex:0 0 308px}
+  .col-head{background:#161820;border:1px solid #262a35;border-radius:10px;padding:13px 15px;margin-bottom:14px}
+  .col-active .col-head{border-color:#f0b34a55;box-shadow:0 0 18px -8px #f0b34a66}
+  .col-id{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#6b7180}
+  .col-title{font-size:14px;font-weight:600;margin:3px 0 9px;line-height:1.35}
+  .col-meta{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{font-family:ui-monospace,Menlo,monospace;font-size:10px;padding:2px 7px;border-radius:10px;background:#21242e;color:#8a90a0}
+  .chip-live{background:#f0b34a22;color:#f0b34a}
+  .col-body{display:flex;flex-direction:column}
+  .connector{width:2px;height:13px;background:#2b2f3a;margin:0 auto}
+  .phase{background:#161820;border:1px solid #262a35;border-left:3px solid var(--c);border-radius:9px;padding:11px 13px}
+  .phase.glow{box-shadow:0 0 0 1px var(--c)33,0 4px 18px -7px var(--c)66}
+  .phase-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+  .phase-order{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#6b7180}
+  .phase-state{font-family:ui-monospace,Menlo,monospace;font-size:9px;font-weight:800;padding:2px 7px;border-radius:9px;border:1px solid;letter-spacing:.05em}
+  .phase-name{font-size:12.5px;line-height:1.4;color:#cfd3dd;margin-bottom:7px}
+  .phase-foot{display:flex}
+  .claim{font-family:ui-monospace,Menlo,monospace;font-size:9.5px;padding:2px 7px;border-radius:9px;border:1px solid;font-weight:700}
+  .claim-none{background:#1c1f27;color:#5a6072;border-color:#2b2f3a;font-weight:400}
+  .dep{margin-top:7px;font-family:ui-monospace,Menlo,monospace;font-size:10.5px;color:#e8554d;font-weight:600}
+  .gate{display:flex;gap:12px;border-radius:9px;padding:12px 14px;margin:5px 0}
+  .gate-ok{background:#14211a;border:1px dashed #2ed47a88;box-shadow:0 0 0 1px #2ed47a22}
+  .gate-stop{background:#2a1413;border:2px solid #e8554d;box-shadow:0 0 22px -4px #e8554daa}
+  .gate-mark{font-size:22px;line-height:1}
+  .gate-label{font-size:11px;font-weight:800;letter-spacing:.05em}
+  .gate-ok .gate-label{color:#2ed47a}
+  .gate-stop .gate-label{color:#ff6b60;font-size:13px}
+  .gate-name{font-size:11px;color:#cfd3dd;margin-top:3px;font-weight:600}
+  .gate-detail{font-size:10.5px;color:#8a90a0;margin-top:3px;line-height:1.4}
+  .gate-link{font-size:10px;color:#5b9bd5;text-decoration:none}
+  .foot{margin-top:30px;font-size:11px;color:#5a6072;font-family:ui-monospace,Menlo,monospace;line-height:1.7}
 </style></head><body>
-  <div class="hdr"><h1>HPF PROGRAM FLOW</h1><span class="ts">⟳ 2026-05-21 08:09 UTC</span></div>
-  <div class="sub">What's approved, what's running, who does what. Generated from the HQ-HPF Source of Truth Sheet. Do not hand-edit — edit HPFO + ROADMAP, re-run <code>bin/sot-render-program-flow.ts</code>.</div>
-  <div class="legend">
-    <span><i class="dot" style="background:#2ed47a"></i> done</span>
-    <span><i class="dot" style="background:#f0b34a"></i> in flight</span>
-    <span><i class="dot" style="background:#5b9bd5"></i> planning / scoping</span>
-    <span><i class="dot" style="background:#5a6072"></i> pending</span>
-    <span><i class="dot" style="background:#e8554d"></i> blocked / gated</span>
-    <span>◇ dashed = approval gate — red gate blocks every phase below it</span>
+  <div class="hdr">
+    <h1>HPF PROGRAM FLOW</h1>
+    <span class="ts">⟳ 2026-05-21 08:50 UTC</span>
+    <span class="live">0 phases claimed / in flight</span>
   </div>
-  <div class="flow"><div class="col">
-      <div class="col-head" style="--c:#5b9bd5">
+
+  <div class="strip">
+    <b>Co-op orchestration, multi-plan.</b> Each column is a plan. Each card is a phase. A phase is <b>IN FLIGHT only when a co-op color claims it</b> (ROADMAP col H) — not because a project says "building." Unclaimed = nobody's on it.
+    <span class="loop">LOOP:  G (Lead) reads this board → assigns each ready phase to a teammate color → that window executes its claimed phase → reports status to the ROADMAP tab → G regenerates this board.  NOT auto-updating — the Lead refreshes it (run the generator; cron daily as a safety net).</span>
+    <span class="loop">⛔ A red STOP gate = no window starts any phase below it. That is the hard rule.</span>
+  </div>
+
+  <div class="legends">
+    <div class="legendrow"><span class="lg"><i class="dot" style="background:#b87fd4"></i><b>P</b> Emil · Driver / human</span><span class="lg"><i class="dot" style="background:#9aa3b2"></i><b>G</b> G · Lead — orchestrator</span><span class="lg"><i class="dot" style="background:#4a90d9"></i><b>B</b> B · Teammate — executes</span><span class="lg"><i class="dot" style="background:#e8c84a"></i><b>Y</b> Y · Teammate — executes</span><span class="lg"><i class="dot" style="background:#f0a020"></i><b>O</b> O · Teammate — executes</span></div>
+    <div class="legendrow">
+      <span class="lg"><i class="dot" style="background:#2ed47a"></i>done</span>
+      <span class="lg"><i class="dot" style="background:#5a6072"></i>pending — unclaimed</span>
+      <span class="lg"><i class="dot" style="background:#e8554d"></i>STOP — gated / blocked</span>
+      <span class="lg">claimed phases glow in their owner's color</span>
+    </div>
+  </div>
+
+  <div class="flow"><div class="col ">
+      <div class="col-head">
         <div class="col-id">hpfo-consol</div>
         <div class="col-title">HPFHQ Consolidation — Cockpit as New Canonical Surface</div>
         <div class="col-meta">
-          <span class="chip" style="background:#5b9bd522;color:#5b9bd5">PLANNING</span>
-          <span class="chip chip-dim">▸ hpf-command-center</span>
-          <span class="chip chip-dim">⊞ 2026-05-20</span>
+          <span class="chip">▸ hpf-command-center</span>
+          <span class="chip">7 phases</span>
+          <span class="chip">idle</span>
         </div>
       </div>
       <div class="col-body"><div class="phase " style="--c:#5a6072">
         <div class="phase-top">
           <span class="phase-order">Phase 1</span>
-          <span class="phase-status" style="background:#5a607222;color:#5a6072;border-color:#5a607255">PENDING</span>
+          <span class="phase-state" style="background:#5a607222;color:#5a6072;border-color:#5a607266">PENDING</span>
         </div>
         <div class="phase-name">Phase 0 — Regression fixture</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
         
       </div><div class="connector"></div><div class="phase " style="--c:#5a6072">
         <div class="phase-top">
           <span class="phase-order">Phase 2</span>
-          <span class="phase-status" style="background:#5a607222;color:#5a6072;border-color:#5a607255">PENDING</span>
+          <span class="phase-state" style="background:#5a607222;color:#5a6072;border-color:#5a607266">PENDING</span>
         </div>
         <div class="phase-name">Phase 1 — Build lib/cockpit/metrics/ helpers in parallel</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
         
       </div><div class="connector"></div><div class="phase " style="--c:#5a6072">
         <div class="phase-top">
           <span class="phase-order">Phase 3</span>
-          <span class="phase-status" style="background:#5a607222;color:#5a6072;border-color:#5a607255">PENDING</span>
+          <span class="phase-state" style="background:#5a607222;color:#5a6072;border-color:#5a607266">PENDING</span>
         </div>
         <div class="phase-name">Phase 2 — Migrate cockpits onto helpers, ONE COCKPIT AT A TIME</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
         
       </div><div class="connector"></div><div class="phase " style="--c:#5a6072">
         <div class="phase-top">
           <span class="phase-order">Phase 4</span>
-          <span class="phase-status" style="background:#5a607222;color:#5a6072;border-color:#5a607255">PENDING</span>
+          <span class="phase-state" style="background:#5a607222;color:#5a6072;border-color:#5a607266">PENDING</span>
         </div>
         <div class="phase-name">Phase 3 — Tooltip + dictionary tab UI</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
         
       </div><div class="connector"></div><div class="phase " style="--c:#5a6072">
         <div class="phase-top">
           <span class="phase-order">Phase 5</span>
-          <span class="phase-status" style="background:#5a607222;color:#5a6072;border-color:#5a607255">PENDING</span>
+          <span class="phase-state" style="background:#5a607222;color:#5a6072;border-color:#5a607266">PENDING</span>
         </div>
         <div class="phase-name">Phase 4 — Co-update enforcement install</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
         
       </div><div class="connector"></div><div class="phase " style="--c:#5a6072">
         <div class="phase-top">
           <span class="phase-order">Phase 6</span>
-          <span class="phase-status" style="background:#5a607222;color:#5a6072;border-color:#5a607255">PENDING</span>
+          <span class="phase-state" style="background:#5a607222;color:#5a6072;border-color:#5a607266">PENDING</span>
         </div>
         <div class="phase-name">Phase 5 — Dead surface deletion</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
         
       </div><div class="connector"></div><div class="phase " style="--c:#5a6072">
         <div class="phase-top">
           <span class="phase-order">Phase 7</span>
-          <span class="phase-status" style="background:#5a607222;color:#5a6072;border-color:#5a607255">PENDING</span>
+          <span class="phase-state" style="background:#5a607222;color:#5a6072;border-color:#5a607266">PENDING</span>
         </div>
         <div class="phase-name">Phase 6 — Manifest refresh + Overseer wiring</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
         
       </div></div>
-    </div><div class="col">
-      <div class="col-head" style="--c:#f0b34a">
+    </div><div class="col ">
+      <div class="col-head">
         <div class="col-id">hpfo-ghl</div>
         <div class="col-title">GHL Extraction — Full Booking Cutover</div>
         <div class="col-meta">
-          <span class="chip" style="background:#f0b34a22;color:#f0b34a">IN FLIGHT</span>
-          <span class="chip chip-dim">▸ hpf-command-center</span>
-          <span class="chip chip-dim">⊞ 2026-05-20</span>
+          <span class="chip">▸ hpf-command-center</span>
+          <span class="chip">7 phases</span>
+          <span class="chip">idle</span>
         </div>
       </div>
       <div class="col-body"><div class="phase " style="--c:#5a6072">
         <div class="phase-top">
           <span class="phase-order">Phase 1</span>
-          <span class="phase-status" style="background:#5a607222;color:#5a6072;border-color:#5a607255">PENDING</span>
+          <span class="phase-state" style="background:#5a607222;color:#5a6072;border-color:#5a607266">PENDING</span>
         </div>
         <div class="phase-name">Track 1 — Security Hardening</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
         
       </div><div class="connector"></div><div class="phase " style="--c:#5a6072">
         <div class="phase-top">
           <span class="phase-order">Phase 2</span>
-          <span class="phase-status" style="background:#5a607222;color:#5a6072;border-color:#5a607255">PENDING</span>
+          <span class="phase-state" style="background:#5a607222;color:#5a6072;border-color:#5a607266">PENDING</span>
         </div>
         <div class="phase-name">Track 2 — Wiring Gaps</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
         
       </div><div class="connector"></div><div class="phase " style="--c:#5a6072">
         <div class="phase-top">
           <span class="phase-order">Phase 3</span>
-          <span class="phase-status" style="background:#5a607222;color:#5a6072;border-color:#5a607255">PENDING</span>
+          <span class="phase-state" style="background:#5a607222;color:#5a6072;border-color:#5a607266">PENDING</span>
         </div>
         <div class="phase-name">Track 3 — Monitoring + Overseer</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
         
       </div><div class="connector"></div><div class="phase " style="--c:#5a6072">
         <div class="phase-top">
           <span class="phase-order">Phase 4</span>
-          <span class="phase-status" style="background:#5a607222;color:#5a6072;border-color:#5a607255">PENDING</span>
+          <span class="phase-state" style="background:#5a607222;color:#5a6072;border-color:#5a607266">PENDING</span>
         </div>
         <div class="phase-name">Track 4 — Fanbasis → Stripe Simplification</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
         
       </div><div class="connector"></div><div class="phase " style="--c:#5a6072">
         <div class="phase-top">
           <span class="phase-order">Phase 5</span>
-          <span class="phase-status" style="background:#5a607222;color:#5a6072;border-color:#5a607255">PENDING</span>
+          <span class="phase-state" style="background:#5a607222;color:#5a6072;border-color:#5a607266">PENDING</span>
         </div>
         <div class="phase-name">Track 5 — Testing Protocol</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
         
       </div><div class="connector"></div><div class="phase " style="--c:#5a6072">
         <div class="phase-top">
           <span class="phase-order">Phase 6</span>
-          <span class="phase-status" style="background:#5a607222;color:#5a6072;border-color:#5a607255">PENDING</span>
+          <span class="phase-state" style="background:#5a607222;color:#5a6072;border-color:#5a607266">PENDING</span>
         </div>
         <div class="phase-name">Track 6 — Pre-Go-Live Safety Gate</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
         
       </div><div class="connector"></div><div class="phase " style="--c:#5a6072">
         <div class="phase-top">
           <span class="phase-order">Phase 7</span>
-          <span class="phase-status" style="background:#5a607222;color:#5a6072;border-color:#5a607255">PENDING</span>
+          <span class="phase-state" style="background:#5a607222;color:#5a6072;border-color:#5a607266">PENDING</span>
         </div>
         <div class="phase-name">Track 7 — Cutover Checklist</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
         
       </div></div>
-    </div><div class="col">
-      <div class="col-head" style="--c:#f0b34a">
+    </div><div class="col ">
+      <div class="col-head">
         <div class="col-id">hpfo-overseer</div>
         <div class="col-title">Overseer Go-Live Readiness</div>
         <div class="col-meta">
-          <span class="chip" style="background:#f0b34a22;color:#f0b34a">IN FLIGHT</span>
-          <span class="chip chip-dim">▸ overseer</span>
-          <span class="chip chip-dim">⊞ 2026-05-20</span>
+          <span class="chip">▸ overseer</span>
+          <span class="chip">6 phases</span>
+          <span class="chip">idle</span>
         </div>
       </div>
       <div class="col-body"><div class="phase " style="--c:#5a6072">
         <div class="phase-top">
           <span class="phase-order">Phase 1</span>
-          <span class="phase-status" style="background:#5a607222;color:#5a6072;border-color:#5a607255">PENDING</span>
+          <span class="phase-state" style="background:#5a607222;color:#5a6072;border-color:#5a607266">PENDING</span>
         </div>
         <div class="phase-name">Phase A — Synthetic Canary</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
         
       </div><div class="connector"></div><div class="phase " style="--c:#5a6072">
         <div class="phase-top">
           <span class="phase-order">Phase 2</span>
-          <span class="phase-status" style="background:#5a607222;color:#5a6072;border-color:#5a607255">PENDING</span>
+          <span class="phase-state" style="background:#5a607222;color:#5a6072;border-color:#5a607266">PENDING</span>
         </div>
         <div class="phase-name">Phase B — Operational Hardening</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
         
       </div><div class="connector"></div><div class="phase " style="--c:#5a6072">
         <div class="phase-top">
           <span class="phase-order">Phase 3</span>
-          <span class="phase-status" style="background:#5a607222;color:#5a6072;border-color:#5a607255">PENDING</span>
+          <span class="phase-state" style="background:#5a607222;color:#5a6072;border-color:#5a607266">PENDING</span>
         </div>
         <div class="phase-name">Phase C — Multi-Machine View</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
         
       </div><div class="connector"></div><div class="phase " style="--c:#5a6072">
         <div class="phase-top">
           <span class="phase-order">Phase 4</span>
-          <span class="phase-status" style="background:#5a607222;color:#5a6072;border-color:#5a607255">PENDING</span>
+          <span class="phase-state" style="background:#5a607222;color:#5a6072;border-color:#5a607266">PENDING</span>
         </div>
         <div class="phase-name">Phase D — Slack Phase 2 + Weekly Report</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
         
       </div><div class="connector"></div><div class="phase " style="--c:#5a6072">
         <div class="phase-top">
           <span class="phase-order">Phase 5</span>
-          <span class="phase-status" style="background:#5a607222;color:#5a6072;border-color:#5a607255">PENDING</span>
+          <span class="phase-state" style="background:#5a607222;color:#5a6072;border-color:#5a607266">PENDING</span>
         </div>
         <div class="phase-name">Phase E — Pattern Learning</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
         
       </div><div class="connector"></div><div class="phase " style="--c:#5a6072">
         <div class="phase-top">
           <span class="phase-order">Phase 6</span>
-          <span class="phase-status" style="background:#5a607222;color:#5a6072;border-color:#5a607255">PENDING</span>
+          <span class="phase-state" style="background:#5a607222;color:#5a6072;border-color:#5a607266">PENDING</span>
         </div>
         <div class="phase-name">Phase F — CITADEL Integration</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
         
       </div></div>
-    </div><div class="col">
-      <div class="col-head" style="--c:#5b9bd5">
+    </div><div class="col ">
+      <div class="col-head">
         <div class="col-id">hpfo-card-v2</div>
         <div class="col-title">Card UI System Redesign — slot architecture + 10 variants + DJ/Angelica hybrid board</div>
         <div class="col-meta">
-          <span class="chip" style="background:#5b9bd522;color:#5b9bd5">PLANNING</span>
-          <span class="chip chip-dim">▸ hpf-command-center</span>
-          
+          <span class="chip">▸ hpf-command-center</span>
+          <span class="chip">11 phases</span>
+          <span class="chip">idle</span>
         </div>
       </div>
       <div class="col-body"><div class="phase " style="--c:#5a6072">
         <div class="phase-top">
           <span class="phase-order">Phase -1</span>
-          <span class="phase-status" style="background:#5a607222;color:#5a6072;border-color:#5a607255">PENDING</span>
+          <span class="phase-state" style="background:#5a607222;color:#5a6072;border-color:#5a607266">PENDING</span>
         </div>
         <div class="phase-name">Phase -1 — Cross-workstream ADR + Phase -1 Sheet tabs</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
         
       </div><div class="connector"></div><div class="gate gate-ok">
-            <div class="gate-diamond">✅</div>
-            <div class="gate-body">
-              <div class="gate-label">GATE — ADR 0001 Program Coordination — CLEARED</div>
-              <div class="gate-detail">10 cross-workstream decisions locked. D2/D3/D5 amended + Accepted 2026-05-21. Phase 0 unblocked.</div>
-              <a class="gate-link" href="https://github.com/hpfhq/hpf-command-center/blob/main/docs/architecture/decisions/0001-program-coordination.md" target="_blank">open ADR ↗</a>
-            </div>
-          </div><div class="phase glow" style="--c:#e8554d">
+          <div class="gate-mark">✅</div>
+          <div class="gate-body">
+            <div class="gate-label">GATE CLEARED</div>
+            <div class="gate-name">ADR 0001 — Program Coordination</div>
+            <div class="gate-detail">10 cross-workstream decisions locked. D2/D3/D5 amended + Accepted 2026-05-21.</div>
+            <a class="gate-link" href="https://github.com/hpfhq/hpf-command-center/blob/main/docs/architecture/decisions/0001-program-coordination.md" target="_blank">open ADR ↗</a>
+          </div>
+        </div><div class="phase glow" style="--c:#e8554d">
         <div class="phase-top">
           <span class="phase-order">Phase 0</span>
-          <span class="phase-status" style="background:#e8554d22;color:#e8554d;border-color:#e8554d55">GATED</span>
+          <span class="phase-state" style="background:#e8554d22;color:#e8554d;border-color:#e8554d66">STOP — GATED</span>
         </div>
         <div class="phase-name">Phase 0 — Foundation: tokens + schemas (incl. lead_activity_events) + seeds + org_id + RLS</div>
-        <div class="dep">⟸ blocked on hpfo-card-v2:-1</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
+        <div class="dep">⛔ blocked on hpfo-card-v2:-1</div>
       </div><div class="connector"></div><div class="phase glow" style="--c:#e8554d">
         <div class="phase-top">
           <span class="phase-order">Phase 1</span>
-          <span class="phase-status" style="background:#e8554d22;color:#e8554d;border-color:#e8554d55">GATED</span>
+          <span class="phase-state" style="background:#e8554d22;color:#e8554d;border-color:#e8554d66">STOP — GATED</span>
         </div>
         <div class="phase-name">Phase 1 — Socket engine (SlotGrid + atoms registry + build-time validator)</div>
-        <div class="dep">⟸ blocked on hpfo-card-v2:0</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
+        <div class="dep">⛔ blocked on hpfo-card-v2:0</div>
       </div><div class="connector"></div><div class="phase glow" style="--c:#e8554d">
         <div class="phase-top">
           <span class="phase-order">Phase 2</span>
-          <span class="phase-status" style="background:#e8554d22;color:#e8554d;border-color:#e8554d55">GATED</span>
+          <span class="phase-state" style="background:#e8554d22;color:#e8554d;border-color:#e8554d66">STOP — GATED</span>
         </div>
         <div class="phase-name">Phase 2 — Atom + molecule extraction from monolith</div>
-        <div class="dep">⟸ blocked on hpfo-card-v2:1</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
+        <div class="dep">⛔ blocked on hpfo-card-v2:1</div>
       </div><div class="connector"></div><div class="phase glow" style="--c:#e8554d">
         <div class="phase-top">
           <span class="phase-order">Phase 3</span>
-          <span class="phase-status" style="background:#e8554d22;color:#e8554d;border-color:#e8554d55">GATED</span>
+          <span class="phase-state" style="background:#e8554d22;color:#e8554d;border-color:#e8554d66">STOP — GATED</span>
         </div>
         <div class="phase-name">Phase 3 — Setter board migration (medium risk)</div>
-        <div class="dep">⟸ blocked on hpfo-card-v2:2</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
+        <div class="dep">⛔ blocked on hpfo-card-v2:2</div>
       </div><div class="connector"></div><div class="phase glow" style="--c:#e8554d">
         <div class="phase-top">
           <span class="phase-order">Phase 4</span>
-          <span class="phase-status" style="background:#e8554d22;color:#e8554d;border-color:#e8554d55">GATED</span>
+          <span class="phase-state" style="background:#e8554d22;color:#e8554d;border-color:#e8554d66">STOP — GATED</span>
         </div>
         <div class="phase-name">Phase 4 — Dialer board migration + Confirm column</div>
-        <div class="dep">⟸ blocked on hpfo-card-v2:3, hpfo-ghl:4B</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
+        <div class="dep">⛔ blocked on hpfo-card-v2:3, hpfo-ghl:4B</div>
       </div><div class="connector"></div><div class="phase glow" style="--c:#e8554d">
         <div class="phase-top">
           <span class="phase-order">Phase 5</span>
-          <span class="phase-status" style="background:#e8554d22;color:#e8554d;border-color:#e8554d55">GATED</span>
+          <span class="phase-state" style="background:#e8554d22;color:#e8554d;border-color:#e8554d66">STOP — GATED</span>
         </div>
         <div class="phase-name">Phase 5 — Admin pages (stages only; slot admin DROPPED from v1)</div>
-        <div class="dep">⟸ blocked on hpfo-card-v2:4</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
+        <div class="dep">⛔ blocked on hpfo-card-v2:4</div>
       </div><div class="connector"></div><div class="phase glow" style="--c:#e8554d">
         <div class="phase-top">
           <span class="phase-order">Phase 6</span>
-          <span class="phase-status" style="background:#e8554d22;color:#e8554d;border-color:#e8554d55">GATED</span>
+          <span class="phase-state" style="background:#e8554d22;color:#e8554d;border-color:#e8554d66">STOP — GATED</span>
         </div>
         <div class="phase-name">Phase 6 — Hybrid board (Angelica) + Archive route + SMS-first confirmation</div>
-        <div class="dep">⟸ blocked on hpfo-card-v2:5, hpfo-ghl:4B</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
+        <div class="dep">⛔ blocked on hpfo-card-v2:5, hpfo-ghl:4B</div>
       </div><div class="connector"></div><div class="phase glow" style="--c:#e8554d">
         <div class="phase-top">
           <span class="phase-order">Phase 7</span>
-          <span class="phase-status" style="background:#e8554d22;color:#e8554d;border-color:#e8554d55">GATED</span>
+          <span class="phase-state" style="background:#e8554d22;color:#e8554d;border-color:#e8554d66">STOP — GATED</span>
         </div>
         <div class="phase-name">Phase 7 — Closer pipeline migration behind CARD_SYSTEM_V2 flag (HIGHEST RISK)</div>
-        <div class="dep">⟸ blocked on hpfo-card-v2:6</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
+        <div class="dep">⛔ blocked on hpfo-card-v2:6</div>
       </div><div class="connector"></div><div class="phase glow" style="--c:#e8554d">
         <div class="phase-top">
           <span class="phase-order">Phase 8</span>
-          <span class="phase-status" style="background:#e8554d22;color:#e8554d;border-color:#e8554d55">GATED</span>
+          <span class="phase-state" style="background:#e8554d22;color:#e8554d;border-color:#e8554d66">STOP — GATED</span>
         </div>
         <div class="phase-name">Phase 8 — Workstation badge + theme variable-readiness (NO toggle ship)</div>
-        <div class="dep">⟸ blocked on hpfo-card-v2:7</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
+        <div class="dep">⛔ blocked on hpfo-card-v2:7</div>
       </div><div class="connector"></div><div class="phase glow" style="--c:#e8554d">
         <div class="phase-top">
           <span class="phase-order">Phase 9</span>
-          <span class="phase-status" style="background:#e8554d22;color:#e8554d;border-color:#e8554d55">GATED</span>
+          <span class="phase-state" style="background:#e8554d22;color:#e8554d;border-color:#e8554d66">STOP — GATED</span>
         </div>
         <div class="phase-name">Phase 9 — Cleanup: deprecate monolith, drop qualification_tier, update CLAUDE.md+manifest+memory.hotfiles</div>
-        <div class="dep">⟸ blocked on hpfo-card-v2:8</div>
+        <div class="phase-foot"><span class="claim claim-none">○ unclaimed</span></div>
+        <div class="dep">⛔ blocked on hpfo-card-v2:8</div>
       </div></div>
     </div></div>
+
   <div class="foot">
-    SOT Sheet: https://docs.google.com/spreadsheets/d/14SkZMQ4OXbBMz5Ca1sgcy0Ebyo8Bz-3vHgHa7U2jmwA/edit<br>
+    SOT Sheet: https://docs.google.com/spreadsheets/d/14SkZMQ4OXbBMz5Ca1sgcy0Ebyo8Bz-3vHgHa7U2jmwA/edit  ·  ROADMAP col H = workstation (claim) · col E = status<br>
     Regenerate: op run --env-file=.env.local -- npx tsx bin/sot-render-program-flow.ts<br>
-    A red ◇ gate is the stop signal — no execution window starts a phase below an uncleared gate.
+    To put a phase in flight: set its ROADMAP col H to a co-op color (G/B/Y/O). To clear: blank it or set status=done.
   </div>
 </body></html>
