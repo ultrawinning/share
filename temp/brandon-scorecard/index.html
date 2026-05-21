@@ -98,8 +98,6 @@
     text-transform: uppercase;
     letter-spacing: 0.03em;
   }
-  .tag-new { background: rgba(59,130,246,0.15); color: var(--blue); }
-  .tag-active { background: var(--accent-dim); color: var(--accent); }
   .tag-here { background: rgba(245,158,11,0.15); color: var(--amber); }
   .tag-next { background: rgba(59,130,246,0.15); color: var(--blue); }
   .tag-future { background: var(--purple-dim); color: var(--purple); }
@@ -118,18 +116,6 @@
     border-top: 1px solid var(--border);
     margin: 2rem 0;
   }
-  .report-template {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1.25rem;
-    font-family: 'SF Mono', 'Fira Code', monospace;
-    font-size: 0.8125rem;
-    color: var(--text-muted);
-    white-space: pre-wrap;
-    margin: 0.75rem 0 1.5rem;
-    line-height: 1.7;
-  }
   ol, ul { padding-left: 1.25rem; margin: 0.5rem 0; }
   li { margin: 0.25rem 0; }
   .stage-card {
@@ -144,13 +130,8 @@
     border-color: var(--amber);
     box-shadow: 0 0 0 1px var(--amber), 0 0 20px rgba(245,158,11,0.08);
   }
-  .stage-card.next {
-    border-color: var(--blue);
-  }
-  .stage-card.future {
-    border-color: var(--border);
-    opacity: 0.7;
-  }
+  .stage-card.next { border-color: var(--blue); }
+  .stage-card.future { border-color: var(--border); opacity: 0.7; }
   .stage-header {
     display: flex;
     align-items: center;
@@ -184,7 +165,6 @@
   .stage-card.current .stage-comp { background: rgba(245,158,11,0.12); color: var(--amber); }
   .stage-card.next .stage-comp { background: rgba(59,130,246,0.12); color: var(--blue); }
   .stage-card.future .stage-comp { background: var(--surface-2); color: var(--text-muted); }
-  .stage-owns { margin: 0.5rem 0; padding-left: 1rem; }
   .stage-owns li { font-size: 0.8125rem; color: var(--text-muted); margin: 0.25rem 0; }
   .criteria-grid {
     display: grid;
@@ -206,6 +186,7 @@
     font-size: 1.25rem;
     margin: 0.25rem 0;
   }
+  .domain-table td:first-child { font-weight: 600; white-space: nowrap; }
   .footer {
     margin-top: 3rem;
     padding-top: 1rem;
@@ -214,6 +195,14 @@
     color: var(--text-muted);
     text-align: center;
   }
+  .report-areas {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 0.75rem 0;
+  }
+  .report-areas li { font-size: 0.8125rem; }
   @media (max-width: 640px) {
     body { padding: 1rem 0.75rem; }
     h1 { font-size: 1.375rem; }
@@ -235,9 +224,9 @@
   <strong>Comp structure:</strong> 5% override on team cash collected (stays at every stage) + base salary added at stage progression.
 </div>
 
-<!-- STAGE MAP -->
 <h2>Stage Map</h2>
 
+<!-- STAGE 1 -->
 <div class="stage-card current">
   <div class="stage-header">
     <div class="stage-number">1</div>
@@ -259,6 +248,7 @@
 
 <div class="arrow-connector">&darr;</div>
 
+<!-- STAGE 2 -->
 <div class="stage-card next">
   <div class="stage-header">
     <div class="stage-number">2</div>
@@ -269,16 +259,20 @@
   </div>
   <p style="margin-bottom:0.5rem;">Owns the full sales operation. GHL, dialer, pre-call, and lead quality routing stop here. Emil only hears about tech issues and strategy. Delivers structured weekly report for Dan syncs.</p>
   <div class="stage-comp">5% override + $[TBD] base/month</div>
+
   <h3 style="margin-top:0.5rem;">Adds to Stage 1:</h3>
-  <ul class="stage-owns">
-    <li>Dialer (Riley) &mdash; ramp, daily targets, calls booked, workflow</li>
-    <li>GHL operations &mdash; all config, automations, pipeline stages</li>
-    <li>Pre-call sequence &mdash; email/SMS before calls</li>
-    <li>Lead quality routing &mdash; quantify issues, route to DJ with data</li>
-    <li>Weekly report to Emil (structured format)</li>
-    <li>Meta/agency shadowing (learning, not owning)</li>
-  </ul>
-  <h3>Advancement criteria (all met for 60+ consecutive days):</h3>
+  <table class="domain-table">
+    <tbody>
+      <tr><td>Dialer (Riley)</td><td>Ramp, daily targets, workflow. Reports weekly: leads booked, appointments set, closes from dialer pipeline</td></tr>
+      <tr><td>GHL sales ops</td><td>Workflows, automations, calendars, pipeline stages. Full admin. Retains admin GUI even when HPFHQ takes over GHL functions</td></tr>
+      <tr><td>Pre-call sequence</td><td>Email/SMS before calls, show rate improvement</td></tr>
+      <tr><td>Lead quality routing</td><td>Quantify issues (which leads, what's wrong), route to DJ AND the marketing agency with data</td></tr>
+      <tr><td>Weekly report</td><td>Brandon proposes format, Emil approves. Must cover: cash, calls, Riley, GHL/ops, pipeline, focus</td></tr>
+      <tr><td>Meta/agency co-mgmt</td><td>Works alongside Emil with Meta agency and setter agency now. Emil leads, Brandon works directly with them &mdash; learning to manage, not just observe</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Advancement criteria (all met for 30&ndash;60 consecutive days):</h3>
   <div class="criteria-grid">
     <div class="criteria-item"><strong>Question absorption</strong><span>GHL/ops questions reaching Emil: &le;1/week</span></div>
     <div class="criteria-item"><strong>EOD compliance</strong><span>Team submission rate: 100%</span></div>
@@ -287,12 +281,14 @@
     <div class="criteria-item"><strong>Show rate maintained</strong><span>Net show rate: &ge;70%</span></div>
     <div class="criteria-item"><strong>Pipeline hygiene</strong><span>Follow-ups active &le;7 days: &ge;80%</span></div>
     <div class="criteria-item"><strong>Pre-call sequence</strong><span>Booked calls covered: 100%</span></div>
+    <div class="criteria-item"><strong>Agency co-management</strong><span>Active participation with Emil</span></div>
   </div>
-  <p style="margin-top:0.75rem;font-size:0.75rem;">Earliest promotion: <strong>August 2026</strong> (60-90 days from scorecard effective date)</p>
+  <p style="margin-top:0.75rem;font-size:0.75rem;">Earliest promotion: <strong>July 2026</strong> (30&ndash;60 days from scorecard effective date)</p>
 </div>
 
 <div class="arrow-connector">&darr;</div>
 
+<!-- STAGE 3 -->
 <div class="stage-card future">
   <div class="stage-header">
     <div class="stage-number">3</div>
@@ -301,41 +297,39 @@
       <span class="tag tag-future">Future / TBD</span>
     </div>
   </div>
-  <p style="margin-bottom:0.5rem;">Owns the revenue side of the business. At $1M/month: 4-6 closer team, multiple dialers, full agency relationship, marketing liaison, P&amp;L awareness. Emil sets strategy and targets. Brandon runs everything below that.</p>
+  <p style="margin-bottom:0.5rem;">Owns the revenue side of the business. At $1M/month: 4&ndash;6 closer team, multiple dialers, full agency relationship, marketing liaison, P&amp;L awareness. Emil sets strategy and targets. Brandon runs everything below that.</p>
   <div class="stage-comp">5% override + $[TBD] base/month (heavier bump)</div>
   <h3 style="margin-top:0.5rem;">Adds to Stage 2:</h3>
   <ul class="stage-owns">
     <li>Meta / paid media &mdash; primary agency contact, creative, performance</li>
-    <li>Marketing liaison &mdash; operational bridge between sales and marketing</li>
+    <li>Setter agency &mdash; manages DJ relationship directly</li>
+    <li>Marketing liaison &mdash; bridge between sales and all marketing</li>
     <li>Hiring recommendations for sales team (Emil approves)</li>
     <li>Budget input on ad spend (Emil/Dan approve)</li>
-    <li>P&amp;L awareness &mdash; understands CAC, lead cost, spend-to-revenue</li>
+    <li>P&amp;L awareness &mdash; CAC, lead cost, spend-to-revenue</li>
     <li>Sales team comp structure recommendations</li>
   </ul>
-  <p style="margin-top:0.75rem;font-size:0.75rem;">Criteria and comp TBD when Stage 2 is locked. This stage is aspirational &mdash; it exists so Brandon sees the ceiling.</p>
+  <p style="margin-top:0.75rem;font-size:0.75rem;">Criteria and comp TBD when Stage 2 is locked. Aspirational &mdash; exists so Brandon sees the ceiling.</p>
 </div>
 
 <hr class="section-divider">
 
-<!-- QUESTION ABSORPTION -->
 <h2>The Real Test: Question Absorption</h2>
 <p style="margin-bottom:0.75rem;">Success = these questions stop reaching Emil:</p>
-
 <table>
   <thead><tr><th>Question type</th><th>Brandon's job</th><th>Escalate to Emil only when</th></tr></thead>
   <tbody>
-    <tr><td>GHL config / automations / pipeline</td><td>Fix it or delegate it</td><td>Requires code changes or env vars</td></tr>
+    <tr><td>GHL config / automations / calendars</td><td>Fix it or delegate it</td><td>Requires code changes or env vars</td></tr>
     <tr><td>"Lead didn't show" / "calendar issue"</td><td>Diagnose, fix in GHL, report if systemic</td><td>Pattern affects &gt;20% of calls for a week</td></tr>
     <tr><td>"How does [sales process] work?"</td><td>Answer it. You're the boss</td><td>Never</td></tr>
-    <tr><td>Lead quality complaints</td><td>Quantify, route to DJ with data</td><td>DJ unresponsive or systemic</td></tr>
+    <tr><td>Lead quality complaints</td><td>Quantify, route to DJ AND agency with data</td><td>DJ/agency unresponsive or systemic</td></tr>
     <tr><td>Closer interpersonal issues</td><td>Handle, coach, document</td><td>Termination or comp changes</td></tr>
-    <tr><td>Meta ad performance</td><td><strong>Stage 2:</strong> Shadow &amp; learn<br><strong>Stage 3:</strong> Own it</td><td>Until Stage 3</td></tr>
+    <tr><td>Meta ad performance</td><td><strong>Stage 2:</strong> Co-manage with Emil<br><strong>Stage 3:</strong> Own it</td><td>Strategy pivots or spend &gt;$500/day change</td></tr>
   </tbody>
 </table>
 
 <hr class="section-divider">
 
-<!-- METRICS -->
 <h2>Output Metrics</h2>
 <p style="margin-bottom:0.5rem;font-size:0.75rem;color:var(--text-muted);">Monthly review</p>
 <table>
@@ -376,42 +370,31 @@
 
 <hr class="section-divider">
 
-<!-- WEEKLY REPORT -->
-<h2>Weekly Report Format</h2>
-<p style="margin-bottom:0.5rem;">Due Sunday EOD or before Monday 1:1. Emil uses this for Dan syncs.</p>
-<div class="report-template">SALES WEEK &mdash; [date range]
-
-CASH: $XX,XXX MTD ($XXX,XXX target) &mdash; [green/amber/red]
-CALLS: XX taken, XX% show rate, XX% close rate
-CANCEL: XX% soft cancel rate
-
-CLOSES THIS WEEK:
-- [Name] &mdash; $X,XXX &mdash; [PIF/split/4-pay] &mdash; [Joel/Brandon]
-
-RILEY (DIALER):
-- Calls: XX/day &mdash; Appointments set: X
-- Blockers: [none / description]
-
-GHL / OPS:
-- Issues handled: [list or "none"]
-- Escalations for Emil: [list or "none"]
-
-PIPELINE:
-- Active follow-ups: XX
-- Stale (&gt;7 days no activity): XX
-
-NEXT WEEK FOCUS:
-- [1-2 sentences]</div>
+<h2>Weekly Report</h2>
+<p style="margin-bottom:0.5rem;">Brandon proposes his own format. Emil approves once, then it's locked. Must cover:</p>
+<div class="report-areas">
+  <ul>
+    <li>Cash: MTD vs target, pacing</li>
+    <li>Calls: taken, show rate, close rate, cancel rate</li>
+    <li>Closes this week: name, amount, payment type, which closer</li>
+    <li>Riley/dialer: calls/day, appointments set, blockers</li>
+    <li>GHL/ops: issues handled, escalations for Emil</li>
+    <li>Lead quality: issues routed to DJ/agency</li>
+    <li>Pipeline: active follow-ups, stale leads</li>
+    <li>Next week focus</li>
+  </ul>
+</div>
+<p><strong>Due:</strong> Sunday EOD or before Monday 1:1. Emil uses this for Dan syncs.</p>
+<p style="margin-top:0.5rem;"><strong>Monthly addition:</strong> actuals vs targets, per-closer breakdown, Riley ramp M/M, one thing that worked, one thing that didn't.</p>
 
 <hr class="section-divider">
 
-<!-- REVIEW CADENCE -->
 <h2>Review Cadence</h2>
 
 <h3>Weekly (1:1 &mdash; 15 min)</h3>
 <ol>
   <li>Cash MTD vs pacing</li>
-  <li>This week: show rate, close rate, cancel rate</li>
+  <li>Show rate, close rate, cancel rate</li>
   <li>"What questions came to me this week that should have stopped with you?"</li>
   <li>Riley: calls, appointments, blockers</li>
   <li>Pipeline: active follow-ups, stale leads</li>
@@ -423,7 +406,8 @@ NEXT WEEK FOCUS:
   <li>Output metrics vs targets + M/M trends</li>
   <li>Per-closer breakdown</li>
   <li>Riley ramp assessment</li>
-  <li>GHL ownership &mdash; is question load shifting</li>
+  <li>GHL ownership &mdash; question load shifting?</li>
+  <li>Agency co-management &mdash; participating, learning?</li>
   <li>Stage advancement check</li>
   <li>Next month targets</li>
 </ol>
@@ -437,7 +421,6 @@ NEXT WEEK FOCUS:
 
 <hr class="section-divider">
 
-<!-- RULES -->
 <h2>Accountability Rules</h2>
 
 <div class="rule"><strong>1. Own the domain, not just the task.</strong> <span>The revenue operation from booked call to cash collected, including the GHL ops layer.</span></div>
@@ -445,7 +428,7 @@ NEXT WEEK FOCUS:
 <div class="rule"><strong>3. Close = money received.</strong> <span>Verbal commits don't count. Fanbasis or Stripe.</span></div>
 <div class="rule"><strong>4. EOD is non-negotiable.</strong> <span>Two missed in a week = escalation conversation.</span></div>
 <div class="rule"><strong>5. Own the number.</strong> <span>Joel underperforms? Coaching. Riley not ramping? Management. The team missed, not the individual.</span></div>
-<div class="rule"><strong>6. Quantify before complaining.</strong> <span>"Leads were bad" needs: which leads, what's wrong, data sent to DJ.</span></div>
+<div class="rule"><strong>6. Quantify before complaining.</strong> <span>"Leads were bad" needs: which leads, what's wrong, data sent to DJ AND the agency.</span></div>
 
 <div class="footer">HPF Sales &mdash; Effective May 2026 &mdash; Stage review quarterly</div>
 
