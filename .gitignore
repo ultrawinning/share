@@ -5,3 +5,8 @@
 # OS junk
 .DS_Store
 Thumbs.db
+
+# Claude Code session artifacts — handoffs, auto-wrap snapshots, settings.
+# This is a public GitHub Pages repo deployed via `git add .`; .claude/
+# must never be staged into it.
+.claude/
