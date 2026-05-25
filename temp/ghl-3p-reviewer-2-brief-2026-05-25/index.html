@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GHL Replacement — 3P Reviewer #2 Brief (Agnese)</title>
+<style>
+:root {
+  --bg: #0b0d12;
+  --panel: #131720;
+  --panel-2: #1a1f2b;
+  --border: #232a38;
+  --text: #e4e7ec;
+  --text-dim: #9aa3b2;
+  --text-faint: #5b6478;
+  --accent: #6aa9ff;
+  --green: #34d399;
+  --amber: #fbbf24;
+  --red: #f87171;
+  --purple: #c9a6ff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+  padding: 32px 24px 80px;
+  max-width: 1080px;
+  margin-inline: auto;
+}
+h1 { font-size: 26px; margin: 0 0 4px; letter-spacing: -0.01em; }
+h2 { font-size: 18px; margin: 36px 0 12px; padding-top: 16px; border-top: 1px solid var(--border); }
+h3 { font-size: 13px; margin: 18px 0 6px; color: var(--text); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+.muted { color: var(--text-dim); }
+.faint { color: var(--text-faint); }
+.lede { color: var(--text-dim); margin: 0 0 24px; font-size: 15px; }
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+.tag.context { background: #1c2a3a; color: #93bbf2; }
+.tag.thought { background: #2a1f3a; color: var(--purple); }
+.tag.build { background: #1f3a2a; color: var(--green); }
+.tag.holes { background: #3a1f1f; color: var(--red); }
+.tag.access { background: #3a2f1f; color: var(--amber); }
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin: 12px 0;
+}
+.card .meta { font-size: 12px; color: var(--text-faint); margin-bottom: 6px; }
+.callout {
+  background: #1c2a3a;
+  border: 1px solid #2a4060;
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  padding: 12px 14px;
+  margin: 12px 0;
+  color: var(--text);
+}
+.callout.warn { background: #2a1f1f; border-color: #5a3a3a; border-left-color: var(--red); }
+.callout.warn strong { color: var(--red); }
+code, kbd { font: 12px/1.4 ui-monospace, "SF Mono", Menlo, monospace; background: var(--panel-2); padding: 1px 5px; border-radius: 3px; color: var(--text); }
+pre { background: var(--panel-2); padding: 12px; border-radius: 6px; overflow-x: auto; font: 12px/1.5 ui-monospace, Menlo, monospace; }
+.check { margin: 6px 0; padding-left: 26px; position: relative; }
+.check::before {
+  content: ""; position: absolute; left: 0; top: 3px;
+  width: 16px; height: 16px; border: 1.5px solid var(--text-faint); border-radius: 3px;
+}
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+th, td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+th { color: var(--text-dim); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 32px 0; }
+.faint-block { background: var(--panel); border-radius: 6px; padding: 10px 14px; color: var(--text-dim); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<h1>GHL Replacement — 3P Reviewer #2 Brief</h1>
+<p class="lede">
+  For Agnese. Welcome to the GHL replacement audit. This brief gives you everything you need
+  to do the second independent review pass before HPFHQ flips its booking, messaging, and
+  CRM workflows off GoHighLevel onto the in-house replacement.
+</p>
+<p class="muted">
+  Prepared by Executor (Emil's HPFHQ coordination session) · 2026-05-25 · go-live window 2026-06-15..22.
+</p>
+
+<h2><span class="tag context">Context</span> What is this and why does it matter</h2>
+
+<p>HPFHQ has been running on <strong>GoHighLevel (GHL)</strong> for forms, booking, messaging, CRM-style pipelines, and webhook orchestration. We're replacing GHL with in-house equivalents inside HPFHQ for three reasons:</p>
+
+<ol>
+  <li><strong>Trust and verification.</strong> Multiple times in the past 6 months a metric or campaign was misattributed or stalled because of opaque GHL state. Emil's directive: <em>"build everything dark, activate nothing until 3P-verified."</em></li>
+  <li><strong>Cost compounding.</strong> GHL fees scale poorly with HPF's growth; the in-house build is amortised against existing HPFHQ infrastructure.</li>
+  <li><strong>Strategic — knowledge surface.</strong> Owning the message + booking + form layer lets us feed events into HPFHQ's canonical knowledge surface (Nova, Pathfinder, Decision Log), which we can't with GHL.</li>
+</ol>
+
+<p>The replacement is structured as <strong>9 tracks</strong> across forms, booking, messaging, CRM/pipelines, monitoring, safety, sandbox, and final cutover. Codex (an AI reviewer) has run partial 3P passes on tracks 1 and 6. <strong>You are the second independent reviewer per the master plan's safety protocol</strong> — your pass catches what Codex's first pass missed.</p>
+
+<div class="callout warn">
+  <strong>Hard rule from the master plan (line 100):</strong> <em>"The reviewer must not have built the code they're reviewing."</em>
+  Your CC scope is Medus/Bite integration onboarding — you have not built HPFHQ GHL code, so independence holds.
+  Flag immediately if at any point you find yourself reviewing something you authored.
+</div>
+
+<h2><span class="tag thought">Thought</span> What the architectural decisions look like and why</h2>
+
+<p>You'll be checking code against architectural intent. Here's the intent so you can audit against it, not just compare to the docs (which are partly stale).</p>
+
+<h3>1. Build dark, flip late</h3>
+<p>Code lands fully implemented but gated behind environment flags (e.g. <code>BOOKING_ENGINE_MODE=live</code>). No customer-facing behavior changes until the flag flips. Allows full pre-flip auditing in production environments without risking customer impact.</p>
+<p><strong>What you check:</strong> for every track, find the flag gate. Confirm the code path is reachable in production but inert. Confirm there's no accidental live path that bypasses the flag.</p>
+
+<h3>2. Two independent passes minimum</h3>
+<p>Codex's pass is "everything Codex notices." Your pass is "everything an independent human-led pass notices." Different review minds catch different classes of bug. Codex tends to find structural and obvious-pattern issues; humans tend to find domain-mismatch and stale-contract issues.</p>
+<p><strong>What you check:</strong> review Codex's audit at <code>docs/plans/handoffs/ghl-overhaul-conductor-handover-2026-05-25.md</code> AS A STARTING POINT, not as a checklist. Look at what Codex didn't look at.</p>
+
+<h3>3. Verified receipts before activation</h3>
+<p>The plan bans the word "certain" and demands "verified" (with receipt) or "untested." Every cutover step must produce a verification receipt — a log line, a screenshot, a SQL query result, a green Overseer probe. No flags flip on vibe.</p>
+<p><strong>What you check:</strong> for each thing the docs claim is "done" or "verified," confirm the receipt exists and matches.</p>
+
+<h3>4. Rollback ready, every step</h3>
+<p>Every flag flip has a rollback procedure documented. PITR (Point-In-Time Recovery) on Supabase is the backstop for data; per-route flag flip is the backstop for code paths.</p>
+<p><strong>What you check:</strong> for each cutover step, confirm the rollback procedure is documented AND testable. "Flip flag back to off" is acceptable; "manually fix data" is not.</p>
+
+<h3>5. Stale doc warning</h3>
+<p><code>docs/architecture/booking.md</code> currently claims things that <strong>the code doesn't actually do</strong>. Specifically: it claims manage-token verification is timing-safe with 30-day expiry; the code doesn't yet implement timing-safe compare. It claims pre-call dedup uses <code>message_sends</code>; the code queries a non-existent <code>message_log</code> table.</p>
+<p><strong>What you check:</strong> for every claim in <code>docs/architecture/booking.md</code>, verify against actual code. Don't trust the doc.</p>
+
+<h2><span class="tag build">Build</span> What's in scope for your review</h2>
+
+<p>Cross-reference these with the audit doc — <strong>each track has a discrepancy log section to populate</strong>.</p>
+
+<table>
+<thead><tr><th>#</th><th>Track</th><th>What to walk</th><th>Sensitivity</th></tr></thead>
+<tbody>
+<tr>
+  <td>1</td>
+  <td><strong>Booking security wiring</strong></td>
+  <td><code>bookingSubmitSchema</code> + <code>bookingManageSchema</code> + <code>checkRateLimit()</code> + CSRF header + token expiry storage/enforcement + timing-safe compare + check-form enumeration + 409 handling + submit-route host precedence</td>
+  <td><strong>High — developer mindset valuable</strong></td>
+</tr>
+<tr>
+  <td>2</td>
+  <td><strong>Messaging ledger</strong></td>
+  <td>Confirm canonical-table choice once Emil locks it. Walk the 3 callsites that currently query non-existent <code>message_log</code>: <code>booking-precall</code>, <code>sendblue webhook</code>, <code>form-incomplete-followup</code></td>
+  <td>Medium — code reading</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td><strong>Booking crons (Track 2)</strong></td>
+  <td><code>/api/cron/booking-precall</code> + <code>/api/cron/booking-reminders</code> registered in <code>vercel.json</code>; <code>generateSlots()</code> honors <code>rule.timezone</code>; <code>reportFailure()</code> wired on <code>ok:false</code> sends; active closer DB rows populated</td>
+  <td>Medium — config + lib</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td><strong>Monitoring (Track 3)</strong></td>
+  <td>Booking checks in <code>data-integrity</code>; <code>/api/book/health</code>; booking-health + volume-drop crons; API smoke; Overseer probe</td>
+  <td>Medium</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td><strong>Safety gate (Track 6)</strong></td>
+  <td>PITR/restore/logical backup verified; runbooks present; rollback docs; load/rate-limit audit; secret rotation; RLS+PII checks</td>
+  <td><strong>High — ops mindset valuable</strong></td>
+</tr>
+<tr>
+  <td>6</td>
+  <td><strong>Sandbox booking matrix</strong></td>
+  <td>Full booking-flow walk in sandbox before any <code>BOOKING_ENGINE_MODE=live</code> flip. New-booking + reschedule + cancel + reminder + precall flows. Edge cases: token expiry, rate-limit trip, double-submit, timezone-DST</td>
+  <td>QA-style</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td><strong>Stale-doc cross-check</strong></td>
+  <td><code>docs/architecture/booking.md</code> claims vs code behavior</td>
+  <td>Low — diff reading</td>
+</tr>
+</tbody>
+</table>
+
+<h2><span class="tag holes">Holes</span> Open decisions Emil owes before you can fully complete the pass</h2>
+
+<p>Some tracks have decisions in flight. Note in your log if a discrepancy is gated on an open decision — that's not a code bug, it's a planning gap to flag back to Emil.</p>
+
+<ol>
+  <li><strong>Canonical messaging table</strong> — <code>message_events</code> vs <code>message_sends</code> vs <code>message_log</code>. Track 2 review depends on this.</li>
+  <li><strong>Extended GHL calendar</strong> — kill or absorb.</li>
+  <li><strong>Fanbasis vs Stripe</strong> — still open from earlier planning rounds.</li>
+  <li><strong>Active closer data</strong> in production DB (Joel/Brandon/Dillon: calendar IDs, Zoom links, timezone, availability rules). Track 3 walk-throughs need these.</li>
+  <li><strong><code>BOOKING_MANAGE_SECRET</code></strong> distinct in production (vs sandbox/dev).</li>
+  <li><strong>Vercel cron capacity</strong> — <code>vercel.json</code> already has 41 cron entries; plan limit may be 40. Prune before Track 2 cron additions register.</li>
+  <li><strong>Sandbox/main divergence</strong> — <code>scripts/seed-sandbox.ts</code> on sandbox only; some parts of sandbox aren't in main, complicates testing parity.</li>
+  <li><strong><code>/book/*</code> public visibility</strong> — middleware says public pre-cutover, access-map says no. Stale-contract mismatch.</li>
+</ol>
+
+<h2><span class="tag access">Access</span> What you need from Emil before you start</h2>
+
+<div class="check">HPFHQ repo read access (<code>~/Code/hpf-command-center</code>) — clone the repo locally OR work in GitHub UI</div>
+<div class="check">Supabase production read-only role (Emil grants in Supabase dashboard) — for SQL verification queries</div>
+<div class="check">Vercel project Viewer role (Emil invites you) — for cron + env-var + deploy log inspection</div>
+<div class="check">Slack invite to the relevant channels — flag discrepancies as you go</div>
+<div class="check">Access to Codex's pass #1 audit doc at <code>docs/plans/handoffs/ghl-overhaul-conductor-handover-2026-05-25.md</code> in the repo</div>
+<div class="check">Master plan at <code>docs/plans/co-op/2026-05-07-ghl-full-replacement.md</code></div>
+<div class="check">Booking cutover plan at <code>docs/plans/tech/2026-05-18-ghl-booking-cutover.md</code></div>
+
+<h2>Discrepancy log format</h2>
+
+<p>Per track, one entry per discrepancy. Doc, code, decision-pending — whichever it is. Doesn't need to be polished prose — clear is enough.</p>
+
+<pre>### Track 1 — Booking security wiring
+
+#### D-1.1 — Timing-safe compare missing
+- **What docs claim:** docs/architecture/booking.md line N says manage-token uses timing-safe compare.
+- **What code does:** [file:line] uses plain `===` equality check.
+- **Why it matters:** vulnerable to timing-attack token enumeration.
+- **Class:** code-vs-doc divergence. Fix needed before cutover.
+
+#### D-1.2 — ...
+
+### Track 2 — Messaging ledger
+[...]
+</pre>
+
+<h2>What "done" looks like</h2>
+
+<ol>
+  <li>You've walked all 7 review areas above.</li>
+  <li>For each, your discrepancy log is populated (or explicitly notes "no discrepancies found").</li>
+  <li>You drop the log doc back to Emil — paste it in Slack, or commit it as <code>docs/plans/handoffs/ghl-overhaul-3p-pass-2-agnese-2026-05-XX.md</code> in the repo.</li>
+  <li>Emil reviews discrepancies, dispatches fixes, you re-walk affected tracks once fixes land. (This may take 2-3 fix-and-re-walk cycles.)</li>
+  <li>Final "GREEN to flip" sign-off after a full clean re-walk.</li>
+</ol>
+
+<h2>Pacing</h2>
+
+<p>Master plan's estimate: <em>"Sandbox + 3P verification (3-5 days calendar)"</em> — that's the combined window for your full pass + the sandbox booking matrix. Codex's pass was faster but Codex had the whole codebase pre-loaded in context. A human-led pass with structured CC support is slower but catches different things — both are needed.</p>
+
+<hr>
+
+<p class="faint">
+  Source plan: <code>docs/plans/co-op/2026-05-07-ghl-full-replacement.md</code><br>
+  Codex audit (pass #1): <code>docs/plans/handoffs/ghl-overhaul-conductor-handover-2026-05-25.md</code><br>
+  Nexus workstream: <code>~/.dedicated-projects/.megas/.streams/hpfo-ghl.md</code><br>
+  Cross-CC handoff format: per Emil's <code>feedback-cross-cc-handoff-doc-format</code> — Context + Thought + Build + Holes (this doc follows that shape).
+</p>
+
+</body>
+</html>
