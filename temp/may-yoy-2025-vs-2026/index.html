@@ -61,6 +61,7 @@
   .flag-overdue { background: var(--red-dim); color: var(--red); }
   .flag-upcoming { background: var(--blue-dim); color: var(--blue); }
   .flag-none { background: rgba(139,148,158,0.15); color: var(--text-muted); }
+  .flag-coaching { background: var(--green-dim); color: var(--green); }
 
   .section-source { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem 1rem; margin: 1rem 0; font-size: 0.8rem; }
   .section-source code { background: var(--surface2); padding: 1px 5px; border-radius: 3px; font-size: 0.75rem; }
@@ -71,6 +72,21 @@
   .summary-actions { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; margin-top: 2rem; }
   .summary-actions ul { margin-left: 1.25rem; margin-top: 0.5rem; }
   .summary-actions li { margin-bottom: 0.5rem; }
+
+  details { margin: 0.75rem 0; }
+  details summary { cursor: pointer; padding: 0.6rem 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; font-size: 0.9rem; font-weight: 600; color: var(--text); user-select: none; display: flex; align-items: center; gap: 0.5rem; }
+  details summary:hover { background: var(--surface2); }
+  details summary::marker { content: ''; }
+  details summary::before { content: '\25B6'; font-size: 0.65rem; transition: transform 0.15s; color: var(--text-muted); flex-shrink: 0; }
+  details[open] summary::before { transform: rotate(90deg); }
+  details[open] summary { border-radius: 6px 6px 0 0; margin-bottom: 0; }
+  details .detail-body { border: 1px solid var(--border); border-top: none; border-radius: 0 0 6px 6px; padding: 0.75rem; background: var(--bg); }
+  details .detail-body table { margin-bottom: 0.5rem; }
+
+  .summary-badge { font-size: 0.75rem; font-weight: 400; color: var(--text-muted); margin-left: auto; }
+  .summary-badge .red { color: var(--red); }
+  .summary-badge .green { color: var(--green); }
+  .summary-badge .yellow { color: var(--yellow); }
 
   @media (max-width: 600px) {
     body { padding: 1rem 0.5rem; }
@@ -148,59 +164,6 @@
   May 2026 has zero deals above $4,800.</strong>
 </div>
 
-<h3>May 2025 &mdash; New Purchases (Stripe)</h3>
-<div class="section-source">Source: <code>stripe_payments</code> &mdash; <code>charge_created_at</code> in May 2025, <code>amount_refunded_usd = 0</code>, <code>product_description LIKE 'Purchase of%'</code></div>
-<table>
-  <thead><tr><th>Date</th><th>Client</th><th>Product</th><th class="num">Amount</th></tr></thead>
-  <tbody>
-    <tr><td>May 4</td><td>Brian Dunnigan</td><td>1:1 Retention Ascend (6mo) $917&times;6</td><td class="num">$917</td></tr>
-    <tr><td>May 8</td><td>Mary Lee</td><td>Spouse Package (12mo) $13,200 <span class="flag flag-new">SPOUSE</span></td><td class="num green">$13,200</td></tr>
-    <tr><td>May 12</td><td>Thomas Sharpe</td><td>12 Months $8,000</td><td class="num green">$8,000</td></tr>
-    <tr><td>May 12</td><td>Jonathan King</td><td>12 Weeks $3,999</td><td class="num">$3,999</td></tr>
-    <tr><td>May 13</td><td>Mandy Rice</td><td>3 Months $3,600</td><td class="num">$3,600</td></tr>
-    <tr><td>May 15</td><td>Michelle Kusal</td><td>4 Months $3,000</td><td class="num">$3,000</td></tr>
-    <tr><td>May 16</td><td>Nima Patel</td><td>Spouse Package (12mo) $13,200 <span class="flag flag-new">SPOUSE</span></td><td class="num green">$13,200</td></tr>
-    <tr><td>May 17</td><td>Kibibi Moseley</td><td>6 Months $5,000</td><td class="num green">$5,000</td></tr>
-    <tr><td>May 17</td><td>William Vorhies</td><td>6 Months $4,000</td><td class="num">$4,000</td></tr>
-    <tr><td>May 20</td><td>Jeremy Sloane</td><td>12 Months $8,000</td><td class="num green">$8,000</td></tr>
-    <tr><td>May 21</td><td>Ethan Nectow</td><td>12mo Ascend $5,000 (disc)</td><td class="num green">$5,000</td></tr>
-    <tr><td>May 22</td><td>Eric Kang</td><td>12 Months $5,000</td><td class="num green">$5,000</td></tr>
-    <tr><td>May 28</td><td>Betsy Kabaker</td><td>7 Months $5,000</td><td class="num green">$5,000</td></tr>
-    <tr><td>May 28</td><td>Betsy Kabaker</td><td>7 Months $5,000 <span class="flag flag-warn">DUPLICATE?</span></td><td class="num yellow">$5,000</td></tr>
-    <tr><td>May 6</td><td>Kevin McGrew</td><td>1:1 Retention Ascend (6mo) $917&times;6</td><td class="num">$917</td></tr>
-    <tr><td>May 30</td><td>Molly McGauley</td><td>12 Months $8,000</td><td class="num green">$8,000</td></tr>
-    <tr><td>May 31</td><td>Josh Kivett</td><td>12 Weeks $3,999</td><td class="num">$3,999</td></tr>
-  </tbody>
-  <tfoot><tr><th colspan="3">Total New Purchases (17 transactions, 16 unique clients)</th><th class="num">$95,832</th></tr></tfoot>
-</table>
-<p class="dq-note">Betsy Kabaker: 2 identical $5,000 charges on May 28 &mdash; same email, same product. Possibly spouse add-on or double-charge. Verify with Stripe.</p>
-
-<h3>May 2026 &mdash; New Purchases (Fanbasis)</h3>
-<div class="section-source">Source: <code>fanbasis_payments</code> &mdash; <code>created_at</code> in May 2026, <code>is_live = true</code></div>
-<table>
-  <thead><tr><th>Date</th><th>Client</th><th>Product</th><th>Payment</th><th class="num">Collected</th><th class="num">Contracted</th></tr></thead>
-  <tbody>
-    <tr><td>May 4</td><td>Brian Sellers</td><td>4 Month</td><td><span class="flag flag-pif">PIF</span></td><td class="num">$4,800</td><td class="num">$4,800</td></tr>
-    <tr><td>May 4</td><td>Jordan Bazinsky</td><td>4 Month</td><td><span class="flag flag-pif">PIF</span></td><td class="num">$4,800</td><td class="num">$4,800</td></tr>
-    <tr><td>May 4</td><td>Priyal Sheth</td><td>12 Month</td><td><span class="flag flag-pp">QTRLY</span></td><td class="num">$2,500</td><td class="num">$10,000</td></tr>
-    <tr><td>May 4</td><td>Christian F&auml;ssler</td><td>4 Month</td><td><span class="flag flag-pp">4PAY</span></td><td class="num">$1,250</td><td class="num">$5,000</td></tr>
-    <tr><td>May 6</td><td>Steve Metzger</td><td>4 Month</td><td><span class="flag flag-pif">PIF</span></td><td class="num">$4,800</td><td class="num">$4,800</td></tr>
-    <tr><td>May 8</td><td>Sush Torgalkar</td><td>4 Month</td><td><span class="flag flag-pif">PIF</span></td><td class="num">$4,800</td><td class="num">$4,800</td></tr>
-    <tr><td>May 8</td><td>Vern Dosch</td><td>4 Month</td><td><span class="flag flag-pif">PIF</span></td><td class="num">$4,800</td><td class="num">$4,800</td></tr>
-    <tr><td>May 9</td><td>Benjamin Dresser</td><td>4 Month</td><td><span class="flag flag-pp">4PAY</span></td><td class="num yellow">$1,250</td><td class="num">$5,000</td></tr>
-    <tr><td>May 12</td><td>Simona Ghergheluca</td><td>4 Month</td><td><span class="flag flag-pif">PIF</span></td><td class="num">$4,800</td><td class="num">$4,800</td></tr>
-    <tr><td>May 14</td><td>Jessica Haugaard</td><td>4 Month</td><td><span class="flag flag-pif">PIF</span></td><td class="num">$4,800</td><td class="num">$4,800</td></tr>
-    <tr><td>May 15</td><td>John Kellner</td><td>4 Month</td><td><span class="flag flag-pp">2PAY</span></td><td class="num">$2,400</td><td class="num">$4,800</td></tr>
-    <tr><td>May 20</td><td>Pank Bagga</td><td>4 Month</td><td><span class="flag flag-pif">PIF</span></td><td class="num">$4,800</td><td class="num">$4,800</td></tr>
-    <tr><td>May 20</td><td>Traci Lovell</td><td>4 Month</td><td><span class="flag flag-pp">4PAY</span></td><td class="num">$1,250</td><td class="num">$5,000</td></tr>
-    <tr><td>May 22</td><td>Thierry Lorfils</td><td>4 Month (Regional)</td><td><span class="flag flag-pif">PIF</span></td><td class="num">$4,000</td><td class="num">$4,000</td></tr>
-    <tr><td>May 22</td><td>Husein Khalil</td><td>4 Month</td><td><span class="flag flag-pif">PIF</span></td><td class="num">$4,800</td><td class="num">$4,800</td></tr>
-  </tbody>
-  <tfoot><tr><th colspan="4">Total New (15 clients)</th><th class="num">$55,850</th><th class="num">$77,800</th></tr></tfoot>
-</table>
-<p class="dq-note">Benjamin Dresser: paid $1,250 in Fanbasis on May 9 but has <strong>no matching closer_eod_entries closed entry</strong>. Data quality gap.<br>
-Traci Lovell: appears twice in closer_eod_entries as closed (May 18 + May 20, $1,250 each = $2,500) but Fanbasis only shows one payment ($1,250). Possible EOD double-entry &mdash; revenue totals match because Dresser offsets Lovell.</p>
-
 <h3>Product Distribution Side-by-Side</h3>
 <table>
   <thead><tr><th>Program</th><th class="num">May 2025 Deals</th><th class="num">May 2025 $</th><th class="num">May 2026 Deals</th><th class="num">May 2026 $</th></tr></thead>
@@ -218,53 +181,131 @@ Traci Lovell: appears twice in closer_eod_entries as closed (May 18 + May 20, $1
   <strong>87% of May 2026 deals (13/15) are 4-month at $4,800.</strong> The product ladder that generated $71,400 in May 2025 (Spouse + 12mo + 6-7mo) is producing $2,500 in May 2026.
 </div>
 
+<div class="insight-box blue">
+  <strong>May 2025 pricing was flexible, not just higher.</strong> The same term length came at different price points: 6-month ranged from $916&times;6 ($5,496) to $5,000 PIF. 12-month ranged from $733&times;12 ($8,796) to $8,000 PIF. 3-month from $1,450&times;3 to $3,600. Closers had room to match price to prospect. May 2026 has one product at one price.
+</div>
+
+<details>
+  <summary>May 2025 &mdash; New Purchases (Stripe) <span class="summary-badge">17 transactions &bull; $95,832</span></summary>
+  <div class="detail-body">
+    <div class="section-source">Source: <code>stripe_payments</code> &mdash; <code>charge_created_at</code> in May 2025, <code>amount_refunded_usd = 0</code>, <code>product_description LIKE 'Purchase of%'</code>. All tagged <code>product_type = 'coaching'</code>. Zero LB90 or non-coaching products found.</div>
+    <table>
+      <thead><tr><th>Date</th><th>Client</th><th>Product</th><th class="num">Amount</th></tr></thead>
+      <tbody>
+        <tr><td>May 4</td><td>Brian Dunnigan</td><td>1:1 Retention Ascend (6mo) $917&times;6</td><td class="num">$917</td></tr>
+        <tr><td>May 6</td><td>Kevin McGrew</td><td>1:1 Retention Ascend (6mo) $917&times;6</td><td class="num">$917</td></tr>
+        <tr><td>May 8</td><td>Mary Lee</td><td>Spouse Package (12mo) $13,200 <span class="flag flag-new">SPOUSE</span></td><td class="num green">$13,200</td></tr>
+        <tr><td>May 12</td><td>Thomas Sharpe</td><td>12 Months $8,000</td><td class="num green">$8,000</td></tr>
+        <tr><td>May 12</td><td>Jonathan King</td><td>12 Weeks $3,999</td><td class="num">$3,999</td></tr>
+        <tr><td>May 13</td><td>Mandy Rice</td><td>3 Months $3,600</td><td class="num">$3,600</td></tr>
+        <tr><td>May 15</td><td>Michelle Kusal</td><td>4 Months $3,000</td><td class="num">$3,000</td></tr>
+        <tr><td>May 16</td><td>Nima Patel</td><td>Spouse Package (12mo) $13,200 <span class="flag flag-new">SPOUSE</span></td><td class="num green">$13,200</td></tr>
+        <tr><td>May 17</td><td>Kibibi Moseley</td><td>6 Months $5,000</td><td class="num green">$5,000</td></tr>
+        <tr><td>May 17</td><td>William Vorhies</td><td>6 Months $4,000</td><td class="num">$4,000</td></tr>
+        <tr><td>May 20</td><td>Jeremy Sloane</td><td>12 Months $8,000</td><td class="num green">$8,000</td></tr>
+        <tr><td>May 21</td><td>Ethan Nectow</td><td>12mo Ascend $5,000 (disc)</td><td class="num green">$5,000</td></tr>
+        <tr><td>May 22</td><td>Eric Kang</td><td>12 Months $5,000</td><td class="num green">$5,000</td></tr>
+        <tr><td>May 28</td><td>Betsy Kabaker</td><td>7 Months $5,000</td><td class="num green">$5,000</td></tr>
+        <tr><td>May 28</td><td>Betsy Kabaker</td><td>7 Months $5,000 <span class="flag flag-warn">DUPLICATE?</span></td><td class="num yellow">$5,000</td></tr>
+        <tr><td>May 30</td><td>Molly McGauley</td><td>12 Months $8,000</td><td class="num green">$8,000</td></tr>
+        <tr><td>May 31</td><td>Josh Kivett</td><td>12 Weeks $3,999</td><td class="num">$3,999</td></tr>
+      </tbody>
+      <tfoot><tr><th colspan="3">Total New Purchases (17 transactions, 16 unique clients)</th><th class="num">$95,832</th></tr></tfoot>
+    </table>
+    <p class="dq-note">Betsy Kabaker: 2 identical $5,000 charges on May 28 &mdash; same email, same product. Possibly spouse add-on or double-charge. Verify with Stripe.</p>
+  </div>
+</details>
+
+<details>
+  <summary>May 2026 &mdash; New Purchases (Fanbasis) <span class="summary-badge">15 clients &bull; $55,850 collected &bull; $77,800 contracted</span></summary>
+  <div class="detail-body">
+    <div class="section-source">Source: <code>fanbasis_payments</code> &mdash; <code>created_at</code> in May 2026, <code>is_live = true</code>. All tagged <code>product_title</code> = "HPF - 4 Month Program" or "HPF - 12 Month Program".</div>
+    <table>
+      <thead><tr><th>Date</th><th>Client</th><th>Product</th><th>Payment</th><th class="num">Collected</th><th class="num">Contracted</th></tr></thead>
+      <tbody>
+        <tr><td>May 4</td><td>Brian Sellers</td><td>4 Month</td><td><span class="flag flag-pif">PIF</span></td><td class="num">$4,800</td><td class="num">$4,800</td></tr>
+        <tr><td>May 4</td><td>Jordan Bazinsky</td><td>4 Month</td><td><span class="flag flag-pif">PIF</span></td><td class="num">$4,800</td><td class="num">$4,800</td></tr>
+        <tr><td>May 4</td><td>Priyal Sheth</td><td>12 Month</td><td><span class="flag flag-pp">QTRLY</span></td><td class="num">$2,500</td><td class="num">$10,000</td></tr>
+        <tr><td>May 4</td><td>Christian F&auml;ssler</td><td>4 Month</td><td><span class="flag flag-pp">4PAY</span></td><td class="num">$1,250</td><td class="num">$5,000</td></tr>
+        <tr><td>May 6</td><td>Steve Metzger</td><td>4 Month</td><td><span class="flag flag-pif">PIF</span></td><td class="num">$4,800</td><td class="num">$4,800</td></tr>
+        <tr><td>May 8</td><td>Sush Torgalkar</td><td>4 Month</td><td><span class="flag flag-pif">PIF</span></td><td class="num">$4,800</td><td class="num">$4,800</td></tr>
+        <tr><td>May 8</td><td>Vern Dosch</td><td>4 Month</td><td><span class="flag flag-pif">PIF</span></td><td class="num">$4,800</td><td class="num">$4,800</td></tr>
+        <tr><td>May 9</td><td>Benjamin Dresser</td><td>4 Month</td><td><span class="flag flag-pp">4PAY</span></td><td class="num yellow">$1,250</td><td class="num">$5,000</td></tr>
+        <tr><td>May 12</td><td>Simona Ghergheluca</td><td>4 Month</td><td><span class="flag flag-pif">PIF</span></td><td class="num">$4,800</td><td class="num">$4,800</td></tr>
+        <tr><td>May 14</td><td>Jessica Haugaard</td><td>4 Month</td><td><span class="flag flag-pif">PIF</span></td><td class="num">$4,800</td><td class="num">$4,800</td></tr>
+        <tr><td>May 15</td><td>John Kellner</td><td>4 Month</td><td><span class="flag flag-pp">2PAY</span></td><td class="num">$2,400</td><td class="num">$4,800</td></tr>
+        <tr><td>May 20</td><td>Pank Bagga</td><td>4 Month</td><td><span class="flag flag-pif">PIF</span></td><td class="num">$4,800</td><td class="num">$4,800</td></tr>
+        <tr><td>May 20</td><td>Traci Lovell</td><td>4 Month</td><td><span class="flag flag-pp">4PAY</span></td><td class="num">$1,250</td><td class="num">$5,000</td></tr>
+        <tr><td>May 22</td><td>Thierry Lorfils</td><td>4 Month (Regional)</td><td><span class="flag flag-pif">PIF</span></td><td class="num">$4,000</td><td class="num">$4,000</td></tr>
+        <tr><td>May 22</td><td>Husein Khalil</td><td>4 Month</td><td><span class="flag flag-pif">PIF</span></td><td class="num">$4,800</td><td class="num">$4,800</td></tr>
+      </tbody>
+      <tfoot><tr><th colspan="4">Total New (15 clients)</th><th class="num">$55,850</th><th class="num">$77,800</th></tr></tfoot>
+    </table>
+    <p class="dq-note">Benjamin Dresser: paid $1,250 in Fanbasis on May 9 but has <strong>no matching closer_eod_entries closed entry</strong>. Data quality gap.<br>
+    Traci Lovell: appears twice in closer_eod_entries as closed (May 18 + May 20, $1,250 each = $2,500) but Fanbasis only shows one payment ($1,250). Possible EOD double-entry &mdash; revenue totals match because Dresser offsets Lovell.</p>
+  </div>
+</details>
+
 <!-- ========== ROOT CAUSE 2: RECURRING ========== -->
 <h2>Root Cause #2: Recurring Revenue Erosion</h2>
 
-<h3>May 2025 &mdash; Installment Payments (Stripe)</h3>
-<div class="section-source">Source: <code>stripe_payments</code> &mdash; <code>product_description LIKE 'Invoice%'</code>, May 2025</div>
-<table>
-  <thead><tr><th>Date</th><th>Client</th><th>Invoice</th><th class="num">Amount</th></tr></thead>
-  <tbody>
-    <tr><td>May 1</td><td>Zachary Gaver</td><td>63CA240F-0004</td><td class="num">$1,375</td></tr>
-    <tr><td>May 5</td><td>Amol Shah</td><td>E9EF88F1-0005</td><td class="num">$916</td></tr>
-    <tr><td>May 7</td><td>Jessica Lawrence</td><td>1NECY1HX-0001</td><td class="num">$2,000</td></tr>
-    <tr><td>May 8</td><td>Jan-Philipp Matthewes</td><td>QNT19NZR-0001</td><td class="num">$1,450</td></tr>
-    <tr><td>May 10</td><td>Kimberlee De Biase</td><td>6B22AEC0-0005</td><td class="num">$916</td></tr>
-    <tr><td>May 12</td><td>Rob O'Keefe</td><td>77E056E5-0003</td><td class="num">$1,466</td></tr>
-    <tr><td>May 15</td><td>Jasmine Liu</td><td>D930EBA7-0002</td><td class="num">$1,466</td></tr>
-    <tr><td>May 19</td><td>Taha Siddiqi</td><td>18D479D1-0002</td><td class="num">$916</td></tr>
-    <tr><td>May 20</td><td>Simon Boyce</td><td>GQJ6Z35R-0001</td><td class="num">$1,375</td></tr>
-    <tr><td>May 20</td><td>Richard Melino</td><td>GTOI9ZVX-0001</td><td class="num">$2,000</td></tr>
-    <tr><td>May 20</td><td>Eric Palmer</td><td>BLCKPEPW-0001</td><td class="num">$641</td></tr>
-    <tr><td>May 21</td><td>Joel Gamez</td><td>L5PTL4DH-0001</td><td class="num">$1,320</td></tr>
-    <tr><td>May 23</td><td>Jess Henderson</td><td>3F802731-0002</td><td class="num">$733</td></tr>
-    <tr><td>May 27</td><td>Shane Gerlach</td><td>8A5B80C7-0003</td><td class="num">$733</td></tr>
-    <tr><td>May 28</td><td>Sinead Lehane</td><td>C20EFA95-0002</td><td class="num">$1,466</td></tr>
-    <tr><td>May 28</td><td>Susan Delene</td><td>VAR2L8VJ-0001</td><td class="num">$1,466</td></tr>
-    <tr><td>May 28</td><td>Ejay O'Donnell</td><td>AT2ZI2QY-0002</td><td class="num">$1,450</td></tr>
-    <tr><td>May 29</td><td>Neal Batson</td><td>0DD91F02-0005</td><td class="num">$700</td></tr>
-  </tbody>
-  <tfoot><tr><th colspan="3">Total Installments (18 payments)</th><th class="num">$22,389</th></tr></tfoot>
-</table>
+<div class="insight-box green">
+  <strong>Verified: all May 2025 installments are coaching.</strong> Every one of the 18 payments is tagged <code>product_type = 'coaching'</code>. Zero LB90, Kajabi, or non-coaching products found in the entire May 2025 Stripe dataset. 12 of 18 installments traced back to their original coaching purchase (see lineage below). The remaining 6 have no matching "Purchase of" record in the Stripe archive &mdash; original purchase likely predates the backfill window.
+</div>
 
-<h3>May 2026 &mdash; Installment Payments (Stripe)</h3>
-<div class="section-source">Source: <code>stripe_payments</code> &mdash; <code>is_recurring = true</code>, May 2026</div>
-<table>
-  <thead><tr><th>Date</th><th>Email</th><th>Invoice</th><th class="num">Amount</th></tr></thead>
-  <tbody>
-    <tr><td>May 6</td><td>collin.meador@gmail.com</td><td>VDV73FKG-0002</td><td class="num">$1,000</td></tr>
-    <tr><td>May 8</td><td>lynchbb5@gmail.com</td><td>YQBKXOBA-0003</td><td class="num">$1,000</td></tr>
-    <tr><td>May 14</td><td>daniel@embersearch.com</td><td>UKYE1GLR-0006</td><td class="num">$1,450</td></tr>
-    <tr><td>May 14</td><td>sam@pspgroup.ca</td><td>T5C8ILD9-0002</td><td class="num">$2,000</td></tr>
-    <tr><td>May 23</td><td>scott@rentinfo.ca</td><td>PPHAJLYW-0003</td><td class="num">$1,250</td></tr>
-    <tr><td>May 26</td><td>rodney.wyman@gmail.com</td><td>HGZDYBNS-0004</td><td class="num">$1,250</td></tr>
-  </tbody>
-  <tfoot><tr><th colspan="3">Total Installments (6 payments)</th><th class="num">$7,950</th></tr></tfoot>
-</table>
+<details>
+  <summary>May 2025 &mdash; Installment Payments with Original Purchase Lineage <span class="summary-badge">18 payments &bull; $22,389 &bull; <span class="green">all coaching</span></span></summary>
+  <div class="detail-body">
+    <div class="section-source">Source: <code>stripe_payments</code> &mdash; <code>product_description LIKE 'Invoice%'</code>, May 2025. Lineage: JOIN on <code>email</code> to earlier <code>product_description LIKE 'Purchase of%'</code> records.</div>
+    <table>
+      <thead><tr><th>Date</th><th>Client</th><th>Invoice</th><th class="num">Amount</th><th>Original Purchase</th><th>Purchased</th></tr></thead>
+      <tbody>
+        <tr><td>May 1</td><td>Zachary Gaver</td><td>63CA240F-0004</td><td class="num">$1,375</td><td>6mo $1,375&times;4</td><td>Jan 30 '25</td></tr>
+        <tr><td>May 5</td><td>Amol Shah</td><td>E9EF88F1-0005</td><td class="num">$916</td><td>6mo $916&times;6</td><td>Jan 5 '25</td></tr>
+        <tr><td>May 7</td><td>Jessica Lawrence</td><td>1NECY1HX-0001</td><td class="num">$2,000</td><td class="muted">No match in Stripe archive</td><td class="muted">&mdash;</td></tr>
+        <tr><td>May 8</td><td>Jan-Philipp Matthewes</td><td>QNT19NZR-0001</td><td class="num">$1,450</td><td class="muted">No match in Stripe archive</td><td class="muted">&mdash;</td></tr>
+        <tr><td>May 10</td><td>Kimberlee De Biase</td><td>6B22AEC0-0005</td><td class="num">$916</td><td>6mo $916&times;6</td><td>Jan 10 '25</td></tr>
+        <tr><td>May 12</td><td>Rob O'Keefe</td><td>77E056E5-0003</td><td class="num">$1,466</td><td>3mo $1,466&times;3</td><td>Mar 12 '25</td></tr>
+        <tr><td>May 15</td><td>Jasmine Liu</td><td>D930EBA7-0002</td><td class="num">$1,466</td><td>6mo $1,466&times;3</td><td>Apr 15 '25</td></tr>
+        <tr><td>May 19</td><td>Taha Siddiqi</td><td>18D479D1-0002</td><td class="num">$916</td><td>6mo $916&times;6</td><td>Apr 19 '25</td></tr>
+        <tr><td>May 20</td><td>Simon Boyce</td><td>GQJ6Z35R-0001</td><td class="num">$1,375</td><td class="muted">No match in Stripe archive</td><td class="muted">&mdash;</td></tr>
+        <tr><td>May 20</td><td>Richard Melino</td><td>GTOI9ZVX-0001</td><td class="num">$2,000</td><td class="muted">No match in Stripe archive</td><td class="muted">&mdash;</td></tr>
+        <tr><td>May 20</td><td>Eric Palmer</td><td>BLCKPEPW-0001</td><td class="num">$641</td><td>12wk $3,999 (installment)</td><td>Feb 16 '25</td></tr>
+        <tr><td>May 21</td><td>Joel Gamez</td><td>L5PTL4DH-0001</td><td class="num">$1,320</td><td class="muted">No match in Stripe archive</td><td class="muted">&mdash;</td></tr>
+        <tr><td>May 23</td><td>Jess Henderson</td><td>3F802731-0002</td><td class="num">$733</td><td>12mo $733&times;12</td><td>Apr 23 '25</td></tr>
+        <tr><td>May 27</td><td>Shane Gerlach</td><td>8A5B80C7-0003</td><td class="num">$733</td><td>12mo $733&times;12</td><td>Mar 27 '25</td></tr>
+        <tr><td>May 28</td><td>Sinead Lehane</td><td>C20EFA95-0002</td><td class="num">$1,466</td><td>3mo $1,466&times;3</td><td>Apr 28 '25</td></tr>
+        <tr><td>May 28</td><td>Susan Delene</td><td>VAR2L8VJ-0001</td><td class="num">$1,466</td><td class="muted">No match in Stripe archive</td><td class="muted">&mdash;</td></tr>
+        <tr><td>May 28</td><td>Ejay O'Donnell</td><td>AT2ZI2QY-0002</td><td class="num">$1,450</td><td>3mo $1,450&times;3</td><td>Apr 28 '25</td></tr>
+        <tr><td>May 29</td><td>Neal Batson</td><td>0DD91F02-0005</td><td class="num">$700</td><td>12mo $700&times;12 ($8,400)</td><td>Jan 29 '25</td></tr>
+      </tbody>
+      <tfoot><tr><th colspan="3">Total Installments (18 payments)</th><th class="num">$22,389</th><th colspan="2">12 traced / 6 unmatched</th></tr></tfoot>
+    </table>
+    <p class="dq-note">All 18 confirmed <code>product_type = 'coaching'</code>. The 12 matched originals are all "Dan Go Fitness Membership" variants (3mo, 6mo, 12mo, 12wk). The 6 unmatched likely purchased before the Stripe archive window or via a different payment flow (ThriveCart direct).</p>
+  </div>
+</details>
+
+<details>
+  <summary>May 2026 &mdash; Installment Payments (Stripe) <span class="summary-badge">6 payments &bull; $7,950 &bull; all <code>is_recurring=true</code></span></summary>
+  <div class="detail-body">
+    <div class="section-source">Source: <code>stripe_payments</code> &mdash; <code>is_recurring = true</code>, May 2026</div>
+    <table>
+      <thead><tr><th>Date</th><th>Email</th><th>Invoice</th><th class="num">Amount</th></tr></thead>
+      <tbody>
+        <tr><td>May 6</td><td>collin.meador@gmail.com</td><td>VDV73FKG-0002</td><td class="num">$1,000</td></tr>
+        <tr><td>May 8</td><td>lynchbb5@gmail.com</td><td>YQBKXOBA-0003</td><td class="num">$1,000</td></tr>
+        <tr><td>May 14</td><td>daniel@embersearch.com</td><td>UKYE1GLR-0006</td><td class="num">$1,450</td></tr>
+        <tr><td>May 14</td><td>sam@pspgroup.ca</td><td>T5C8ILD9-0002</td><td class="num">$2,000</td></tr>
+        <tr><td>May 23</td><td>scott@rentinfo.ca</td><td>PPHAJLYW-0003</td><td class="num">$1,250</td></tr>
+        <tr><td>May 26</td><td>rodney.wyman@gmail.com</td><td>HGZDYBNS-0004</td><td class="num">$1,250</td></tr>
+      </tbody>
+      <tfoot><tr><th colspan="3">Total Installments (6 payments)</th><th class="num">$7,950</th></tr></tfoot>
+    </table>
+  </div>
+</details>
 
 <div class="insight-box">
-  <strong>Installment base dropped from 18 payments ($22,389) to 6 payments ($7,950).</strong> Old ThriveCart &rarr; Stripe plans have aged out. Fanbasis payment plans from recent 4-pay closes haven't started flowing yet (most are too new).
+  <strong>Installment base dropped from 18 payments ($22,389) to 6 payments ($7,950).</strong> Old ThriveCart &rarr; Stripe payment plans have aged out. Fanbasis payment plans from recent 4-pay closes (F&auml;ssler, Dresser, Lovell, Kellner, Sheth) should generate installments starting in June &mdash; verify these are set up correctly in Fanbasis.
 </div>
 
 <!-- ========== WEEKLY PACE ========== -->
@@ -298,23 +339,6 @@ Traci Lovell: appears twice in closer_eod_entries as closed (May 18 + May 20, $1
   <tfoot><tr><th>Total</th><th class="num">118</th><th class="num">54</th><th class="num">15</th><th class="num">27.8%</th><th class="num">$55,850</th><th class="num">$77,000</th><th></th></tr></tfoot>
 </table>
 
-<h3>Call Outcome Distribution</h3>
-<div class="section-source">Source: <code>closer_eod_entries</code> grouped by <code>outcome</code>, <code>status</code></div>
-<table>
-  <thead><tr><th>Outcome</th><th>Status</th><th class="num">Count</th><th class="num">Revenue</th></tr></thead>
-  <tbody>
-    <tr><td>Follow-up</td><td>Showed</td><td class="num yellow">37</td><td class="num">$0</td></tr>
-    <tr><td>&mdash;</td><td>Cancelled</td><td class="num">28</td><td class="num">$0</td></tr>
-    <tr><td>&mdash;</td><td>No-show</td><td class="num">19</td><td class="num">$0</td></tr>
-    <tr><td><strong>Closed</strong></td><td>Showed</td><td class="num green">14</td><td class="num green">$54,600</td></tr>
-    <tr><td>Dead</td><td>Quick DQ</td><td class="num">6</td><td class="num">$0</td></tr>
-    <tr><td>Follow-up</td><td>No-show</td><td class="num">5</td><td class="num">$0</td></tr>
-    <tr><td>&mdash;</td><td>Rescheduled</td><td class="num">5</td><td class="num">$0</td></tr>
-    <tr><td>&mdash;</td><td>Showed</td><td class="num">3</td><td class="num">$0</td></tr>
-    <tr><td><strong>Closed</strong></td><td>Rescheduled</td><td class="num green">1</td><td class="num green">$1,250</td></tr>
-  </tbody>
-</table>
-
 <h3>Objection Tags (Follow-ups + No-closes)</h3>
 <div class="section-source">Source: <code>closer_eod_entries.objection_tag</code> where outcome = follow_up/no_close/dead</div>
 <table>
@@ -329,67 +353,96 @@ Traci Lovell: appears twice in closer_eod_entries as closed (May 18 + May 20, $1
   </tbody>
 </table>
 
+<details>
+  <summary>Call Outcome Distribution <span class="summary-badge">118 total entries</span></summary>
+  <div class="detail-body">
+    <div class="section-source">Source: <code>closer_eod_entries</code> grouped by <code>outcome</code>, <code>status</code></div>
+    <table>
+      <thead><tr><th>Outcome</th><th>Status</th><th class="num">Count</th><th class="num">Revenue</th></tr></thead>
+      <tbody>
+        <tr><td>Follow-up</td><td>Showed</td><td class="num yellow">37</td><td class="num">$0</td></tr>
+        <tr><td>&mdash;</td><td>Cancelled</td><td class="num">28</td><td class="num">$0</td></tr>
+        <tr><td>&mdash;</td><td>No-show</td><td class="num">19</td><td class="num">$0</td></tr>
+        <tr><td><strong>Closed</strong></td><td>Showed</td><td class="num green">14</td><td class="num green">$54,600</td></tr>
+        <tr><td>Dead</td><td>Quick DQ</td><td class="num">6</td><td class="num">$0</td></tr>
+        <tr><td>Follow-up</td><td>No-show</td><td class="num">5</td><td class="num">$0</td></tr>
+        <tr><td>&mdash;</td><td>Rescheduled</td><td class="num">5</td><td class="num">$0</td></tr>
+        <tr><td>&mdash;</td><td>Showed</td><td class="num">3</td><td class="num">$0</td></tr>
+        <tr><td><strong>Closed</strong></td><td>Rescheduled</td><td class="num green">1</td><td class="num green">$1,250</td></tr>
+      </tbody>
+    </table>
+  </div>
+</details>
+
 <!-- ========== FOLLOW-UP PIPELINE ========== -->
 <h2>Follow-Up Pipeline &mdash; Full Detail</h2>
 
-<h3>Brandon &mdash; 22 Follow-ups (18 with dates, 4 without)</h3>
-<div class="section-source">Source: <code>closer_eod_entries</code> &mdash; <code>outcome = 'follow_up'</code>, <code>closer_name = 'Brandon'</code></div>
-<table>
-  <thead><tr><th>Call Date</th><th>Prospect</th><th>Follow-up Date</th><th>Objection</th><th>Status</th></tr></thead>
-  <tbody>
-    <tr><td>May 1</td><td>Don Sauer</td><td>May 4 <span class="flag flag-overdue">PAST</span></td><td></td><td>showed</td></tr>
-    <tr><td>May 1</td><td>Luz Sornoso</td><td>May 4 <span class="flag flag-overdue">PAST</span></td><td></td><td>showed</td></tr>
-    <tr><td>May 4</td><td>Mark Lender</td><td>May 5 <span class="flag flag-overdue">PAST</span></td><td><span class="tag">spouse</span></td><td>showed</td></tr>
-    <tr><td>May 3</td><td>Ammar Ahmed</td><td>May 7 <span class="flag flag-overdue">PAST</span></td><td><span class="tag">think_about_it</span></td><td>showed</td></tr>
-    <tr><td>May 5</td><td>Jim McKenzie</td><td>May 8 <span class="flag flag-overdue">PAST</span></td><td><span class="tag">timing</span></td><td>showed</td></tr>
-    <tr><td>May 5</td><td>Renu Sikand</td><td>May 12 <span class="flag flag-overdue">PAST</span></td><td><span class="tag">other</span></td><td>showed</td></tr>
-    <tr><td>May 13</td><td>Jim McLaughlin</td><td>May 15 <span class="flag flag-overdue">PAST</span></td><td><span class="tag">think_about_it</span></td><td>showed</td></tr>
-    <tr><td>May 13</td><td>Sarah Hubbard</td><td>May 18 <span class="flag flag-overdue">PAST</span></td><td><span class="tag">think_about_it</span></td><td>showed</td></tr>
-    <tr><td>May 14</td><td>Steve Valentine</td><td>May 21 <span class="flag flag-overdue">PAST</span></td><td><span class="tag">think_about_it</span></td><td>showed</td></tr>
-    <tr><td>May 21</td><td>Mohammad Saif</td><td>May 22 <span class="flag flag-overdue">PAST</span></td><td><span class="tag">price</span></td><td>showed</td></tr>
-    <tr><td>May 21</td><td>Leo Ballif</td><td>May 22 <span class="flag flag-overdue">PAST</span></td><td><span class="tag">spouse</span></td><td>showed</td></tr>
-    <tr><td>May 21</td><td>Divya Sekhar</td><td>May 26 <span class="flag flag-upcoming">TODAY</span></td><td><span class="tag">other</span></td><td>showed</td></tr>
-    <tr><td>May 7</td><td>Tom Fougerousse</td><td>Jun 7 <span class="flag flag-upcoming">JUNE</span></td><td><span class="tag">price</span></td><td>showed</td></tr>
-    <tr><td>May 11</td><td>Marcia Alexander</td><td>Jun 8 <span class="flag flag-upcoming">JUNE</span></td><td><span class="tag">timing</span></td><td>showed</td></tr>
-    <tr><td>May 20</td><td>Julia Lee</td><td>Jun 20 <span class="flag flag-upcoming">JUNE</span></td><td><span class="tag">not_ready</span></td><td>showed</td></tr>
-    <tr><td>May 20</td><td>Apurva More</td><td>Jun 26 <span class="flag flag-upcoming">JUNE</span></td><td><span class="tag">other</span></td><td>showed</td></tr>
-    <tr><td>May 8</td><td>Hans Mast</td><td>Aug 8 <span class="flag flag-upcoming">AUG</span></td><td><span class="tag">price</span></td><td>showed</td></tr>
-    <tr><td>May 15</td><td>Robert Baumert</td><td>Aug 15 <span class="flag flag-upcoming">AUG</span></td><td><span class="tag">other</span></td><td>showed</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 22</td><td>Magda Ostafe</td><td><span class="flag flag-none">NO DATE</span></td><td></td><td>no_show</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 13</td><td>Jim Harrison</td><td><span class="flag flag-none">NO DATE</span></td><td></td><td>no_show</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 21</td><td>Jigar Vyas</td><td><span class="flag flag-none">NO DATE</span></td><td></td><td>no_show</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 2</td><td>Jeffrey Haig</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">not_ready</span></td><td>showed</td></tr>
-  </tbody>
-</table>
-<p class="dq-note">Brandon: 11 follow-ups are past due (before today May 26). 1 is due today. 4 are scheduled future. 2 are in August. 4 have no date set (3 were no-shows).</p>
+<details>
+  <summary>Brandon &mdash; 22 Follow-ups <span class="summary-badge">18 with dates (<span class="red">11 past due</span>) &bull; 4 without dates</span></summary>
+  <div class="detail-body">
+    <div class="section-source">Source: <code>closer_eod_entries</code> &mdash; <code>outcome = 'follow_up'</code>, <code>closer_name = 'Brandon'</code></div>
+    <table>
+      <thead><tr><th>Call Date</th><th>Prospect</th><th>Follow-up Date</th><th>Objection</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>May 1</td><td>Don Sauer</td><td>May 4 <span class="flag flag-overdue">PAST</span></td><td></td><td>showed</td></tr>
+        <tr><td>May 1</td><td>Luz Sornoso</td><td>May 4 <span class="flag flag-overdue">PAST</span></td><td></td><td>showed</td></tr>
+        <tr><td>May 4</td><td>Mark Lender</td><td>May 5 <span class="flag flag-overdue">PAST</span></td><td><span class="tag">spouse</span></td><td>showed</td></tr>
+        <tr><td>May 3</td><td>Ammar Ahmed</td><td>May 7 <span class="flag flag-overdue">PAST</span></td><td><span class="tag">think_about_it</span></td><td>showed</td></tr>
+        <tr><td>May 5</td><td>Jim McKenzie</td><td>May 8 <span class="flag flag-overdue">PAST</span></td><td><span class="tag">timing</span></td><td>showed</td></tr>
+        <tr><td>May 5</td><td>Renu Sikand</td><td>May 12 <span class="flag flag-overdue">PAST</span></td><td><span class="tag">other</span></td><td>showed</td></tr>
+        <tr><td>May 13</td><td>Jim McLaughlin</td><td>May 15 <span class="flag flag-overdue">PAST</span></td><td><span class="tag">think_about_it</span></td><td>showed</td></tr>
+        <tr><td>May 13</td><td>Sarah Hubbard</td><td>May 18 <span class="flag flag-overdue">PAST</span></td><td><span class="tag">think_about_it</span></td><td>showed</td></tr>
+        <tr><td>May 14</td><td>Steve Valentine</td><td>May 21 <span class="flag flag-overdue">PAST</span></td><td><span class="tag">think_about_it</span></td><td>showed</td></tr>
+        <tr><td>May 21</td><td>Mohammad Saif</td><td>May 22 <span class="flag flag-overdue">PAST</span></td><td><span class="tag">price</span></td><td>showed</td></tr>
+        <tr><td>May 21</td><td>Leo Ballif</td><td>May 22 <span class="flag flag-overdue">PAST</span></td><td><span class="tag">spouse</span></td><td>showed</td></tr>
+        <tr><td>May 21</td><td>Divya Sekhar</td><td>May 26 <span class="flag flag-upcoming">TODAY</span></td><td><span class="tag">other</span></td><td>showed</td></tr>
+        <tr><td>May 7</td><td>Tom Fougerousse</td><td>Jun 7 <span class="flag flag-upcoming">JUNE</span></td><td><span class="tag">price</span></td><td>showed</td></tr>
+        <tr><td>May 11</td><td>Marcia Alexander</td><td>Jun 8 <span class="flag flag-upcoming">JUNE</span></td><td><span class="tag">timing</span></td><td>showed</td></tr>
+        <tr><td>May 20</td><td>Julia Lee</td><td>Jun 20 <span class="flag flag-upcoming">JUNE</span></td><td><span class="tag">not_ready</span></td><td>showed</td></tr>
+        <tr><td>May 20</td><td>Apurva More</td><td>Jun 26 <span class="flag flag-upcoming">JUNE</span></td><td><span class="tag">other</span></td><td>showed</td></tr>
+        <tr><td>May 8</td><td>Hans Mast</td><td>Aug 8 <span class="flag flag-upcoming">AUG</span></td><td><span class="tag">price</span></td><td>showed</td></tr>
+        <tr><td>May 15</td><td>Robert Baumert</td><td>Aug 15 <span class="flag flag-upcoming">AUG</span></td><td><span class="tag">other</span></td><td>showed</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 22</td><td>Magda Ostafe</td><td><span class="flag flag-none">NO DATE</span></td><td></td><td>no_show</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 13</td><td>Jim Harrison</td><td><span class="flag flag-none">NO DATE</span></td><td></td><td>no_show</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 21</td><td>Jigar Vyas</td><td><span class="flag flag-none">NO DATE</span></td><td></td><td>no_show</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 2</td><td>Jeffrey Haig</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">not_ready</span></td><td>showed</td></tr>
+      </tbody>
+    </table>
+    <p class="dq-note">Brandon: 11 follow-ups past due (before May 26). 1 due today. 4 scheduled future (Jun/Aug). 4 with no date (3 were no-shows). Unclear if past-due ones were actually contacted and not updated in the system, or truly unworked.</p>
+  </div>
+</details>
 
-<h3>Joel &mdash; 20 Follow-ups (1 with date, 19 without)</h3>
-<div class="section-source">Source: <code>closer_eod_entries</code> &mdash; <code>outcome = 'follow_up'</code>, <code>closer_name = 'Joel'</code></div>
-<table>
-  <thead><tr><th>Call Date</th><th>Prospect</th><th>Follow-up Date</th><th>Objection</th><th>Status</th></tr></thead>
-  <tbody>
-    <tr><td>May 5</td><td>Max Payne</td><td>May 11 <span class="flag flag-overdue">PAST</span></td><td><span class="tag">timing</span></td><td>showed</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 14</td><td>Trent Barkdull</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">other</span></td><td>showed</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 8</td><td>Sheetal Patel</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">think_about_it</span></td><td>showed</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 7</td><td>Jose Valdovinos</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">price</span></td><td>showed</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 7</td><td>Paul Pattison</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">price</span></td><td>showed</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 11</td><td>Heather Watson</td><td><span class="flag flag-none">NO DATE</span></td><td></td><td>no_show</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 4</td><td>Cody Lewis</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">spouse</span></td><td>showed</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 7</td><td>Jeremy Hart</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">think_about_it</span></td><td>showed</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 19</td><td>Todd Brehe</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">price</span></td><td>showed</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 13</td><td>Kiely Flanigan</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">price</span></td><td>showed</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 12</td><td>Flip Van Oyen</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">think_about_it</span></td><td>showed</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 14</td><td>Andrea Fox</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">price</span></td><td>showed</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 20</td><td>Bala Krishnan</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">other</span></td><td>showed</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 7</td><td>david shadpour</td><td><span class="flag flag-none">NO DATE</span></td><td></td><td>no_show</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 20</td><td>Greg Fuller</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">think_about_it</span></td><td>showed</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 20</td><td>Kaila Silverman</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">price</span></td><td>showed</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 15</td><td>Michael Evans</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">think_about_it</span></td><td>showed</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 22</td><td>Bhavik Makwana</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">price</span></td><td>showed</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 22</td><td>Clifton Sadler</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">spouse</span></td><td>showed</td></tr>
-    <tr style="background: var(--red-dim);"><td>May 22</td><td>Mohamed Hawash</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">other</span></td><td>showed</td></tr>
-  </tbody>
-</table>
+<details>
+  <summary>Joel &mdash; 20 Follow-ups <span class="summary-badge"><span class="red">19 with no date set</span> &bull; 17 were showed</span></summary>
+  <div class="detail-body">
+    <div class="section-source">Source: <code>closer_eod_entries</code> &mdash; <code>outcome = 'follow_up'</code>, <code>closer_name = 'Joel'</code></div>
+    <table>
+      <thead><tr><th>Call Date</th><th>Prospect</th><th>Follow-up Date</th><th>Objection</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>May 5</td><td>Max Payne</td><td>May 11 <span class="flag flag-overdue">PAST</span></td><td><span class="tag">timing</span></td><td>showed</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 4</td><td>Cody Lewis</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">spouse</span></td><td>showed</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 7</td><td>Jose Valdovinos</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">price</span></td><td>showed</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 7</td><td>Paul Pattison</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">price</span></td><td>showed</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 7</td><td>Jeremy Hart</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">think_about_it</span></td><td>showed</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 7</td><td>david shadpour</td><td><span class="flag flag-none">NO DATE</span></td><td></td><td>no_show</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 8</td><td>Sheetal Patel</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">think_about_it</span></td><td>showed</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 11</td><td>Heather Watson</td><td><span class="flag flag-none">NO DATE</span></td><td></td><td>no_show</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 12</td><td>Flip Van Oyen</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">think_about_it</span></td><td>showed</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 13</td><td>Kiely Flanigan</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">price</span></td><td>showed</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 14</td><td>Trent Barkdull</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">other</span></td><td>showed</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 14</td><td>Andrea Fox</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">price</span></td><td>showed</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 15</td><td>Michael Evans</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">think_about_it</span></td><td>showed</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 19</td><td>Todd Brehe</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">price</span></td><td>showed</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 20</td><td>Bala Krishnan</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">other</span></td><td>showed</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 20</td><td>Greg Fuller</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">think_about_it</span></td><td>showed</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 20</td><td>Kaila Silverman</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">price</span></td><td>showed</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 22</td><td>Bhavik Makwana</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">price</span></td><td>showed</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 22</td><td>Clifton Sadler</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">spouse</span></td><td>showed</td></tr>
+        <tr style="background: var(--red-dim);"><td>May 22</td><td>Mohamed Hawash</td><td><span class="flag flag-none">NO DATE</span></td><td><span class="tag">other</span></td><td>showed</td></tr>
+      </tbody>
+    </table>
+  </div>
+</details>
 
 <div class="insight-box red">
   <strong>Joel has 19 of 20 follow-ups with no scheduled callback.</strong> 17 of those were showed prospects who had a real conversation. Most are 1&ndash;3 weeks old. Without a follow-up date, these leads are functionally dead.
@@ -404,7 +457,7 @@ Traci Lovell: appears twice in closer_eod_entries as closed (May 18 + May 20, $1
     <tr><td class="yellow">Traci Lovell &mdash; 2 closed entries in EOD (May 18 + May 20) but 1 Fanbasis payment</td><td><code>closer_eod_entries</code></td><td>EOD overcount by $1,250 revenue (offsets Dresser)</td></tr>
     <tr><td class="yellow">Betsy Kabaker (May 2025) &mdash; 2 identical $5,000 charges, same date, same product</td><td><code>stripe_payments</code></td><td>Possible double-charge or spouse &mdash; verify with Stripe</td></tr>
     <tr><td class="muted">May 2026 Fanbasis shows 0 recurring payments (<code>is_recurring</code> all false)</td><td><code>fanbasis_payments</code></td><td>Installments from recent 4-pay closes haven't started yet, or flagging issue</td></tr>
-    <tr><td class="muted">Brandon's 11 past-due follow-ups &mdash; dates in early May, not updated</td><td><code>closer_eod_entries</code></td><td>Unclear if these were actually followed up and not updated, or truly unworked</td></tr>
+    <tr><td class="muted">Brandon's 11 past-due follow-ups &mdash; dates in early May, not updated</td><td><code>closer_eod_entries</code></td><td>Unclear if contacted and not updated, or truly unworked</td></tr>
   </tbody>
 </table>
 
@@ -437,6 +490,7 @@ Traci Lovell: appears twice in closer_eod_entries as closed (May 18 + May 20, $1
 <p class="source" style="text-align: center;">
   Generated from HPFHQ Supabase &mdash; Tables: <code>closer_eod_entries</code>, <code>fanbasis_payments</code>, <code>stripe_payments</code><br>
   Data through Tuesday May 26, 2026. May 2026 has 5 calendar days remaining.<br>
+  All May 2025 installments verified as <code>product_type = 'coaching'</code>. Zero LB90/Kajabi/non-coaching products found.<br>
   Report built by Claude Code &mdash; verify all data points against source tables before taking action.
 </p>
 </body>
