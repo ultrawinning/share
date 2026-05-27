@@ -303,6 +303,21 @@
             <td>Audit backlog for metrics that are sourced or derived but not independently verified yet.</td>
             <td><code>reporting.metric_verification_gaps</code></td>
           </tr>
+          <tr>
+            <td><strong>Canonical - Metric Source Registry</strong></td>
+            <td>Canonical source, current Metabase source, hygiene grade, intended use, and caveats for major metrics.</td>
+            <td><code>reporting.metric_source_registry</code></td>
+          </tr>
+          <tr>
+            <td><strong>Canonical - Reporting Source Alignment</strong></td>
+            <td>Shows whether each dashboard field is aligned to canonical sources or is currently an operational proxy.</td>
+            <td><code>reporting.reporting_view_source_alignment</code></td>
+          </tr>
+          <tr>
+            <td><strong>Canonical - Metric Gaps</strong></td>
+            <td>Source-hygiene backlog for metrics that need reconciliation or reporting-view alignment.</td>
+            <td><code>reporting.metric_canonical_gaps</code></td>
+          </tr>
         </tbody>
       </table>
     </section>
@@ -321,6 +336,7 @@
         <li>Open <strong>Reporting - Data Freshness</strong> when you want to know whether data is current.</li>
         <li>Open <strong>Verification - Dan Monthly Summary</strong> before treating a monthly number as decision-grade.</li>
         <li>Open <strong>Verification - Metric Gaps</strong> to see which fields still need finance, sales, or attribution reconciliation.</li>
+        <li>Open <strong>Canonical - Reporting Source Alignment</strong> when you need to know whether a field is canonical or just an operational proxy.</li>
         <li>Use <strong>New &gt; Question</strong> to create your own tables or charts from the HPFHQ reporting database.</li>
         <li>Save useful questions into a collection so the team can reuse them.</li>
       </ol>
@@ -452,6 +468,18 @@
             <td><strong>Verification - Metric Gaps</strong></td>
             <td>Metrics that are useful operationally but still need independent reconciliation before being called verified.</td>
           </tr>
+          <tr>
+            <td><strong>Canonical - Metric Source Registry</strong></td>
+            <td>Company-level source hierarchy for each major metric: primary source, current Metabase source, hygiene grade, intended use, reference, and caveats.</td>
+          </tr>
+          <tr>
+            <td><strong>Canonical - Reporting Source Alignment</strong></td>
+            <td>Whether a visible reporting field is aligned to canonical source logic, a derived attribution view, or a non-canonical proxy.</td>
+          </tr>
+          <tr>
+            <td><strong>Canonical - Metric Gaps</strong></td>
+            <td>Open work needed to make every stakeholder metric fully canonical.</td>
+          </tr>
         </tbody>
       </table>
 
@@ -466,6 +494,12 @@
         A sourced number can be used for operating the business. A verified number has been reconciled to an
         independent system of record or cross-checked against a designated source of truth. For now, cash and
         contract values should be treated as operational USD fields until finance/sales reconciliation is complete.
+      </div>
+
+      <div class="note">
+        <strong>Canonical vs current:</strong>
+        Some dashboard fields currently use operational proxy sources because they need source attribution or historical coverage.
+        Use <strong>Canonical - Reporting Source Alignment</strong> to see whether the current field is aligned, derived, or not yet canonical.
       </div>
 
       <h3>Data safety rule</h3>
@@ -527,7 +561,8 @@
         <li>Filter to the month, period, or metric being discussed.</li>
         <li>Read the <strong>Source Tables</strong>, <strong>Source Fields</strong>, and <strong>Calculation</strong> columns.</li>
         <li>Read <strong>Verification Status</strong> and <strong>Caveats</strong>.</li>
-        <li>If the metric says it needs reconciliation, treat it as operational reporting, not final truth.</li>
+        <li>Open <strong>Canonical - Reporting Source Alignment</strong> to confirm whether the current dashboard field matches the canonical source.</li>
+        <li>If the metric says it needs reconciliation or is marked as a proxy, treat it as operational reporting, not final truth.</li>
       </ol>
     </section>
 
