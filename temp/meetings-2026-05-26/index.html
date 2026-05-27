@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HPF Meetings — May 26, 2026</title>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --surface2: #21262d; --border: #30363d;
+    --text: #e6edf3; --text-muted: #8b949e; --green: #2ed47a; --red: #f85149;
+    --orange: #d29922; --blue: #58a6ff; --purple: #bc8cff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; }
+  h1 { font-size: 1.8rem; margin-bottom: 8px; }
+  h2 { font-size: 1.3rem; color: var(--green); margin: 32px 0 16px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  h3 { font-size: 1.1rem; color: var(--blue); margin: 24px 0 12px; }
+  .subtitle { color: var(--text-muted); margin-bottom: 24px; }
+  .meeting-tabs { display: flex; gap: 8px; margin-bottom: 24px; }
+  .tab { padding: 8px 20px; border-radius: 8px; cursor: pointer; background: var(--surface); border: 1px solid var(--border); color: var(--text-muted); font-weight: 600; transition: all 0.2s; }
+  .tab.active { background: var(--green); color: #000; border-color: var(--green); }
+  .tab:hover:not(.active) { border-color: var(--text-muted); }
+  .meeting-section { display: none; }
+  .meeting-section.active { display: block; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
+  .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .badge { font-size: 0.75rem; padding: 2px 8px; border-radius: 12px; font-weight: 600; }
+  .badge-high { background: rgba(248,81,73,0.15); color: var(--red); }
+  .badge-medium { background: rgba(210,153,34,0.15); color: var(--orange); }
+  .badge-low { background: rgba(88,166,255,0.15); color: var(--blue); }
+  .badge-dept { background: rgba(46,212,122,0.15); color: var(--green); font-size: 0.7rem; }
+  .badge-owner { background: rgba(188,140,255,0.15); color: var(--purple); }
+  .due { color: var(--text-muted); font-size: 0.85rem; }
+  .task-title { font-weight: 600; margin-bottom: 4px; }
+  .task-notes { color: var(--text-muted); font-size: 0.9rem; }
+  .decision { padding: 12px 16px; border-left: 3px solid var(--green); background: var(--surface); margin-bottom: 8px; border-radius: 0 8px 8px 0; }
+  .decision strong { color: var(--text); }
+  .decision span { color: var(--text-muted); font-size: 0.9rem; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+  th { text-align: left; padding: 8px 12px; background: var(--surface2); color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+  .goal-row td:nth-child(2) { color: var(--text-muted); }
+  .goal-row td:nth-child(3) { color: var(--green); font-weight: 600; }
+  .quote { background: var(--surface); border-left: 3px solid var(--purple); padding: 12px 16px; margin-bottom: 8px; border-radius: 0 8px 8px 0; font-style: italic; color: var(--text-muted); }
+  .quote strong { color: var(--text); font-style: normal; }
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .summary-stat { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; }
+  .summary-stat .num { font-size: 2rem; font-weight: 700; color: var(--green); }
+  .summary-stat .label { font-size: 0.8rem; color: var(--text-muted); }
+  .knowledge-impact { background: rgba(210,153,34,0.08); border: 1px solid rgba(210,153,34,0.3); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+  .knowledge-impact h4 { color: var(--orange); margin-bottom: 8px; }
+  .knowledge-impact li { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 4px; }
+  .knowledge-impact code { background: var(--surface2); padding: 1px 4px; border-radius: 3px; font-size: 0.85rem; }
+  .recall { background: var(--surface2); border-radius: 8px; padding: 12px 16px; margin-top: 16px; font-size: 0.85rem; color: var(--text-muted); }
+  .recall code { color: var(--blue); }
+  @media (max-width: 600px) {
+    body { padding: 12px; }
+    .summary-grid { grid-template-columns: repeat(2, 1fr); }
+    table { font-size: 0.8rem; }
+    th, td { padding: 6px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<h1>HPF Meetings — May 26, 2026</h1>
+<p class="subtitle">Dan 1:1 + Monthly Team Meeting &mdash; distributed to Supabase</p>
+
+<div class="summary-grid">
+  <div class="summary-stat"><div class="num">16</div><div class="label">Decisions</div></div>
+  <div class="summary-stat"><div class="num">14</div><div class="label">Emil Tasks</div></div>
+  <div class="summary-stat"><div class="num">10</div><div class="label">Delegations</div></div>
+  <div class="summary-stat"><div class="num">6</div><div class="label">Goals Tracked</div></div>
+</div>
+
+<div class="meeting-tabs">
+  <div class="tab active" onclick="showTab('dan')">Dan 1:1</div>
+  <div class="tab" onclick="showTab('team')">Team Meeting</div>
+  <div class="tab" onclick="showTab('combined')">All Tasks</div>
+  <div class="tab" onclick="showTab('knowledge')">Knowledge Impact</div>
+</div>
+
+<!-- DAN 1:1 -->
+<div id="dan" class="meeting-section active">
+  <h2>Decisions (Dan 1:1)</h2>
+  <div class="decision"><strong>Revenue gap = ticket size, not volume</strong><br><span>~20-22 signups both years. Closers leading with 4.8K instead of 8K/year. Psychological jump.</span></div>
+  <div class="decision"><strong>Upsell strategy: 4.8K first, then upsell to year on same call</strong><br><span>Post-purchase upsell (8K-9.8K). NOT leading with year. Emil owns rollout to closers.</span></div>
+  <div class="decision"><strong>No knee-jerk pricing changes</strong><br><span>Add upsell opportunity without disrupting. Team needs stability.</span></div>
+  <div class="decision"><strong>Monthly leadership meeting &mdash; last Thursday</strong><br><span>Dan, Emil, DJ, Brandon. First: Thu May 28, 9:45-10:30 AM ET (2:45 PM WEST).</span></div>
+  <div class="decision"><strong>Platform admin notifications &rarr; team email</strong><br><span>Route Typeform limits etc. away from Dan. Bea to give Emil access.</span></div>
+  <div class="decision"><strong>Keep dan@hpf email for Kit sends</strong><br><span>Too much reputation built up. Emil gets admin access only.</span></div>
+  <div class="decision"><strong>Retention conversations must start at month 1</strong><br><span>Shifted from year to 4-month packages = shorter retention window. Systematize now.</span></div>
+
+  <h2>Tasks (Emil)</h2>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-high">HIGH</span><span class="due">Due: May 28</span></div>
+    <div class="task-title">Analyze ticket size: May 2025 vs May 2026 in Stripe</div>
+    <div class="task-notes">Verify Dan's theory. Pull comparison data. <span class="badge badge-dept">sales</span></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-high">HIGH</span><span class="due">Due: May 30</span></div>
+    <div class="task-title">Design upsell strategy for closers (4.8K &rarr; year)</div>
+    <div class="task-notes">Pricing (8K? 9K? 9.8K?), scripting, communicate to Brandon + Joel. <span class="badge badge-dept">sales</span></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-high">HIGH</span><span class="due">Due: May 28</span></div>
+    <div class="task-title">Fix GHL pre-call confirmation dead end</div>
+    <div class="task-notes">No-gender leads get no confirmation email. Show rate impact. <span class="badge badge-dept">ops</span></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-high">HIGH</span><span class="due">Due: May 27</span></div>
+    <div class="task-title">Schedule leadership meeting: Thu May 28, 9:45 AM ET</div>
+    <div class="task-notes">Invite DJ, Brandon, Dan. Check DJ availability. <span class="badge badge-dept">ops</span></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-medium">MED</span><span class="due">Due: Jun 6</span></div>
+    <div class="task-title">Map every system end-to-end with DJ</div>
+    <div class="task-notes">Document every platform, trigger, sequence, handoff. Find hidden dead ends. <span class="badge badge-dept">ops</span></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-medium">MED</span><span class="due">Due: Jun 2</span></div>
+    <div class="task-title">Set up team/support email for platform admin alerts</div>
+    <div class="task-notes">Route away from Dan. Coordinate with Bea. <span class="badge badge-dept">ops</span></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-medium">MED</span><span class="due">Due: May 30</span></div>
+    <div class="task-title">Get access to dan@highperformancefounder.com</div>
+    <div class="task-notes">Platform admin only. Dan telling Bea. <span class="badge badge-dept">ops</span></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-medium">MED</span><span class="due">Due: May 28</span></div>
+    <div class="task-title">Follow up with John on retention system</div>
+    <div class="task-notes">Month-1 retention systematized, not ad hoc. Discuss Wed May 27 call. <span class="badge badge-dept">fulfillment</span></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-low">LOW</span><span class="due">Due: May 27</span></div>
+    <div class="task-title">Send Dan photo of setup</div>
+    <div class="task-notes">He asked to see it. <span class="badge badge-dept">ops</span></div>
+  </div>
+
+  <h2>Delegations</h2>
+  <table>
+    <tr><th>Task</th><th>Owner</th><th>Due</th></tr>
+    <tr><td>Upgrade Trainerize to Studio plan ($11/mo promo)</td><td><span class="badge badge-owner">Dan</span></td><td>This week</td></tr>
+    <tr><td>Tell Bea to give Emil full platform access</td><td><span class="badge badge-owner">Dan</span></td><td>ASAP</td></tr>
+    <tr><td>Confirm availability for Thu May 28 leadership meeting</td><td><span class="badge badge-owner">DJ</span></td><td>May 27</td></tr>
+    <tr><td>Fix ManyChat keywords to match Dan story CTAs</td><td><span class="badge badge-owner">DJ</span></td><td>May 28</td></tr>
+  </table>
+
+  <h2>Key Quotes</h2>
+  <div class="quote"><strong>Dan on revenue:</strong> "I think it has more to do with the size of the ticket... we had 20 signups previous year, this year around 20-22. The LTV is reduced down."</div>
+  <div class="quote"><strong>Dan on upsell:</strong> "Get them to sell the 4.8 and get that easy yes... then upsell them. It would be more so an upsell as opposed to starting with the year."</div>
+  <div class="quote"><strong>Dan on Joel:</strong> "He's like a depressed bulldog... he can be a great closer, but he needs that motivation every single day."</div>
+  <div class="quote"><strong>Dan on leadership:</strong> "We're not at the size where I can silo myself through you. We need it."</div>
+
+  <div class="recall">
+    <strong>Recall handle:</strong> <code>meeting with Dan on 2026-05-26 (Tuesday)</code><br>
+    <code>meeting_notes.id = 448dc2b7-d8c0-4cf3-9fdf-348e5122ed19</code>
+  </div>
+</div>
+
+<!-- TEAM MEETING -->
+<div id="team" class="meeting-section">
+  <h2>Decisions (Team Meeting)</h2>
+  <div class="decision"><strong>Ask Sherpa app &rarr; client rollout this week</strong><br><span>Clients free first, then public hard launch. Bea handled logistics.</span></div>
+  <div class="decision"><strong>Book proposal paused 2-3 months</strong><br><span>Title conflict (Dr. Kristen Holmes). New angle: "feel 20 years younger." App priority.</span></div>
+  <div class="decision"><strong>Show rate = #1 June priority</strong><br><span>62% &rarr; min 70%, target 80%. Full conversion sequence audit (Brandon + Emil).</span></div>
+  <div class="decision"><strong>Speed-to-lead: &lt;10 min, ideally &lt;3 min</strong><br><span>Riley full-time, backlog cleared. 4 calls already booked via Meta ads + dialer.</span></div>
+  <div class="decision"><strong>Cancel rate target: 20%</strong><br><span>Down 31% &rarr; 25%. Brandon owns further reduction.</span></div>
+  <div class="decision"><strong>Retention payment flexibility: future-dated OK</strong><br><span>Clients agree now, payments start after current plan ends. Emil confirmed 100%.</span></div>
+  <div class="decision"><strong>Brian transition: +1 month offered</strong><br><span>John + Ryan absorbing. One cancel (Juan). Retention steady.</span></div>
+  <div class="decision"><strong>Q3 retention target: 30%</strong><br><span>From ~20%. Trainerize API + Claude reports + Ask Sherpa as enablers.</span></div>
+  <div class="decision"><strong>July coverage plan needed (John)</strong><br><span>Wife giving birth. Systems must run unchanged.</span></div>
+
+  <h2>Tasks (Emil)</h2>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-high">HIGH</span><span class="due">Due: May 30</span></div>
+    <div class="task-title">Conversion sequence audit with Brandon</div>
+    <div class="task-notes">Every pre-call automation. Find show rate leaks. 62% &rarr; 70%+. <span class="badge badge-dept">sales</span></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-high">HIGH</span><span class="due">Due: May 27</span></div>
+    <div class="task-title">John/Sheena/Ryan call Wed May 27</div>
+    <div class="task-notes">Retention flexibility, Brian transition, July coverage. <span class="badge badge-dept">fulfillment</span></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-medium">MED</span><span class="due">Due: Jun 2</span></div>
+    <div class="task-title">Setter workstation rollout for Tony + Afzal</div>
+    <div class="task-notes">Angelica's is live. Build for new setters. <span class="badge badge-dept">ops</span></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-medium">MED</span><span class="due">Due: Jun 13</span></div>
+    <div class="task-title">Trainerize API &rarr; weekly client reports</div>
+    <div class="task-notes">Automated coaching reports via Claude. Supports Q3 retention. <span class="badge badge-dept">fulfillment</span></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-low">LOW</span><span class="due">Due: Jun 13</span></div>
+    <div class="task-title">Design couples close strategy</div>
+    <div class="task-notes">Brandon close on 2 couple deals. Incentive for partner sign-ups. <span class="badge badge-dept">sales</span></div>
+  </div>
+
+  <h2>Delegations</h2>
+  <table>
+    <tr><th>Task</th><th>Owner</th><th>Due</th></tr>
+    <tr><td>Finalize Ask Sherpa app approval + client rollout</td><td><span class="badge badge-owner">Dan + Bea</span></td><td>This week</td></tr>
+    <tr><td>Show rate deep dive + sustain 30% close rate</td><td><span class="badge badge-owner">Brandon</span></td><td>Jun 15</td></tr>
+    <tr><td>Systematize retention outreach at month 1</td><td><span class="badge badge-owner">John</span></td><td>Jun 6</td></tr>
+    <tr><td>July paternity coverage plan</td><td><span class="badge badge-owner">John</span></td><td>Jun 20</td></tr>
+    <tr><td>Complete Brian client transition (+1 month)</td><td><span class="badge badge-owner">John</span></td><td>Jun 6</td></tr>
+    <tr><td>Clear backlog &rarr; speed-to-lead &lt;3 min</td><td><span class="badge badge-owner">Riley</span></td><td>May 28</td></tr>
+  </table>
+
+  <h2>Goals</h2>
+  <table>
+    <tr><th>Metric</th><th>Current</th><th>Target</th><th>By When</th></tr>
+    <tr class="goal-row"><td>Show rate</td><td>62%</td><td>70% min / 80% target</td><td>June</td></tr>
+    <tr class="goal-row"><td>Cancel rate</td><td>25%</td><td>20%</td><td>June</td></tr>
+    <tr class="goal-row"><td>Team close rate</td><td>~30%</td><td>Sustain 30%+</td><td>Ongoing</td></tr>
+    <tr class="goal-row"><td>Speed-to-lead</td><td>Backlog</td><td>&lt;3 min</td><td>June</td></tr>
+    <tr class="goal-row"><td>Coaching retention</td><td>~20%</td><td>30%</td><td>Q3</td></tr>
+    <tr class="goal-row"><td>Brandon close rate</td><td>29%</td><td>30%+</td><td>End of May</td></tr>
+  </table>
+
+  <h2>Key Quotes</h2>
+  <div class="quote"><strong>Brandon:</strong> "Optimize before you systemize, systemize before you maximize."</div>
+  <div class="quote"><strong>Brandon:</strong> "Real stuff is being built. I've been part of a lot of businesses with trust-me-bro vibes. This isn't that."</div>
+  <div class="quote"><strong>John:</strong> "Taking one step back to reevaluate, reprioritize clients that didn't get the best initial interaction."</div>
+  <div class="quote"><strong>Dan on Emil:</strong> "I don't think anyone sees how hard Emil works in the background. He's literally working six and a half to seven days a week."</div>
+  <div class="quote"><strong>Dan:</strong> "Focus on doing the process. Attach identity to the work, not the results. Manage your mental health."</div>
+
+  <div class="recall">
+    <strong>Recall handle:</strong> <code>team meeting on 2026-05-26 (Tuesday)</code><br>
+    <code>meeting_notes.id = 67cc6a0e-9c2f-472d-8b2f-e17f19cb2bc8</code>
+  </div>
+</div>
+
+<!-- COMBINED TASKS -->
+<div id="combined" class="meeting-section">
+  <h2>All Emil Tasks (14) &mdash; by due date</h2>
+
+  <h3>Today &mdash; Wed May 27</h3>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-high">HIGH</span><span class="badge badge-dept">ops</span></div>
+    <div class="task-title">Schedule leadership meeting: Thu May 28, 9:45 AM ET</div>
+    <div class="task-notes">Invite DJ, Brandon, Dan. Check DJ availability.</div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-high">HIGH</span><span class="badge badge-dept">fulfillment</span></div>
+    <div class="task-title">John/Sheena/Ryan call</div>
+    <div class="task-notes">Retention payment flexibility, Brian transition, July coverage.</div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-low">LOW</span><span class="badge badge-dept">ops</span></div>
+    <div class="task-title">Send Dan photo of setup</div>
+  </div>
+
+  <h3>Wed May 28</h3>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-high">HIGH</span><span class="badge badge-dept">sales</span></div>
+    <div class="task-title">Analyze ticket size: May 2025 vs May 2026 in Stripe</div>
+    <div class="task-notes">Verify Dan's ticket-size theory with actual data.</div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-high">HIGH</span><span class="badge badge-dept">ops</span></div>
+    <div class="task-title">Fix GHL pre-call confirmation dead end</div>
+    <div class="task-notes">No-gender leads get no confirmation email. Show rate impact.</div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-medium">MED</span><span class="badge badge-dept">fulfillment</span></div>
+    <div class="task-title">Follow up with John on retention system</div>
+    <div class="task-notes">Systematize month-1 retention conversations.</div>
+  </div>
+
+  <h3>Fri May 30</h3>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-high">HIGH</span><span class="badge badge-dept">sales</span></div>
+    <div class="task-title">Design upsell strategy for closers (4.8K &rarr; year)</div>
+    <div class="task-notes">Pricing, scripting, communicate to Brandon + Joel.</div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-high">HIGH</span><span class="badge badge-dept">sales</span></div>
+    <div class="task-title">Conversion sequence audit with Brandon</div>
+    <div class="task-notes">Every pre-call automation. Find show rate leaks.</div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-medium">MED</span><span class="badge badge-dept">ops</span></div>
+    <div class="task-title">Get access to dan@highperformancefounder.com</div>
+    <div class="task-notes">Platform admin. Dan telling Bea.</div>
+  </div>
+
+  <h3>Week of Jun 2</h3>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-medium">MED</span><span class="badge badge-dept">ops</span></div>
+    <div class="task-title">Set up team/support email for platform admin alerts</div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-medium">MED</span><span class="badge badge-dept">ops</span></div>
+    <div class="task-title">Setter workstation rollout for Tony + Afzal</div>
+  </div>
+
+  <h3>Week of Jun 6+</h3>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-medium">MED</span><span class="badge badge-dept">ops</span></div>
+    <div class="task-title">Map every system end-to-end with DJ</div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-medium">MED</span><span class="badge badge-dept">fulfillment</span></div>
+    <div class="task-title">Trainerize API &rarr; weekly client reports</div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="badge badge-low">LOW</span><span class="badge badge-dept">sales</span></div>
+    <div class="task-title">Design couples close strategy</div>
+  </div>
+
+  <h2>All Delegations (10)</h2>
+  <table>
+    <tr><th>Task</th><th>Owner</th><th>Due</th></tr>
+    <tr><td>Tell Bea to give Emil full platform access</td><td><span class="badge badge-owner">Dan</span></td><td>ASAP</td></tr>
+    <tr><td>Confirm Thu May 28 leadership meeting</td><td><span class="badge badge-owner">DJ</span></td><td>May 27</td></tr>
+    <tr><td>Fix ManyChat keywords &harr; Dan story CTAs</td><td><span class="badge badge-owner">DJ</span></td><td>May 28</td></tr>
+    <tr><td>Clear backlog &rarr; speed-to-lead &lt;3 min</td><td><span class="badge badge-owner">Riley</span></td><td>May 28</td></tr>
+    <tr><td>Upgrade Trainerize to Studio plan</td><td><span class="badge badge-owner">Dan</span></td><td>This week</td></tr>
+    <tr><td>Ask Sherpa app approval + client rollout</td><td><span class="badge badge-owner">Dan + Bea</span></td><td>This week</td></tr>
+    <tr><td>Systematize retention outreach at month 1</td><td><span class="badge badge-owner">John</span></td><td>Jun 6</td></tr>
+    <tr><td>Complete Brian transition (+1 month offers)</td><td><span class="badge badge-owner">John</span></td><td>Jun 6</td></tr>
+    <tr><td>Show rate deep dive + sustain 30% close</td><td><span class="badge badge-owner">Brandon</span></td><td>Jun 15</td></tr>
+    <tr><td>July paternity coverage plan</td><td><span class="badge badge-owner">John</span></td><td>Jun 20</td></tr>
+  </table>
+</div>
+
+<!-- KNOWLEDGE IMPACT -->
+<div id="knowledge" class="meeting-section">
+  <h2>Knowledge Impact</h2>
+  <p class="subtitle">These docs may need updating after today's decisions. Review at your pace &mdash; not blocking.</p>
+
+  <div class="knowledge-impact">
+    <h4>GHL / Pre-call Confirmation (affected by: dead end fix, show rate audit)</h4>
+    <ul>
+      <li><code>knowledge/integrations/ghl.md</code> &mdash; last verified Apr 24</li>
+      <li><code>knowledge/integrations/ghl-workflow-inventory.md</code> &mdash; last verified May 7</li>
+      <li><code>knowledge/ops-companions/ghl-operations.md</code> &mdash; last verified May 21</li>
+      <li><code>knowledge/ops-companions/workflow-inventory.md</code> &mdash; last verified May 21</li>
+    </ul>
+  </div>
+
+  <div class="knowledge-impact">
+    <h4>ManyChat (affected by: DJ keyword fix, marketing alignment)</h4>
+    <ul>
+      <li><code>knowledge/integrations/manychat.md</code> &mdash; last verified May 24</li>
+    </ul>
+  </div>
+
+  <div class="knowledge-impact">
+    <h4>Setter / Dialer (affected by: Tony + Afzal onboard, workstations, speed-to-lead)</h4>
+    <ul>
+      <li><code>knowledge/manifests/setter.md</code> &mdash; never verified</li>
+      <li><code>knowledge/ops-companions/dialer-operations.md</code> &mdash; last verified May 22</li>
+    </ul>
+  </div>
+
+  <div class="knowledge-impact">
+    <h4>Attribution / UTM (affected by: conversion sequence audit)</h4>
+    <ul>
+      <li>HPF Setter Attribution Guide &mdash; last verified Apr 11</li>
+      <li>UTM Attribution Gap article &mdash; last verified Mar 29</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.meeting-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>
