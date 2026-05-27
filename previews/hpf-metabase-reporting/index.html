@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HPFHQ Metabase Reporting Guide</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #16202a;
+      --muted: #5c6875;
+      --soft: #eef4f8;
+      --line: #d7e1e8;
+      --panel: #ffffff;
+      --blue: #1668a6;
+      --green: #247b5f;
+      --amber: #9a6212;
+      --navy: #0d2433;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f7fafc;
+      color: var(--ink);
+      line-height: 1.55;
+    }
+
+    header {
+      background: var(--navy);
+      color: #fff;
+      padding: 44px 24px 36px;
+    }
+
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: #91bed9;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 820px;
+      font-size: clamp(32px, 5vw, 58px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    header p {
+      max-width: 760px;
+      margin: 18px 0 0;
+      color: #c7d7e1;
+      font-size: 18px;
+    }
+
+    main {
+      padding: 28px 24px 52px;
+    }
+
+    nav {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    nav a,
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--panel);
+      color: var(--blue);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    section {
+      margin: 0 0 28px;
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: 0 1px 2px rgba(17, 35, 50, .05);
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 26px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 24px 0 8px;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    ul,
+    ol {
+      margin: 8px 0 0;
+      padding-left: 22px;
+    }
+
+    li {
+      margin: 7px 0;
+    }
+
+    code {
+      padding: 2px 5px;
+      border-radius: 4px;
+      background: #e8f0f5;
+      color: #12364f;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: .92em;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    th,
+    td {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--soft);
+      color: #263845;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .note {
+      border-left: 4px solid var(--blue);
+      padding: 14px 16px;
+      border-radius: 6px;
+      background: #edf7ff;
+      color: #20313e;
+    }
+
+    .success {
+      border-left-color: var(--green);
+      background: #eefaf5;
+    }
+
+    .warn {
+      border-left-color: var(--amber);
+      background: #fff7e8;
+    }
+
+    .pill {
+      display: inline-block;
+      margin: 0 6px 6px 0;
+      padding: 5px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #f4f8fb;
+      color: #2c4455;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    footer {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px 42px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <p class="eyebrow">HPFHQ reporting</p>
+      <h1>Metabase Reporting Guide</h1>
+      <p>
+        Use Metabase to explore HPFHQ sales and marketing reporting without touching raw lead data.
+        This guide is for Brandon and Djermain first. Dan and other stakeholder views can be added later.
+      </p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <nav aria-label="Guide sections">
+      <a href="#quick-start">Quick Start</a>
+      <a href="#brandon">For Brandon</a>
+      <a href="#djermain">For Djermain</a>
+      <a href="#slack-requests">Slack Requests</a>
+      <a href="#source-validity">Source And Validity</a>
+      <a href="#build-your-own">Build Your Own Views</a>
+    </nav>
+
+    <section id="quick-start">
+      <h2>Quick Start</h2>
+      <p>
+        Open Metabase at <a href="https://analytics.hpfhq.com"><strong>analytics.hpfhq.com</strong></a>.
+        If that domain is not live yet, use the temporary Railway URL provided by Emil.
+      </p>
+      <div class="grid">
+        <div class="note success">
+          <strong>What you can use:</strong>
+          dashboards, saved questions, filters, summaries, charts, exports, and your own saved views.
+        </div>
+        <div class="note">
+          <strong>What you will see:</strong>
+          curated reporting views only. These are prepared tables designed for reporting.
+        </div>
+        <div class="note warn">
+          <strong>What you will not see:</strong>
+          raw lead tables, email addresses, phone numbers, Slack payloads, notes, transcripts, or call links.
+        </div>
+      </div>
+
+      <h3>Starter dashboards and questions</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Use it for</th>
+            <th>Primary source</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Stakeholder Reporting Hub</strong></td>
+            <td>Shared front door for stakeholder reports.</td>
+            <td>Saved Metabase dashboards and questions</td>
+          </tr>
+          <tr>
+            <td><strong>Djermain - Email Funnel Dashboard</strong></td>
+            <td>Email-attributed sales calls by requested periods.</td>
+            <td><code>reporting.djermain_email_funnel_periods</code></td>
+          </tr>
+          <tr>
+            <td><strong>Dan - Executive Monthly Summary</strong></td>
+            <td>Monthly lead, call, conversion, revenue, ad spend, ROAS, and quality summary.</td>
+            <td><code>reporting.dan_executive_monthly_summary</code></td>
+          </tr>
+          <tr>
+            <td><strong>Reporting - Data Catalog</strong></td>
+            <td>Where each reporting table comes from and what its limitations are.</td>
+            <td><code>reporting.data_catalog</code></td>
+          </tr>
+          <tr>
+            <td><strong>Reporting - Data Freshness</strong></td>
+            <td>How much data each view has and how current it is.</td>
+            <td><code>reporting.data_freshness</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="brandon">
+      <h2>For Brandon</h2>
+      <p>
+        Your main job in Metabase is to answer your own reporting questions without waiting on engineering.
+        Start from the curated HPFHQ reporting database and save useful views into your collection.
+      </p>
+
+      <h3>Recommended first path</h3>
+      <ol>
+        <li>Open <strong>Stakeholder Reporting Hub</strong>.</li>
+        <li>Open <strong>Reporting - Data Catalog</strong> when you want to understand where a number comes from.</li>
+        <li>Open <strong>Reporting - Data Freshness</strong> when you want to know whether data is current.</li>
+        <li>Use <strong>New &gt; Question</strong> to create your own tables or charts from the HPFHQ reporting database.</li>
+        <li>Save useful questions into a collection so the team can reuse them.</li>
+      </ol>
+
+      <h3>Which reporting view should I use?</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Question</th>
+            <th>Start with this view</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>How many calls were booked by source each day?</td>
+            <td><code>calls_booked_by_source_daily</code></td>
+          </tr>
+          <tr>
+            <td>How are ads performing by campaign or ad?</td>
+            <td><code>ad_performance_daily</code></td>
+          </tr>
+          <tr>
+            <td>What happened across the sales funnel?</td>
+            <td><code>funnel_events</code></td>
+          </tr>
+          <tr>
+            <td>How did sales calls perform without exposing private fields?</td>
+            <td><code>sales_calls_sanitized</code></td>
+          </tr>
+          <tr>
+            <td>Are there source attribution or impossible-state issues?</td>
+            <td><code>data_quality_daily</code></td>
+          </tr>
+          <tr>
+            <td>What targets were active for a month?</td>
+            <td><code>targets_monthly</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="djermain">
+      <h2>For Djermain</h2>
+      <p>
+        The first live report answers the email-sales-call question:
+        booked, showed, and converted sales calls from January through February, April, and April to now.
+      </p>
+
+      <h3>How to use your dashboard</h3>
+      <ol>
+        <li>Open <strong>Djermain - Email Funnel Dashboard</strong>.</li>
+        <li>Use the table <strong>Djermain - Email Sales Calls by Period</strong>.</li>
+        <li>Read the rows by period: January 2026, February 2026, January-February 2026, April 2026, and April 2026 to today.</li>
+        <li>Use the columns <strong>Booked Calls</strong>, <strong>Showed Calls</strong>, <strong>Converted Calls</strong>, <strong>Cash Collected</strong>, and <strong>Contract Value</strong>.</li>
+        <li>If you need the data outside Metabase, use the download/export option on the question.</li>
+      </ol>
+
+      <h3>Email attribution definition</h3>
+      <p>
+        The report counts rows as email-attributed when the source data points to email, newsletter,
+        ConvertKit/Kit, or known email campaign patterns. The exact source logic is documented in
+        <strong>Reporting - Data Catalog</strong>.
+      </p>
+
+      <div class="note">
+        <strong>Important:</strong>
+        This is a reporting view, not the raw leads list. If a row looks surprising, check
+        <strong>Reporting - Data Catalog</strong> and <strong>Reporting - Data Freshness</strong> before making a decision from it.
+      </div>
+    </section>
+
+    <section id="slack-requests">
+      <h2>Ask Data Questions In Slack</h2>
+      <p>
+        The planned async data request channel is <strong>#AI-Data-Analysis</strong>.
+        Slack may display the channel name in lowercase depending on workspace settings.
+      </p>
+
+      <h3>How it should work</h3>
+      <ol>
+        <li>Post one clear data question in the channel.</li>
+        <li>The assistant replies in thread: <strong>On it! I'll post the reply in the thread in the next 30mins or so!</strong></li>
+        <li>The assistant checks the curated HPFHQ reporting views.</li>
+        <li>The final answer is posted in the same thread with source view, date range, and reliability notes.</li>
+        <li>If the reporting layer cannot answer the question, the assistant should say what is missing instead of guessing.</li>
+      </ol>
+
+      <div class="note warn">
+        <strong>Scope:</strong>
+        Slack answers should use only curated <code>reporting.*</code> views. They should not expose raw lead records,
+        email addresses, phone numbers, notes, transcripts, or private Slack payloads.
+      </div>
+    </section>
+
+    <section id="source-validity">
+      <h2>Source And Validity</h2>
+      <p>
+        Every reporting view is connected to an internal source. Metabase should make it easy to inspect
+        whether a metric is complete, current, and appropriate for the decision you are making.
+      </p>
+
+      <h3>Use these two questions first</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Question</th>
+            <th>What it tells you</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Reporting - Data Catalog</strong></td>
+            <td>Source tables, row grain, included fields, excluded private fields, reliability notes, limitations, and validation method.</td>
+          </tr>
+          <tr>
+            <td><strong>Reporting - Data Freshness</strong></td>
+            <td>Row count, earliest date, latest date, and freshness timestamp for each reporting view.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Data safety rule</h3>
+      <p>
+        Metabase is connected through a read-only database role. It is intended for analysis, dashboards,
+        and exports from curated views only. It should not be used to browse or export raw private lead data.
+      </p>
+
+      <div>
+        <span class="pill">Read-only access</span>
+        <span class="pill">Reporting schema only</span>
+        <span class="pill">No raw PII tables</span>
+        <span class="pill">Source notes included</span>
+      </div>
+    </section>
+
+    <section id="build-your-own">
+      <h2>Build Your Own Views</h2>
+      <p>
+        Metabase lets you create your own views without writing SQL. Start simple, then make the result prettier
+        once the number is right.
+      </p>
+
+      <h3>Create a new question</h3>
+      <ol>
+        <li>Click <strong>+ New</strong>.</li>
+        <li>Choose <strong>Question</strong>.</li>
+        <li>Select the <strong>HPFHQ</strong> database.</li>
+        <li>Choose a curated reporting view.</li>
+        <li>Use <strong>Filter</strong> for date range, source, campaign, closer, setter, or outcome.</li>
+        <li>Use <strong>Summarize</strong> to group by month, source, campaign, ad, closer, or setter.</li>
+        <li>Click <strong>Visualization</strong> to switch from a table to a number, bar chart, or line chart.</li>
+        <li>Click <strong>Save</strong> and place it in the right collection.</li>
+      </ol>
+
+      <h3>Make a dashboard prettier</h3>
+      <ol>
+        <li>Open the dashboard and click <strong>Edit</strong>.</li>
+        <li>Add saved questions as cards.</li>
+        <li>Resize the most important numbers larger.</li>
+        <li>Put trend charts below headline metrics.</li>
+        <li>Keep source/validity cards at the bottom so the dashboard stays readable.</li>
+        <li>Click <strong>Save</strong>.</li>
+      </ol>
+
+      <h3>When to ask Emil</h3>
+      <ul>
+        <li>You need a new raw data source added to reporting.</li>
+        <li>You need a new curated view that does not exist yet.</li>
+        <li>You see raw lead/private data inside Metabase.</li>
+        <li>A metric conflicts with HPFHQ cockpit or another official report.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    Last updated: 2026-05-27. This guide contains no passwords or private credentials.
+  </footer>
+</body>
+</html>
