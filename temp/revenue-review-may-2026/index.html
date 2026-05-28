@@ -9,6 +9,7 @@
     --bg: #0d1117; --surface: #161b22; --border: #30363d;
     --text: #e6edf3; --muted: #8b949e; --green: #2ed47a;
     --red: #f85149; --amber: #d29922; --blue: #58a6ff;
+    --purple: #bc8cff;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Inter', -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 24px; max-width: 900px; margin: 0 auto; line-height: 1.5; }
@@ -21,6 +22,7 @@
   .badge-red { background: rgba(248,81,73,0.15); color: var(--red); }
   .badge-amber { background: rgba(210,153,34,0.15); color: var(--amber); }
   .badge-blue { background: rgba(88,166,255,0.15); color: var(--blue); }
+  .badge-purple { background: rgba(188,140,255,0.15); color: var(--purple); }
   table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
   th { text-align: left; color: var(--muted); font-weight: 500; padding: 6px 8px; border-bottom: 1px solid var(--border); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
   td { padding: 6px 8px; border-bottom: 1px solid rgba(48,54,61,0.5); }
@@ -48,6 +50,21 @@
   .check { width: 16px; height: 16px; border: 1.5px solid var(--border); border-radius: 3px; flex-shrink: 0; }
   .trend { display: inline-flex; gap: 4px; align-items: center; }
   .trend-week { font-size: 0.75rem; padding: 1px 4px; border-radius: 3px; background: rgba(139,148,158,0.1); }
+  .imp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .imp-card { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; }
+  .imp-card-title { font-size: 0.8rem; font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .imp-card ul { list-style: none; font-size: 0.75rem; color: var(--muted); }
+  .imp-card li { padding: 2px 0; padding-left: 12px; position: relative; }
+  .imp-card li::before { content: ''; position: absolute; left: 0; top: 8px; width: 4px; height: 4px; border-radius: 50%; background: var(--border); }
+  .note { font-size: 0.75rem; color: var(--muted); font-style: italic; margin-top: 6px; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0 8px 0; }
+  .divider-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+  .bar-container { display: flex; align-items: end; gap: 8px; height: 80px; margin: 8px 0 4px 0; }
+  .bar-col { display: flex; flex-direction: column; align-items: center; flex: 1; }
+  .bar { width: 100%; border-radius: 4px 4px 0 0; min-height: 4px; transition: height 0.3s; }
+  .bar-label { font-size: 0.65rem; color: var(--muted); margin-top: 4px; }
+  .bar-value { font-size: 0.7rem; font-weight: 600; margin-bottom: 2px; font-variant-numeric: tabular-nums; }
+  @media (max-width: 600px) { .imp-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -55,7 +72,89 @@
 <h1>Monthly Revenue Review — May 2026</h1>
 <p class="subtitle">Dan + Emil + DJ &middot; Thu May 29 &middot; Brandon's input included (not present)</p>
 
-<!-- SCORECARD -->
+<!-- YTD CASH TREND -->
+<div class="section">
+  <div class="section-title">2026 Cash Trend — Jan to May</div>
+  <div class="bar-container">
+    <div class="bar-col">
+      <div class="bar-value">$122K</div>
+      <div class="bar" style="height:70px; background: var(--blue);"></div>
+      <div class="bar-label">Jan</div>
+    </div>
+    <div class="bar-col">
+      <div class="bar-value">$116K</div>
+      <div class="bar" style="height:66px; background: var(--blue);"></div>
+      <div class="bar-label">Feb</div>
+    </div>
+    <div class="bar-col">
+      <div class="bar-value">$111K</div>
+      <div class="bar" style="height:63px; background: var(--blue);"></div>
+      <div class="bar-label">Mar</div>
+    </div>
+    <div class="bar-col">
+      <div class="bar-value">$106K</div>
+      <div class="bar" style="height:60px; background: var(--amber);"></div>
+      <div class="bar-label">Apr</div>
+    </div>
+    <div class="bar-col">
+      <div class="bar-value">$79K</div>
+      <div class="bar" style="height:45px; background: var(--red);"></div>
+      <div class="bar-label">May</div>
+    </div>
+  </div>
+  <table style="margin-top: 12px;">
+    <tr>
+      <th>Month</th>
+      <th class="num">New Cash</th>
+      <th class="num">Returning</th>
+      <th class="num">Total Cash</th>
+      <th class="num">New Closes</th>
+      <th>Source</th>
+    </tr>
+    <tr>
+      <td>January</td>
+      <td class="num" colspan="2" style="text-align:center; color:var(--muted);">combined</td>
+      <td class="num">$122,483</td>
+      <td class="num neutral">—</td>
+      <td><span class="src">Stripe (sole processor)</span></td>
+    </tr>
+    <tr>
+      <td>February</td>
+      <td class="num" colspan="2" style="text-align:center; color:var(--muted);">combined</td>
+      <td class="num">$116,466</td>
+      <td class="num neutral">—</td>
+      <td><span class="src">Stripe (sole processor)</span></td>
+    </tr>
+    <tr>
+      <td>March</td>
+      <td class="num" colspan="2" style="text-align:center; color:var(--muted);">combined</td>
+      <td class="num">$110,673</td>
+      <td class="num neutral">—</td>
+      <td><span class="src">Stripe (sole processor)</span></td>
+    </tr>
+    <tr>
+      <td>April</td>
+      <td class="num">$52,480</td>
+      <td class="num">$53,733</td>
+      <td class="num">$106,213</td>
+      <td class="num">21</td>
+      <td><span class="src">Fanbasis + Stripe</span></td>
+    </tr>
+    <tr style="font-weight: 600;">
+      <td>May</td>
+      <td class="num">$69,450</td>
+      <td class="num">$9,950</td>
+      <td class="num">$79,400</td>
+      <td class="num">18</td>
+      <td><span class="src">Fanbasis + Stripe</span></td>
+    </tr>
+  </table>
+  <div class="note">
+    Jan-Mar: Stripe was sole processor (new + returning combined, can't split). Apr: Fanbasis became primary for new closes. May Stripe returning drop ($54K &rarr; $10K) = installment payments shifting to Fanbasis as new clients pay through Fanbasis.
+  </div>
+</div>
+
+<!-- MAY SCORECARD YoY -->
 <div class="section">
   <div class="section-title">May Scorecard — YoY</div>
   <table>
@@ -179,9 +278,9 @@
       <td class="num">2.88%</td>
     </tr>
   </table>
-  <div style="margin-top: 10px; display: flex; gap: 16px; font-size: 0.8rem;">
+  <div style="margin-top: 10px; display: flex; gap: 16px; font-size: 0.8rem; flex-wrap: wrap;">
     <div><span class="badge badge-green">ROAS 15.8x</span> new cash / ad spend</div>
-    <div><span class="badge badge-amber">44% lead→schedule</span> 307 leads, 136 calls booked</div>
+    <div><span class="badge badge-amber">44% lead&rarr;schedule</span> 307 leads, 136 calls booked</div>
     <div class="trend">CPL trend: <span class="trend-week">$18</span> <span class="trend-week">$17</span> <span class="trend-week">$13</span> <span class="trend-week down">$11</span></div>
   </div>
 </div>
@@ -203,34 +302,25 @@
 <!-- BRANDON'S LEVERS -->
 <div class="section">
   <div class="section-title">June Levers <span class="badge badge-blue">Brandon</span></div>
-
   <div class="lever">
     <div class="lever-num">1</div>
     <div class="lever-body">
       <div class="lever-title">Volume — get back to 200+ scheduled</div>
-      <div class="lever-detail">
-        "You can't compare 130 calls to 220 calls." Speed-to-lead with Riley on Meta leads. Restore email confirmation process. Open question: why hasn't adding lead-gen components moved the needle?
-      </div>
+      <div class="lever-detail">"You can't compare 130 calls to 220 calls." Speed-to-lead with Riley on Meta leads. Restore email confirmation process. Open question: why hasn't adding lead-gen components moved the needle?</div>
     </div>
   </div>
-
   <div class="lever">
     <div class="lever-num">2</div>
     <div class="lever-body">
       <div class="lever-title">Show Rate — process audit / redesign</div>
-      <div class="lever-detail">
-        Pre-call sequence audit. Show rate is worse YoY despite "better" process on paper. DJ's finding may explain the bulk of it — email confirmations were the missing step.
-      </div>
+      <div class="lever-detail">Pre-call sequence audit. Show rate is worse YoY despite "better" process on paper. DJ's finding may explain the bulk of it — email confirmations were the missing step.</div>
     </div>
   </div>
-
   <div class="lever">
     <div class="lever-num">3</div>
     <div class="lever-body">
       <div class="lever-title">Avg Cart Value — upsell at close</div>
-      <div class="lever-detail">
-        Offer immediate upsell: 4mo &rarr; discounted 12mo. Spouse upgrade at point of close. Protects CR while increasing deal size. Current avg contracted: $5,033 (61% PIF at $4,800).
-      </div>
+      <div class="lever-detail">Offer immediate upsell: 4mo &rarr; discounted 12mo. Spouse upgrade at point of close. Protects CR while increasing deal size. Current avg contracted: $5,033 (61% PIF at $4,800).</div>
     </div>
   </div>
 </div>
@@ -265,8 +355,98 @@
   </ul>
 </div>
 
+<hr class="divider">
+<div class="divider-label">Backend &amp; Infrastructure — What's Been Built (Jan–May 2026)</div>
+
+<!-- IMPROVEMENTS -->
+<div class="section">
+  <div class="section-title">
+    HPFHQ Platform Improvements
+    <span class="badge badge-purple">1,706 commits &middot; 410 features &middot; 571 fixes</span>
+  </div>
+  <div class="imp-grid">
+
+    <div class="imp-card">
+      <div class="imp-card-title" style="color: var(--green);">Dialer &amp; Setting Pipeline</div>
+      <ul>
+        <li>Speed-to-lead tab — surfaces ALL Meta leads for Riley immediately</li>
+        <li>Angelica dedicated workstation — 3 rounds: DnD kanban, confirmed/unconfirmed split, contact search, lead panel</li>
+        <li>SendBlue SMS on all card types</li>
+        <li>DQ review holding stage + inline DQ picker</li>
+        <li>Auto-dial on "Called No Answer"</li>
+        <li>Config-driven feature gates (Riley vs Angelica)</li>
+        <li>Dial attempt tracking (visual 1/2/3 indicator)</li>
+        <li>GHL contact links on every card</li>
+      </ul>
+    </div>
+
+    <div class="imp-card">
+      <div class="imp-card-title" style="color: var(--blue);">Sales &amp; Closer Operations</div>
+      <ul>
+        <li>Closer EOD live system — structured daily reporting</li>
+        <li>Fathom call matching (auto-exclude internal meetings)</li>
+        <li>Booking security hardening — CSRF, 409 conflicts, token expiry, email-enum protection</li>
+        <li>Booking pre-call + reminder crons</li>
+        <li>GHL reschedule slot pilot</li>
+        <li>GHL timezone fix on booking/cancel Slack cards</li>
+        <li>Closer reassignment + GCal/GHL mirror on reschedule</li>
+      </ul>
+    </div>
+
+    <div class="imp-card">
+      <div class="imp-card-title" style="color: var(--amber);">Marketing &amp; Attribution</div>
+      <ul>
+        <li>Meta CAPI dedup architecture — pixel reboot, server-side Lead events, dedup via shared UUID</li>
+        <li>Calls Booked by Source in marketing cockpit</li>
+        <li>Attribution repair for May booked leads</li>
+        <li>Source normalization (ConvertKit, site page, IG, etc.)</li>
+        <li>UTM setter backfill + missing attribution Slack alerts</li>
+        <li>Meta Lead Ads webhook (40 leads backfilled after paste-artifact fix)</li>
+        <li>CAPI health endpoint for monitoring</li>
+      </ul>
+    </div>
+
+    <div class="imp-card">
+      <div class="imp-card-title" style="color: var(--red);">Payment &amp; Finance</div>
+      <ul>
+        <li>Fanbasis webhook integration — primary payment processor since Apr</li>
+        <li>Stripe LB90 exclusion fix — was silently excluding $524K of coaching charges</li>
+        <li>GHL contact mirror on every lead-creating webhook (Typeform, ManyChat, booking)</li>
+        <li>QuickBooks integration (built, blocked on Dan OAuth)</li>
+      </ul>
+    </div>
+
+    <div class="imp-card">
+      <div class="imp-card-title" style="color: var(--purple);">Operations &amp; Monitoring</div>
+      <ul>
+        <li>Health endpoint suite — meta-leads, CAPI, freshness, cron health, stale-sync</li>
+        <li>Security scan with Slack notification + persistence</li>
+        <li>Architecture drift detection + alerting</li>
+        <li>Weekly business bundle dispatcher (Sun 23:00 UTC)</li>
+        <li>Triage sweep — categorization layer + unknown-leads endpoint</li>
+        <li>Cron self-instrumentation (cron_health_cache table)</li>
+        <li>Auth tier-safe redirects</li>
+      </ul>
+    </div>
+
+    <div class="imp-card">
+      <div class="imp-card-title" style="color: var(--text);">Reporting &amp; Intelligence</div>
+      <ul>
+        <li>Monthly deck editor — structured slide generation for team meetings</li>
+        <li>HQ page — merged Compass + CCC strategic cascade</li>
+        <li>Embeddings + semantic search (Phase 3)</li>
+        <li>Metabase reporting hub (Railway-hosted)</li>
+        <li>Coaching client cockpit sync</li>
+        <li>Coach calendar integration + ID configuration</li>
+        <li>Freshness wall (?wall=1 read-only cockpit mode)</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
 <div style="font-size: 0.7rem; color: var(--muted); text-align: center; margin-top: 20px; padding-top: 12px; border-top: 1px solid var(--border);">
-  Generated 2026-05-28 &middot; Sources: Fanbasis DB, Stripe DB, Closer Sheet (Brandon), Marketing Sheet, Meta API, DJ Slack &middot; HPFHQ
+  Generated 2026-05-28 &middot; Sources: Fanbasis DB, Stripe DB, Closer Sheet (Brandon), Marketing Sheet, Meta API, DJ Slack, git log &middot; HPFHQ
 </div>
 
 </body>
