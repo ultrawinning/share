@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revenue Review — May 2026</title>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e; --green: #2ed47a;
+    --red: #f85149; --amber: #d29922; --blue: #58a6ff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 24px; max-width: 900px; margin: 0 auto; line-height: 1.5; }
+  h1 { font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; }
+  .subtitle { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin-bottom: 16px; }
+  .section-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .badge { font-size: 0.65rem; font-weight: 500; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .badge-green { background: rgba(46,212,122,0.15); color: var(--green); }
+  .badge-red { background: rgba(248,81,73,0.15); color: var(--red); }
+  .badge-amber { background: rgba(210,153,34,0.15); color: var(--amber); }
+  .badge-blue { background: rgba(88,166,255,0.15); color: var(--blue); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th { text-align: left; color: var(--muted); font-weight: 500; padding: 6px 8px; border-bottom: 1px solid var(--border); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { padding: 6px 8px; border-bottom: 1px solid rgba(48,54,61,0.5); }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .up { color: var(--green); }
+  .down { color: var(--red); }
+  .neutral { color: var(--muted); }
+  .src { font-size: 0.65rem; color: var(--muted); font-weight: 400; }
+  .callout { border-left: 3px solid var(--amber); padding: 10px 14px; background: rgba(210,153,34,0.06); border-radius: 0 6px 6px 0; margin: 8px 0; font-size: 0.85rem; }
+  .callout-title { font-weight: 600; font-size: 0.8rem; color: var(--amber); margin-bottom: 4px; }
+  .lever { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 10px; }
+  .lever-num { font-size: 1.1rem; font-weight: 700; color: var(--blue); min-width: 24px; }
+  .lever-body { flex: 1; }
+  .lever-title { font-weight: 600; font-size: 0.85rem; }
+  .lever-detail { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+  .scenario { display: flex; justify-content: space-between; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; font-size: 0.85rem; }
+  .scenario:nth-child(1) { background: rgba(139,148,158,0.1); }
+  .scenario:nth-child(2) { background: rgba(210,153,34,0.1); }
+  .scenario:nth-child(3) { background: rgba(46,212,122,0.1); }
+  .scenario-label { color: var(--muted); }
+  .scenario-value { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .decisions { list-style: none; }
+  .decisions li { padding: 6px 0; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(48,54,61,0.3); }
+  .decisions li:last-child { border-bottom: none; }
+  .check { width: 16px; height: 16px; border: 1.5px solid var(--border); border-radius: 3px; flex-shrink: 0; }
+  .trend { display: inline-flex; gap: 4px; align-items: center; }
+  .trend-week { font-size: 0.75rem; padding: 1px 4px; border-radius: 3px; background: rgba(139,148,158,0.1); }
+</style>
+</head>
+<body>
+
+<h1>Monthly Revenue Review — May 2026</h1>
+<p class="subtitle">Dan + Emil + DJ &middot; Thu May 29 &middot; Brandon's input included (not present)</p>
+
+<!-- SCORECARD -->
+<div class="section">
+  <div class="section-title">May Scorecard — YoY</div>
+  <table>
+    <tr>
+      <th>Metric</th>
+      <th class="num">May 2025</th>
+      <th class="num">May 2026</th>
+      <th class="num">Delta</th>
+      <th>Source</th>
+    </tr>
+    <tr>
+      <td>Calls Scheduled</td>
+      <td class="num">222</td>
+      <td class="num">136</td>
+      <td class="num down">-39%</td>
+      <td><span class="src">Closer Sheet</span></td>
+    </tr>
+    <tr>
+      <td>Calls Taken</td>
+      <td class="num">132</td>
+      <td class="num">66</td>
+      <td class="num down">-50%</td>
+      <td><span class="src">Closer Sheet</span></td>
+    </tr>
+    <tr>
+      <td>Gross Show Rate</td>
+      <td class="num">59%</td>
+      <td class="num">50%</td>
+      <td class="num down">-9pts</td>
+      <td><span class="src">Closer Sheet</span></td>
+    </tr>
+    <tr>
+      <td>New Closes</td>
+      <td class="num">20</td>
+      <td class="num">18</td>
+      <td class="num neutral">-2</td>
+      <td><span class="src">Fanbasis DB</span></td>
+    </tr>
+    <tr>
+      <td>Close Rate</td>
+      <td class="num">15%</td>
+      <td class="num">26%</td>
+      <td class="num up">+11pts</td>
+      <td><span class="src">Fanbasis / Closer</span></td>
+    </tr>
+    <tr>
+      <td>New Cash Collected</td>
+      <td class="num">$99,000</td>
+      <td class="num">$69,450</td>
+      <td class="num down">-30%</td>
+      <td><span class="src">Fanbasis DB</span></td>
+    </tr>
+    <tr>
+      <td>New Cash Contracted</td>
+      <td class="num">$132,000</td>
+      <td class="num">$90,600</td>
+      <td class="num down">-31%</td>
+      <td><span class="src">Fanbasis DB</span></td>
+    </tr>
+    <tr>
+      <td>Returning Cash</td>
+      <td class="num">—</td>
+      <td class="num">$9,950</td>
+      <td class="num neutral">—</td>
+      <td><span class="src">Stripe</span></td>
+    </tr>
+    <tr>
+      <td><strong>Total Cash</strong></td>
+      <td class="num">—</td>
+      <td class="num"><strong>$79,400</strong></td>
+      <td class="num neutral">—</td>
+      <td><span class="src">Fanbasis + Stripe</span></td>
+    </tr>
+  </table>
+</div>
+
+<!-- PAID TRAFFIC -->
+<div class="section">
+  <div class="section-title">Paid Traffic — May MTD <span class="badge badge-blue">Marketing Sheet + Meta API</span></div>
+  <table>
+    <tr>
+      <th>Week</th>
+      <th class="num">Spend</th>
+      <th class="num">Leads</th>
+      <th class="num">CPL</th>
+      <th class="num">CTR</th>
+    </tr>
+    <tr>
+      <td>Apr 27 – May 3</td>
+      <td class="num">$1,193</td>
+      <td class="num">66</td>
+      <td class="num">$18.08</td>
+      <td class="num">2.11%</td>
+    </tr>
+    <tr>
+      <td>May 4 – May 10</td>
+      <td class="num">$1,057</td>
+      <td class="num">62</td>
+      <td class="num">$17.04</td>
+      <td class="num">2.42%</td>
+    </tr>
+    <tr>
+      <td>May 11 – May 17</td>
+      <td class="num">$1,071</td>
+      <td class="num">80</td>
+      <td class="num">$13.39</td>
+      <td class="num">3.94%</td>
+    </tr>
+    <tr>
+      <td>May 18 – May 24</td>
+      <td class="num">$1,069</td>
+      <td class="num">99</td>
+      <td class="num">$10.80</td>
+      <td class="num">3.27%</td>
+    </tr>
+    <tr style="font-weight: 600; border-top: 2px solid var(--border);">
+      <td>Total</td>
+      <td class="num">$4,390</td>
+      <td class="num">307</td>
+      <td class="num">$14.30</td>
+      <td class="num">2.88%</td>
+    </tr>
+  </table>
+  <div style="margin-top: 10px; display: flex; gap: 16px; font-size: 0.8rem;">
+    <div><span class="badge badge-green">ROAS 15.8x</span> new cash / ad spend</div>
+    <div><span class="badge badge-amber">44% lead→schedule</span> 307 leads, 136 calls booked</div>
+    <div class="trend">CPL trend: <span class="trend-week">$18</span> <span class="trend-week">$17</span> <span class="trend-week">$13</span> <span class="trend-week down">$11</span></div>
+  </div>
+</div>
+
+<!-- DJ FINDING -->
+<div class="section">
+  <div class="section-title">Show Rate Root Cause <span class="badge badge-amber">DJ</span></div>
+  <div class="callout">
+    <div class="callout-title">Email confirmations killed mid-April</div>
+    Jelly was told to stop email back-and-forth because "leads got annoyed." Nobody replaced the confirmation step.
+    Jan/Feb with manual outreach: almost every email set closed. May without it: ~50 email leads, only 33 showed (34% no-show), 8 converted — <strong>3x the volume for the same result</strong>.
+  </div>
+  <div style="font-size: 0.8rem; color: var(--muted); margin-top: 8px;">
+    DJ resumed outreach mid-May. Pending verification: did post-mid-May email closes improve?<br>
+    Estimated lost revenue: ~17 lost shows &times; 26% CR = 4-5 closes = <strong>$19K-$24K</strong>.
+  </div>
+</div>
+
+<!-- BRANDON'S LEVERS -->
+<div class="section">
+  <div class="section-title">June Levers <span class="badge badge-blue">Brandon</span></div>
+
+  <div class="lever">
+    <div class="lever-num">1</div>
+    <div class="lever-body">
+      <div class="lever-title">Volume — get back to 200+ scheduled</div>
+      <div class="lever-detail">
+        "You can't compare 130 calls to 220 calls." Speed-to-lead with Riley on Meta leads. Restore email confirmation process. Open question: why hasn't adding lead-gen components moved the needle?
+      </div>
+    </div>
+  </div>
+
+  <div class="lever">
+    <div class="lever-num">2</div>
+    <div class="lever-body">
+      <div class="lever-title">Show Rate — process audit / redesign</div>
+      <div class="lever-detail">
+        Pre-call sequence audit. Show rate is worse YoY despite "better" process on paper. DJ's finding may explain the bulk of it — email confirmations were the missing step.
+      </div>
+    </div>
+  </div>
+
+  <div class="lever">
+    <div class="lever-num">3</div>
+    <div class="lever-body">
+      <div class="lever-title">Avg Cart Value — upsell at close</div>
+      <div class="lever-detail">
+        Offer immediate upsell: 4mo &rarr; discounted 12mo. Spouse upgrade at point of close. Protects CR while increasing deal size. Current avg contracted: $5,033 (61% PIF at $4,800).
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECTIONS -->
+<div class="section">
+  <div class="section-title">June Projections</div>
+  <div class="scenario">
+    <span class="scenario-label">Baseline — 140 sched, 50% SR, 28% CR</span>
+    <span class="scenario-value">~$77K</span>
+  </div>
+  <div class="scenario">
+    <span class="scenario-label">+ Show rate fix (59% SR)</span>
+    <span class="scenario-value">~$89K</span>
+  </div>
+  <div class="scenario">
+    <span class="scenario-label">+ Volume recovery (200 sched, 59% SR)</span>
+    <span class="scenario-value">~$127K</span>
+  </div>
+</div>
+
+<!-- DECISIONS -->
+<div class="section">
+  <div class="section-title">Decisions</div>
+  <ul class="decisions">
+    <li><span class="check"></span>Restore email confirmations — who gives Jelly the instruction?</li>
+    <li><span class="check"></span>Marketing volume plan — what gets us from 136 to 200+ scheduled?</li>
+    <li><span class="check"></span>Upsell structure — 4mo &rarr; 12mo offer + spouse upgrade approved?</li>
+    <li><span class="check"></span>Show rate audit — DJ's finding sufficient, or full process redesign?</li>
+    <li><span class="check"></span>Paid traffic budget — increase spend? CPL trending down, ROAS is 15.8x</li>
+    <li><span class="check"></span>June targets — lock in scheduled / closes / cash goals</li>
+  </ul>
+</div>
+
+<div style="font-size: 0.7rem; color: var(--muted); text-align: center; margin-top: 20px; padding-top: 12px; border-top: 1px solid var(--border);">
+  Generated 2026-05-28 &middot; Sources: Fanbasis DB, Stripe DB, Closer Sheet (Brandon), Marketing Sheet, Meta API, DJ Slack &middot; HPFHQ
+</div>
+
+</body>
+</html>
