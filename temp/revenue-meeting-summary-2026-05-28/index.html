@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meeting Summary — Revenue Planning, May 28 2026</title>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --border: #30363d;
+    --text: #e6edf3; --muted: #8b949e; --green: #2ed47a;
+    --red: #f85149; --amber: #d29922; --blue: #58a6ff;
+    --purple: #bc8cff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 24px; max-width: 860px; margin: 0 auto; line-height: 1.5; }
+  h1 { font-size: 1.3rem; font-weight: 700; margin-bottom: 2px; }
+  .subtitle { color: var(--muted); font-size: 0.82rem; margin-bottom: 20px; }
+  .section { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; margin-bottom: 14px; }
+  .section-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .badge { font-size: 0.6rem; font-weight: 500; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .badge-green { background: rgba(46,212,122,0.15); color: var(--green); }
+  .badge-amber { background: rgba(210,153,34,0.15); color: var(--amber); }
+  .badge-blue { background: rgba(88,166,255,0.15); color: var(--blue); }
+  .badge-purple { background: rgba(188,140,255,0.15); color: var(--purple); }
+  .badge-red { background: rgba(248,81,73,0.15); color: var(--red); }
+  .decision { padding: 8px 0; border-bottom: 1px solid rgba(48,54,61,0.4); font-size: 0.82rem; }
+  .decision:last-child { border-bottom: none; }
+  .decision-title { font-weight: 600; }
+  .decision-detail { color: var(--muted); font-size: 0.78rem; margin-top: 2px; }
+  .owner-tag { font-size: 0.65rem; padding: 1px 5px; border-radius: 3px; background: rgba(88,166,255,0.1); color: var(--blue); margin-left: 4px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  th { text-align: left; color: var(--muted); font-weight: 500; padding: 5px 8px; border-bottom: 1px solid var(--border); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { padding: 5px 8px; border-bottom: 1px solid rgba(48,54,61,0.4); }
+  .task-list { list-style: none; }
+  .task-list li { padding: 5px 0; font-size: 0.82rem; display: flex; align-items: flex-start; gap: 8px; border-bottom: 1px solid rgba(48,54,61,0.3); }
+  .task-list li:last-child { border-bottom: none; }
+  .check { width: 14px; height: 14px; border: 1.5px solid var(--border); border-radius: 3px; flex-shrink: 0; margin-top: 2px; }
+  .priority-high { border-color: var(--red); }
+  .priority-med { border-color: var(--amber); }
+  .priority-low { border-color: var(--muted); }
+  .quote { border-left: 2px solid var(--border); padding: 6px 12px; margin: 6px 0; font-size: 0.78rem; color: var(--muted); font-style: italic; }
+  .quote strong { color: var(--text); font-style: normal; }
+  .goals-row { display: flex; gap: 8px; margin-bottom: 6px; }
+  .goal-card { flex: 1; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; text-align: center; }
+  .goal-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .goal-current { font-size: 0.9rem; font-weight: 700; color: var(--muted); margin: 2px 0; }
+  .goal-arrow { font-size: 0.7rem; color: var(--muted); }
+  .goal-target { font-size: 0.9rem; font-weight: 700; color: var(--green); }
+  @media (max-width: 600px) { .goals-row { flex-wrap: wrap; } .goal-card { min-width: 45%; } }
+</style>
+</head>
+<body>
+
+<h1>Revenue Planning Meeting — Summary</h1>
+<p class="subtitle">Wed May 28, 2026 &middot; Dan Go, Emil, DJ &middot; Brandon's input included (not present — dad in hospital)</p>
+
+<!-- DECISIONS -->
+<div class="section">
+  <div class="section-title">Decisions <span class="badge badge-green">12 logged</span></div>
+
+  <div class="decision">
+    <div class="decision-title">Email call-outs revert to keyword reply <span class="owner-tag">Dan</span></div>
+    <div class="decision-detail">June test: "reply with [keyword]" instead of direct booking links. Schedule: Jun 2, 5, 9, 12. Tests DJ's hypothesis that conversational engagement drives higher show + close rate.</div>
+  </div>
+
+  <div class="decision">
+    <div class="decision-title">DJ owns ManyChat <span class="owner-tag">DJ</span></div>
+    <div class="decision-detail">Full ownership. Can change copy, add keywords, no approval needed. Adding missing high-intent keyword automations by May 29.</div>
+  </div>
+
+  <div class="decision">
+    <div class="decision-title">Closer &rarr; setter feedback chain: Joel &rarr; Brandon &rarr; DJ <span class="owner-tag">Emil</span></div>
+    <div class="decision-detail">No direct closer-to-setter complaints. Structured handover required: which lead, why inappropriate, what happened.</div>
+  </div>
+
+  <div class="decision">
+    <div class="decision-title">Angelica: dialing + LinkedIn + email. Not IG DMs. <span class="owner-tag">DJ</span></div>
+    <div class="decision-detail">Almost none of her converting sets came from IG. Tony + Essal (new DM setters) own IG with proper conversational flow.</div>
+  </div>
+
+  <div class="decision">
+    <div class="decision-title">Upsell: spouse/friend + 4mo &rarr; 12mo on daily huddles <span class="owner-tag">Dan</span></div>
+    <div class="decision-detail">Dan added "friend" alongside spouse. $4,800 &rarr; $8,000 time-horizon extension. Closers have $500 discount autonomy. Reinforced on huddles.</div>
+  </div>
+
+  <div class="decision">
+    <div class="decision-title">Public dashboards for closers + setters <span class="owner-tag">Emil</span></div>
+    <div class="decision-detail">Dan visited Dan Martel's office — every team member has a TV dashboard. Wants 2-3 metrics per person, visible competition.</div>
+  </div>
+
+  <div class="decision">
+    <div class="decision-title">Historical YoY data: calls booked, sales, AOV <span class="owner-tag">Emil</span></div>
+    <div class="decision-detail">Monthly from Jan 2025 &rarr; current. Dan: "A lead is someone who books a call. We don't want numbers that can be manipulated."</div>
+  </div>
+
+  <div class="decision">
+    <div class="decision-title">Per-channel no-show investigation <span class="owner-tag">DJ</span></div>
+    <div class="decision-detail">Identify which source has worst show rate. DJ: 20% recovery rate on cancellations is typical — easy win with outreach.</div>
+  </div>
+
+  <div class="decision">
+    <div class="decision-title">Trainerize API approved <span class="badge badge-green">Done</span></div>
+    <div class="decision-detail">Dan replied to approval email during meeting. Triples Sheena's client management capacity.</div>
+  </div>
+
+  <div class="decision">
+    <div class="decision-title">Dan Gmail OAuth completed <span class="badge badge-green">Done</span></div>
+    <div class="decision-detail">Emil logged in, Dan pressed 2FA. Done.</div>
+  </div>
+
+  <div class="decision">
+    <div class="decision-title">Monthly revenue meeting established <span class="badge badge-green">Done</span></div>
+    <div class="decision-detail">Recurring monthly cadence. Marketing person joins when hired. Keep meetings punchy.</div>
+  </div>
+
+  <div class="decision">
+    <div class="decision-title">Security: move Facebook off dan@hpf email <span class="owner-tag">Dan</span></div>
+    <div class="decision-detail">Public email = risk during IG purge. Move to dedicated secure email. Not urgent.</div>
+  </div>
+</div>
+
+<!-- JUNE TARGETS -->
+<div class="section">
+  <div class="section-title">June Targets</div>
+  <div class="goals-row">
+    <div class="goal-card">
+      <div class="goal-label">Scheduled</div>
+      <div class="goal-current">136</div>
+      <div class="goal-arrow">&darr;</div>
+      <div class="goal-target">170-180</div>
+    </div>
+    <div class="goal-card">
+      <div class="goal-label">Show Rate</div>
+      <div class="goal-current">50%</div>
+      <div class="goal-arrow">&darr;</div>
+      <div class="goal-target">56-60%</div>
+    </div>
+    <div class="goal-card">
+      <div class="goal-label">Close Rate</div>
+      <div class="goal-current">26%</div>
+      <div class="goal-arrow">&darr;</div>
+      <div class="goal-target">26-32%</div>
+    </div>
+    <div class="goal-card">
+      <div class="goal-label">Avg Cart</div>
+      <div class="goal-current">$5,033</div>
+      <div class="goal-arrow">&darr;</div>
+      <div class="goal-target">$5,500-6K</div>
+    </div>
+    <div class="goal-card">
+      <div class="goal-label">DM Setter</div>
+      <div class="goal-current">ramping</div>
+      <div class="goal-arrow">&darr;</div>
+      <div class="goal-target">10 taken/wk</div>
+    </div>
+  </div>
+</div>
+
+<!-- TASKS -->
+<div class="section">
+  <div class="section-title">Tasks — Emil <span class="badge badge-purple">6 items</span></div>
+  <ul class="task-list">
+    <li><span class="check priority-high"></span><strong>Pull historical YoY data</strong> — calls booked, sales, AOV. Jan 2025 &rarr; May 2026. For Dan.</li>
+    <li><span class="check priority-high"></span><strong>Build public dashboards</strong> — closers + setters. 2-3 metrics each, always visible.</li>
+    <li><span class="check priority-med"></span><strong>Per-channel no-show data</strong> — for DJ. Which source has worst show rate?</li>
+    <li><span class="check priority-med"></span><strong>Reach out to James Wanick</strong> — media buying conversation. Dan suggested. Context is hot.</li>
+    <li><span class="check priority-med"></span><strong>Post June email schedule</strong> — Jun 2/5/9/12, keyword format. Team needs to know which guide goes out.</li>
+    <li><span class="check priority-low"></span><strong>IG auto-posting workaround</strong> — Bea posts from VPN. Research safer method.</li>
+  </ul>
+</div>
+
+<!-- DELEGATIONS -->
+<div class="section">
+  <div class="section-title">Delegations <span class="badge badge-blue">10 items</span></div>
+  <table>
+    <tr><th>Task</th><th>Owner</th><th>Due</th></tr>
+    <tr><td>Add missing ManyChat keyword automations (high-intent CTAs)</td><td>DJ + Angelica</td><td>May 29</td></tr>
+    <tr><td>Get CTA schedule + lead magnet calendar from Bea</td><td>DJ</td><td>May 29</td></tr>
+    <tr><td>Ask Nick Kuzmic: funnel methodology, what's hot, show rate systems</td><td>DJ</td><td>May 28</td></tr>
+    <tr><td>Follow-up with Bea to optimize keywords for DM setters</td><td>DJ</td><td>Jun 5</td></tr>
+    <tr><td>Own per-channel show rate investigation</td><td>DJ</td><td>Jun 6</td></tr>
+    <tr><td>Audit pre-call sequences + plug gaps</td><td>Brandon</td><td>ongoing</td></tr>
+    <tr><td>Collect structured closer qualification flags &rarr; pass to DJ</td><td>Brandon</td><td>ongoing</td></tr>
+    <tr><td>Audit DQ calls for legitimacy</td><td>Brandon</td><td>ongoing</td></tr>
+    <tr><td>Move Facebook off dan@hpf to secure email</td><td>Dan</td><td>Jun 15</td></tr>
+    <tr><td>Coordinate June email schedule with DJ/setters</td><td>Dan + Bea</td><td>Jun 1</td></tr>
+  </table>
+</div>
+
+<!-- KEY QUOTES -->
+<div class="section">
+  <div class="section-title">Key Quotes</div>
+  <div class="quote"><strong>Dan on email:</strong> "Let's actually legit test this out. We'll take June as a test to see what happens when we do the Emil call out."</div>
+  <div class="quote"><strong>Dan on upsell:</strong> "Can I throw in the friend as well? So it's like spouse or friend."</div>
+  <div class="quote"><strong>Dan on dashboards:</strong> "Every single one of their team members has a public dashboard on the TV. There needs to be some form of public accountability for this shit."</div>
+  <div class="quote"><strong>Dan on metrics:</strong> "I don't consider a lead to be one that applies. I consider a lead to be one that books a call. We don't want to give more numbers that can be manipulated."</div>
+  <div class="quote"><strong>DJ on setters:</strong> "If they're starting to book the right people and consistent... 30 to 40 to 60 grand per setter. Ideally." (60-90 day ramp)</div>
+  <div class="quote"><strong>DJ on Angelica:</strong> "Almost none of her sets that converted come from IG because she was treating all channels the same way as Instagram."</div>
+  <div class="quote"><strong>Emil:</strong> "The leak now is not continuing to refine and optimize the plan. It's just execution. Consistent execution backed with solid data."</div>
+</div>
+
+<!-- NEXT MEETING -->
+<div class="section">
+  <div class="section-title">Next Meeting Agenda <span class="badge badge-amber">June — TBD</span></div>
+  <ul class="task-list">
+    <li><span class="check"></span>June email keyword results — did conversational CTAs beat direct booking?</li>
+    <li><span class="check"></span>DM setter ramp — Tony + Essal: calls booked, taken, closed</li>
+    <li><span class="check"></span>Per-channel no-show data + actions taken</li>
+    <li><span class="check"></span>Public dashboard status</li>
+    <li><span class="check"></span>Nick Kuzmic / James Wanick intel</li>
+    <li><span class="check"></span>ManyChat keyword performance</li>
+    <li><span class="check"></span>June actuals vs targets</li>
+    <li><span class="check"></span>Avg cart value — any 12mo or spouse/friend closes?</li>
+  </ul>
+</div>
+
+<div style="font-size: 0.65rem; color: var(--muted); text-align: center; margin-top: 16px; padding-top: 10px; border-top: 1px solid var(--border);">
+  HPF Revenue Planning Meeting &middot; 2026-05-28 &middot; Distributed to Supabase: 12 decisions, 6 tasks, 10 delegations
+</div>
+
+</body>
+</html>
