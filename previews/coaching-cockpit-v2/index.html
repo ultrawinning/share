@@ -76,12 +76,21 @@
   /* Summary cells (collapsed group) */
   .summary-cell { font-weight: 600; font-size: 12px; }
 
-  /* Expanded detail cells have a subtle left border matching group color */
-  .detail-program { border-left: 2px solid rgba(74,158,255,0.2); }
-  .detail-program:last-of-type { border-right: 2px solid rgba(74,158,255,0.08); }
-  .detail-weight { border-left: 2px solid rgba(46,212,122,0.2); }
-  .detail-waist { border-left: 2px solid rgba(224,160,48,0.2); }
-  .detail-activity { border-left: 2px solid rgba(160,120,255,0.2); }
+  /* Expanded group visual cue — thin colored top-border on sub-headers */
+  .col-program-d:not(.col-hidden) { border-top: 2px solid rgba(74,158,255,0.35); background: rgba(74,158,255,0.03); }
+  .col-weight-d:not(.col-hidden) { border-top: 2px solid rgba(46,212,122,0.35); background: rgba(46,212,122,0.03); }
+  .col-waist-d:not(.col-hidden) { border-top: 2px solid rgba(224,160,48,0.35); background: rgba(224,160,48,0.03); }
+  .col-activity-d:not(.col-hidden) { border-top: 2px solid rgba(160,120,255,0.35); background: rgba(160,120,255,0.03); }
+
+  /* Body cells in expanded groups get the faintest tint */
+  tbody td.col-program-d:not(.col-hidden) { background: rgba(74,158,255,0.015); }
+  tbody td.col-weight-d:not(.col-hidden) { background: rgba(46,212,122,0.015); }
+  tbody td.col-waist-d:not(.col-hidden) { background: rgba(224,160,48,0.015); }
+  tbody td.col-activity-d:not(.col-hidden) { background: rgba(160,120,255,0.015); }
+  tbody tr:hover td.col-program-d { background: rgba(74,158,255,0.04); }
+  tbody tr:hover td.col-weight-d { background: rgba(46,212,122,0.04); }
+  tbody tr:hover td.col-waist-d { background: rgba(224,160,48,0.04); }
+  tbody tr:hover td.col-activity-d { background: rgba(160,120,255,0.04); }
 
   .col-hidden { display: none !important; }
   .summary-hidden { display: none !important; }
