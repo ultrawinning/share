@@ -73,17 +73,14 @@
   .check-yes { background: var(--green); }
   .check-no { background: var(--border); }
 
-  /* Summary cells (collapsed group) */
-  .summary-cell { font-weight: 600; font-size: 12px; }
+  /* Summary cells (collapsed group) — normal weight, not bold */
+  .summary-cell { font-size: 12.5px; }
 
-  /* Expanded group — colored line on header row ONLY, no body tint */
-  thead .col-program-d:not(.col-hidden) { border-top: 2px solid rgba(74,158,255,0.4); }
-  thead .col-weight-d:not(.col-hidden) { border-top: 2px solid rgba(46,212,122,0.4); }
-  thead .col-waist-d:not(.col-hidden) { border-top: 2px solid rgba(224,160,48,0.4); }
-  thead .col-activity-d:not(.col-hidden) { border-top: 2px solid rgba(160,120,255,0.4); }
+  /* Vertical separators between groups */
+  .group-end { border-right: 1px solid var(--border) !important; }
 
   /* Alternating row stripes */
-  tbody tr:nth-child(even) { background: rgba(255,255,255,0.035); }
+  tbody tr:nth-child(even) { background: rgba(255,255,255,0.05); }
   tbody tr:nth-child(even):hover { background: var(--card); }
   tbody tr.selected:nth-child(even) { background: rgba(46,212,122,0.06); }
 
@@ -169,67 +166,38 @@
 <!-- Table -->
 <div class="table-wrap">
 <table id="cockpit">
-  <!-- Group header row -->
   <thead>
-  <tr class="group-row">
-    <th colspan="4"></th>
-    <!-- Program group header -->
-    <th id="gh-program-summary" class=""><span class="group-label gl-program" onclick="toggleGroup('program')"><span class="chevron" id="chev-program">▸</span> Program</span></th>
-    <th id="gh-program-d1" class="col-hidden"><span class="group-label gl-program" onclick="toggleGroup('program')"><span class="chevron open">▸</span> Program</span></th>
-    <th id="gh-program-d2" class="col-hidden"></th>
-    <th id="gh-program-d3" class="col-hidden"></th>
-    <th id="gh-program-d4" class="col-hidden"></th>
-    <!-- Weight group header -->
-    <th id="gh-weight-summary"><span class="group-label gl-weight" onclick="toggleGroup('weight')"><span class="chevron" id="chev-weight">▸</span> Weight</span></th>
-    <th id="gh-weight-d1" class="col-hidden"><span class="group-label gl-weight" onclick="toggleGroup('weight')"><span class="chevron open">▸</span> Weight</span></th>
-    <th id="gh-weight-d2" class="col-hidden"></th>
-    <th id="gh-weight-d3" class="col-hidden"></th>
-    <!-- Waist group header -->
-    <th id="gh-waist-summary"><span class="group-label gl-waist" onclick="toggleGroup('waist')"><span class="chevron" id="chev-waist">▸</span> Waist</span></th>
-    <th id="gh-waist-d1" class="col-hidden"><span class="group-label gl-waist" onclick="toggleGroup('waist')"><span class="chevron open">▸</span> Waist</span></th>
-    <th id="gh-waist-d2" class="col-hidden"></th>
-    <th id="gh-waist-d3" class="col-hidden"></th>
-    <!-- Activity group header -->
-    <th id="gh-activity-summary"><span class="group-label gl-activity" onclick="toggleGroup('activity')"><span class="chevron" id="chev-activity">▸</span> Activity</span></th>
-    <th id="gh-activity-d1" class="col-hidden"><span class="group-label gl-activity" onclick="toggleGroup('activity')"><span class="chevron open">▸</span> Activity</span></th>
-    <th id="gh-activity-d2" class="col-hidden"></th>
-    <th id="gh-activity-d3" class="col-hidden"></th>
-    <th id="gh-activity-d4" class="col-hidden"></th>
-    <!-- Status -->
-    <th colspan="3"><span class="group-label gl-status">Status</span></th>
-  </tr>
   <tr>
     <!-- Always visible -->
     <th>Client <span class="sort-icon">↕</span></th>
     <th>Notes <span class="sort-icon">↕</span></th>
-    <th>Checked <span class="sort-icon">↕</span></th>
-    <th style="width:30px;"></th>
-    <!-- Program: summary -->
-    <th class="col-program-s">Program <span class="sort-icon">↕</span></th>
+    <th class="group-end">Checked <span class="sort-icon">↕</span></th>
+    <!-- Program: summary (clickable to expand) -->
+    <th class="col-program-s group-end" onclick="toggleGroup('program')" style="color:var(--blue);cursor:pointer;">▸ Program <span class="sort-icon">↕</span></th>
     <!-- Program: detail -->
-    <th class="col-program-d col-hidden detail-program">Program <span class="sort-icon">↕</span></th>
+    <th class="col-program-d col-hidden" onclick="toggleGroup('program')" style="color:var(--blue);cursor:pointer;">▾ Program <span class="sort-icon">↕</span></th>
     <th class="col-program-d col-hidden">Goal</th>
     <th class="col-program-d col-hidden">End <span class="sort-icon">↕</span></th>
-    <th class="col-program-d col-hidden">Grad</th>
+    <th class="col-program-d col-hidden group-end">Grad</th>
     <!-- Weight: summary -->
-    <th class="col-weight-s">Wt Δ <span class="sort-icon">↕</span></th>
+    <th class="col-weight-s group-end" onclick="toggleGroup('weight')" style="color:var(--green);cursor:pointer;">▸ Wt Δ <span class="sort-icon">↕</span></th>
     <!-- Weight: detail -->
-    <th class="col-weight-d col-hidden detail-weight">Start <span class="sort-icon">↕</span></th>
+    <th class="col-weight-d col-hidden" onclick="toggleGroup('weight')" style="color:var(--green);cursor:pointer;">▾ Start <span class="sort-icon">↕</span></th>
     <th class="col-weight-d col-hidden">Current <span class="sort-icon">↕</span></th>
-    <th class="col-weight-d col-hidden">Δ <span class="sort-icon">↕</span></th>
+    <th class="col-weight-d col-hidden group-end">Δ <span class="sort-icon">↕</span></th>
     <!-- Waist: summary -->
-    <th class="col-waist-s">Waist Δ <span class="sort-icon">↕</span></th>
+    <th class="col-waist-s group-end" onclick="toggleGroup('waist')" style="color:var(--yellow);cursor:pointer;">▸ Waist Δ <span class="sort-icon">↕</span></th>
     <!-- Waist: detail -->
-    <th class="col-waist-d col-hidden detail-waist">Start</th>
+    <th class="col-waist-d col-hidden" onclick="toggleGroup('waist')" style="color:var(--yellow);cursor:pointer;">▾ Start</th>
     <th class="col-waist-d col-hidden">Current</th>
-    <th class="col-waist-d col-hidden">Δ <span class="sort-icon">↕</span></th>
+    <th class="col-waist-d col-hidden group-end">Δ <span class="sort-icon">↕</span></th>
     <!-- Activity: summary -->
-    <th class="col-activity-s">Activity <span class="sort-icon">↕</span></th>
+    <th class="col-activity-s group-end" onclick="toggleGroup('activity')" style="color:var(--purple);cursor:pointer;">▸ Activity <span class="sort-icon">↕</span></th>
     <!-- Activity: detail -->
-    <th class="col-activity-d col-hidden detail-activity">Nutrition <span class="sort-icon">↕</span></th>
+    <th class="col-activity-d col-hidden" onclick="toggleGroup('activity')" style="color:var(--purple);cursor:pointer;">▾ Nutrition <span class="sort-icon">↕</span></th>
     <th class="col-activity-d col-hidden">Workouts</th>
     <th class="col-activity-d col-hidden">Photos</th>
-    <th class="col-activity-d col-hidden">Last active <span class="sort-icon">↕</span></th>
+    <th class="col-activity-d col-hidden group-end">Last active <span class="sort-icon">↕</span></th>
     <!-- Status (always visible) -->
     <th>NPS</th>
     <th>Retention</th>
@@ -242,21 +210,21 @@
       <td><span class="name">(Dr.) Leon Buffaloe</span><span class="badge badge-gt">GT</span></td>
       <td class="muted">—</td>
       <td><span class="check-dot check-no"></span></td>
-      <td></td>
-      <td class="col-program-s summary-cell">4 months</td>
+      
+      <td class="col-program-s summary-cell group-end">4 months</td>
       <td class="col-program-d col-hidden">4 months</td>
       <td class="col-program-d col-hidden" style="font-size:11px;color:var(--secondary);max-width:140px;overflow:hidden;text-overflow:ellipsis;">185lbs or leaner</td>
       <td class="col-program-d col-hidden">8/13</td>
       <td class="col-program-d col-hidden">7/23</td>
-      <td class="col-weight-s"><span class="good">-4</span></td>
+      <td class="col-weight-s group-end"><span class="good">-4</span></td>
       <td class="col-weight-d col-hidden"><span data-tip="Mar 2">221.6</span></td>
       <td class="col-weight-d col-hidden"><span data-tip="Apr 13">217.6</span></td>
       <td class="col-weight-d col-hidden"><span class="good">-4</span></td>
-      <td class="col-waist-s muted">—</td>
+      <td class="col-waist-s muted group-end">—</td>
       <td class="col-waist-d col-hidden"><span data-tip="Mar 4">46</span></td>
       <td class="col-waist-d col-hidden muted">—</td>
       <td class="col-waist-d col-hidden muted">—</td>
-      <td class="col-activity-s muted">—</td>
+      <td class="col-activity-s muted group-end">—</td>
       <td class="col-activity-d col-hidden muted">—</td>
       <td class="col-activity-d col-hidden muted">—</td>
       <td class="col-activity-d col-hidden muted">—</td>
@@ -270,21 +238,21 @@
       <td><span class="name">Aaron Tansy</span><span class="badge badge-gt">GT</span></td>
       <td class="muted">—</td>
       <td><span class="check-dot check-no"></span></td>
-      <td></td>
-      <td class="col-program-s summary-cell">Retained: 6mo</td>
+      
+      <td class="col-program-s summary-cell group-end">Retained: 6mo</td>
       <td class="col-program-d col-hidden">Retained: 6mo GT</td>
       <td class="col-program-d col-hidden muted">—</td>
       <td class="col-program-d col-hidden">9/1</td>
       <td class="col-program-d col-hidden">8/11</td>
-      <td class="col-weight-s"><span class="good">-12.6</span></td>
+      <td class="col-weight-s group-end"><span class="good">-12.6</span></td>
       <td class="col-weight-d col-hidden"><span data-tip="Jul 7">160</span></td>
       <td class="col-weight-d col-hidden"><span data-tip="May 20">147.4</span></td>
       <td class="col-weight-d col-hidden"><span class="good">-12.6</span></td>
-      <td class="col-waist-s"><span class="good">-4</span></td>
+      <td class="col-waist-s group-end"><span class="good">-4</span></td>
       <td class="col-waist-d col-hidden"><span data-tip="Jul 13">33.5</span></td>
       <td class="col-waist-d col-hidden"><span data-tip="May 25">29.5</span></td>
       <td class="col-waist-d col-hidden"><span class="good">-4</span></td>
-      <td class="col-activity-s summary-cell">6 wk</td>
+      <td class="col-activity-s summary-cell group-end">6 wk</td>
       <td class="col-activity-d col-hidden">0/14</td>
       <td class="col-activity-d col-hidden">6</td>
       <td class="col-activity-d col-hidden muted">0</td>
@@ -298,21 +266,21 @@
       <td><span class="name">Adrianna Pavlides</span><span class="badge badge-gt">GT</span></td>
       <td class="notes-cell">April 13</td>
       <td><span class="check-dot check-no"></span></td>
-      <td></td>
-      <td class="col-program-s summary-cell">150 days</td>
+      
+      <td class="col-program-s summary-cell group-end">150 days</td>
       <td class="col-program-d col-hidden">150 days</td>
       <td class="col-program-d col-hidden" style="font-size:11px;color:var(--secondary);max-width:140px;overflow:hidden;text-overflow:ellipsis;">BF 26→20%, -10lbs</td>
       <td class="col-program-d col-hidden">9/13</td>
       <td class="col-program-d col-hidden">8/23</td>
-      <td class="col-weight-s"><span class="good">-8.8</span></td>
+      <td class="col-weight-s group-end"><span class="good">-8.8</span></td>
       <td class="col-weight-d col-hidden"><span data-tip="Apr 7">123</span></td>
       <td class="col-weight-d col-hidden"><span data-tip="May 27">114.2</span></td>
       <td class="col-weight-d col-hidden"><span class="good">-8.8</span></td>
-      <td class="col-waist-s"><span class="good">-1.5</span></td>
+      <td class="col-waist-s group-end"><span class="good">-1.5</span></td>
       <td class="col-waist-d col-hidden"><span data-tip="Apr 20">31</span></td>
       <td class="col-waist-d col-hidden"><span data-tip="May 26">29.5</span></td>
       <td class="col-waist-d col-hidden"><span class="good">-1.5</span></td>
-      <td class="col-activity-s"><span style="color:var(--green)">14/14</span></td>
+      <td class="col-activity-s group-end"><span style="color:var(--green)">14/14</span></td>
       <td class="col-activity-d col-hidden"><span style="color:var(--green)">14/14</span></td>
       <td class="col-activity-d col-hidden">11</td>
       <td class="col-activity-d col-hidden">2</td>
@@ -326,21 +294,21 @@
       <td><span class="name">Aleksandar Trajkovic</span><span class="badge badge-gt">GT</span></td>
       <td class="notes-cell">off to Alaska June/July…</td>
       <td><span class="check-dot check-no"></span></td>
-      <td></td>
-      <td class="col-program-s summary-cell">2nd ret: 6mo</td>
+      
+      <td class="col-program-s summary-cell group-end">2nd ret: 6mo</td>
       <td class="col-program-d col-hidden">2nd retention: 6mo</td>
       <td class="col-program-d col-hidden muted">—</td>
       <td class="col-program-d col-hidden">11/1</td>
       <td class="col-program-d col-hidden">10/11</td>
-      <td class="col-weight-s"><span class="good">-35</span></td>
+      <td class="col-weight-s group-end"><span class="good">-35</span></td>
       <td class="col-weight-d col-hidden"><span data-tip="Mar 19">192</span></td>
       <td class="col-weight-d col-hidden"><span data-tip="Apr 23">157</span></td>
       <td class="col-weight-d col-hidden"><span class="good">-35</span></td>
-      <td class="col-waist-s"><span class="good">-10.9</span></td>
+      <td class="col-waist-s group-end"><span class="good">-10.9</span></td>
       <td class="col-waist-d col-hidden"><span data-tip="Jan 27">42.3</span></td>
       <td class="col-waist-d col-hidden"><span data-tip="Apr 5">31.4</span></td>
       <td class="col-waist-d col-hidden"><span class="good">-10.9</span></td>
-      <td class="col-activity-s summary-cell">2 wk</td>
+      <td class="col-activity-s summary-cell group-end">2 wk</td>
       <td class="col-activity-d col-hidden">0/14</td>
       <td class="col-activity-d col-hidden">2</td>
       <td class="col-activity-d col-hidden muted">0</td>
@@ -354,21 +322,21 @@
       <td><span class="name">Angela Briaud</span><span class="badge badge-gt">GT</span></td>
       <td class="notes-cell">breastfeeding 8-12mo…</td>
       <td><span class="check-dot check-no"></span></td>
-      <td></td>
-      <td class="col-program-s summary-cell">12mo (spousal)</td>
+      
+      <td class="col-program-s summary-cell group-end">12mo (spousal)</td>
       <td class="col-program-d col-hidden">12mo group (spousal)</td>
       <td class="col-program-d col-hidden muted">—</td>
       <td class="col-program-d col-hidden">7/21</td>
       <td class="col-program-d col-hidden">6/30</td>
-      <td class="col-weight-s"><span class="good">-24.2</span></td>
+      <td class="col-weight-s group-end"><span class="good">-24.2</span></td>
       <td class="col-weight-d col-hidden"><span data-tip="Jun 30">247</span></td>
       <td class="col-weight-d col-hidden"><span data-tip="Apr 30">222.8</span></td>
       <td class="col-weight-d col-hidden"><span class="good">-24.2</span></td>
-      <td class="col-waist-s"><span class="good">-4</span></td>
+      <td class="col-waist-s group-end"><span class="good">-4</span></td>
       <td class="col-waist-d col-hidden"><span data-tip="Jun 30">48</span></td>
       <td class="col-waist-d col-hidden"><span data-tip="Apr 30">44</span></td>
       <td class="col-waist-d col-hidden"><span class="good">-4</span></td>
-      <td class="col-activity-s muted">0/14</td>
+      <td class="col-activity-s muted group-end">0/14</td>
       <td class="col-activity-d col-hidden">0/14</td>
       <td class="col-activity-d col-hidden">0</td>
       <td class="col-activity-d col-hidden muted">0</td>
@@ -382,21 +350,21 @@
       <td><span class="name">Armin Shaverdian</span><span class="badge badge-gt">GT</span></td>
       <td class="notes-cell">Onboarding March 23</td>
       <td><span class="check-dot check-no"></span></td>
-      <td></td>
-      <td class="col-program-s summary-cell">120 days</td>
+      
+      <td class="col-program-s summary-cell group-end">120 days</td>
       <td class="col-program-d col-hidden">120 days</td>
       <td class="col-program-d col-hidden" style="font-size:11px;color:var(--secondary);max-width:140px;overflow:hidden;text-overflow:ellipsis;">40lbs → 185-190lb</td>
       <td class="col-program-d col-hidden">7/23</td>
       <td class="col-program-d col-hidden">7/2</td>
-      <td class="col-weight-s"><span class="good">-14</span></td>
+      <td class="col-weight-s group-end"><span class="good">-14</span></td>
       <td class="col-weight-d col-hidden"><span data-tip="Mar 23">234</span></td>
       <td class="col-weight-d col-hidden"><span data-tip="May 29">220</span></td>
       <td class="col-weight-d col-hidden"><span class="good">-14</span></td>
-      <td class="col-waist-s muted">—</td>
+      <td class="col-waist-s muted group-end">—</td>
       <td class="col-waist-d col-hidden"><span data-tip="Mar 23">44.5</span></td>
       <td class="col-waist-d col-hidden muted">—</td>
       <td class="col-waist-d col-hidden muted">—</td>
-      <td class="col-activity-s summary-cell">11/14</td>
+      <td class="col-activity-s summary-cell group-end">11/14</td>
       <td class="col-activity-d col-hidden">11/14</td>
       <td class="col-activity-d col-hidden">3</td>
       <td class="col-activity-d col-hidden muted">0</td>
