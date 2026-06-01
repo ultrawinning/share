@@ -3,364 +3,416 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Coaching Cockpit V2 — Grouped Table + Action Drawer</title>
+<title>Coaching Cockpit V2 — Inline Grouped Columns + Action Drawer</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
     --bg: #0a0b0d; --section: #111215; --card: #16181c; --border: #2a2d33;
     --text: #e8e8e8; --secondary: #8b8f96; --tertiary: #5a5e66;
-    --green: #2ED47A; --yellow: #E0A030; --red: #e05050; --blue: #4a9eff;
+    --green: #2ED47A; --yellow: #E0A030; --red: #e05050; --blue: #4a9eff; --purple: #a078ff;
   }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+  a { color: var(--green); text-decoration: none; }
 
-  .header { padding: 20px 24px 12px; display: flex; justify-content: space-between; align-items: baseline; }
+  /* Header */
+  .header { padding: 20px 24px 10px; display: flex; justify-content: space-between; align-items: baseline; }
   .header h1 { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; }
-  .header .meta { color: var(--secondary); font-size: 13px; margin-top: 4px; }
-  .header .actions { display: flex; gap: 8px; align-items: center; }
-  .pill { display: inline-flex; align-items: center; gap: 5px; background: var(--card); border: 1px solid var(--border); color: var(--secondary); border-radius: 8px; padding: 7px 12px; font-size: 12.5px; cursor: pointer; text-decoration: none; }
+  .header .meta { color: var(--secondary); font-size: 13px; margin-top: 3px; }
+  .header .actions { display: flex; gap: 8px; }
+  .pill { display: inline-flex; align-items: center; gap: 5px; background: var(--card); border: 1px solid var(--border); color: var(--secondary); border-radius: 8px; padding: 7px 12px; font-size: 12.5px; cursor: pointer; }
   .pill:hover { border-color: var(--secondary); }
   .pill.active { border-color: var(--green); color: var(--green); }
 
   /* Filters */
-  .filters { padding: 0 24px 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .filters { padding: 4px 24px 12px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .search-input { background: var(--card); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 7px 12px; font-size: 13px; width: 260px; }
+  .search-input::placeholder { color: var(--tertiary); }
 
-  /* Group toggles */
-  .group-bar { padding: 4px 24px 8px; display: flex; gap: 6px; flex-wrap: wrap; }
-  .group-toggle { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 10px; border-radius: 4px; cursor: pointer; border: 1px solid var(--border); background: var(--card); color: var(--secondary); user-select: none; }
-  .group-toggle.on { background: var(--section); color: var(--text); border-color: var(--secondary); }
-  .group-toggle .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; }
-
-  /* Table */
-  .table-wrap { overflow-x: auto; padding: 0 24px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  /* Table container */
+  .table-wrap { padding: 0 24px; overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
   .table-wrap::-webkit-scrollbar { height: 8px; }
-  .table-wrap::-webkit-scrollbar-track { background: transparent; }
   .table-wrap::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-  table { width: 100%; border-collapse: collapse; font-size: 12.5px; min-width: 1200px; }
-  thead th { position: sticky; top: 0; background: var(--section); color: var(--tertiary); text-align: left; padding: 8px 10px; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap; border-bottom: 2px solid var(--border); }
+  table { border-collapse: collapse; font-size: 12.5px; width: 100%; }
+
+  /* Group header row */
+  .group-row th { padding: 0; border-bottom: none; }
+  .group-label { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px; cursor: pointer; user-select: none; border-radius: 4px 4px 0 0; white-space: nowrap; }
+  .group-label:hover { opacity: 0.85; }
+  .group-label .chevron { font-size: 10px; transition: transform 0.15s; display: inline-block; }
+  .group-label .chevron.open { transform: rotate(90deg); }
+  .gl-client { color: var(--text); }
+  .gl-program { color: var(--blue); background: rgba(74,158,255,0.06); }
+  .gl-weight { color: var(--green); background: rgba(46,212,122,0.06); }
+  .gl-waist { color: var(--yellow); background: rgba(224,160,48,0.06); }
+  .gl-activity { color: var(--purple); background: rgba(160,120,255,0.06); }
+  .gl-status { color: var(--red); background: rgba(224,80,80,0.06); }
+
+  /* Column headers */
+  thead th { position: sticky; top: 0; z-index: 2; background: var(--section); color: var(--tertiary); text-align: left; padding: 7px 10px; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; white-space: nowrap; border-bottom: 2px solid var(--border); cursor: pointer; }
+  thead th:hover { color: var(--secondary); }
+  thead th .sort-icon { margin-left: 3px; font-size: 9px; opacity: 0.4; }
+
+  /* Body */
   tbody tr { border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.1s; }
   tbody tr:hover { background: var(--card); }
-  tbody tr.selected { background: rgba(46,212,122,0.06); border-left: 2px solid var(--green); }
-  td { padding: 8px 10px; vertical-align: top; white-space: nowrap; }
-  td.wrap { white-space: normal; max-width: 220px; }
+  tbody tr.selected { background: rgba(46,212,122,0.06); }
+  td { padding: 7px 10px; vertical-align: middle; white-space: nowrap; }
 
-  /* Group header cells */
-  .group-header { text-align: center; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; padding: 4px 10px; border-bottom: 1px solid var(--border); }
-  .gh-client { background: var(--section); color: var(--text); }
-  .gh-program { background: rgba(74,158,255,0.08); color: var(--blue); }
-  .gh-weight { background: rgba(46,212,122,0.08); color: var(--green); }
-  .gh-waist { background: rgba(224,160,48,0.08); color: var(--yellow); }
-  .gh-activity { background: rgba(160,120,255,0.08); color: #a078ff; }
-  .gh-status { background: rgba(224,80,80,0.08); color: var(--red); }
-
-  /* Cell styling */
-  .name { font-weight: 600; color: var(--text); }
-  .tag { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 11px; font-weight: 600; }
-  .tag-green { background: rgba(46,212,122,0.15); color: var(--green); }
-  .tag-yellow { background: rgba(224,160,48,0.15); color: var(--yellow); }
-  .tag-red { background: rgba(224,80,80,0.15); color: var(--red); }
-  .tag-gray { background: rgba(90,94,102,0.15); color: var(--tertiary); }
-  .delta-good { color: var(--green); font-weight: 600; font-family: 'Space Grotesk', monospace; }
-  .delta-bad { color: var(--red); font-weight: 600; font-family: 'Space Grotesk', monospace; }
-  .delta-neutral { color: var(--secondary); }
+  /* Cell types */
+  .name { font-weight: 600; }
+  .badge { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 10.5px; font-weight: 600; margin-left: 6px; vertical-align: middle; }
+  .badge-gt { background: rgba(74,158,255,0.12); color: var(--blue); }
+  .badge-bb { background: rgba(224,160,48,0.12); color: var(--yellow); }
   .muted { color: var(--tertiary); }
-  .notes-preview { color: var(--secondary); font-size: 11.5px; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .good { color: var(--green); font-weight: 600; font-family: 'Space Grotesk', monospace; }
+  .bad { color: var(--red); font-weight: 600; font-family: 'Space Grotesk', monospace; }
+  .warn { color: var(--yellow); }
+  .notes-cell { color: var(--secondary); font-size: 11.5px; max-width: 160px; overflow: hidden; text-overflow: ellipsis; }
   .check-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-  .check-dot.yes { background: var(--green); }
-  .check-dot.no { background: var(--border); }
+  .check-yes { background: var(--green); }
+  .check-no { background: var(--border); }
 
-  /* Hidden columns */
-  .col-hidden { display: none; }
+  /* Summary cells (collapsed group) */
+  .summary-cell { font-weight: 600; font-size: 12px; }
+
+  /* Expanded detail cells have a subtle left border matching group color */
+  .detail-program { border-left: 2px solid rgba(74,158,255,0.2); }
+  .detail-program:last-of-type { border-right: 2px solid rgba(74,158,255,0.08); }
+  .detail-weight { border-left: 2px solid rgba(46,212,122,0.2); }
+  .detail-waist { border-left: 2px solid rgba(224,160,48,0.2); }
+  .detail-activity { border-left: 2px solid rgba(160,120,255,0.2); }
+
+  .col-hidden { display: none !important; }
+  .summary-hidden { display: none !important; }
+
+  /* Status badges */
+  .status-badge { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 10.5px; font-weight: 600; }
+  .sb-green { background: rgba(46,212,122,0.12); color: var(--green); }
+  .sb-yellow { background: rgba(224,160,48,0.12); color: var(--yellow); }
+  .sb-gray { background: rgba(90,94,102,0.12); color: var(--tertiary); }
+  .sb-red { background: rgba(224,80,80,0.12); color: var(--red); }
 
   /* Action drawer */
-  .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 40; display: none; }
+  .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 40; display: none; }
   .drawer-overlay.open { display: block; }
-  .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(480px, 92vw); z-index: 50; background: var(--bg); border-left: 1px solid var(--border); overflow-y: scroll; padding: 20px 22px; display: none; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(460px, 92vw); z-index: 50; background: var(--bg); border-left: 1px solid var(--border); overflow-y: scroll; padding: 20px 22px; display: none; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
   .drawer.open { display: block; }
   .drawer::-webkit-scrollbar { width: 8px; }
   .drawer::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-  .drawer-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+  .drawer-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
   .drawer-header h2 { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; }
   .drawer-header .sub { color: var(--secondary); font-size: 12.5px; margin-top: 3px; }
-  .close-btn { background: none; border: 1px solid var(--border); color: var(--secondary); border-radius: 6px; padding: 5px 7px; cursor: pointer; font-size: 16px; }
+  .close-btn { background: none; border: 1px solid var(--border); color: var(--secondary); border-radius: 6px; padding: 5px 7px; cursor: pointer; font-size: 14px; line-height: 1; }
 
-  .action-section { margin-bottom: 20px; }
+  .action-section { margin-bottom: 18px; }
   .action-section h3 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--secondary); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
-  .action-section h3 .badge { font-size: 10px; padding: 1px 6px; border-radius: 10px; background: rgba(46,212,122,0.15); color: var(--green); text-transform: none; letter-spacing: 0; font-weight: 600; }
+  .ai-badge { font-size: 10px; padding: 1px 6px; border-radius: 10px; background: rgba(160,120,255,0.15); color: var(--purple); text-transform: none; letter-spacing: 0; font-weight: 600; }
 
-  .tz-link { display: inline-flex; align-items: center; gap: 6px; background: var(--card); border: 1px solid var(--border); color: var(--green); border-radius: 8px; padding: 8px 12px; font-size: 13px; font-weight: 600; text-decoration: none; }
-  .tz-link:hover { border-color: var(--green); }
-
-  .btn { display: inline-flex; align-items: center; gap: 5px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 7px 11px; font-size: 12.5px; font-weight: 600; cursor: pointer; }
+  .btn { display: inline-flex; align-items: center; gap: 5px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 7px 11px; font-size: 12.5px; font-weight: 600; cursor: pointer; color: var(--secondary); }
   .btn-green { color: var(--green); }
-  .btn-secondary { color: var(--secondary); }
-  .btn-red { color: var(--red); }
-
-  textarea.notes-input { width: 100%; background: var(--card); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 10px; font-size: 13px; resize: vertical; font-family: inherit; min-height: 60px; }
+  .btn:hover { border-color: var(--secondary); }
+  textarea.notes-input { width: 100%; background: var(--card); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 10px; font-size: 13px; resize: vertical; font-family: inherit; min-height: 48px; }
   select.form-select { background: var(--card); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px; font-size: 12.5px; cursor: pointer; }
 
-  /* Draft message */
   .draft-box { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
-  .draft-box textarea { width: 100%; background: var(--section); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 10px; font-size: 13px; resize: vertical; font-family: inherit; min-height: 80px; line-height: 1.5; }
-  .draft-box .draft-actions { display: flex; gap: 8px; margin-top: 8px; }
+  .draft-box textarea { width: 100%; background: var(--section); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 10px; font-size: 13px; resize: vertical; font-family: inherit; min-height: 100px; line-height: 1.5; }
+  .draft-box .draft-actions { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
   .draft-label { font-size: 11px; color: var(--tertiary); margin-bottom: 6px; }
 
-  /* Annotation */
-  .annotation { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--card); border: 1px solid var(--green); border-radius: 12px; padding: 12px 20px; font-size: 13px; color: var(--secondary); z-index: 100; max-width: 600px; text-align: center; }
+  .tz-link { display: inline-flex; align-items: center; gap: 6px; background: var(--card); border: 1px solid var(--border); color: var(--green); border-radius: 8px; padding: 8px 12px; font-size: 13px; font-weight: 600; text-decoration: none; }
+
+  /* Annotation bar */
+  .annotation { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); background: var(--card); border: 1px solid var(--green); border-radius: 12px; padding: 10px 20px; font-size: 12.5px; color: var(--secondary); z-index: 100; max-width: 700px; text-align: center; }
   .annotation strong { color: var(--green); }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
+<!-- Header -->
 <div class="header">
   <div>
     <h1>Coach · John</h1>
-    <div class="meta">152 active · Synced 3h ago</div>
+    <div class="meta">152 active · 17 paused · 1 cleanup</div>
   </div>
   <div class="actions">
-    <span style="color:var(--tertiary);font-size:12px;">Synced 3h ago</span>
-    <a class="pill" href="#">↻ Refresh</a>
-    <a class="pill" href="#">⇄ Sync sheets</a>
-    <a class="pill" style="color:var(--green);" href="#">↻ Refresh Trainerize</a>
+    <span style="color:var(--tertiary);font-size:12px;align-self:center;">Synced 3h ago</span>
+    <span class="pill">↻ Refresh</span>
+    <span class="pill">⇄ Sync sheets</span>
+    <span class="pill" style="color:var(--green);">↻ Trainerize</span>
   </div>
 </div>
 
 <!-- Filters -->
 <div class="filters">
-  <span class="pill">All (398)</span>
   <span class="pill active">Active (152)</span>
-  <span class="pill">Needs cleanup (1)</span>
+  <span class="pill">All (398)</span>
   <span class="pill">Paused (17)</span>
+  <span class="pill">Needs cleanup (1)</span>
   <span class="pill">Inactive (228)</span>
-  <input type="text" placeholder="Search name, notes, program, tag…" style="background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:7px 12px;font-size:13px;width:280px;" />
-</div>
-
-<!-- Column group toggles -->
-<div class="group-bar">
-  <span style="color:var(--tertiary);font-size:11px;margin-right:4px;align-self:center;">Column groups:</span>
-  <span class="group-toggle on" onclick="toggleGroup('program')"><span class="dot" style="background:var(--blue);"></span>Program</span>
-  <span class="group-toggle on" onclick="toggleGroup('weight')"><span class="dot" style="background:var(--green);"></span>Weight</span>
-  <span class="group-toggle" onclick="toggleGroup('waist')"><span class="dot" style="background:var(--yellow);"></span>Waist</span>
-  <span class="group-toggle" onclick="toggleGroup('activity')"><span class="dot" style="background:#a078ff;"></span>Activity</span>
-  <span class="group-toggle on" onclick="toggleGroup('status')"><span class="dot" style="background:var(--red);"></span>Status</span>
+  <input class="search-input" type="text" placeholder="Search name, notes, program…" />
 </div>
 
 <!-- Table -->
 <div class="table-wrap">
-<table>
+<table id="cockpit">
+  <!-- Group header row -->
   <thead>
-    <tr>
-      <!-- Client (always visible) -->
-      <th colspan="4" class="group-header gh-client">Client</th>
-      <!-- Program group -->
-      <th colspan="4" class="group-header gh-program col-program">Program</th>
-      <!-- Weight group -->
-      <th colspan="3" class="group-header gh-weight col-weight">Weight</th>
-      <!-- Waist group (hidden by default) -->
-      <th colspan="3" class="group-header gh-waist col-waist col-hidden">Waist</th>
-      <!-- Activity group (hidden by default) -->
-      <th colspan="4" class="group-header gh-activity col-activity col-hidden">Activity (14d)</th>
-      <!-- Status group -->
-      <th colspan="4" class="group-header gh-status col-status">Status</th>
-    </tr>
-    <tr>
-      <!-- Client -->
-      <th>Client</th>
-      <th>Tag</th>
-      <th>Notes</th>
-      <th>Checked</th>
-      <!-- Program -->
-      <th class="col-program">Program</th>
-      <th class="col-program">Goal</th>
-      <th class="col-program">End</th>
-      <th class="col-program">Grad</th>
-      <!-- Weight -->
-      <th class="col-weight">Start</th>
-      <th class="col-weight">Current</th>
-      <th class="col-weight">Δ</th>
-      <!-- Waist -->
-      <th class="col-waist col-hidden">Start</th>
-      <th class="col-waist col-hidden">Current</th>
-      <th class="col-waist col-hidden">Δ</th>
-      <!-- Activity -->
-      <th class="col-activity col-hidden">Nutrition</th>
-      <th class="col-activity col-hidden">Workouts</th>
-      <th class="col-activity col-hidden">Photos</th>
-      <th class="col-activity col-hidden">Last active</th>
-      <!-- Status -->
-      <th class="col-status">NPS</th>
-      <th class="col-status">Retention</th>
-      <th class="col-status">Testimonial</th>
-      <th class="col-status">Actions</th>
-    </tr>
+  <tr class="group-row">
+    <th colspan="4"></th>
+    <!-- Program group header -->
+    <th id="gh-program-summary" class=""><span class="group-label gl-program" onclick="toggleGroup('program')"><span class="chevron" id="chev-program">▸</span> Program</span></th>
+    <th id="gh-program-d1" class="col-hidden"><span class="group-label gl-program" onclick="toggleGroup('program')"><span class="chevron open">▸</span> Program</span></th>
+    <th id="gh-program-d2" class="col-hidden"></th>
+    <th id="gh-program-d3" class="col-hidden"></th>
+    <th id="gh-program-d4" class="col-hidden"></th>
+    <!-- Weight group header -->
+    <th id="gh-weight-summary"><span class="group-label gl-weight" onclick="toggleGroup('weight')"><span class="chevron" id="chev-weight">▸</span> Weight</span></th>
+    <th id="gh-weight-d1" class="col-hidden"><span class="group-label gl-weight" onclick="toggleGroup('weight')"><span class="chevron open">▸</span> Weight</span></th>
+    <th id="gh-weight-d2" class="col-hidden"></th>
+    <th id="gh-weight-d3" class="col-hidden"></th>
+    <!-- Waist group header -->
+    <th id="gh-waist-summary"><span class="group-label gl-waist" onclick="toggleGroup('waist')"><span class="chevron" id="chev-waist">▸</span> Waist</span></th>
+    <th id="gh-waist-d1" class="col-hidden"><span class="group-label gl-waist" onclick="toggleGroup('waist')"><span class="chevron open">▸</span> Waist</span></th>
+    <th id="gh-waist-d2" class="col-hidden"></th>
+    <th id="gh-waist-d3" class="col-hidden"></th>
+    <!-- Activity group header -->
+    <th id="gh-activity-summary"><span class="group-label gl-activity" onclick="toggleGroup('activity')"><span class="chevron" id="chev-activity">▸</span> Activity</span></th>
+    <th id="gh-activity-d1" class="col-hidden"><span class="group-label gl-activity" onclick="toggleGroup('activity')"><span class="chevron open">▸</span> Activity</span></th>
+    <th id="gh-activity-d2" class="col-hidden"></th>
+    <th id="gh-activity-d3" class="col-hidden"></th>
+    <th id="gh-activity-d4" class="col-hidden"></th>
+    <!-- Status -->
+    <th colspan="3"><span class="group-label gl-status">Status</span></th>
+  </tr>
+  <tr>
+    <!-- Always visible -->
+    <th>Client <span class="sort-icon">↕</span></th>
+    <th>Notes <span class="sort-icon">↕</span></th>
+    <th>Checked <span class="sort-icon">↕</span></th>
+    <th style="width:30px;"></th>
+    <!-- Program: summary -->
+    <th class="col-program-s">Program <span class="sort-icon">↕</span></th>
+    <!-- Program: detail -->
+    <th class="col-program-d col-hidden detail-program">Program <span class="sort-icon">↕</span></th>
+    <th class="col-program-d col-hidden">Goal</th>
+    <th class="col-program-d col-hidden">End <span class="sort-icon">↕</span></th>
+    <th class="col-program-d col-hidden">Grad</th>
+    <!-- Weight: summary -->
+    <th class="col-weight-s">Wt Δ <span class="sort-icon">↕</span></th>
+    <!-- Weight: detail -->
+    <th class="col-weight-d col-hidden detail-weight">Start <span class="sort-icon">↕</span></th>
+    <th class="col-weight-d col-hidden">Current <span class="sort-icon">↕</span></th>
+    <th class="col-weight-d col-hidden">Δ <span class="sort-icon">↕</span></th>
+    <!-- Waist: summary -->
+    <th class="col-waist-s">Waist Δ <span class="sort-icon">↕</span></th>
+    <!-- Waist: detail -->
+    <th class="col-waist-d col-hidden detail-waist">Start</th>
+    <th class="col-waist-d col-hidden">Current</th>
+    <th class="col-waist-d col-hidden">Δ <span class="sort-icon">↕</span></th>
+    <!-- Activity: summary -->
+    <th class="col-activity-s">Activity <span class="sort-icon">↕</span></th>
+    <!-- Activity: detail -->
+    <th class="col-activity-d col-hidden detail-activity">Nutrition <span class="sort-icon">↕</span></th>
+    <th class="col-activity-d col-hidden">Workouts</th>
+    <th class="col-activity-d col-hidden">Photos</th>
+    <th class="col-activity-d col-hidden">Last active <span class="sort-icon">↕</span></th>
+    <!-- Status (always visible) -->
+    <th>NPS</th>
+    <th>Retention</th>
+    <th>Testimonial</th>
+  </tr>
   </thead>
   <tbody>
-    <tr onclick="openDrawer(this, 'Leon Buffaloe')">
-      <td><span class="name">(Dr.) Leon Buffaloe</span></td>
-      <td><span class="tag tag-gray">GT</span></td>
+    <!-- Row 1: Leon Buffaloe -->
+    <tr onclick="openDrawer('Leon Buffaloe')">
+      <td><span class="name">(Dr.) Leon Buffaloe</span><span class="badge badge-gt">GT</span></td>
       <td class="muted">—</td>
-      <td><span class="check-dot no"></span></td>
-      <td class="col-program">4 months</td>
-      <td class="col-program wrap" style="font-size:11.5px;color:var(--secondary);">185lbs or leaner</td>
-      <td class="col-program">8/13</td>
-      <td class="col-program">7/23</td>
-      <td class="col-weight">221.6</td>
-      <td class="col-weight">217.6</td>
-      <td class="col-weight"><span class="delta-good">-4</span></td>
-      <td class="col-waist col-hidden">46</td>
-      <td class="col-waist col-hidden muted">—</td>
-      <td class="col-waist col-hidden muted">—</td>
-      <td class="col-activity col-hidden muted">—</td>
-      <td class="col-activity col-hidden muted">—</td>
-      <td class="col-activity col-hidden muted">—</td>
-      <td class="col-activity col-hidden muted">—</td>
-      <td class="col-status muted">—</td>
-      <td class="col-status muted">—</td>
-      <td class="col-status"><span class="tag tag-gray">none</span></td>
-      <td class="col-status"><button class="btn btn-green" style="font-size:11px;padding:4px 8px;">✓</button></td>
-    </tr>
-    <tr onclick="openDrawer(this, 'Aaron Tansy')">
-      <td><span class="name">Aaron Tansy</span></td>
-      <td><span class="tag tag-green">GT</span></td>
+      <td><span class="check-dot check-no"></span></td>
+      <td></td>
+      <td class="col-program-s summary-cell">4 months</td>
+      <td class="col-program-d col-hidden">4 months</td>
+      <td class="col-program-d col-hidden" style="font-size:11px;color:var(--secondary);max-width:140px;overflow:hidden;text-overflow:ellipsis;">185lbs or leaner</td>
+      <td class="col-program-d col-hidden">8/13</td>
+      <td class="col-program-d col-hidden">7/23</td>
+      <td class="col-weight-s"><span class="good">-4</span></td>
+      <td class="col-weight-d col-hidden">221.6</td>
+      <td class="col-weight-d col-hidden">217.6</td>
+      <td class="col-weight-d col-hidden"><span class="good">-4</span></td>
+      <td class="col-waist-s muted">—</td>
+      <td class="col-waist-d col-hidden">46</td>
+      <td class="col-waist-d col-hidden muted">—</td>
+      <td class="col-waist-d col-hidden muted">—</td>
+      <td class="col-activity-s muted">—</td>
+      <td class="col-activity-d col-hidden muted">—</td>
+      <td class="col-activity-d col-hidden muted">—</td>
+      <td class="col-activity-d col-hidden muted">—</td>
+      <td class="col-activity-d col-hidden muted">—</td>
       <td class="muted">—</td>
-      <td><span class="check-dot no"></span></td>
-      <td class="col-program">Retained: 6mo GT</td>
-      <td class="col-program wrap muted">—</td>
-      <td class="col-program">9/1</td>
-      <td class="col-program">8/11</td>
-      <td class="col-weight">160</td>
-      <td class="col-weight">147.4</td>
-      <td class="col-weight"><span class="delta-good">-12.6</span></td>
-      <td class="col-waist col-hidden">33.5</td>
-      <td class="col-waist col-hidden">29.5</td>
-      <td class="col-waist col-hidden"><span class="delta-good">-4</span></td>
-      <td class="col-activity col-hidden">0/14</td>
-      <td class="col-activity col-hidden">6</td>
-      <td class="col-activity col-hidden muted">0</td>
-      <td class="col-activity col-hidden">5/31</td>
-      <td class="col-status muted">—</td>
-      <td class="col-status muted">—</td>
-      <td class="col-status"><span class="tag tag-gray">none</span></td>
-      <td class="col-status"><button class="btn btn-green" style="font-size:11px;padding:4px 8px;">✓</button></td>
+      <td class="muted">—</td>
+      <td><span class="status-badge sb-gray">none</span></td>
     </tr>
-    <tr class="selected" onclick="openDrawer(this, 'Adrianna Pavlides')">
-      <td><span class="name">Adrianna Pavlides</span></td>
-      <td><span class="tag tag-yellow">GT</span></td>
-      <td><span class="notes-preview">April 13</span></td>
-      <td><span class="check-dot no"></span></td>
-      <td class="col-program">150 days</td>
-      <td class="col-program wrap" style="font-size:11.5px;color:var(--secondary);">BF 26%→20%, drop ~10lbs</td>
-      <td class="col-program">9/13</td>
-      <td class="col-program">8/23</td>
-      <td class="col-weight">123</td>
-      <td class="col-weight">114.2</td>
-      <td class="col-weight"><span class="delta-good">-8.8</span></td>
-      <td class="col-waist col-hidden">31</td>
-      <td class="col-waist col-hidden">29.5</td>
-      <td class="col-waist col-hidden"><span class="delta-good">-1.5</span></td>
-      <td class="col-activity col-hidden"><span style="color:var(--green)">14/14</span></td>
-      <td class="col-activity col-hidden">11</td>
-      <td class="col-activity col-hidden">2</td>
-      <td class="col-activity col-hidden">today</td>
-      <td class="col-status muted">—</td>
-      <td class="col-status muted">—</td>
-      <td class="col-status"><span class="tag tag-gray">none</span></td>
-      <td class="col-status"><button class="btn btn-green" style="font-size:11px;padding:4px 8px;">✓</button></td>
+    <!-- Row 2: Aaron Tansy -->
+    <tr onclick="openDrawer('Aaron Tansy')">
+      <td><span class="name">Aaron Tansy</span><span class="badge badge-gt">GT</span></td>
+      <td class="muted">—</td>
+      <td><span class="check-dot check-no"></span></td>
+      <td></td>
+      <td class="col-program-s summary-cell">Retained: 6mo</td>
+      <td class="col-program-d col-hidden">Retained: 6mo GT</td>
+      <td class="col-program-d col-hidden muted">—</td>
+      <td class="col-program-d col-hidden">9/1</td>
+      <td class="col-program-d col-hidden">8/11</td>
+      <td class="col-weight-s"><span class="good">-12.6</span></td>
+      <td class="col-weight-d col-hidden">160</td>
+      <td class="col-weight-d col-hidden">147.4</td>
+      <td class="col-weight-d col-hidden"><span class="good">-12.6</span></td>
+      <td class="col-waist-s"><span class="good">-4</span></td>
+      <td class="col-waist-d col-hidden">33.5</td>
+      <td class="col-waist-d col-hidden">29.5</td>
+      <td class="col-waist-d col-hidden"><span class="good">-4</span></td>
+      <td class="col-activity-s summary-cell">6 wk</td>
+      <td class="col-activity-d col-hidden">0/14</td>
+      <td class="col-activity-d col-hidden">6</td>
+      <td class="col-activity-d col-hidden muted">0</td>
+      <td class="col-activity-d col-hidden">5/31</td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td><span class="status-badge sb-gray">none</span></td>
     </tr>
-    <tr onclick="openDrawer(this, 'Aleksandar Trajkovic')">
-      <td><span class="name">Aleksandar Trajkovic</span></td>
-      <td><span class="tag tag-green">GT</span></td>
-      <td><span class="notes-preview">off to Alaska June/July…</span></td>
-      <td><span class="check-dot no"></span></td>
-      <td class="col-program">2nd retention: 6mo</td>
-      <td class="col-program wrap muted">—</td>
-      <td class="col-program">11/1</td>
-      <td class="col-program">10/11</td>
-      <td class="col-weight">192</td>
-      <td class="col-weight">157</td>
-      <td class="col-weight"><span class="delta-good">-35</span></td>
-      <td class="col-waist col-hidden">42.3</td>
-      <td class="col-waist col-hidden">31.4</td>
-      <td class="col-waist col-hidden"><span class="delta-good">-10.9</span></td>
-      <td class="col-activity col-hidden">0/14</td>
-      <td class="col-activity col-hidden">2</td>
-      <td class="col-activity col-hidden muted">0</td>
-      <td class="col-activity col-hidden">5/30</td>
-      <td class="col-status muted">—</td>
-      <td class="col-status muted">—</td>
-      <td class="col-status"><span class="tag tag-gray">none</span></td>
-      <td class="col-status"><button class="btn btn-green" style="font-size:11px;padding:4px 8px;">✓</button></td>
+    <!-- Row 3: Adrianna Pavlides (selected) -->
+    <tr class="selected" onclick="openDrawer('Adrianna Pavlides')">
+      <td><span class="name">Adrianna Pavlides</span><span class="badge badge-gt">GT</span></td>
+      <td class="notes-cell">April 13</td>
+      <td><span class="check-dot check-no"></span></td>
+      <td></td>
+      <td class="col-program-s summary-cell">150 days</td>
+      <td class="col-program-d col-hidden">150 days</td>
+      <td class="col-program-d col-hidden" style="font-size:11px;color:var(--secondary);max-width:140px;overflow:hidden;text-overflow:ellipsis;">BF 26→20%, -10lbs</td>
+      <td class="col-program-d col-hidden">9/13</td>
+      <td class="col-program-d col-hidden">8/23</td>
+      <td class="col-weight-s"><span class="good">-8.8</span></td>
+      <td class="col-weight-d col-hidden">123</td>
+      <td class="col-weight-d col-hidden">114.2</td>
+      <td class="col-weight-d col-hidden"><span class="good">-8.8</span></td>
+      <td class="col-waist-s"><span class="good">-1.5</span></td>
+      <td class="col-waist-d col-hidden">31</td>
+      <td class="col-waist-d col-hidden">29.5</td>
+      <td class="col-waist-d col-hidden"><span class="good">-1.5</span></td>
+      <td class="col-activity-s"><span style="color:var(--green)">14/14</span></td>
+      <td class="col-activity-d col-hidden"><span style="color:var(--green)">14/14</span></td>
+      <td class="col-activity-d col-hidden">11</td>
+      <td class="col-activity-d col-hidden">2</td>
+      <td class="col-activity-d col-hidden">today</td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td><span class="status-badge sb-gray">none</span></td>
     </tr>
-    <tr onclick="openDrawer(this, 'Angela Briaud')">
-      <td><span class="name">Angela Briaud</span></td>
-      <td><span class="tag tag-green">GT</span></td>
-      <td><span class="notes-preview">breastfeeding 8-12mo…</span></td>
-      <td><span class="check-dot no"></span></td>
-      <td class="col-program">12mo group (spousal)</td>
-      <td class="col-program wrap muted">—</td>
-      <td class="col-program">7/21</td>
-      <td class="col-program">6/30</td>
-      <td class="col-weight">247</td>
-      <td class="col-weight">222.8</td>
-      <td class="col-weight"><span class="delta-good">-24.2</span></td>
-      <td class="col-waist col-hidden">48</td>
-      <td class="col-waist col-hidden">44</td>
-      <td class="col-waist col-hidden"><span class="delta-good">-4</span></td>
-      <td class="col-activity col-hidden">0/14</td>
-      <td class="col-activity col-hidden">0</td>
-      <td class="col-activity col-hidden muted">0</td>
-      <td class="col-activity col-hidden">5/31</td>
-      <td class="col-status muted">—</td>
-      <td class="col-status muted">—</td>
-      <td class="col-status"><span class="tag tag-gray">none</span></td>
-      <td class="col-status"><button class="btn btn-green" style="font-size:11px;padding:4px 8px;">✓</button></td>
+    <!-- Row 4: Aleksandar -->
+    <tr onclick="openDrawer('Aleksandar Trajkovic')">
+      <td><span class="name">Aleksandar Trajkovic</span><span class="badge badge-gt">GT</span></td>
+      <td class="notes-cell">off to Alaska June/July…</td>
+      <td><span class="check-dot check-no"></span></td>
+      <td></td>
+      <td class="col-program-s summary-cell">2nd ret: 6mo</td>
+      <td class="col-program-d col-hidden">2nd retention: 6mo</td>
+      <td class="col-program-d col-hidden muted">—</td>
+      <td class="col-program-d col-hidden">11/1</td>
+      <td class="col-program-d col-hidden">10/11</td>
+      <td class="col-weight-s"><span class="good">-35</span></td>
+      <td class="col-weight-d col-hidden">192</td>
+      <td class="col-weight-d col-hidden">157</td>
+      <td class="col-weight-d col-hidden"><span class="good">-35</span></td>
+      <td class="col-waist-s"><span class="good">-10.9</span></td>
+      <td class="col-waist-d col-hidden">42.3</td>
+      <td class="col-waist-d col-hidden">31.4</td>
+      <td class="col-waist-d col-hidden"><span class="good">-10.9</span></td>
+      <td class="col-activity-s summary-cell">2 wk</td>
+      <td class="col-activity-d col-hidden">0/14</td>
+      <td class="col-activity-d col-hidden">2</td>
+      <td class="col-activity-d col-hidden muted">0</td>
+      <td class="col-activity-d col-hidden">5/30</td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td><span class="status-badge sb-gray">none</span></td>
     </tr>
-    <tr onclick="openDrawer(this, 'Armin Shaverdian')">
-      <td><span class="name">Armin Shaverdian</span></td>
-      <td><span class="tag tag-yellow">GT</span></td>
-      <td><span class="notes-preview">Onboarding March 23</span></td>
-      <td><span class="check-dot no"></span></td>
-      <td class="col-program">120 days</td>
-      <td class="col-program wrap" style="font-size:11.5px;color:var(--secondary);">40lbs, 15% BF → 185-190</td>
-      <td class="col-program">7/23</td>
-      <td class="col-program">7/2</td>
-      <td class="col-weight">234</td>
-      <td class="col-weight">220</td>
-      <td class="col-weight"><span class="delta-good">-14</span></td>
-      <td class="col-waist col-hidden">44.5</td>
-      <td class="col-waist col-hidden muted">—</td>
-      <td class="col-waist col-hidden muted">—</td>
-      <td class="col-activity col-hidden">11/14</td>
-      <td class="col-activity col-hidden">3</td>
-      <td class="col-activity col-hidden muted">0</td>
-      <td class="col-activity col-hidden">today</td>
-      <td class="col-status muted">—</td>
-      <td class="col-status muted">—</td>
-      <td class="col-status"><span class="tag tag-gray">none</span></td>
-      <td class="col-status"><button class="btn btn-green" style="font-size:11px;padding:4px 8px;">✓</button></td>
+    <!-- Row 5: Angela Briaud -->
+    <tr onclick="openDrawer('Angela Briaud')">
+      <td><span class="name">Angela Briaud</span><span class="badge badge-gt">GT</span></td>
+      <td class="notes-cell">breastfeeding 8-12mo…</td>
+      <td><span class="check-dot check-no"></span></td>
+      <td></td>
+      <td class="col-program-s summary-cell">12mo (spousal)</td>
+      <td class="col-program-d col-hidden">12mo group (spousal)</td>
+      <td class="col-program-d col-hidden muted">—</td>
+      <td class="col-program-d col-hidden">7/21</td>
+      <td class="col-program-d col-hidden">6/30</td>
+      <td class="col-weight-s"><span class="good">-24.2</span></td>
+      <td class="col-weight-d col-hidden">247</td>
+      <td class="col-weight-d col-hidden">222.8</td>
+      <td class="col-weight-d col-hidden"><span class="good">-24.2</span></td>
+      <td class="col-waist-s"><span class="good">-4</span></td>
+      <td class="col-waist-d col-hidden">48</td>
+      <td class="col-waist-d col-hidden">44</td>
+      <td class="col-waist-d col-hidden"><span class="good">-4</span></td>
+      <td class="col-activity-s muted">0/14</td>
+      <td class="col-activity-d col-hidden">0/14</td>
+      <td class="col-activity-d col-hidden">0</td>
+      <td class="col-activity-d col-hidden muted">0</td>
+      <td class="col-activity-d col-hidden">5/31</td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td><span class="status-badge sb-gray">none</span></td>
+    </tr>
+    <!-- Row 6: Armin -->
+    <tr onclick="openDrawer('Armin Shaverdian')">
+      <td><span class="name">Armin Shaverdian</span><span class="badge badge-gt">GT</span></td>
+      <td class="notes-cell">Onboarding March 23</td>
+      <td><span class="check-dot check-no"></span></td>
+      <td></td>
+      <td class="col-program-s summary-cell">120 days</td>
+      <td class="col-program-d col-hidden">120 days</td>
+      <td class="col-program-d col-hidden" style="font-size:11px;color:var(--secondary);max-width:140px;overflow:hidden;text-overflow:ellipsis;">40lbs → 185-190lb</td>
+      <td class="col-program-d col-hidden">7/23</td>
+      <td class="col-program-d col-hidden">7/2</td>
+      <td class="col-weight-s"><span class="good">-14</span></td>
+      <td class="col-weight-d col-hidden">234</td>
+      <td class="col-weight-d col-hidden">220</td>
+      <td class="col-weight-d col-hidden"><span class="good">-14</span></td>
+      <td class="col-waist-s muted">—</td>
+      <td class="col-waist-d col-hidden">44.5</td>
+      <td class="col-waist-d col-hidden muted">—</td>
+      <td class="col-waist-d col-hidden muted">—</td>
+      <td class="col-activity-s summary-cell">11/14</td>
+      <td class="col-activity-d col-hidden">11/14</td>
+      <td class="col-activity-d col-hidden">3</td>
+      <td class="col-activity-d col-hidden muted">0</td>
+      <td class="col-activity-d col-hidden">today</td>
+      <td class="muted">—</td>
+      <td class="muted">—</td>
+      <td><span class="status-badge sb-gray">none</span></td>
     </tr>
   </tbody>
 </table>
 </div>
 
-<!-- Action Drawer (shown for Adrianna) -->
+<!-- Action Drawer -->
 <div class="drawer-overlay open" onclick="closeDrawer()"></div>
 <div class="drawer open">
   <div class="drawer-header">
     <div>
       <h2>Adrianna Pavlides</h2>
-      <div class="sub">John · <span style="color:var(--green);font-weight:600;">Active</span> · 150 days · ends 9/13</div>
+      <div class="sub">John · <span style="color:var(--green);font-weight:600;">Active</span> · 150 days · ends 9/13/2026</div>
     </div>
     <button class="close-btn" onclick="closeDrawer()">✕</button>
   </div>
 
   <!-- Quick links -->
-  <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;">
-    <a href="#" class="tz-link">↗ Open in Trainerize</a>
+  <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+    <a href="#" class="tz-link">↗ Trainerize</a>
     <button class="btn btn-green">✓ Check today</button>
-    <button class="btn btn-secondary">📋 Copy NPS link</button>
   </div>
 
   <!-- Notes -->
@@ -371,44 +423,42 @@
 
   <!-- Draft check-in message -->
   <div class="action-section">
-    <h3>Draft Check-in Message <span class="badge">AI-generated</span></h3>
+    <h3>Draft Check-in <span class="ai-badge">AI draft</span></h3>
     <div class="draft-box">
-      <div class="draft-label">Edit before sending — then open Trainerize Messages to paste</div>
-      <textarea>Hey Adrianna! Great week — 14/14 nutrition days tracked and 11 workouts completed 💪
+      <div class="draft-label">Edit → Copy → Paste in Trainerize Messages</div>
+      <textarea>Hey Adrianna! Great week — 14/14 nutrition days and 11 workouts 💪
 
-Your weight is down 8.8 lbs since starting (123 → 114.2) and waist down 1.5 inches. Solid progress toward your 20% BF goal.
+Down 8.8 lbs (123 → 114.2) and waist down 1.5". Solid progress toward your 20% BF target.
 
-Quick check: how are energy levels feeling with the current calorie target? And let's make sure we get updated progress photos this week.
+How are energy levels at this calorie range? Let's get updated progress photos this week too.
 
-Keep crushing it! 🔥</textarea>
+Keep it up! 🔥</textarea>
       <div class="draft-actions">
-        <button class="btn btn-secondary" onclick="this.textContent='✓ Copied!';setTimeout(()=>this.textContent='📋 Copy text',2000)">📋 Copy text</button>
-        <a href="#" class="btn btn-green" style="text-decoration:none;">↗ Open Trainerize Messages</a>
-        <button class="btn btn-secondary">↻ Regenerate</button>
+        <button class="btn btn-green" onclick="this.innerHTML='✓ Copied';setTimeout(()=>this.innerHTML='📋 Copy text',2000)">📋 Copy text</button>
+        <a href="#" class="btn btn-green" style="text-decoration:none;">↗ Trainerize Messages</a>
+        <button class="btn">↻ Regenerate</button>
       </div>
     </div>
   </div>
 
-  <!-- Status controls -->
+  <!-- Status -->
   <div class="action-section">
-    <h3>Status Override</h3>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <select class="form-select">
-        <option selected>Active</option>
-        <option>Paused</option>
-        <option>Inactive</option>
-        <option>Needs cleanup</option>
-      </select>
-    </div>
+    <h3>Status</h3>
+    <select class="form-select">
+      <option selected>Active</option>
+      <option>Paused</option>
+      <option>Inactive</option>
+      <option>Needs cleanup</option>
+    </select>
   </div>
 
   <!-- Retention -->
   <div class="action-section">
-    <h3>Retention / Renewal</h3>
-    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-      <button class="btn btn-secondary">Mark retention asked</button>
+    <h3>Retention</h3>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button class="btn">Mark asked</button>
       <select class="form-select">
-        <option value="" disabled selected>Set outcome…</option>
+        <option value="" disabled selected>Outcome…</option>
         <option>pending</option>
         <option>continuing</option>
         <option>declined</option>
@@ -421,7 +471,7 @@ Keep crushing it! 🔥</textarea>
   <div class="action-section">
     <h3>Testimonial</h3>
     <select class="form-select">
-      <option>none</option>
+      <option selected>none</option>
       <option>requested</option>
       <option>received</option>
     </select>
@@ -430,9 +480,9 @@ Keep crushing it! 🔥</textarea>
   <!-- NPS -->
   <div class="action-section">
     <h3>NPS</h3>
-    <div style="color:var(--tertiary);font-size:12px;font-style:italic;">No NPS collected yet.</div>
-    <div style="display:flex;gap:8px;margin-top:8px;">
-      <button class="btn btn-secondary" style="font-size:12px;">📋 Copy NPS link</button>
+    <div style="color:var(--tertiary);font-size:12px;font-style:italic;margin-bottom:8px;">No NPS collected yet.</div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn" style="font-size:12px;">📋 Copy NPS link</button>
       <a href="#" class="btn btn-green" style="text-decoration:none;font-size:12px;">↗ Preview form</a>
     </div>
   </div>
@@ -440,34 +490,43 @@ Keep crushing it! 🔥</textarea>
 
 <!-- Annotation -->
 <div class="annotation">
-  <strong>MOCKUP</strong> — Coaching Cockpit V2 design preview. Toggle column groups above the table. Click any row → action drawer.
+  <strong>MOCKUP V2</strong> — Click <strong>▸ Program</strong>, <strong>▸ Weight</strong>, <strong>▸ Waist</strong>, <strong>▸ Activity</strong> headers to expand/collapse column groups inline. Tag = badge on name. ↕ = sort placeholder. Drawer = actions only.
 </div>
 
 <script>
-const groups = { program: true, weight: true, waist: false, activity: false, status: true };
+const groups = { program: false, weight: false, waist: false, activity: false };
 
 function toggleGroup(name) {
   groups[name] = !groups[name];
-  document.querySelectorAll(`.col-${name}`).forEach(el => {
-    el.classList.toggle('col-hidden', !groups[name]);
-  });
-  document.querySelectorAll('.group-toggle').forEach(el => {
-    const g = el.getAttribute('onclick')?.match(/toggleGroup\('(\w+)'\)/)?.[1];
-    if (g) el.classList.toggle('on', groups[g]);
-  });
+  const open = groups[name];
+
+  // Toggle summary vs detail columns
+  document.querySelectorAll(`.col-${name}-s`).forEach(el => el.classList.toggle('col-hidden', open));
+  document.querySelectorAll(`.col-${name}-d`).forEach(el => el.classList.toggle('col-hidden', !open));
+
+  // Toggle group header cells
+  const ghSummary = document.getElementById(`gh-${name}-summary`);
+  if (ghSummary) ghSummary.classList.toggle('col-hidden', open);
+
+  // Show detail group headers
+  document.querySelectorAll(`[id^="gh-${name}-d"]`).forEach(el => el.classList.toggle('col-hidden', !open));
+
+  // Update chevron
+  const chev = document.getElementById(`chev-${name}`);
+  if (chev) chev.classList.toggle('open', open);
 }
 
-function openDrawer(row, name) {
-  document.querySelectorAll('tr').forEach(r => r.classList.remove('selected'));
-  row.classList.add('selected');
+function openDrawer(name) {
+  document.querySelectorAll('tbody tr').forEach(r => r.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
   document.querySelector('.drawer-overlay').classList.add('open');
   document.querySelector('.drawer').classList.add('open');
+  document.querySelector('.drawer-header h2').textContent = name;
 }
 
 function closeDrawer() {
   document.querySelector('.drawer-overlay').classList.remove('open');
   document.querySelector('.drawer').classList.remove('open');
-  document.querySelectorAll('tr').forEach(r => r.classList.remove('selected'));
 }
 </script>
 
