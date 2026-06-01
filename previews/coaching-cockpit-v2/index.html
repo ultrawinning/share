@@ -83,9 +83,13 @@
   thead .col-activity-d:not(.col-hidden) { border-top: 2px solid rgba(160,120,255,0.4); }
 
   /* Alternating row stripes */
-  tbody tr:nth-child(even) { background: rgba(255,255,255,0.015); }
+  tbody tr:nth-child(even) { background: rgba(255,255,255,0.035); }
   tbody tr:nth-child(even):hover { background: var(--card); }
   tbody tr.selected:nth-child(even) { background: rgba(46,212,122,0.06); }
+
+  /* Tooltips */
+  [data-tip] { position: relative; cursor: default; border-bottom: 1px dotted var(--tertiary); }
+  [data-tip]:hover::after { content: attr(data-tip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: var(--card); border: 1px solid var(--border); color: var(--secondary); padding: 3px 8px; border-radius: 5px; font-size: 11px; white-space: nowrap; z-index: 10; pointer-events: none; }
 
   .col-hidden { display: none !important; }
   .summary-hidden { display: none !important; }
@@ -245,11 +249,11 @@
       <td class="col-program-d col-hidden">8/13</td>
       <td class="col-program-d col-hidden">7/23</td>
       <td class="col-weight-s"><span class="good">-4</span></td>
-      <td class="col-weight-d col-hidden">221.6</td>
-      <td class="col-weight-d col-hidden">217.6</td>
+      <td class="col-weight-d col-hidden"><span data-tip="Mar 2">221.6</span></td>
+      <td class="col-weight-d col-hidden"><span data-tip="Apr 13">217.6</span></td>
       <td class="col-weight-d col-hidden"><span class="good">-4</span></td>
       <td class="col-waist-s muted">—</td>
-      <td class="col-waist-d col-hidden">46</td>
+      <td class="col-waist-d col-hidden"><span data-tip="Mar 4">46</span></td>
       <td class="col-waist-d col-hidden muted">—</td>
       <td class="col-waist-d col-hidden muted">—</td>
       <td class="col-activity-s muted">—</td>
@@ -273,12 +277,12 @@
       <td class="col-program-d col-hidden">9/1</td>
       <td class="col-program-d col-hidden">8/11</td>
       <td class="col-weight-s"><span class="good">-12.6</span></td>
-      <td class="col-weight-d col-hidden">160</td>
-      <td class="col-weight-d col-hidden">147.4</td>
+      <td class="col-weight-d col-hidden"><span data-tip="Jul 7">160</span></td>
+      <td class="col-weight-d col-hidden"><span data-tip="May 20">147.4</span></td>
       <td class="col-weight-d col-hidden"><span class="good">-12.6</span></td>
       <td class="col-waist-s"><span class="good">-4</span></td>
-      <td class="col-waist-d col-hidden">33.5</td>
-      <td class="col-waist-d col-hidden">29.5</td>
+      <td class="col-waist-d col-hidden"><span data-tip="Jul 13">33.5</span></td>
+      <td class="col-waist-d col-hidden"><span data-tip="May 25">29.5</span></td>
       <td class="col-waist-d col-hidden"><span class="good">-4</span></td>
       <td class="col-activity-s summary-cell">6 wk</td>
       <td class="col-activity-d col-hidden">0/14</td>
@@ -301,12 +305,12 @@
       <td class="col-program-d col-hidden">9/13</td>
       <td class="col-program-d col-hidden">8/23</td>
       <td class="col-weight-s"><span class="good">-8.8</span></td>
-      <td class="col-weight-d col-hidden">123</td>
-      <td class="col-weight-d col-hidden">114.2</td>
+      <td class="col-weight-d col-hidden"><span data-tip="Apr 7">123</span></td>
+      <td class="col-weight-d col-hidden"><span data-tip="May 27">114.2</span></td>
       <td class="col-weight-d col-hidden"><span class="good">-8.8</span></td>
       <td class="col-waist-s"><span class="good">-1.5</span></td>
-      <td class="col-waist-d col-hidden">31</td>
-      <td class="col-waist-d col-hidden">29.5</td>
+      <td class="col-waist-d col-hidden"><span data-tip="Apr 20">31</span></td>
+      <td class="col-waist-d col-hidden"><span data-tip="May 26">29.5</span></td>
       <td class="col-waist-d col-hidden"><span class="good">-1.5</span></td>
       <td class="col-activity-s"><span style="color:var(--green)">14/14</span></td>
       <td class="col-activity-d col-hidden"><span style="color:var(--green)">14/14</span></td>
@@ -329,12 +333,12 @@
       <td class="col-program-d col-hidden">11/1</td>
       <td class="col-program-d col-hidden">10/11</td>
       <td class="col-weight-s"><span class="good">-35</span></td>
-      <td class="col-weight-d col-hidden">192</td>
-      <td class="col-weight-d col-hidden">157</td>
+      <td class="col-weight-d col-hidden"><span data-tip="Mar 19">192</span></td>
+      <td class="col-weight-d col-hidden"><span data-tip="Apr 23">157</span></td>
       <td class="col-weight-d col-hidden"><span class="good">-35</span></td>
       <td class="col-waist-s"><span class="good">-10.9</span></td>
-      <td class="col-waist-d col-hidden">42.3</td>
-      <td class="col-waist-d col-hidden">31.4</td>
+      <td class="col-waist-d col-hidden"><span data-tip="Jan 27">42.3</span></td>
+      <td class="col-waist-d col-hidden"><span data-tip="Apr 5">31.4</span></td>
       <td class="col-waist-d col-hidden"><span class="good">-10.9</span></td>
       <td class="col-activity-s summary-cell">2 wk</td>
       <td class="col-activity-d col-hidden">0/14</td>
@@ -357,12 +361,12 @@
       <td class="col-program-d col-hidden">7/21</td>
       <td class="col-program-d col-hidden">6/30</td>
       <td class="col-weight-s"><span class="good">-24.2</span></td>
-      <td class="col-weight-d col-hidden">247</td>
-      <td class="col-weight-d col-hidden">222.8</td>
+      <td class="col-weight-d col-hidden"><span data-tip="Jun 30">247</span></td>
+      <td class="col-weight-d col-hidden"><span data-tip="Apr 30">222.8</span></td>
       <td class="col-weight-d col-hidden"><span class="good">-24.2</span></td>
       <td class="col-waist-s"><span class="good">-4</span></td>
-      <td class="col-waist-d col-hidden">48</td>
-      <td class="col-waist-d col-hidden">44</td>
+      <td class="col-waist-d col-hidden"><span data-tip="Jun 30">48</span></td>
+      <td class="col-waist-d col-hidden"><span data-tip="Apr 30">44</span></td>
       <td class="col-waist-d col-hidden"><span class="good">-4</span></td>
       <td class="col-activity-s muted">0/14</td>
       <td class="col-activity-d col-hidden">0/14</td>
@@ -385,11 +389,11 @@
       <td class="col-program-d col-hidden">7/23</td>
       <td class="col-program-d col-hidden">7/2</td>
       <td class="col-weight-s"><span class="good">-14</span></td>
-      <td class="col-weight-d col-hidden">234</td>
-      <td class="col-weight-d col-hidden">220</td>
+      <td class="col-weight-d col-hidden"><span data-tip="Mar 23">234</span></td>
+      <td class="col-weight-d col-hidden"><span data-tip="May 29">220</span></td>
       <td class="col-weight-d col-hidden"><span class="good">-14</span></td>
       <td class="col-waist-s muted">—</td>
-      <td class="col-waist-d col-hidden">44.5</td>
+      <td class="col-waist-d col-hidden"><span data-tip="Mar 23">44.5</span></td>
       <td class="col-waist-d col-hidden muted">—</td>
       <td class="col-waist-d col-hidden muted">—</td>
       <td class="col-activity-s summary-cell">11/14</td>
