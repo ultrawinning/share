@@ -1,59 +1,69 @@
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Page Format — Dashboard · HPFHQ</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<style>
+  .topnav{display:flex;gap:4px;align-items:center}
+  .navlink{padding:6px 12px;border-radius:8px;font:600 14px/1 var(--display);color:var(--fg3)}
+  .navlink.on{background:rgba(255,255,255,.08);color:var(--fg1)}
+  .pills{display:flex;gap:14px;align-items:center;padding:6px 12px;border:1px solid var(--border);border-radius:10px;font-size:12px;color:var(--fg2)}
+  .pdot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:5px}
+  .qk{display:flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid var(--border);border-radius:10px;color:var(--fg3);font-size:13px;min-width:200px}
+  .titlerow{display:flex;align-items:flex-start;gap:12px;margin:4px 0 16px}
+  .periodrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px}
+  .srctabs{display:flex;gap:18px;flex-wrap:wrap;color:var(--fg3);font-size:13px;border-bottom:1px solid var(--border);padding-bottom:10px;margin-bottom:14px}
+  .srctabs .on{color:var(--fg1);font-weight:600;border-bottom:2px solid var(--fg1);padding-bottom:10px}
+</style>
 </head><body>
 <header class="topbar">
-  <span class="brand">HPF<span class="hq">HQ</span></span>
-  <span class="title">Sales</span><span class="sub">· Live from Stripe + GHL · synced 6m ago</span>
+  <span class="brand">▲ HPF<span class="hq">HQ</span></span>
+  <nav class="topnav" style="margin-left:8px">
+    <span class="navlink on">Marketing</span><span class="navlink">Setter</span><span class="navlink">Sales</span><span class="navlink">EOD</span><span class="navlink">Coaching</span>
+  </nav>
   <span class="spacer"></span>
   <span class="tb-right">
-    <span class="seg"><span>L7</span><span>L30</span><span class="on">MTD</span></span>
-    <span class="chip">+ Action</span>
-    <span class="icon" title="Density">⊟</span>
+    <span class="qk">🔎 Quick jump <span style="margin-left:auto">⌘K</span></span>
+    <span class="pills"><span><span class="pdot" style="background:var(--marketing)"></span>Ads 14h</span><span><span class="pdot" style="background:var(--brand)"></span>GHL live</span><span><span class="pdot" style="background:var(--brand)"></span>Stripe live</span><span><span class="pdot" style="background:var(--brand)"></span>EOD 6m</span></span>
     <span class="icon" title="Theme">☾</span>
-    <span class="icon" title="Settings">⚙</span>
-    <span class="chip">Log out</span>
   </span>
 </header>
-<div class="layout">
-  <aside class="sidebar">
-    <span class="collapse">[ collapse</span>
-    <div class="navgrp">Overview</div>
-    <div class="navitem on">● Dashboard</div>
-    <div class="navitem">● Scoreboard</div>
-    <div class="navgrp">Revenue</div>
-    <div class="navitem">● Sales</div>
-    <div class="navitem">● Marketing</div>
-    <div class="navitem">● Setters</div>
-    <div class="navgrp">Delivery</div>
-    <div class="navitem">● Coaching</div>
-  </aside>
-  <main class="main w-bleed">
-    <div class="fmt">
-      <b>DASHBOARD</b>
-      <span><span class="k">Sidebar</span><span class="v">collapsible</span></span>
-      <span><span class="k">Width</span><span class="v">full-width + gutter</span></span>
-      <span><span class="k">Density</span><span class="v">dense</span></span>
-      <span><span class="k">Access</span><span class="v">leadership / admin / super_admin</span></span>
-      <span class="muted">Routes: /sales /marketing /setters /coaching /leadership/* /ops /settings /hq /utm</span>
+<main class="main w-bleed">
+  <div class="fmt">
+    <b>DASHBOARD</b>
+    <span><span class="k">Top bar</span><span class="v">brand + section nav + quick-jump + status + theme (chrome only)</span></span>
+    <span><span class="k">Controls</span><span class="v">period/filters live IN-PAGE ↓</span></span>
+    <span><span class="k">Density</span><span class="v">dense</span></span>
+    <span><span class="k">Access</span><span class="v">leadership / admin / super_admin</span></span>
+  </div>
+
+  <div class="titlerow">
+    <div>
+      <div class="h2" style="font-size:30px;margin:0">Marketing Cockpit</div>
+      <div class="sub" style="margin-top:4px">All sources · May 20, 2026 · live from Stripe + GHL + Meta</div>
     </div>
-    <div class="cards">
-      <div class="card"><div class="lbl">New cash collected</div><div class="kpi t-mono">$73.7K</div><div class="muted">19 closes · MTD</div></div>
-      <div class="card"><div class="lbl">Close rate</div><div class="kpi t-mono">26.3%</div><div class="muted">target 25%</div></div>
-      <div class="card"><div class="lbl">Show rate</div><div class="kpi t-mono">63%</div><div class="muted">22 no-shows</div></div>
-      <div class="card"><div class="lbl">Calls scheduled</div><div class="kpi t-mono">155</div><div class="muted">+12 vs last mo</div></div>
-    </div>
-    <div class="section" style="margin-top:18px">
-      <div class="sechead"><span class="dot" style="background:var(--sales)"></span>SALES <span class="muted" style="font-weight:400;font-size:12px">— 2 closers</span></div>
-      <div class="cards">
-        <div class="card"><div class="person"><span class="avatar">BR</span><div><div style="font-weight:600">Brandon</div><div class="muted">Closer</div></div></div></div>
-        <div class="card"><div class="person"><span class="avatar">JO</span><div><div style="font-weight:600">Joel</div><div class="muted">Closer · GMT+1</div></div></div></div>
-      </div>
-    </div>
-    <p class="note">Reference shell only — content is placeholder. Canon: ADR 0003 + the sitemap sheet.</p>
-  </main>
-</div>
+    <span class="spacer"></span>
+    <span class="chip">⚙ Settings</span><span class="chip on">Sales Cockpit →</span>
+  </div>
+
+  <!-- the "lower" period/time selector — IN PAGE, not the top bar -->
+  <div class="periodrow">
+    <span class="chip on">★ All leads · 12 filters · sort: submitted ↓</span>
+    <span class="chip">📅 May 1 – May 20, 2026 ⌄</span>
+    <span class="seg"><span>Today</span><span>L7</span><span>L14</span><span>L30</span><span class="on">MTD</span><span>WTD</span></span>
+    <span class="chip">+ Compare</span>
+    <span class="muted">Day 20 / 31</span>
+  </div>
+  <div class="srctabs"><span class="on">All 1,000</span><span>Paid 196</span><span>Email 0</span><span>IG 55</span><span>Newsletter 77</span><span>ManyChat 0</span><span style="color:var(--marketing)">Unattributed 42</span></div>
+
+  <div class="cards">
+    <div class="card"><div class="lbl">Ad spend</div><div class="kpi t-mono">$2,841</div><div class="muted">budget $9,000 · on pace</div></div>
+    <div class="card"><div class="lbl">CPL</div><div class="kpi t-mono">$14</div><div class="muted">L7 avg $15.20</div></div>
+    <div class="card"><div class="lbl">Leads</div><div class="kpi t-mono">1,000</div><div class="muted">196 paid · 804 organic</div></div>
+    <div class="card"><div class="lbl">Qualified</div><div class="kpi t-mono">292</div><div class="muted">29% · target 25%</div></div>
+    <div class="card"><div class="lbl">Closes</div><div class="kpi t-mono">10</div><div class="muted">26.3% close rate</div></div>
+    <div class="card"><div class="lbl">ROAS</div><div class="kpi t-mono" style="color:var(--brand)">14.0x</div><div class="muted">$39,750 / $2,841</div></div>
+  </div>
+  <p class="note">Reference shell — top bar carries nav + status + theme ONLY; the period/time selector + filters live in-page (per Emil's Marketing Cockpit reference). Sidebar: see ADR 0003 Hole #7. Canon: ADR 0003.</p>
+</main>
 </body></html>
