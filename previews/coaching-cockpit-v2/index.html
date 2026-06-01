@@ -76,21 +76,16 @@
   /* Summary cells (collapsed group) */
   .summary-cell { font-weight: 600; font-size: 12px; }
 
-  /* Expanded group visual cue — thin colored top-border on sub-headers */
-  .col-program-d:not(.col-hidden) { border-top: 2px solid rgba(74,158,255,0.35); background: rgba(74,158,255,0.03); }
-  .col-weight-d:not(.col-hidden) { border-top: 2px solid rgba(46,212,122,0.35); background: rgba(46,212,122,0.03); }
-  .col-waist-d:not(.col-hidden) { border-top: 2px solid rgba(224,160,48,0.35); background: rgba(224,160,48,0.03); }
-  .col-activity-d:not(.col-hidden) { border-top: 2px solid rgba(160,120,255,0.35); background: rgba(160,120,255,0.03); }
+  /* Expanded group — colored line on header row ONLY, no body tint */
+  thead .col-program-d:not(.col-hidden) { border-top: 2px solid rgba(74,158,255,0.4); }
+  thead .col-weight-d:not(.col-hidden) { border-top: 2px solid rgba(46,212,122,0.4); }
+  thead .col-waist-d:not(.col-hidden) { border-top: 2px solid rgba(224,160,48,0.4); }
+  thead .col-activity-d:not(.col-hidden) { border-top: 2px solid rgba(160,120,255,0.4); }
 
-  /* Body cells in expanded groups get the faintest tint */
-  tbody td.col-program-d:not(.col-hidden) { background: rgba(74,158,255,0.015); }
-  tbody td.col-weight-d:not(.col-hidden) { background: rgba(46,212,122,0.015); }
-  tbody td.col-waist-d:not(.col-hidden) { background: rgba(224,160,48,0.015); }
-  tbody td.col-activity-d:not(.col-hidden) { background: rgba(160,120,255,0.015); }
-  tbody tr:hover td.col-program-d { background: rgba(74,158,255,0.04); }
-  tbody tr:hover td.col-weight-d { background: rgba(46,212,122,0.04); }
-  tbody tr:hover td.col-waist-d { background: rgba(224,160,48,0.04); }
-  tbody tr:hover td.col-activity-d { background: rgba(160,120,255,0.04); }
+  /* Alternating row stripes */
+  tbody tr:nth-child(even) { background: rgba(255,255,255,0.015); }
+  tbody tr:nth-child(even):hover { background: var(--card); }
+  tbody tr.selected:nth-child(even) { background: rgba(46,212,122,0.06); }
 
   .col-hidden { display: none !important; }
   .summary-hidden { display: none !important; }
@@ -162,6 +157,9 @@
   <span class="pill">Needs cleanup (1)</span>
   <span class="pill">Inactive (228)</span>
   <input class="search-input" type="text" placeholder="Search name, notes, program…" />
+  <span style="border-left:1px solid var(--border);height:20px;margin:0 4px;"></span>
+  <span class="pill" onclick="expandAll()" style="font-size:11px;padding:5px 10px;">⊞ Expand all</span>
+  <span class="pill" onclick="collapseAll()" style="font-size:11px;padding:5px 10px;">⊟ Collapse all</span>
 </div>
 
 <!-- Table -->
@@ -523,6 +521,13 @@ function toggleGroup(name) {
   // Update chevron
   const chev = document.getElementById(`chev-${name}`);
   if (chev) chev.classList.toggle('open', open);
+}
+
+function expandAll() {
+  ['program','weight','waist','activity'].forEach(g => { if (!groups[g]) toggleGroup(g); });
+}
+function collapseAll() {
+  ['program','weight','waist','activity'].forEach(g => { if (groups[g]) toggleGroup(g); });
 }
 
 function openDrawer(name) {
