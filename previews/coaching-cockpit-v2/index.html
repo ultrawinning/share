@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Coaching Cockpit V2 — Grouped Table + Action Drawer</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0a0b0d; --section: #111215; --card: #16181c; --border: #2a2d33;
+    --text: #e8e8e8; --secondary: #8b8f96; --tertiary: #5a5e66;
+    --green: #2ED47A; --yellow: #E0A030; --red: #e05050; --blue: #4a9eff;
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); }
+
+  .header { padding: 20px 24px 12px; display: flex; justify-content: space-between; align-items: baseline; }
+  .header h1 { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; }
+  .header .meta { color: var(--secondary); font-size: 13px; margin-top: 4px; }
+  .header .actions { display: flex; gap: 8px; align-items: center; }
+  .pill { display: inline-flex; align-items: center; gap: 5px; background: var(--card); border: 1px solid var(--border); color: var(--secondary); border-radius: 8px; padding: 7px 12px; font-size: 12.5px; cursor: pointer; text-decoration: none; }
+  .pill:hover { border-color: var(--secondary); }
+  .pill.active { border-color: var(--green); color: var(--green); }
+
+  /* Filters */
+  .filters { padding: 0 24px 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* Group toggles */
+  .group-bar { padding: 4px 24px 8px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .group-toggle { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 10px; border-radius: 4px; cursor: pointer; border: 1px solid var(--border); background: var(--card); color: var(--secondary); user-select: none; }
+  .group-toggle.on { background: var(--section); color: var(--text); border-color: var(--secondary); }
+  .group-toggle .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; padding: 0 24px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .table-wrap::-webkit-scrollbar { height: 8px; }
+  .table-wrap::-webkit-scrollbar-track { background: transparent; }
+  .table-wrap::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; min-width: 1200px; }
+  thead th { position: sticky; top: 0; background: var(--section); color: var(--tertiary); text-align: left; padding: 8px 10px; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; white-space: nowrap; border-bottom: 2px solid var(--border); }
+  tbody tr { border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.1s; }
+  tbody tr:hover { background: var(--card); }
+  tbody tr.selected { background: rgba(46,212,122,0.06); border-left: 2px solid var(--green); }
+  td { padding: 8px 10px; vertical-align: top; white-space: nowrap; }
+  td.wrap { white-space: normal; max-width: 220px; }
+
+  /* Group header cells */
+  .group-header { text-align: center; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; padding: 4px 10px; border-bottom: 1px solid var(--border); }
+  .gh-client { background: var(--section); color: var(--text); }
+  .gh-program { background: rgba(74,158,255,0.08); color: var(--blue); }
+  .gh-weight { background: rgba(46,212,122,0.08); color: var(--green); }
+  .gh-waist { background: rgba(224,160,48,0.08); color: var(--yellow); }
+  .gh-activity { background: rgba(160,120,255,0.08); color: #a078ff; }
+  .gh-status { background: rgba(224,80,80,0.08); color: var(--red); }
+
+  /* Cell styling */
+  .name { font-weight: 600; color: var(--text); }
+  .tag { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .tag-green { background: rgba(46,212,122,0.15); color: var(--green); }
+  .tag-yellow { background: rgba(224,160,48,0.15); color: var(--yellow); }
+  .tag-red { background: rgba(224,80,80,0.15); color: var(--red); }
+  .tag-gray { background: rgba(90,94,102,0.15); color: var(--tertiary); }
+  .delta-good { color: var(--green); font-weight: 600; font-family: 'Space Grotesk', monospace; }
+  .delta-bad { color: var(--red); font-weight: 600; font-family: 'Space Grotesk', monospace; }
+  .delta-neutral { color: var(--secondary); }
+  .muted { color: var(--tertiary); }
+  .notes-preview { color: var(--secondary); font-size: 11.5px; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .check-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .check-dot.yes { background: var(--green); }
+  .check-dot.no { background: var(--border); }
+
+  /* Hidden columns */
+  .col-hidden { display: none; }
+
+  /* Action drawer */
+  .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 40; display: none; }
+  .drawer-overlay.open { display: block; }
+  .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(480px, 92vw); z-index: 50; background: var(--bg); border-left: 1px solid var(--border); overflow-y: scroll; padding: 20px 22px; display: none; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .drawer.open { display: block; }
+  .drawer::-webkit-scrollbar { width: 8px; }
+  .drawer::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .drawer-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+  .drawer-header h2 { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; }
+  .drawer-header .sub { color: var(--secondary); font-size: 12.5px; margin-top: 3px; }
+  .close-btn { background: none; border: 1px solid var(--border); color: var(--secondary); border-radius: 6px; padding: 5px 7px; cursor: pointer; font-size: 16px; }
+
+  .action-section { margin-bottom: 20px; }
+  .action-section h3 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--secondary); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .action-section h3 .badge { font-size: 10px; padding: 1px 6px; border-radius: 10px; background: rgba(46,212,122,0.15); color: var(--green); text-transform: none; letter-spacing: 0; font-weight: 600; }
+
+  .tz-link { display: inline-flex; align-items: center; gap: 6px; background: var(--card); border: 1px solid var(--border); color: var(--green); border-radius: 8px; padding: 8px 12px; font-size: 13px; font-weight: 600; text-decoration: none; }
+  .tz-link:hover { border-color: var(--green); }
+
+  .btn { display: inline-flex; align-items: center; gap: 5px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 7px 11px; font-size: 12.5px; font-weight: 600; cursor: pointer; }
+  .btn-green { color: var(--green); }
+  .btn-secondary { color: var(--secondary); }
+  .btn-red { color: var(--red); }
+
+  textarea.notes-input { width: 100%; background: var(--card); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 10px; font-size: 13px; resize: vertical; font-family: inherit; min-height: 60px; }
+  select.form-select { background: var(--card); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px; font-size: 12.5px; cursor: pointer; }
+
+  /* Draft message */
+  .draft-box { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
+  .draft-box textarea { width: 100%; background: var(--section); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 10px; font-size: 13px; resize: vertical; font-family: inherit; min-height: 80px; line-height: 1.5; }
+  .draft-box .draft-actions { display: flex; gap: 8px; margin-top: 8px; }
+  .draft-label { font-size: 11px; color: var(--tertiary); margin-bottom: 6px; }
+
+  /* Annotation */
+  .annotation { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--card); border: 1px solid var(--green); border-radius: 12px; padding: 12px 20px; font-size: 13px; color: var(--secondary); z-index: 100; max-width: 600px; text-align: center; }
+  .annotation strong { color: var(--green); }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>Coach · John</h1>
+    <div class="meta">152 active · Synced 3h ago</div>
+  </div>
+  <div class="actions">
+    <span style="color:var(--tertiary);font-size:12px;">Synced 3h ago</span>
+    <a class="pill" href="#">↻ Refresh</a>
+    <a class="pill" href="#">⇄ Sync sheets</a>
+    <a class="pill" style="color:var(--green);" href="#">↻ Refresh Trainerize</a>
+  </div>
+</div>
+
+<!-- Filters -->
+<div class="filters">
+  <span class="pill">All (398)</span>
+  <span class="pill active">Active (152)</span>
+  <span class="pill">Needs cleanup (1)</span>
+  <span class="pill">Paused (17)</span>
+  <span class="pill">Inactive (228)</span>
+  <input type="text" placeholder="Search name, notes, program, tag…" style="background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:7px 12px;font-size:13px;width:280px;" />
+</div>
+
+<!-- Column group toggles -->
+<div class="group-bar">
+  <span style="color:var(--tertiary);font-size:11px;margin-right:4px;align-self:center;">Column groups:</span>
+  <span class="group-toggle on" onclick="toggleGroup('program')"><span class="dot" style="background:var(--blue);"></span>Program</span>
+  <span class="group-toggle on" onclick="toggleGroup('weight')"><span class="dot" style="background:var(--green);"></span>Weight</span>
+  <span class="group-toggle" onclick="toggleGroup('waist')"><span class="dot" style="background:var(--yellow);"></span>Waist</span>
+  <span class="group-toggle" onclick="toggleGroup('activity')"><span class="dot" style="background:#a078ff;"></span>Activity</span>
+  <span class="group-toggle on" onclick="toggleGroup('status')"><span class="dot" style="background:var(--red);"></span>Status</span>
+</div>
+
+<!-- Table -->
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <!-- Client (always visible) -->
+      <th colspan="4" class="group-header gh-client">Client</th>
+      <!-- Program group -->
+      <th colspan="4" class="group-header gh-program col-program">Program</th>
+      <!-- Weight group -->
+      <th colspan="3" class="group-header gh-weight col-weight">Weight</th>
+      <!-- Waist group (hidden by default) -->
+      <th colspan="3" class="group-header gh-waist col-waist col-hidden">Waist</th>
+      <!-- Activity group (hidden by default) -->
+      <th colspan="4" class="group-header gh-activity col-activity col-hidden">Activity (14d)</th>
+      <!-- Status group -->
+      <th colspan="4" class="group-header gh-status col-status">Status</th>
+    </tr>
+    <tr>
+      <!-- Client -->
+      <th>Client</th>
+      <th>Tag</th>
+      <th>Notes</th>
+      <th>Checked</th>
+      <!-- Program -->
+      <th class="col-program">Program</th>
+      <th class="col-program">Goal</th>
+      <th class="col-program">End</th>
+      <th class="col-program">Grad</th>
+      <!-- Weight -->
+      <th class="col-weight">Start</th>
+      <th class="col-weight">Current</th>
+      <th class="col-weight">Δ</th>
+      <!-- Waist -->
+      <th class="col-waist col-hidden">Start</th>
+      <th class="col-waist col-hidden">Current</th>
+      <th class="col-waist col-hidden">Δ</th>
+      <!-- Activity -->
+      <th class="col-activity col-hidden">Nutrition</th>
+      <th class="col-activity col-hidden">Workouts</th>
+      <th class="col-activity col-hidden">Photos</th>
+      <th class="col-activity col-hidden">Last active</th>
+      <!-- Status -->
+      <th class="col-status">NPS</th>
+      <th class="col-status">Retention</th>
+      <th class="col-status">Testimonial</th>
+      <th class="col-status">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr onclick="openDrawer(this, 'Leon Buffaloe')">
+      <td><span class="name">(Dr.) Leon Buffaloe</span></td>
+      <td><span class="tag tag-gray">GT</span></td>
+      <td class="muted">—</td>
+      <td><span class="check-dot no"></span></td>
+      <td class="col-program">4 months</td>
+      <td class="col-program wrap" style="font-size:11.5px;color:var(--secondary);">185lbs or leaner</td>
+      <td class="col-program">8/13</td>
+      <td class="col-program">7/23</td>
+      <td class="col-weight">221.6</td>
+      <td class="col-weight">217.6</td>
+      <td class="col-weight"><span class="delta-good">-4</span></td>
+      <td class="col-waist col-hidden">46</td>
+      <td class="col-waist col-hidden muted">—</td>
+      <td class="col-waist col-hidden muted">—</td>
+      <td class="col-activity col-hidden muted">—</td>
+      <td class="col-activity col-hidden muted">—</td>
+      <td class="col-activity col-hidden muted">—</td>
+      <td class="col-activity col-hidden muted">—</td>
+      <td class="col-status muted">—</td>
+      <td class="col-status muted">—</td>
+      <td class="col-status"><span class="tag tag-gray">none</span></td>
+      <td class="col-status"><button class="btn btn-green" style="font-size:11px;padding:4px 8px;">✓</button></td>
+    </tr>
+    <tr onclick="openDrawer(this, 'Aaron Tansy')">
+      <td><span class="name">Aaron Tansy</span></td>
+      <td><span class="tag tag-green">GT</span></td>
+      <td class="muted">—</td>
+      <td><span class="check-dot no"></span></td>
+      <td class="col-program">Retained: 6mo GT</td>
+      <td class="col-program wrap muted">—</td>
+      <td class="col-program">9/1</td>
+      <td class="col-program">8/11</td>
+      <td class="col-weight">160</td>
+      <td class="col-weight">147.4</td>
+      <td class="col-weight"><span class="delta-good">-12.6</span></td>
+      <td class="col-waist col-hidden">33.5</td>
+      <td class="col-waist col-hidden">29.5</td>
+      <td class="col-waist col-hidden"><span class="delta-good">-4</span></td>
+      <td class="col-activity col-hidden">0/14</td>
+      <td class="col-activity col-hidden">6</td>
+      <td class="col-activity col-hidden muted">0</td>
+      <td class="col-activity col-hidden">5/31</td>
+      <td class="col-status muted">—</td>
+      <td class="col-status muted">—</td>
+      <td class="col-status"><span class="tag tag-gray">none</span></td>
+      <td class="col-status"><button class="btn btn-green" style="font-size:11px;padding:4px 8px;">✓</button></td>
+    </tr>
+    <tr class="selected" onclick="openDrawer(this, 'Adrianna Pavlides')">
+      <td><span class="name">Adrianna Pavlides</span></td>
+      <td><span class="tag tag-yellow">GT</span></td>
+      <td><span class="notes-preview">April 13</span></td>
+      <td><span class="check-dot no"></span></td>
+      <td class="col-program">150 days</td>
+      <td class="col-program wrap" style="font-size:11.5px;color:var(--secondary);">BF 26%→20%, drop ~10lbs</td>
+      <td class="col-program">9/13</td>
+      <td class="col-program">8/23</td>
+      <td class="col-weight">123</td>
+      <td class="col-weight">114.2</td>
+      <td class="col-weight"><span class="delta-good">-8.8</span></td>
+      <td class="col-waist col-hidden">31</td>
+      <td class="col-waist col-hidden">29.5</td>
+      <td class="col-waist col-hidden"><span class="delta-good">-1.5</span></td>
+      <td class="col-activity col-hidden"><span style="color:var(--green)">14/14</span></td>
+      <td class="col-activity col-hidden">11</td>
+      <td class="col-activity col-hidden">2</td>
+      <td class="col-activity col-hidden">today</td>
+      <td class="col-status muted">—</td>
+      <td class="col-status muted">—</td>
+      <td class="col-status"><span class="tag tag-gray">none</span></td>
+      <td class="col-status"><button class="btn btn-green" style="font-size:11px;padding:4px 8px;">✓</button></td>
+    </tr>
+    <tr onclick="openDrawer(this, 'Aleksandar Trajkovic')">
+      <td><span class="name">Aleksandar Trajkovic</span></td>
+      <td><span class="tag tag-green">GT</span></td>
+      <td><span class="notes-preview">off to Alaska June/July…</span></td>
+      <td><span class="check-dot no"></span></td>
+      <td class="col-program">2nd retention: 6mo</td>
+      <td class="col-program wrap muted">—</td>
+      <td class="col-program">11/1</td>
+      <td class="col-program">10/11</td>
+      <td class="col-weight">192</td>
+      <td class="col-weight">157</td>
+      <td class="col-weight"><span class="delta-good">-35</span></td>
+      <td class="col-waist col-hidden">42.3</td>
+      <td class="col-waist col-hidden">31.4</td>
+      <td class="col-waist col-hidden"><span class="delta-good">-10.9</span></td>
+      <td class="col-activity col-hidden">0/14</td>
+      <td class="col-activity col-hidden">2</td>
+      <td class="col-activity col-hidden muted">0</td>
+      <td class="col-activity col-hidden">5/30</td>
+      <td class="col-status muted">—</td>
+      <td class="col-status muted">—</td>
+      <td class="col-status"><span class="tag tag-gray">none</span></td>
+      <td class="col-status"><button class="btn btn-green" style="font-size:11px;padding:4px 8px;">✓</button></td>
+    </tr>
+    <tr onclick="openDrawer(this, 'Angela Briaud')">
+      <td><span class="name">Angela Briaud</span></td>
+      <td><span class="tag tag-green">GT</span></td>
+      <td><span class="notes-preview">breastfeeding 8-12mo…</span></td>
+      <td><span class="check-dot no"></span></td>
+      <td class="col-program">12mo group (spousal)</td>
+      <td class="col-program wrap muted">—</td>
+      <td class="col-program">7/21</td>
+      <td class="col-program">6/30</td>
+      <td class="col-weight">247</td>
+      <td class="col-weight">222.8</td>
+      <td class="col-weight"><span class="delta-good">-24.2</span></td>
+      <td class="col-waist col-hidden">48</td>
+      <td class="col-waist col-hidden">44</td>
+      <td class="col-waist col-hidden"><span class="delta-good">-4</span></td>
+      <td class="col-activity col-hidden">0/14</td>
+      <td class="col-activity col-hidden">0</td>
+      <td class="col-activity col-hidden muted">0</td>
+      <td class="col-activity col-hidden">5/31</td>
+      <td class="col-status muted">—</td>
+      <td class="col-status muted">—</td>
+      <td class="col-status"><span class="tag tag-gray">none</span></td>
+      <td class="col-status"><button class="btn btn-green" style="font-size:11px;padding:4px 8px;">✓</button></td>
+    </tr>
+    <tr onclick="openDrawer(this, 'Armin Shaverdian')">
+      <td><span class="name">Armin Shaverdian</span></td>
+      <td><span class="tag tag-yellow">GT</span></td>
+      <td><span class="notes-preview">Onboarding March 23</span></td>
+      <td><span class="check-dot no"></span></td>
+      <td class="col-program">120 days</td>
+      <td class="col-program wrap" style="font-size:11.5px;color:var(--secondary);">40lbs, 15% BF → 185-190</td>
+      <td class="col-program">7/23</td>
+      <td class="col-program">7/2</td>
+      <td class="col-weight">234</td>
+      <td class="col-weight">220</td>
+      <td class="col-weight"><span class="delta-good">-14</span></td>
+      <td class="col-waist col-hidden">44.5</td>
+      <td class="col-waist col-hidden muted">—</td>
+      <td class="col-waist col-hidden muted">—</td>
+      <td class="col-activity col-hidden">11/14</td>
+      <td class="col-activity col-hidden">3</td>
+      <td class="col-activity col-hidden muted">0</td>
+      <td class="col-activity col-hidden">today</td>
+      <td class="col-status muted">—</td>
+      <td class="col-status muted">—</td>
+      <td class="col-status"><span class="tag tag-gray">none</span></td>
+      <td class="col-status"><button class="btn btn-green" style="font-size:11px;padding:4px 8px;">✓</button></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- Action Drawer (shown for Adrianna) -->
+<div class="drawer-overlay open" onclick="closeDrawer()"></div>
+<div class="drawer open">
+  <div class="drawer-header">
+    <div>
+      <h2>Adrianna Pavlides</h2>
+      <div class="sub">John · <span style="color:var(--green);font-weight:600;">Active</span> · 150 days · ends 9/13</div>
+    </div>
+    <button class="close-btn" onclick="closeDrawer()">✕</button>
+  </div>
+
+  <!-- Quick links -->
+  <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;">
+    <a href="#" class="tz-link">↗ Open in Trainerize</a>
+    <button class="btn btn-green">✓ Check today</button>
+    <button class="btn btn-secondary">📋 Copy NPS link</button>
+  </div>
+
+  <!-- Notes -->
+  <div class="action-section">
+    <h3>Notes</h3>
+    <textarea class="notes-input" rows="2">April 13</textarea>
+  </div>
+
+  <!-- Draft check-in message -->
+  <div class="action-section">
+    <h3>Draft Check-in Message <span class="badge">AI-generated</span></h3>
+    <div class="draft-box">
+      <div class="draft-label">Edit before sending — then open Trainerize Messages to paste</div>
+      <textarea>Hey Adrianna! Great week — 14/14 nutrition days tracked and 11 workouts completed 💪
+
+Your weight is down 8.8 lbs since starting (123 → 114.2) and waist down 1.5 inches. Solid progress toward your 20% BF goal.
+
+Quick check: how are energy levels feeling with the current calorie target? And let's make sure we get updated progress photos this week.
+
+Keep crushing it! 🔥</textarea>
+      <div class="draft-actions">
+        <button class="btn btn-secondary" onclick="this.textContent='✓ Copied!';setTimeout(()=>this.textContent='📋 Copy text',2000)">📋 Copy text</button>
+        <a href="#" class="btn btn-green" style="text-decoration:none;">↗ Open Trainerize Messages</a>
+        <button class="btn btn-secondary">↻ Regenerate</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status controls -->
+  <div class="action-section">
+    <h3>Status Override</h3>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <select class="form-select">
+        <option selected>Active</option>
+        <option>Paused</option>
+        <option>Inactive</option>
+        <option>Needs cleanup</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Retention -->
+  <div class="action-section">
+    <h3>Retention / Renewal</h3>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <button class="btn btn-secondary">Mark retention asked</button>
+      <select class="form-select">
+        <option value="" disabled selected>Set outcome…</option>
+        <option>pending</option>
+        <option>continuing</option>
+        <option>declined</option>
+        <option>no_response</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Testimonial -->
+  <div class="action-section">
+    <h3>Testimonial</h3>
+    <select class="form-select">
+      <option>none</option>
+      <option>requested</option>
+      <option>received</option>
+    </select>
+  </div>
+
+  <!-- NPS -->
+  <div class="action-section">
+    <h3>NPS</h3>
+    <div style="color:var(--tertiary);font-size:12px;font-style:italic;">No NPS collected yet.</div>
+    <div style="display:flex;gap:8px;margin-top:8px;">
+      <button class="btn btn-secondary" style="font-size:12px;">📋 Copy NPS link</button>
+      <a href="#" class="btn btn-green" style="text-decoration:none;font-size:12px;">↗ Preview form</a>
+    </div>
+  </div>
+</div>
+
+<!-- Annotation -->
+<div class="annotation">
+  <strong>MOCKUP</strong> — Coaching Cockpit V2 design preview. Toggle column groups above the table. Click any row → action drawer.
+</div>
+
+<script>
+const groups = { program: true, weight: true, waist: false, activity: false, status: true };
+
+function toggleGroup(name) {
+  groups[name] = !groups[name];
+  document.querySelectorAll(`.col-${name}`).forEach(el => {
+    el.classList.toggle('col-hidden', !groups[name]);
+  });
+  document.querySelectorAll('.group-toggle').forEach(el => {
+    const g = el.getAttribute('onclick')?.match(/toggleGroup\('(\w+)'\)/)?.[1];
+    if (g) el.classList.toggle('on', groups[g]);
+  });
+}
+
+function openDrawer(row, name) {
+  document.querySelectorAll('tr').forEach(r => r.classList.remove('selected'));
+  row.classList.add('selected');
+  document.querySelector('.drawer-overlay').classList.add('open');
+  document.querySelector('.drawer').classList.add('open');
+}
+
+function closeDrawer() {
+  document.querySelector('.drawer-overlay').classList.remove('open');
+  document.querySelector('.drawer').classList.remove('open');
+  document.querySelectorAll('tr').forEach(r => r.classList.remove('selected'));
+}
+</script>
+
+</body>
+</html>
