@@ -1,0 +1,31 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HPFHQ Page Formats — reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head><body>
+<header class="topbar">
+  <span class="brand">HPF<span class="hq">HQ</span></span>
+  <span class="title">Page Formats</span><span class="sub">· the 4 page-class shells (ADR 0003)</span>
+</header>
+<main class="main w-capped">
+  <p class="muted" style="margin:6px 0 18px">Reference shells for the HPFHQ page-class skeleton. Every page wears one of these. <b>Top bar = universal</b> (logo · theme/density toggles · settings · log out · adaptive per auth tier). <b>Sidebar = the only variable</b> — collapsible, Dashboard class only. Canon: <code>docs/architecture/decisions/0003-page-class-skeleton.md</code> + the sitemap SOT sheet (human edit) → <code>docs/SITEMAP.md</code> (generated).</p>
+  <div class="cards" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
+    <a class="card" href="workspace.html" style="text-decoration:none;color:inherit"><div class="h2" style="margin:0 0 6px">Workspace</div><div class="muted">No sidebar · full-width · compact</div><div class="muted" style="margin-top:6px">/closer /setter /dialer /coach</div></a>
+    <a class="card" href="dashboard.html" style="text-decoration:none;color:inherit"><div class="h2" style="margin:0 0 6px">Dashboard</div><div class="muted">Collapsible sidebar · full-width · dense</div><div class="muted" style="margin-top:6px">/sales /marketing /leadership/* /ops</div></a>
+    <a class="card" href="portal.html" style="text-decoration:none;color:inherit"><div class="h2" style="margin:0 0 6px">Portal</div><div class="muted">No sidebar · capped ~1024 · dense</div><div class="muted" style="margin-top:6px">/team/*</div></a>
+    <a class="card" href="public.html" style="text-decoration:none;color:inherit"><div class="h2" style="margin:0 0 6px">Public / standalone</div><div class="muted">No sidebar · responsive (mobile)</div><div class="muted" style="margin-top:6px">/board /nps /login</div></a>
+  </div>
+  <h2 class="h2">At a glance</h2>
+  <div class="section">
+    <table style="width:100%;border-collapse:collapse;font-size:13px">
+      <tr style="color:var(--fg3);text-align:left"><th style="padding:6px 8px">Format</th><th>Sidebar</th><th>Width</th><th>Density</th><th>Access</th></tr>
+      <tr><td style="padding:6px 8px"><b>Workspace</b></td><td>—</td><td>full-width</td><td>compact</td><td>team (per-person)</td></tr>
+      <tr><td style="padding:6px 8px"><b>Dashboard</b></td><td>collapsible</td><td>full-width</td><td>dense</td><td>leadership / admin / super_admin</td></tr>
+      <tr><td style="padding:6px 8px"><b>Portal</b></td><td>—</td><td>capped ~1024</td><td>dense</td><td>team</td></tr>
+      <tr><td style="padding:6px 8px"><b>Public</b></td><td>—</td><td>unique · mobile</td><td>per page</td><td>public</td></tr>
+    </table>
+  </div>
+  <p class="note">Auth = Google OAuth (5 tiers: public → team → leadership → admin → super_admin). Theme + density are CSS-var-backed; toggles live in the top bar.</p>
+</main>
+</body></html>
