@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HPF P&L Classification Guide — For Patricia</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f8f9fa;
+    --border: #dee2e6;
+    --text: #212529;
+    --text-dim: #6c757d;
+    --green: #198754;
+    --red: #dc3545;
+    --amber: #fd7e14;
+    --blue: #0d6efd;
+    --purple: #6f42c1;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 40px;
+    line-height: 1.6;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  @media print { body { padding: 20px; font-size: 11px; } .no-print { display: none; } }
+  header { margin-bottom: 32px; border-bottom: 3px solid var(--text); padding-bottom: 16px; }
+  h1 { font-size: 24px; margin-bottom: 4px; }
+  .subtitle { color: var(--text-dim); font-size: 14px; }
+  h2 { font-size: 18px; margin-top: 32px; margin-bottom: 12px; padding-bottom: 4px; border-bottom: 2px solid var(--border); }
+  h3 { font-size: 14px; margin-top: 20px; margin-bottom: 8px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  table { width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 13px; }
+  th, td { padding: 6px 10px; text-align: left; border: 1px solid var(--border); }
+  th { background: var(--surface); font-weight: 600; font-size: 12px; text-transform: uppercase; }
+  tr:hover { background: #f0f4ff; }
+
+  .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 1px 6px; border-radius: 3px; }
+  .tag-include { background: #d1e7dd; color: #0f5132; }
+  .tag-exclude { background: #f8d7da; color: #842029; }
+  .tag-opex { background: #cfe2ff; color: #084298; }
+  .tag-cogs { background: #fff3cd; color: #664d03; }
+  .tag-allocate { background: #e2d9f3; color: #432874; }
+  .tag-personal { background: #f8d7da; color: #842029; }
+  .tag-review { background: #fff3cd; color: #664d03; }
+
+  .rule-box { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 16px; margin: 16px 0; }
+  .rule-box strong { color: var(--blue); }
+  .note { font-size: 12px; color: var(--text-dim); font-style: italic; }
+  .footer { margin-top: 40px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text-dim); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>HPF Coaching P&L — Classification Guide</h1>
+  <div class="subtitle">For Patricia (Bookkeeper) &middot; Body Transformation Mastermind Inc. &middot; June 2026</div>
+  <p class="note" style="margin-top:8px">This document maps QuickBooks accounts and payees to HPF's operational P&L categories. When QB Classes are enabled, use these rules to assign the correct class at entry time.</p>
+</header>
+
+<!-- MASTER RULE -->
+<div class="rule-box">
+  <strong>Master Rule: Card determines default treatment</strong><br>
+  <b>US Visa Gold (0206)</b> = Business card &rarr; default <span class="tag tag-include">INCLUDE</span> in coaching P&L<br>
+  <b>Visa (personal)</b> = Dan's personal card &rarr; default <span class="tag tag-personal">PERSONAL / EXCLUDE</span><br>
+  <b>USD RBC 2333 / RBC 2889 CAD</b> = Business bank accounts &rarr; default <span class="tag tag-include">INCLUDE</span><br>
+  <br>
+  <span class="note">Exceptions exist (e.g., Riverside.FM on Visa is still a business tool). See the payee-specific rules below.</span>
+</div>
+
+<!-- SECTION 1: REVENUE -->
+<h2>1. Revenue</h2>
+
+<table>
+  <tr><th>QB Account</th><th>Payee Pattern</th><th>HPF Treatment</th><th>Notes</th></tr>
+  <tr>
+    <td>Sales:Coaching</td>
+    <td>STRIPE, TT 1/DIVISIBLE (Fanbasis), Deposits</td>
+    <td><span class="tag tag-include">INCLUDE</span> Coaching Revenue</td>
+    <td>All coaching program payments. Stripe + Fanbasis payouts.</td>
+  </tr>
+  <tr>
+    <td>Sales:Courses</td>
+    <td>STRIPE (course products)</td>
+    <td><span class="tag tag-exclude">EXCLUDE</span> Non-Coaching</td>
+    <td>Digital courses (LB90, etc.). Not coaching revenue.</td>
+  </tr>
+  <tr>
+    <td>Sales:Monetization</td>
+    <td>Google LLC, XCorp, X CORP</td>
+    <td><span class="tag tag-exclude">EXCLUDE</span> Non-Coaching</td>
+    <td>YouTube ad revenue, X/Twitter payouts, affiliate income.</td>
+  </tr>
+</table>
+
+<!-- SECTION 2: COGS -->
+<h2>2. Cost of Goods Sold (COGS)</h2>
+<p class="note">COGS = costs directly tied to delivering coaching. Only: coach pay, closer/setter commissions, payment processing fees.</p>
+
+<table>
+  <tr><th>QB Account</th><th>Payee</th><th>HPF Category</th><th>What They Do</th></tr>
+  <tr>
+    <td>Subcontract</td>
+    <td>Veem*John Guevara</td>
+    <td><span class="tag tag-cogs">COGS</span> Coaches</td>
+    <td>Head Coach — delivers coaching to clients</td>
+  </tr>
+  <tr>
+    <td>Subcontract</td>
+    <td>Veem*Ryan Deschenes</td>
+    <td><span class="tag tag-cogs">COGS</span> Coaches</td>
+    <td>Coach — delivers coaching to clients</td>
+  </tr>
+  <tr>
+    <td>Subcontract</td>
+    <td>Veem*Sheena Lao</td>
+    <td><span class="tag tag-cogs">COGS</span> Fulfillment Support</td>
+    <td>Coaching assistant — client ops</td>
+  </tr>
+  <tr>
+    <td>Subcontract</td>
+    <td>Veem*BEA THERESE GUEV</td>
+    <td><span class="tag tag-cogs">COGS</span> Fulfillment Support</td>
+    <td>EA — client-facing support</td>
+  </tr>
+  <tr>
+    <td>Subcontract</td>
+    <td>Closer names (varies)</td>
+    <td><span class="tag tag-cogs">COGS</span> Sales Commissions</td>
+    <td>Closer commission payouts</td>
+  </tr>
+  <tr>
+    <td>Bank charges</td>
+    <td>Wire fees, PAY-FILE FEES (on RBC accounts)</td>
+    <td><span class="tag tag-cogs">COGS</span> Payment Processing</td>
+    <td>Bank fees on business accounts</td>
+  </tr>
+</table>
+
+<!-- SECTION 3: OPEX -->
+<h2>3. Operating Expenses (OpEx)</h2>
+<p class="note">Business overhead — not tied to delivering coaching directly. Includes operator pay, software, marketing tools, ads.</p>
+
+<h3>Operator Labor</h3>
+<table>
+  <tr><th>Payee</th><th>QB Account</th><th>HPF Category</th><th>Notes</th></tr>
+  <tr>
+    <td><b>Emil Hodzovic</b></td>
+    <td>Subcontract</td>
+    <td><span class="tag tag-opex">OPEX</span> Operator Labor</td>
+    <td>CEO/Operator. NOT COGS — does not deliver coaching or close sales.</td>
+  </tr>
+</table>
+
+<h3>Paid Acquisition</h3>
+<table>
+  <tr><th>Payee</th><th>Card</th><th>Notes</th></tr>
+  <tr><td>Facebook / FACEBK (Meta Ads)</td><td>US Visa Gold</td><td>Coaching ad spend</td></tr>
+</table>
+
+<h3>Marketing Systems &amp; Content</h3>
+<table>
+  <tr><th>Payee</th><th>Card</th><th>What It Is</th><th>Notes</th></tr>
+  <tr><td>Kit.com</td><td>US Visa Gold</td><td>Email marketing platform</td><td></td></tr>
+  <tr><td>Testimonial.to</td><td>US Visa Gold</td><td>Social proof / testimonial collection</td><td></td></tr>
+  <tr><td>Handwrytten</td><td>US Visa Gold</td><td>Handwritten cards to clients/team</td><td>Fulfillment / client ops</td></tr>
+  <tr><td>Frame.io</td><td>—</td><td>Video editing collaboration</td><td></td></tr>
+  <tr><td>Riverside.FM</td><td>Visa</td><td>Recording / content tool</td><td><span class="tag tag-allocate">ALLOCATE 50%</span> — serves coaching + YouTube</td></tr>
+</table>
+
+<h3>Sales Ops</h3>
+<table>
+  <tr><th>Payee</th><th>What It Is</th></tr>
+  <tr><td>SendBlue</td><td>SMS automation for leads</td></tr>
+  <tr><td>Course Creator 360 (GHL)</td><td>CRM / pipeline management</td></tr>
+</table>
+
+<h3>AI / Automation / R&amp;D</h3>
+<table>
+  <tr><th>Payee</th><th>What It Is</th></tr>
+  <tr><td>Anthropic</td><td>Claude AI API</td></tr>
+  <tr><td>OpenAI / ChatGPT</td><td>ChatGPT subscription + API</td></tr>
+</table>
+
+<h3>Core Tech / Infrastructure</h3>
+<table>
+  <tr><th>Payee</th><th>What It Is</th></tr>
+  <tr><td>Google Workspace / Google - USD / Google Suite</td><td>Google Workspace (email, drive, calendar)</td></tr>
+</table>
+
+<h3>Team Ops / Communication</h3>
+<table>
+  <tr><th>Payee</th><th>What It Is</th></tr>
+  <tr><td>Slack</td><td>Team communication</td></tr>
+  <tr><td>Hubstaff</td><td>Time tracking for team</td></tr>
+  <tr><td>Fathom.video</td><td>Meeting recorder</td></tr>
+</table>
+
+<h3>Professional Services</h3>
+<table>
+  <tr><th>Payee</th><th>Card</th><th>What It Is</th></tr>
+  <tr><td>Agoge Consulting</td><td>US Visa Gold</td><td>Business advisory</td></tr>
+  <tr><td>QuickBooks</td><td>—</td><td>Accounting software</td></tr>
+</table>
+
+<h3>Office / Admin</h3>
+<table>
+  <tr><th>Payee</th><th>What It Is</th><th>Notes</th></tr>
+  <tr><td>TKS Management / Regus</td><td>Coworking space</td><td></td></tr>
+  <tr><td>Staples</td><td>Office supplies</td><td></td></tr>
+  <tr><td>Calder Clean Corporate</td><td>Gym cleaning service</td><td><span class="tag tag-allocate">ALLOCATE</span> — serves coaching content + other revenue. Split TBD.</td></tr>
+</table>
+
+<!-- SECTION 4: ALLOCATE -->
+<h2>4. Shared / Allocate</h2>
+<p class="note">These expenses serve both the coaching business and Dan's other revenue streams (YouTube, X, sponsorships). They are partially included in the coaching P&L at a split ratio.</p>
+
+<table>
+  <tr><th>Payee</th><th>What It Is</th><th>Coaching Share</th><th>Reason</th></tr>
+  <tr>
+    <td>Riverside.FM</td>
+    <td>Content recording tool</td>
+    <td>50%</td>
+    <td>Serves coaching marketing + YouTube/podcast</td>
+  </tr>
+  <tr>
+    <td>Calder Clean Corporate</td>
+    <td>Gym / studio cleaning</td>
+    <td>TBD (ask Dan)</td>
+    <td>Gym used for coaching content + monetization content</td>
+  </tr>
+  <tr>
+    <td>Any future course / education</td>
+    <td>Dan's courses &amp; coaching education</td>
+    <td>Allocate unless Dan specifies</td>
+    <td>From March 2026 onward — personal unless Dan explicitly flags for business</td>
+  </tr>
+</table>
+
+<!-- SECTION 5: EXCLUDED -->
+<h2>5. Excluded — Owner Personal</h2>
+<p class="note">Dan's personal expenses that flow through business accounts. Never included in the coaching P&L.</p>
+
+<div class="rule-box">
+  <strong>Blanket Rules:</strong><br>
+  &bull; QB account "Due to Shareholders" &rarr; <b>always personal</b><br>
+  &bull; All "Meals and entertainment" on <b>Visa (personal card)</b> &rarr; <b>default personal</b> (Dan flags exceptions)<br>
+  &bull; All "Supplies and materials" on <b>Visa (personal card)</b> &rarr; <b>default personal</b> (unless known business payee)<br>
+  &bull; "Rent" for Level Furnished Living &rarr; <b>personal</b> (Dan's apartment)
+</div>
+
+<table>
+  <tr><th>Payee</th><th>QB Account</th><th>What It Is</th></tr>
+  <tr><td>Netflix</td><td>Due to Shareholders</td><td>Personal entertainment</td></tr>
+  <tr><td>Krspy Barbershop</td><td>Due to Shareholders</td><td>Personal grooming</td></tr>
+  <tr><td>Eco Natural Aquatics</td><td>Due to Shareholders</td><td>Personal (fish tank / aquatics)</td></tr>
+  <tr><td>FortisBC Energy</td><td>Due to Shareholders</td><td>Home utility</td></tr>
+  <tr><td>Kelo Retail Co</td><td>Due to Shareholders</td><td>Personal shopping</td></tr>
+  <tr><td>Kangaroo Creek Farm</td><td>Due to Shareholders</td><td>Personal outing</td></tr>
+  <tr><td>Telus Comm Web</td><td>Telephone</td><td>Personal internet (Visa card)</td></tr>
+  <tr><td>Spotify</td><td>Dues &amp; Subscriptions</td><td>Personal music</td></tr>
+  <tr><td>Remarkable</td><td>Dues &amp; Subscriptions</td><td>Personal device subscription</td></tr>
+  <tr><td>The Realm Fitness</td><td>Professional Development</td><td>Dan's personal gym</td></tr>
+  <tr><td>Level Furnished Living</td><td>Rent</td><td>Dan's personal apartment (Vancouver)</td></tr>
+  <tr><td>Dynacare</td><td>Subcontract</td><td>Personal medical lab / blood work</td></tr>
+  <tr><td>Body Blueprint Adv</td><td>Supplies &amp; COS</td><td>Personal course / consulting</td></tr>
+  <tr><td>Lululemon</td><td>Supplies &amp; COS</td><td>Personal clothing</td></tr>
+  <tr><td>Amazon Marketplace (Visa)</td><td>Supplies &amp; COS</td><td>Default personal (Dan to flag business exceptions)</td></tr>
+  <tr><td>All DoorDash, restaurants, cafes</td><td>Meals &amp; Entertainment</td><td>Default personal (Dan to flag client dinners)</td></tr>
+  <tr><td>Parking (Indigo, Impark, etc.)</td><td>Auto-Parking</td><td>Personal</td></tr>
+  <tr><td>Kelowna Cabs</td><td>Travel</td><td>Personal</td></tr>
+</table>
+
+<h3>Cancel / Wind Down</h3>
+<table>
+  <tr><th>Payee</th><th>Action</th><th>Reason</th></tr>
+  <tr><td>ShieldApp.AI</td><td><b>Cancel subscription</b></td><td>Service shut down (Google + LinkedIn forced closure, June 2026)</td></tr>
+</table>
+
+<!-- SECTION 6: BALANCE SHEET -->
+<h2>6. Always Exclude — Balance Sheet Transfers</h2>
+<p class="note">Money moving between Dan's own accounts. Never expenses, never revenue. Ignore in P&L.</p>
+
+<table>
+  <tr><th>QB Account</th><th>Description</th><th>Rule</th></tr>
+  <tr><td>US Visa Gold</td><td>Credit card payments from bank ("PAYMENT - THANK YOU")</td><td>Always exclude</td></tr>
+  <tr><td>Visa</td><td>Credit card payments from bank</td><td>Always exclude</td></tr>
+  <tr><td>Income USD (2275)</td><td>FX transfers between bank accounts ("Online Banking foreign exchange")</td><td>Always exclude</td></tr>
+</table>
+
+<!-- VENDOR DIRECTORY -->
+<h2>7. Vendor Quick Reference</h2>
+<p class="note">Payee names as they appear in QuickBooks, with human-readable labels. Reference this when entering or classifying transactions.</p>
+
+<table>
+  <tr><th>QB Payee Name</th><th>Human Label</th><th>What It Is</th><th>HPF Section</th></tr>
+  <tr><td>SP AGOGE-CONSULTING AGOGE.CONSULT TX</td><td>Agoge Consulting</td><td>Business advisory firm</td><td>OpEx: Professional</td></tr>
+  <tr><td>TT 1/DIVISIBLE Funds transfer credit</td><td>Fanbasis Payout</td><td>Fanbasis payment processor bank deposit</td><td>Revenue: Coaching</td></tr>
+  <tr><td>STRIPE Misc Payment</td><td>Stripe Payout</td><td>Stripe payment processor bank deposit</td><td>Revenue: Coaching or Courses</td></tr>
+  <tr><td>Google LLC Misc Payment</td><td>YouTube Revenue</td><td>YouTube ad revenue payout</td><td>Revenue: Excluded (Monetization)</td></tr>
+  <tr><td>TKS Management / RGN Management</td><td>Regus Coworking</td><td>Coworking office space</td><td>OpEx: Office</td></tr>
+  <tr><td>FACEBK *xxxx DUBLIN</td><td>Meta Ads</td><td>Facebook/Instagram advertising</td><td>OpEx: Paid Acquisition</td></tr>
+  <tr><td>IN *CALDER CLEAN CORPORAT</td><td>Calder Clean</td><td>Gym/studio cleaning service</td><td>Allocate (shared)</td></tr>
+  <tr><td>LEVEL FURNISHED LIVING</td><td>Level Furnished Living</td><td>Dan's Vancouver apartment</td><td>Excluded: Personal</td></tr>
+  <tr><td>DYNACARE 5J</td><td>Dynacare</td><td>Medical laboratory (blood work)</td><td>Excluded: Personal</td></tr>
+  <tr><td>THE BODY BLUEPRINT ADV</td><td>Body Blueprint</td><td>Fitness/coaching course</td><td>Excluded: Personal</td></tr>
+  <tr><td>HANDWRYTTEN</td><td>Handwrytten</td><td>Handwritten card service (clients/team)</td><td>OpEx: Marketing/Fulfillment</td></tr>
+  <tr><td>TESTIMONIAL.TO</td><td>Testimonial.to</td><td>Client testimonial collection tool</td><td>OpEx: Marketing</td></tr>
+  <tr><td>SP TINYPOD BUY.THETINYPO</td><td>TinyPod</td><td>Apple Watch phone case accessory</td><td>Excluded: Personal</td></tr>
+  <tr><td>Veem*John Guevara</td><td>John Guevara</td><td>Head Coach — coaching delivery</td><td>COGS: Coaches</td></tr>
+  <tr><td>Veem*Ryan Deschenes</td><td>Ryan Deschenes</td><td>Coach — coaching delivery</td><td>COGS: Coaches</td></tr>
+  <tr><td>Veem*Sheena Lao</td><td>Sheena Lao</td><td>Coaching Assistant</td><td>COGS: Fulfillment Support</td></tr>
+  <tr><td>Veem*BEA THERESE GUEV</td><td>Bea Guevara</td><td>Executive Assistant</td><td>COGS: Fulfillment Support</td></tr>
+</table>
+
+<div class="footer">
+  Generated 2026-06-02 &middot; Classified by Emil Hodzovic &middot; Based on May 2026 QB TransactionList (182 transactions) &middot; Rules apply going forward for all months.<br>
+  <b>Questions?</b> Email coaching@doctoremil.com
+</div>
+
+</body>
+</html>
