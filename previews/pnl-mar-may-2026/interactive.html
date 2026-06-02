@@ -1,0 +1,3268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HPF Coaching P&L — Interactive (Mar–May 2026)</title>
+<style>
+:root { --bg: #fff; --surface: #f8f9fa; --border: #dee2e6; --text: #212529; --dim: #6c757d; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); padding: 24px 40px; line-height: 1.5; max-width: 1100px; margin: 0 auto; }
+header { margin-bottom: 24px; border-bottom: 3px solid var(--text); padding-bottom: 12px; }
+h1 { font-size: 22px; }
+.subtitle { color: var(--dim); font-size: 13px; margin-top: 4px; }
+
+.tabs { display: flex; gap: 0; margin-bottom: 24px; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: 8px 20px; border: none; background: none; font-size: 14px; font-weight: 500; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; color: var(--dim); }
+.tab-btn.active { color: var(--text); border-bottom-color: #0d6efd; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.section { margin-bottom: 20px; }
+.section-header { display: flex; justify-content: space-between; font-weight: 700; font-size: 15px; padding: 8px 12px; border-bottom: 2px solid var(--text); margin-bottom: 4px; }
+.section-revenue .section-header { background: #d1e7dd; }
+.section-cogs .section-header { background: #fff3cd; }
+.section-opex .section-header { background: #cfe2ff; }
+
+details.category { margin: 2px 0; }
+details.category summary { display: flex; align-items: center; gap: 12px; padding: 6px 12px; cursor: pointer; font-size: 13px; border-bottom: 1px solid #eee; }
+details.category summary:hover { background: #f0f4ff; }
+details.category[open] summary { background: #f0f4ff; font-weight: 600; }
+.cat-name { flex: 1; }
+.cat-amount { font-weight: 600; font-family: 'SF Mono', 'Menlo', monospace; font-size: 13px; min-width: 120px; text-align: right; }
+.cat-count { color: var(--dim); font-size: 11px; min-width: 60px; text-align: right; }
+
+.txn-table { width: 100%; border-collapse: collapse; margin: 0 0 8px 0; font-size: 12px; }
+.txn-table th { background: var(--surface); padding: 4px 8px; text-align: left; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+.txn-table td { padding: 3px 8px; border-bottom: 1px solid #f0f0f0; }
+.txn-table .num { text-align: right; font-family: 'SF Mono', 'Menlo', monospace; font-size: 12px; }
+
+.summary-row { display: flex; justify-content: space-between; padding: 10px 12px; font-weight: 700; font-size: 15px; border-top: 2px solid var(--text); margin-top: 4px; }
+.summary-row.gross { background: #f8f9fa; }
+.summary-row.net { background: #212529; color: #fff; font-size: 16px; }
+.positive { color: #198754; }
+.negative { color: #dc3545; }
+.summary-row.net .positive { color: #2ED47A; }
+.summary-row.net .negative { color: #ff6b6b; }
+
+.overview-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 13px; }
+.overview-table th, .overview-table td { padding: 6px 12px; border: 1px solid var(--border); text-align: right; }
+.overview-table th { background: var(--surface); text-align: left; }
+.overview-table .num { font-family: 'SF Mono', 'Menlo', monospace; }
+.expand-all { font-size: 12px; color: #0d6efd; cursor: pointer; border: none; background: none; margin-bottom: 8px; }
+.footer { margin-top: 32px; font-size: 11px; color: var(--dim); border-top: 1px solid var(--border); padding-top: 8px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>HPF Coaching P&L — Interactive</h1>
+  <div class="subtitle">March – May 2026 &middot; Pure Coaching &middot; All figures USD (CAD &divide; 1.376) &middot; Click categories to expand transactions</div>
+</header>
+
+<h2 style="font-size:15px; margin-bottom:8px;">Summary</h2>
+<table class="overview-table">
+  <tr><th></th><th>March 2026</th><th>April 2026</th><th>May 2026</th></tr>
+  <tr><td><b>Revenue</b></td><td class="num">$118,002.82</td><td class="num">$101,765.59</td><td class="num">$61,520.16</td></tr>
+  <tr><td><b>COGS</b></td><td class="num">$40,687.78</td><td class="num">$21,668.20</td><td class="num">$0.00</td></tr>
+  <tr><td><b>Gross Profit</b></td><td class="num">$158,690.60</td><td class="num">$123,433.79</td><td class="num">$61,520.16</td></tr>
+  <tr><td><b>OpEx</b></td><td class="num">$41,170.38</td><td class="num">$20,610.36</td><td class="num">$2,607.76</td></tr>
+  <tr style="background:#212529;color:#fff;font-weight:700"><td><b>Net Operating Income</b></td><td class="num" style="color:#2ED47A">$199,860.97</td><td class="num" style="color:#2ED47A">$144,044.15</td><td class="num" style="color:#2ED47A">$64,127.92</td></tr>
+</table>
+
+<div class="tabs">
+  <button class="tab-btn" data-month="2026-03">March 2026</button><button class="tab-btn" data-month="2026-04">April 2026</button><button class="tab-btn" data-month="2026-05">May 2026</button>
+</div>
+
+<button class="expand-all" onclick="toggleAll()">Expand / Collapse All</button>
+
+<div class="tab-panel" id="panel-2026-03">
+    <div class="section section-revenue">
+      <div class="section-header">
+        <span>Revenue</span>
+        <span class="section-total">$118,002.82</span>
+      </div>
+      
+      <details class="category">
+        <summary>
+          <span class="cat-name">Coaching Revenue</span>
+          <span class="cat-amount">$118,002.82</span>
+          <span class="cat-count">17 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-03-02</td>
+              <td></td>
+              <td class="num">$1,631.34</td>
+              <td class="num">$1,185.57</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-03-03</td>
+              <td></td>
+              <td class="num">$26,449.78</td>
+              <td class="num">$19,222.22</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-03-04</td>
+              <td></td>
+              <td class="num">$964.50</td>
+              <td class="num">$700.94</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-03-05</td>
+              <td></td>
+              <td class="num">$1,819.73</td>
+              <td class="num">$1,322.48</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-03-05</td>
+              <td></td>
+              <td class="num">$18,049.55</td>
+              <td class="num">$13,117.41</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-03-09</td>
+              <td></td>
+              <td class="num">$14,714.61</td>
+              <td class="num">$10,693.76</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-03-10</td>
+              <td></td>
+              <td class="num">$1,877.18</td>
+              <td class="num">$1,364.23</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-03-11</td>
+              <td></td>
+              <td class="num">$6,542.91</td>
+              <td class="num">$4,755.02</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-03-12</td>
+              <td></td>
+              <td class="num">$2,342.37</td>
+              <td class="num">$1,702.30</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-03-13</td>
+              <td></td>
+              <td class="num">$1,912.17</td>
+              <td class="num">$1,389.66</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-03-16</td>
+              <td></td>
+              <td class="num">$9,885.98</td>
+              <td class="num">$7,184.58</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-03-17</td>
+              <td></td>
+              <td class="num">$16,583.62</td>
+              <td class="num">$12,052.05</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-03-18</td>
+              <td></td>
+              <td class="num">$3,304.17</td>
+              <td class="num">$2,401.29</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-03-19</td>
+              <td></td>
+              <td class="num">$14,266.80</td>
+              <td class="num">$10,368.31</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-03-26</td>
+              <td></td>
+              <td class="num">$14,644.92</td>
+              <td class="num">$10,643.11</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-03-30</td>
+              <td></td>
+              <td class="num">$18,780.90</td>
+              <td class="num">$13,648.91</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-03-31</td>
+              <td></td>
+              <td class="num">$8,601.35</td>
+              <td class="num">$6,250.98</td>
+              <td>Sales:Coaching</td>
+            </tr>
+        </table>
+      </details>
+    </div>
+    <div class="section section-cogs">
+      <div class="section-header">
+        <span>Cost of Goods Sold (COGS)</span>
+        <span class="section-total">$40,687.78</span>
+      </div>
+      
+      <details class="category">
+        <summary>
+          <span class="cat-name">Coach Delivery Labor</span>
+          <span class="cat-amount">$15,909.50</span>
+          <span class="cat-count">10 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-03-03</td>
+              <td>Veem.</td>
+              <td class="num">$6,649.78</td>
+              <td class="num">$4,832.69</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-03</td>
+              <td>Veem.</td>
+              <td class="num">$1,845.19</td>
+              <td class="num">$1,340.98</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-03</td>
+              <td>Veem.</td>
+              <td class="num">$1,783.90</td>
+              <td class="num">$1,296.44</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-10</td>
+              <td>Veem.</td>
+              <td class="num">$1,914.26</td>
+              <td class="num">$1,391.18</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-17</td>
+              <td>Veem.</td>
+              <td class="num">$1,847.74</td>
+              <td class="num">$1,342.83</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-17</td>
+              <td>Veem.</td>
+              <td class="num">$281.39</td>
+              <td class="num">$204.50</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-17</td>
+              <td>Veem.</td>
+              <td class="num">$2,287.05</td>
+              <td class="num">$1,662.10</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-24</td>
+              <td>Veem.</td>
+              <td class="num">$2,420.74</td>
+              <td class="num">$1,759.26</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-24</td>
+              <td>Veem.</td>
+              <td class="num">$397.68</td>
+              <td class="num">$289.01</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-31</td>
+              <td>Veem.</td>
+              <td class="num">$2,463.74</td>
+              <td class="num">$1,790.51</td>
+              <td>Subcontract</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Closer Commissions</span>
+          <span class="cat-amount">$17,780.66</span>
+          <span class="cat-count">5 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-03-03</td>
+              <td></td>
+              <td class="num">$12,142.76</td>
+              <td class="num">$8,824.68</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-10</td>
+              <td></td>
+              <td class="num">$2,057.17</td>
+              <td class="num">$1,495.04</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-17</td>
+              <td></td>
+              <td class="num">$5,081.29</td>
+              <td class="num">$3,692.80</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-24</td>
+              <td></td>
+              <td class="num">$2,089.24</td>
+              <td class="num">$1,518.34</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-31</td>
+              <td></td>
+              <td class="num">$3,095.73</td>
+              <td class="num">$2,249.80</td>
+              <td>Subcontract</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Setter Commissions</span>
+          <span class="cat-amount">$6,997.62</span>
+          <span class="cat-count">5 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-03-03</td>
+              <td>Veem.</td>
+              <td class="num">$2,802.54</td>
+              <td class="num">$2,036.73</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-10</td>
+              <td>Veem.</td>
+              <td class="num">$1,760.23</td>
+              <td class="num">$1,279.24</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-17</td>
+              <td>Veem.</td>
+              <td class="num">$1,948.54</td>
+              <td class="num">$1,416.09</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-24</td>
+              <td>Veem.</td>
+              <td class="num">$1,420.90</td>
+              <td class="num">$1,032.63</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-31</td>
+              <td>Veem.</td>
+              <td class="num">$1,696.51</td>
+              <td class="num">$1,232.93</td>
+              <td>Subcontract</td>
+            </tr>
+        </table>
+      </details>
+    </div>
+    <div class="section section-opex">
+      <div class="section-header">
+        <span>Operating Expenses (OpEx)</span>
+        <span class="section-total">$41,170.38</span>
+      </div>
+      
+      <details class="category">
+        <summary>
+          <span class="cat-name">Meta Ads (Facebook/Instagram)</span>
+          <span class="cat-amount">$5,174.68</span>
+          <span class="cat-count">3 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-03-06</td>
+              <td></td>
+              <td class="num">$778.37</td>
+              <td class="num">$565.68</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-21</td>
+              <td></td>
+              <td class="num">$3,164.93</td>
+              <td class="num">$2,300.09</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-30</td>
+              <td></td>
+              <td class="num">$3,177.06</td>
+              <td class="num">$2,308.91</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Other Marketing & Ads</span>
+          <span class="cat-amount">$5,861.42</span>
+          <span class="cat-count">28 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-03-02</td>
+              <td></td>
+              <td class="num">$6.19</td>
+              <td class="num">$4.50</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-03</td>
+              <td>Setter Company</td>
+              <td class="num">$592.17</td>
+              <td class="num">$430.36</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-03</td>
+              <td></td>
+              <td class="num">$2,736.15</td>
+              <td class="num">$1,988.48</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-04</td>
+              <td></td>
+              <td class="num">$6.19</td>
+              <td class="num">$4.50</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-05</td>
+              <td></td>
+              <td class="num">$6.19</td>
+              <td class="num">$4.50</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-05</td>
+              <td></td>
+              <td class="num">$6.19</td>
+              <td class="num">$4.50</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-06</td>
+              <td></td>
+              <td class="num">($164.30)</td>
+              <td class="num">($119.40)</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-09</td>
+              <td></td>
+              <td class="num">$6.16</td>
+              <td class="num">$4.48</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-11</td>
+              <td>Notion Labs Inc - USD</td>
+              <td class="num">$2,395.55</td>
+              <td class="num">$1,740.95</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-12</td>
+              <td></td>
+              <td class="num">$6.18</td>
+              <td class="num">$4.49</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-12</td>
+              <td></td>
+              <td class="num">$6.61</td>
+              <td class="num">$4.80</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-16</td>
+              <td>ManyChat</td>
+              <td class="num">$2,238.04</td>
+              <td class="num">$1,626.48</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-17</td>
+              <td></td>
+              <td class="num">$6.21</td>
+              <td class="num">$4.51</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-17</td>
+              <td></td>
+              <td class="num">$6.21</td>
+              <td class="num">$4.51</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-18</td>
+              <td></td>
+              <td class="num">($406.80)</td>
+              <td class="num">($295.64)</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-22</td>
+              <td>Makeagif.com</td>
+              <td class="num">$16.39</td>
+              <td class="num">$11.91</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-23</td>
+              <td></td>
+              <td class="num">$7.63</td>
+              <td class="num">$5.55</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-23</td>
+              <td></td>
+              <td class="num">$6.23</td>
+              <td class="num">$4.53</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-23</td>
+              <td></td>
+              <td class="num">$6.67</td>
+              <td class="num">$4.85</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-25</td>
+              <td></td>
+              <td class="num">$6.26</td>
+              <td class="num">$4.55</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-25</td>
+              <td></td>
+              <td class="num">$6.26</td>
+              <td class="num">$4.55</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-27</td>
+              <td></td>
+              <td class="num">$6.30</td>
+              <td class="num">$4.58</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-27</td>
+              <td></td>
+              <td class="num">$6.30</td>
+              <td class="num">$4.58</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-28</td>
+              <td></td>
+              <td class="num">$276.62</td>
+              <td class="num">$201.03</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-29</td>
+              <td>LVRG.IT - USD.</td>
+              <td class="num">$134.74</td>
+              <td class="num">$97.92</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-30</td>
+              <td>Taplio.com (USD)</td>
+              <td class="num">$130.95</td>
+              <td class="num">$95.17</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-31</td>
+              <td></td>
+              <td class="num">$7.72</td>
+              <td class="num">$5.61</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-31</td>
+              <td></td>
+              <td class="num">$6.30</td>
+              <td class="num">$4.58</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Team Ops & Communications</span>
+          <span class="cat-amount">$472.51</span>
+          <span class="cat-count">19 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-03-02</td>
+              <td></td>
+              <td class="num">$82.01</td>
+              <td class="num">$59.60</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-03</td>
+              <td>Course Creator 360</td>
+              <td class="num">$201.11</td>
+              <td class="num">$146.16</td>
+              <td>Dues and Subscriptions</td>
+            </tr>
+<tr>
+              <td>2026-03-03</td>
+              <td>TKS Management</td>
+              <td class="num">$6,840.37</td>
+              <td class="num">$4,971.20</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-03</td>
+              <td>Veem.</td>
+              <td class="num">$593.66</td>
+              <td class="num">$431.44</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-03</td>
+              <td>Veem.</td>
+              <td class="num">$585.44</td>
+              <td class="num">$425.47</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-04</td>
+              <td>Slack.</td>
+              <td class="num">$168.31</td>
+              <td class="num">$122.32</td>
+              <td>Office Supplies</td>
+            </tr>
+<tr>
+              <td>2026-03-04</td>
+              <td></td>
+              <td class="num">$399.18</td>
+              <td class="num">$290.10</td>
+              <td>Dues and Subscriptions</td>
+            </tr>
+<tr>
+              <td>2026-03-05</td>
+              <td>Emil Hodzovic</td>
+              <td class="num">($6,819.66)</td>
+              <td class="num">($4,956.15)</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-06</td>
+              <td>Emil Hodzovic</td>
+              <td class="num">($6,788.75)</td>
+              <td class="num">($4,933.68)</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-07</td>
+              <td>Hubstaff.com.</td>
+              <td class="num">$163.50</td>
+              <td class="num">$118.82</td>
+              <td>Office Supplies</td>
+            </tr>
+<tr>
+              <td>2026-03-10</td>
+              <td>Veem.</td>
+              <td class="num">$575.69</td>
+              <td class="num">$418.38</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-10</td>
+              <td>Veem.</td>
+              <td class="num">$590.66</td>
+              <td class="num">$429.26</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-17</td>
+              <td>Veem.</td>
+              <td class="num">$569.70</td>
+              <td class="num">$414.03</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-17</td>
+              <td>Veem.</td>
+              <td class="num">$691.81</td>
+              <td class="num">$502.77</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-20</td>
+              <td>Quickbooks</td>
+              <td class="num">$72.80</td>
+              <td class="num">$52.91</td>
+              <td>Dues and Subscriptions</td>
+            </tr>
+<tr>
+              <td>2026-03-24</td>
+              <td>Veem.</td>
+              <td class="num">$590.51</td>
+              <td class="num">$429.15</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-24</td>
+              <td>Veem.</td>
+              <td class="num">$713.67</td>
+              <td class="num">$518.66</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-31</td>
+              <td>Veem.</td>
+              <td class="num">$811.38</td>
+              <td class="num">$589.67</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-31</td>
+              <td>Veem.</td>
+              <td class="num">$608.78</td>
+              <td class="num">$442.43</td>
+              <td>Subcontract</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Core Tech & SaaS</span>
+          <span class="cat-amount">$5,228.07</span>
+          <span class="cat-count">43 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-03-01</td>
+              <td>Google - USD</td>
+              <td class="num">$470.36</td>
+              <td class="num">$341.83</td>
+              <td>Computer Hosting</td>
+            </tr>
+<tr>
+              <td>2026-03-01</td>
+              <td>Google - USD</td>
+              <td class="num">$3.93</td>
+              <td class="num">$2.86</td>
+              <td>Computer Hosting</td>
+            </tr>
+<tr>
+              <td>2026-03-01</td>
+              <td>Google - USD</td>
+              <td class="num">$39.56</td>
+              <td class="num">$28.75</td>
+              <td>Computer Hosting</td>
+            </tr>
+<tr>
+              <td>2026-03-02</td>
+              <td></td>
+              <td class="num">($2.00)</td>
+              <td class="num">($1.45)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-03-02</td>
+              <td></td>
+              <td class="num">($6.00)</td>
+              <td class="num">($4.36)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-03-02</td>
+              <td></td>
+              <td class="num">($37.59)</td>
+              <td class="num">($27.32)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-03-02</td>
+              <td></td>
+              <td class="num">($20.49)</td>
+              <td class="num">($14.89)</td>
+              <td>Paypal Fee</td>
+            </tr>
+<tr>
+              <td>2026-03-03</td>
+              <td>ShieldApp.AI</td>
+              <td class="num">$21.89</td>
+              <td class="num">$15.91</td>
+              <td>Office Supplies</td>
+            </tr>
+<tr>
+              <td>2026-03-03</td>
+              <td></td>
+              <td class="num">($21.59)</td>
+              <td class="num">($15.69)</td>
+              <td>Paypal Fee</td>
+            </tr>
+<tr>
+              <td>2026-03-03</td>
+              <td></td>
+              <td class="num">($5.58)</td>
+              <td class="num">($4.06)</td>
+              <td>Paypal Fee</td>
+            </tr>
+<tr>
+              <td>2026-03-04</td>
+              <td>Kit.com</td>
+              <td class="num">$4,318.34</td>
+              <td class="num">$3,138.33</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-03-04</td>
+              <td></td>
+              <td class="num">$1,365.57</td>
+              <td class="num">$992.42</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-03-04</td>
+              <td></td>
+              <td class="num">$4.78</td>
+              <td class="num">$3.47</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-03-05</td>
+              <td></td>
+              <td class="num">($27.32)</td>
+              <td class="num">($19.85)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-03-06</td>
+              <td></td>
+              <td class="num">($27.16)</td>
+              <td class="num">($19.74)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-03-09</td>
+              <td>goDaddy - USD</td>
+              <td class="num">($241.77)</td>
+              <td class="num">($175.70)</td>
+              <td>Computer Hosting</td>
+            </tr>
+<tr>
+              <td>2026-03-10</td>
+              <td>Loom USD</td>
+              <td class="num">$260.31</td>
+              <td class="num">$189.18</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-03-10</td>
+              <td>Trainerize.</td>
+              <td class="num">$341.66</td>
+              <td class="num">$248.30</td>
+              <td>Supplies and materials - COS</td>
+            </tr>
+<tr>
+              <td>2026-03-10</td>
+              <td>Zapier USD</td>
+              <td class="num">$271.05</td>
+              <td class="num">$196.98</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-03-11</td>
+              <td></td>
+              <td class="num">($10.38)</td>
+              <td class="num">($7.54)</td>
+              <td>Paypal Fee</td>
+            </tr>
+<tr>
+              <td>2026-03-11</td>
+              <td></td>
+              <td class="num">($5.29)</td>
+              <td class="num">($3.84)</td>
+              <td>Paypal Fee</td>
+            </tr>
+<tr>
+              <td>2026-03-13</td>
+              <td>Go Daddy</td>
+              <td class="num">($32.81)</td>
+              <td class="num">($23.84)</td>
+              <td>Computer Hosting</td>
+            </tr>
+<tr>
+              <td>2026-03-13</td>
+              <td></td>
+              <td class="num">($15.92)</td>
+              <td class="num">($11.57)</td>
+              <td>Paypal Fee</td>
+            </tr>
+<tr>
+              <td>2026-03-13</td>
+              <td></td>
+              <td class="num">$295.97</td>
+              <td class="num">$215.09</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-03-13</td>
+              <td></td>
+              <td class="num">$15.25</td>
+              <td class="num">$11.08</td>
+              <td>Supplies and materials - COS</td>
+            </tr>
+<tr>
+              <td>2026-03-14</td>
+              <td></td>
+              <td class="num">$30.94</td>
+              <td class="num">$22.49</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-03-15</td>
+              <td></td>
+              <td class="num">($20.55)</td>
+              <td class="num">($14.93)</td>
+              <td>Paypal Fee</td>
+            </tr>
+<tr>
+              <td>2026-03-16</td>
+              <td>Go Daddy</td>
+              <td class="num">($32.81)</td>
+              <td class="num">($23.84)</td>
+              <td>Computer Hosting</td>
+            </tr>
+<tr>
+              <td>2026-03-17</td>
+              <td></td>
+              <td class="num">$20.18</td>
+              <td class="num">$14.67</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-03-17</td>
+              <td></td>
+              <td class="num">($8.10)</td>
+              <td class="num">($5.89)</td>
+              <td>Paypal Fee</td>
+            </tr>
+<tr>
+              <td>2026-03-20</td>
+              <td></td>
+              <td class="num">($10.49)</td>
+              <td class="num">($7.62)</td>
+              <td>Paypal Fee</td>
+            </tr>
+<tr>
+              <td>2026-03-21</td>
+              <td>goDaddy - USD</td>
+              <td class="num">($65.90)</td>
+              <td class="num">($47.89)</td>
+              <td>Computer Hosting</td>
+            </tr>
+<tr>
+              <td>2026-03-21</td>
+              <td></td>
+              <td class="num">$135.94</td>
+              <td class="num">$98.79</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-03-25</td>
+              <td>Paddle.com - USD</td>
+              <td class="num">$44.89</td>
+              <td class="num">$32.62</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-03-25</td>
+              <td>Veem.</td>
+              <td class="num">($34.54)</td>
+              <td class="num">($25.10)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-03-25</td>
+              <td></td>
+              <td class="num">($11.03)</td>
+              <td class="num">($8.02)</td>
+              <td>Paypal Fee</td>
+            </tr>
+<tr>
+              <td>2026-03-25</td>
+              <td></td>
+              <td class="num">($15.93)</td>
+              <td class="num">($11.58)</td>
+              <td>Paypal Fee</td>
+            </tr>
+<tr>
+              <td>2026-03-25</td>
+              <td></td>
+              <td class="num">($5.64)</td>
+              <td class="num">($4.10)</td>
+              <td>Paypal Fee</td>
+            </tr>
+<tr>
+              <td>2026-03-27</td>
+              <td>goDaddy - USD</td>
+              <td class="num">$36.14</td>
+              <td class="num">$26.26</td>
+              <td>Computer Hosting</td>
+            </tr>
+<tr>
+              <td>2026-03-27</td>
+              <td>Wisprflow AI</td>
+              <td class="num">$200.17</td>
+              <td class="num">$145.47</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-03-27</td>
+              <td></td>
+              <td class="num">($20.84)</td>
+              <td class="num">($15.15)</td>
+              <td>Paypal Fee</td>
+            </tr>
+<tr>
+              <td>2026-03-29</td>
+              <td></td>
+              <td class="num">($16.40)</td>
+              <td class="num">($11.92)</td>
+              <td>Paypal Fee</td>
+            </tr>
+<tr>
+              <td>2026-03-29</td>
+              <td></td>
+              <td class="num">$13.02</td>
+              <td class="num">$9.46</td>
+              <td>Paypal Fee</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Marketing Systems & Tools</span>
+          <span class="cat-amount">$420.16</span>
+          <span class="cat-count">4 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-03-16</td>
+              <td>Zoom USD</td>
+              <td class="num">($366.42)</td>
+              <td class="num">($266.29)</td>
+              <td>Dues and Subscriptions</td>
+            </tr>
+<tr>
+              <td>2026-03-18</td>
+              <td></td>
+              <td class="num">$164.55</td>
+              <td class="num">$119.59</td>
+              <td>Dues and Subscriptions</td>
+            </tr>
+<tr>
+              <td>2026-03-20</td>
+              <td>Typeform- USD</td>
+              <td class="num">$308.78</td>
+              <td class="num">$224.40</td>
+              <td>Dues and Subscriptions</td>
+            </tr>
+<tr>
+              <td>2026-03-28</td>
+              <td>Trustpilot - USD</td>
+              <td class="num">$471.23</td>
+              <td class="num">$342.46</td>
+              <td>Dues and Subscriptions</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Professional Services</span>
+          <span class="cat-amount">$20,750.55</span>
+          <span class="cat-count">3 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-03-01</td>
+              <td></td>
+              <td class="num">$4,775.78</td>
+              <td class="num">$3,470.77</td>
+              <td>Professional Fee</td>
+            </tr>
+<tr>
+              <td>2026-03-16</td>
+              <td></td>
+              <td class="num">$20,532.48</td>
+              <td class="num">$14,921.86</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-27</td>
+              <td>Tommy DeWitt — Video Editor</td>
+              <td class="num">$3,244.50</td>
+              <td class="num">$2,357.92</td>
+              <td>Subcontract</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">AI & Automation R&D</span>
+          <span class="cat-amount">$155.15</span>
+          <span class="cat-count">4 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-03-10</td>
+              <td>Anthropic USD</td>
+              <td class="num">$151.85</td>
+              <td class="num">$110.36</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-03-17</td>
+              <td>OpenAI ChatGPT - USD</td>
+              <td class="num">$31.67</td>
+              <td class="num">$23.02</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-03-17</td>
+              <td>OpenAI ChatGPT - USD</td>
+              <td class="num">$0.01</td>
+              <td class="num">$0.01</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-03-21</td>
+              <td></td>
+              <td class="num">$29.96</td>
+              <td class="num">$21.77</td>
+              <td>Office Supplies</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Office & Admin</span>
+          <span class="cat-amount">$899.59</span>
+          <span class="cat-count">7 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-03-06</td>
+              <td></td>
+              <td class="num">$406.88</td>
+              <td class="num">$295.70</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-12</td>
+              <td></td>
+              <td class="num">$288.75</td>
+              <td class="num">$209.85</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-14</td>
+              <td></td>
+              <td class="num">$12.91</td>
+              <td class="num">$9.38</td>
+              <td>Office Supplies</td>
+            </tr>
+<tr>
+              <td>2026-03-20</td>
+              <td></td>
+              <td class="num">$269.85</td>
+              <td class="num">$196.11</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-03-24</td>
+              <td></td>
+              <td class="num">$4.13</td>
+              <td class="num">$3.00</td>
+              <td>Office Supplies</td>
+            </tr>
+<tr>
+              <td>2026-03-25</td>
+              <td>Abacus AI</td>
+              <td class="num">$13.82</td>
+              <td class="num">$10.04</td>
+              <td>Office Supplies</td>
+            </tr>
+<tr>
+              <td>2026-03-26</td>
+              <td></td>
+              <td class="num">$241.50</td>
+              <td class="num">$175.51</td>
+              <td>Subcontract</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Travel & Meals (Business)</span>
+          <span class="cat-amount">($190.52)</span>
+          <span class="cat-count">14 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-03-28</td>
+              <td>Uber Trip</td>
+              <td class="num">($71.84)</td>
+              <td class="num">($52.21)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-03-28</td>
+              <td>Uber Trip</td>
+              <td class="num">($14.36)</td>
+              <td class="num">($10.44)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-03-29</td>
+              <td>Uber Trip</td>
+              <td class="num">($10.45)</td>
+              <td class="num">($7.59)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-03-29</td>
+              <td>Uber Trip</td>
+              <td class="num">($33.76)</td>
+              <td class="num">($24.53)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-03-29</td>
+              <td>Uber Trip</td>
+              <td class="num">($77.83)</td>
+              <td class="num">($56.56)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-03-29</td>
+              <td>Uber Trip</td>
+              <td class="num">($63.73)</td>
+              <td class="num">($46.32)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-03-29</td>
+              <td>Uber Trip</td>
+              <td class="num">($31.22)</td>
+              <td class="num">($22.69)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-03-29</td>
+              <td>Uber Trip</td>
+              <td class="num">($5.61)</td>
+              <td class="num">($4.08)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-03-29</td>
+              <td>Uber Trip</td>
+              <td class="num">($11.67)</td>
+              <td class="num">($8.48)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-03-29</td>
+              <td>Uber Trip</td>
+              <td class="num">($46.57)</td>
+              <td class="num">($33.84)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-03-29</td>
+              <td>Uber USD</td>
+              <td class="num">($40.41)</td>
+              <td class="num">($29.37)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-03-29</td>
+              <td>Uber USD</td>
+              <td class="num">($3.82)</td>
+              <td class="num">($2.78)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-03-29</td>
+              <td></td>
+              <td class="num">$55.84</td>
+              <td class="num">$40.58</td>
+              <td>Meals and entertainment</td>
+            </tr>
+<tr>
+              <td>2026-03-31</td>
+              <td>Uber USD</td>
+              <td class="num">$93.27</td>
+              <td class="num">$67.78</td>
+              <td>Travel</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Education & Development</span>
+          <span class="cat-amount">$2,398.77</span>
+          <span class="cat-count">2 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-03-09</td>
+              <td>Stanley Goldberg</td>
+              <td class="num">$1,631.44</td>
+              <td class="num">$1,185.64</td>
+              <td>Professional Development</td>
+            </tr>
+<tr>
+              <td>2026-03-31</td>
+              <td>Stanley Goldberg</td>
+              <td class="num">$1,669.27</td>
+              <td class="num">$1,213.13</td>
+              <td>Professional Development</td>
+            </tr>
+        </table>
+      </details>
+    </div>
+  <div class="summary-row gross">
+    <span>Gross Profit</span>
+    <span>$158,690.60</span>
+  </div>
+  <div class="summary-row net">
+    <span>Net Operating Income</span>
+    <span class="positive">$199,860.97</span>
+  </div></div><div class="tab-panel" id="panel-2026-04">
+    <div class="section section-revenue">
+      <div class="section-header">
+        <span>Revenue</span>
+        <span class="section-total">$101,765.59</span>
+      </div>
+      
+      <details class="category">
+        <summary>
+          <span class="cat-name">Coaching Revenue</span>
+          <span class="cat-amount">$101,765.59</span>
+          <span class="cat-count">21 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-04-01</td>
+              <td></td>
+              <td class="num">$9,398.44</td>
+              <td class="num">$6,830.26</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-04-06</td>
+              <td></td>
+              <td class="num">$531.78</td>
+              <td class="num">$386.47</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-04-07</td>
+              <td></td>
+              <td class="num">$3,254.69</td>
+              <td class="num">$2,365.33</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-04-08</td>
+              <td></td>
+              <td class="num">$4,847.40</td>
+              <td class="num">$3,522.82</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-04-08</td>
+              <td></td>
+              <td class="num">$3,191.30</td>
+              <td class="num">$2,319.26</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-04-08</td>
+              <td></td>
+              <td class="num">$3,324.71</td>
+              <td class="num">$2,416.21</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-04-09</td>
+              <td></td>
+              <td class="num">$4,912.94</td>
+              <td class="num">$3,570.45</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-04-10</td>
+              <td></td>
+              <td class="num">$18,662.56</td>
+              <td class="num">$13,562.91</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-04-13</td>
+              <td></td>
+              <td class="num">$4,770.71</td>
+              <td class="num">$3,467.09</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-04-14</td>
+              <td></td>
+              <td class="num">$1,578.70</td>
+              <td class="num">$1,147.31</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-04-14</td>
+              <td></td>
+              <td class="num">$12,823.27</td>
+              <td class="num">$9,319.24</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-04-16</td>
+              <td></td>
+              <td class="num">$2,615.52</td>
+              <td class="num">$1,900.81</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-04-17</td>
+              <td></td>
+              <td class="num">$5,129.65</td>
+              <td class="num">$3,727.94</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-04-20</td>
+              <td></td>
+              <td class="num">$5,313.90</td>
+              <td class="num">$3,861.85</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-04-20</td>
+              <td></td>
+              <td class="num">$14,493.07</td>
+              <td class="num">$10,532.75</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-04-22</td>
+              <td></td>
+              <td class="num">$190.69</td>
+              <td class="num">$138.58</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-04-23</td>
+              <td></td>
+              <td class="num">$4,814.27</td>
+              <td class="num">$3,498.74</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-04-23</td>
+              <td></td>
+              <td class="num">$10,359.41</td>
+              <td class="num">$7,528.64</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-04-24</td>
+              <td></td>
+              <td class="num">$2,789.11</td>
+              <td class="num">$2,026.97</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-04-28</td>
+              <td></td>
+              <td class="num">$6,538.58</td>
+              <td class="num">$4,751.88</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-04-28</td>
+              <td></td>
+              <td class="num">$20,488.75</td>
+              <td class="num">$14,890.08</td>
+              <td>Sales:Coaching</td>
+            </tr>
+        </table>
+      </details>
+    </div>
+    <div class="section section-cogs">
+      <div class="section-header">
+        <span>Cost of Goods Sold (COGS)</span>
+        <span class="section-total">$21,668.20</span>
+      </div>
+      
+      <details class="category">
+        <summary>
+          <span class="cat-name">Coach Delivery Labor</span>
+          <span class="cat-amount">$11,296.17</span>
+          <span class="cat-count">8 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-04-07</td>
+              <td>Veem.</td>
+              <td class="num">$6,568.77</td>
+              <td class="num">$4,773.82</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-07</td>
+              <td>Veem.</td>
+              <td class="num">$628.17</td>
+              <td class="num">$456.52</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-07</td>
+              <td>Veem.</td>
+              <td class="num">$2,335.40</td>
+              <td class="num">$1,697.24</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-07</td>
+              <td>Veem.</td>
+              <td class="num">$2,010.12</td>
+              <td class="num">$1,460.84</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-14</td>
+              <td>Veem.</td>
+              <td class="num">$2,546.00</td>
+              <td class="num">$1,850.29</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-21</td>
+              <td>Veem.</td>
+              <td class="num">$1,984.33</td>
+              <td class="num">$1,442.10</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-21</td>
+              <td>Veem.</td>
+              <td class="num">$1,842.37</td>
+              <td class="num">$1,338.93</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-29</td>
+              <td></td>
+              <td class="num">($2,371.63)</td>
+              <td class="num">($1,723.57)</td>
+              <td>Subcontract</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Closer Commissions</span>
+          <span class="cat-amount">$7,121.10</span>
+          <span class="cat-count">6 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-04-07</td>
+              <td></td>
+              <td class="num">$4,257.14</td>
+              <td class="num">$3,093.85</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-14</td>
+              <td></td>
+              <td class="num">$1,857.95</td>
+              <td class="num">$1,350.25</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-14</td>
+              <td></td>
+              <td class="num">$1,343.44</td>
+              <td class="num">$976.34</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-21</td>
+              <td></td>
+              <td class="num">$1,714.82</td>
+              <td class="num">$1,246.24</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-21</td>
+              <td></td>
+              <td class="num">$967.24</td>
+              <td class="num">$702.94</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-29</td>
+              <td></td>
+              <td class="num">($341.96)</td>
+              <td class="num">($248.52)</td>
+              <td>Subcontract</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Setter Commissions</span>
+          <span class="cat-amount">$3,250.93</span>
+          <span class="cat-count">4 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-04-07</td>
+              <td>Veem.</td>
+              <td class="num">$1,916.07</td>
+              <td class="num">$1,392.49</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-14</td>
+              <td>Veem.</td>
+              <td class="num">$1,994.08</td>
+              <td class="num">$1,449.19</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-21</td>
+              <td>Veem.</td>
+              <td class="num">$2,124.29</td>
+              <td class="num">$1,543.82</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-29</td>
+              <td></td>
+              <td class="num">($1,561.16)</td>
+              <td class="num">($1,134.56)</td>
+              <td>Subcontract</td>
+            </tr>
+        </table>
+      </details>
+    </div>
+    <div class="section section-opex">
+      <div class="section-header">
+        <span>Operating Expenses (OpEx)</span>
+        <span class="section-total">$20,610.36</span>
+      </div>
+      
+      <details class="category">
+        <summary>
+          <span class="cat-name">Meta Ads (Facebook/Instagram)</span>
+          <span class="cat-amount">$3,588.65</span>
+          <span class="cat-count">2 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-04-06</td>
+              <td></td>
+              <td class="num">$1,782.74</td>
+              <td class="num">$1,295.60</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-04-14</td>
+              <td></td>
+              <td class="num">$3,155.24</td>
+              <td class="num">$2,293.05</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Other Marketing & Ads</span>
+          <span class="cat-amount">$520.70</span>
+          <span class="cat-count">20 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-04-02</td>
+              <td></td>
+              <td class="num">$6.31</td>
+              <td class="num">$4.59</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-04-03</td>
+              <td></td>
+              <td class="num">$6.32</td>
+              <td class="num">$4.59</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-04-07</td>
+              <td>Setter Company</td>
+              <td class="num">$217.00</td>
+              <td class="num">$157.70</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-04-07</td>
+              <td></td>
+              <td class="num">$6.27</td>
+              <td class="num">$4.56</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-04-10</td>
+              <td></td>
+              <td class="num">$7.68</td>
+              <td class="num">$5.58</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-04-10</td>
+              <td></td>
+              <td class="num">$6.27</td>
+              <td class="num">$4.56</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-04-10</td>
+              <td></td>
+              <td class="num">$6.27</td>
+              <td class="num">$4.56</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-04-10</td>
+              <td></td>
+              <td class="num">$6.27</td>
+              <td class="num">$4.56</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-04-14</td>
+              <td>DJUniverse Media</td>
+              <td class="num">($6,894.38)</td>
+              <td class="num">($5,010.45)</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-04-14</td>
+              <td></td>
+              <td class="num">$2,755.07</td>
+              <td class="num">$2,002.23</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-04-15</td>
+              <td></td>
+              <td class="num">$6.21</td>
+              <td class="num">$4.51</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-04-15</td>
+              <td></td>
+              <td class="num">$6.21</td>
+              <td class="num">$4.51</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-04-15</td>
+              <td></td>
+              <td class="num">$6.21</td>
+              <td class="num">$4.51</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-04-15</td>
+              <td></td>
+              <td class="num">$7.61</td>
+              <td class="num">$5.53</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-04-15</td>
+              <td></td>
+              <td class="num">$6.21</td>
+              <td class="num">$4.51</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-04-16</td>
+              <td>ManyChat</td>
+              <td class="num">$2,238.88</td>
+              <td class="num">$1,627.09</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-04-22</td>
+              <td>Makeagif.com</td>
+              <td class="num">$16.34</td>
+              <td class="num">$11.88</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-04-22</td>
+              <td></td>
+              <td class="num">$1,905.71</td>
+              <td class="num">$1,384.96</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-04-28</td>
+              <td></td>
+              <td class="num">$272.36</td>
+              <td class="num">$197.94</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-04-30</td>
+              <td>Taplio.com (USD)</td>
+              <td class="num">$127.66</td>
+              <td class="num">$92.78</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Team Ops & Communications</span>
+          <span class="cat-amount">($7,727.68)</span>
+          <span class="cat-count">16 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-04-01</td>
+              <td>Emil Hodzovic</td>
+              <td class="num">($6,955.22)</td>
+              <td class="num">($5,054.67)</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-02</td>
+              <td></td>
+              <td class="num">$83.55</td>
+              <td class="num">$60.72</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-04-03</td>
+              <td>Course Creator 360</td>
+              <td class="num">$205.03</td>
+              <td class="num">$149.00</td>
+              <td>Dues and Subscriptions</td>
+            </tr>
+<tr>
+              <td>2026-04-03</td>
+              <td>Emil Hodzovic</td>
+              <td class="num">($6,973.75)</td>
+              <td class="num">($5,068.13)</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-04</td>
+              <td>Slack.</td>
+              <td class="num">$216.21</td>
+              <td class="num">$157.13</td>
+              <td>Office Supplies</td>
+            </tr>
+<tr>
+              <td>2026-04-04</td>
+              <td></td>
+              <td class="num">$362.41</td>
+              <td class="num">$263.38</td>
+              <td>Dues and Subscriptions</td>
+            </tr>
+<tr>
+              <td>2026-04-07</td>
+              <td>Hubstaff.com.</td>
+              <td class="num">$119.04</td>
+              <td class="num">$86.51</td>
+              <td>Office Supplies</td>
+            </tr>
+<tr>
+              <td>2026-04-07</td>
+              <td>Veem.</td>
+              <td class="num">$501.91</td>
+              <td class="num">$364.76</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-07</td>
+              <td>Veem.</td>
+              <td class="num">$501.73</td>
+              <td class="num">$364.63</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-14</td>
+              <td>Veem.</td>
+              <td class="num">$628.58</td>
+              <td class="num">$456.82</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-14</td>
+              <td>Veem.</td>
+              <td class="num">$559.82</td>
+              <td class="num">$406.85</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-20</td>
+              <td>Quickbooks</td>
+              <td class="num">$72.80</td>
+              <td class="num">$52.91</td>
+              <td>Dues and Subscriptions</td>
+            </tr>
+<tr>
+              <td>2026-04-21</td>
+              <td>Veem.</td>
+              <td class="num">$615.43</td>
+              <td class="num">$447.26</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-21</td>
+              <td>Veem.</td>
+              <td class="num">$541.01</td>
+              <td class="num">$393.18</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-28</td>
+              <td></td>
+              <td class="num">($480.11)</td>
+              <td class="num">($348.92)</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-29</td>
+              <td></td>
+              <td class="num">($631.73)</td>
+              <td class="num">($459.11)</td>
+              <td>Subcontract</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Core Tech & SaaS</span>
+          <span class="cat-amount">$20,312.52</span>
+          <span class="cat-count">48 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-04-01</td>
+              <td>Google - USD</td>
+              <td class="num">$39.51</td>
+              <td class="num">$28.71</td>
+              <td>Computer Hosting</td>
+            </tr>
+<tr>
+              <td>2026-04-01</td>
+              <td>Google - USD</td>
+              <td class="num">$489.81</td>
+              <td class="num">$355.97</td>
+              <td>Computer Hosting</td>
+            </tr>
+<tr>
+              <td>2026-04-01</td>
+              <td>Google - USD</td>
+              <td class="num">$25.80</td>
+              <td class="num">$18.75</td>
+              <td>Computer Hosting</td>
+            </tr>
+<tr>
+              <td>2026-04-01</td>
+              <td>Google - USD</td>
+              <td class="num">$3.91</td>
+              <td class="num">$2.84</td>
+              <td>Computer Hosting</td>
+            </tr>
+<tr>
+              <td>2026-04-01</td>
+              <td></td>
+              <td class="num">($6.00)</td>
+              <td class="num">($4.36)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-04-01</td>
+              <td></td>
+              <td class="num">$1,391.04</td>
+              <td class="num">$1,010.93</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-04-01</td>
+              <td></td>
+              <td class="num">($2.50)</td>
+              <td class="num">($1.82)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-04-01</td>
+              <td></td>
+              <td class="num">($2.00)</td>
+              <td class="num">($1.45)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-04-01</td>
+              <td></td>
+              <td class="num">($34.78)</td>
+              <td class="num">($25.28)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-04-01</td>
+              <td></td>
+              <td class="num">($27.82)</td>
+              <td class="num">($20.22)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-04-03</td>
+              <td>goDaddy - USD</td>
+              <td class="num">($112.49)</td>
+              <td class="num">($81.75)</td>
+              <td>Computer Hosting</td>
+            </tr>
+<tr>
+              <td>2026-04-03</td>
+              <td>ShieldApp.AI</td>
+              <td class="num">$22.32</td>
+              <td class="num">$16.22</td>
+              <td>Office Supplies</td>
+            </tr>
+<tr>
+              <td>2026-04-03</td>
+              <td></td>
+              <td class="num">($27.90)</td>
+              <td class="num">($20.28)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-04-04</td>
+              <td>Kit.com</td>
+              <td class="num">$4,392.07</td>
+              <td class="num">$3,191.91</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-04-04</td>
+              <td></td>
+              <td class="num">$7.82</td>
+              <td class="num">$5.68</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-04-08</td>
+              <td></td>
+              <td class="num">$4.85</td>
+              <td class="num">$3.52</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-04-10</td>
+              <td>Loom USD</td>
+              <td class="num">$129.87</td>
+              <td class="num">$94.38</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-04-10</td>
+              <td>Trainerize.</td>
+              <td class="num">$387.62</td>
+              <td class="num">$281.70</td>
+              <td>Supplies and materials - COS</td>
+            </tr>
+<tr>
+              <td>2026-04-10</td>
+              <td>Zapier USD</td>
+              <td class="num">$276.76</td>
+              <td class="num">$201.13</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-04-11</td>
+              <td>goDaddy - USD</td>
+              <td class="num">($75.36)</td>
+              <td class="num">($54.77)</td>
+              <td>Computer Hosting</td>
+            </tr>
+<tr>
+              <td>2026-04-13</td>
+              <td></td>
+              <td class="num">$15.22</td>
+              <td class="num">$11.06</td>
+              <td>Supplies and materials - COS</td>
+            </tr>
+<tr>
+              <td>2026-04-13</td>
+              <td></td>
+              <td class="num">$295.39</td>
+              <td class="num">$214.67</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-04-14</td>
+              <td></td>
+              <td class="num">$30.86</td>
+              <td class="num">$22.43</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-04-14</td>
+              <td></td>
+              <td class="num">$0.10</td>
+              <td class="num">$0.07</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-04-16</td>
+              <td></td>
+              <td class="num">$6.64</td>
+              <td class="num">$4.83</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-04-16</td>
+              <td></td>
+              <td class="num">$6.22</td>
+              <td class="num">$4.52</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-04-17</td>
+              <td></td>
+              <td class="num">$6.24</td>
+              <td class="num">$4.53</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-04-17</td>
+              <td></td>
+              <td class="num">$6.68</td>
+              <td class="num">$4.85</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-04-17</td>
+              <td></td>
+              <td class="num">$6.24</td>
+              <td class="num">$4.53</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-04-17</td>
+              <td></td>
+              <td class="num">$20.13</td>
+              <td class="num">$14.63</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-04-18</td>
+              <td></td>
+              <td class="num">($20.65)</td>
+              <td class="num">($15.01)</td>
+              <td>Paypal Fee</td>
+            </tr>
+<tr>
+              <td>2026-04-20</td>
+              <td></td>
+              <td class="num">$25.69</td>
+              <td class="num">$18.67</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-04-21</td>
+              <td>Google - USD</td>
+              <td class="num">$34.15</td>
+              <td class="num">$24.82</td>
+              <td>Computer Hosting</td>
+            </tr>
+<tr>
+              <td>2026-04-21</td>
+              <td>Tenex Labs</td>
+              <td class="num">$20,489.70</td>
+              <td class="num">$14,890.77</td>
+              <td>Apps Development</td>
+            </tr>
+<tr>
+              <td>2026-04-21</td>
+              <td></td>
+              <td class="num">$6.19</td>
+              <td class="num">$4.50</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-04-21</td>
+              <td></td>
+              <td class="num">$135.08</td>
+              <td class="num">$98.17</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-04-23</td>
+              <td></td>
+              <td class="num">$6.21</td>
+              <td class="num">$4.51</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-04-25</td>
+              <td>Paddle.com - USD</td>
+              <td class="num">$44.43</td>
+              <td class="num">$32.29</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-04-27</td>
+              <td>Veem.</td>
+              <td class="num">($34.07)</td>
+              <td class="num">($24.76)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-04-28</td>
+              <td></td>
+              <td class="num">($3.52)</td>
+              <td class="num">($2.56)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-04-28</td>
+              <td></td>
+              <td class="num">($21.60)</td>
+              <td class="num">($15.70)</td>
+              <td>Paypal Fee</td>
+            </tr>
+<tr>
+              <td>2026-04-28</td>
+              <td></td>
+              <td class="num">$7.60</td>
+              <td class="num">$5.52</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-04-29</td>
+              <td></td>
+              <td class="num">($9.68)</td>
+              <td class="num">($7.03)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-04-29</td>
+              <td></td>
+              <td class="num">($7.85)</td>
+              <td class="num">($5.70)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-04-29</td>
+              <td></td>
+              <td class="num">($4.39)</td>
+              <td class="num">($3.19)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-04-30</td>
+              <td>Google - USD</td>
+              <td class="num">$33.95</td>
+              <td class="num">$24.67</td>
+              <td>Computer Hosting</td>
+            </tr>
+<tr>
+              <td>2026-04-30</td>
+              <td>TransferWise</td>
+              <td class="num">($15.00)</td>
+              <td class="num">($10.90)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-04-30</td>
+              <td></td>
+              <td class="num">$7.54</td>
+              <td class="num">$5.48</td>
+              <td>Computer - Software</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Marketing Systems & Tools</span>
+          <span class="cat-amount">$283.38</span>
+          <span class="cat-count">5 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-04-06</td>
+              <td>Zoom USD</td>
+              <td class="num">($8.62)</td>
+              <td class="num">($6.26)</td>
+              <td>Dues and Subscriptions</td>
+            </tr>
+<tr>
+              <td>2026-04-16</td>
+              <td>Zoom USD</td>
+              <td class="num">($392.84)</td>
+              <td class="num">($285.49)</td>
+              <td>Dues and Subscriptions</td>
+            </tr>
+<tr>
+              <td>2026-04-20</td>
+              <td>Typeform- USD</td>
+              <td class="num">$306.91</td>
+              <td class="num">$223.05</td>
+              <td>Dues and Subscriptions</td>
+            </tr>
+<tr>
+              <td>2026-04-28</td>
+              <td>Trustpilot - USD</td>
+              <td class="num">$463.97</td>
+              <td class="num">$337.19</td>
+              <td>Dues and Subscriptions</td>
+            </tr>
+<tr>
+              <td>2026-04-30</td>
+              <td>Amazon USD</td>
+              <td class="num">$20.51</td>
+              <td class="num">$14.91</td>
+              <td>Dues and Subscriptions</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Professional Services</span>
+          <span class="cat-amount">$3,360.29</span>
+          <span class="cat-count">5 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-04-01</td>
+              <td></td>
+              <td class="num">$4,868.65</td>
+              <td class="num">$3,538.26</td>
+              <td>Coaching - Professional Fee</td>
+            </tr>
+<tr>
+              <td>2026-04-15</td>
+              <td></td>
+              <td class="num">($9,639.15)</td>
+              <td class="num">($7,005.20)</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-27</td>
+              <td>Tommy DeWitt — Video Editor</td>
+              <td class="num">$3,259.50</td>
+              <td class="num">$2,368.82</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-04-27</td>
+              <td></td>
+              <td class="num">$3,408.20</td>
+              <td class="num">$2,476.89</td>
+              <td>Professional Fee</td>
+            </tr>
+<tr>
+              <td>2026-04-27</td>
+              <td></td>
+              <td class="num">$2,726.56</td>
+              <td class="num">$1,981.51</td>
+              <td>Professional Fee</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">AI & Automation R&D</span>
+          <span class="cat-amount">$152.65</span>
+          <span class="cat-count">3 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-04-12</td>
+              <td>Anthropic USD</td>
+              <td class="num">$147.49</td>
+              <td class="num">$107.19</td>
+              <td>Office Supplies</td>
+            </tr>
+<tr>
+              <td>2026-04-17</td>
+              <td>OpenAI ChatGPT - USD</td>
+              <td class="num">$32.60</td>
+              <td class="num">$23.69</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-04-21</td>
+              <td>Anthropic USD</td>
+              <td class="num">$29.96</td>
+              <td class="num">$21.77</td>
+              <td>Office Supplies</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Office & Admin</span>
+          <span class="cat-amount">$234.69</span>
+          <span class="cat-count">5 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-04-07</td>
+              <td>Amazon USD</td>
+              <td class="num">$60.38</td>
+              <td class="num">$43.88</td>
+              <td>Office Supplies</td>
+            </tr>
+<tr>
+              <td>2026-04-14</td>
+              <td></td>
+              <td class="num">$12.73</td>
+              <td class="num">$9.25</td>
+              <td>Office Supplies</td>
+            </tr>
+<tr>
+              <td>2026-04-24</td>
+              <td></td>
+              <td class="num">$4.10</td>
+              <td class="num">$2.98</td>
+              <td>Office Supplies</td>
+            </tr>
+<tr>
+              <td>2026-04-25</td>
+              <td>Abacus AI</td>
+              <td class="num">$13.68</td>
+              <td class="num">$9.94</td>
+              <td>Office Supplies</td>
+            </tr>
+<tr>
+              <td>2026-04-27</td>
+              <td></td>
+              <td class="num">$232.05</td>
+              <td class="num">$168.64</td>
+              <td>Subcontract</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Travel & Meals (Business)</span>
+          <span class="cat-amount">($114.84)</span>
+          <span class="cat-count">25 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-04-01</td>
+              <td>Uber USD</td>
+              <td class="num">$105.23</td>
+              <td class="num">$76.48</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-01</td>
+              <td>Uber USD</td>
+              <td class="num">$74.42</td>
+              <td class="num">$54.08</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-01</td>
+              <td>Uber USD</td>
+              <td class="num">$11.36</td>
+              <td class="num">$8.26</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-01</td>
+              <td>Uber USD</td>
+              <td class="num">$12.71</td>
+              <td class="num">$9.24</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-01</td>
+              <td>Uber USD</td>
+              <td class="num">$81.50</td>
+              <td class="num">$59.23</td>
+              <td>Meals and entertainment</td>
+            </tr>
+<tr>
+              <td>2026-04-02</td>
+              <td>Uber USD</td>
+              <td class="num">$11.82</td>
+              <td class="num">$8.59</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-02</td>
+              <td>Uber USD</td>
+              <td class="num">$8.41</td>
+              <td class="num">$6.11</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-02</td>
+              <td>Uber USD</td>
+              <td class="num">$49.91</td>
+              <td class="num">$36.27</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-03</td>
+              <td>Uber USD</td>
+              <td class="num">($10.15)</td>
+              <td class="num">($7.38)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-03</td>
+              <td>Uber USD</td>
+              <td class="num">($8.70)</td>
+              <td class="num">($6.32)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-03</td>
+              <td>Uber USD</td>
+              <td class="num">($8.70)</td>
+              <td class="num">($6.32)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-03</td>
+              <td>Uber USD</td>
+              <td class="num">($0.93)</td>
+              <td class="num">($0.68)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-03</td>
+              <td>Uber USD</td>
+              <td class="num">($9.02)</td>
+              <td class="num">($6.56)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-03</td>
+              <td>Uber USD</td>
+              <td class="num">($10.58)</td>
+              <td class="num">($7.69)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-14</td>
+              <td>Uber Trip</td>
+              <td class="num">($26.49)</td>
+              <td class="num">($19.25)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-14</td>
+              <td>Uber Trip</td>
+              <td class="num">($3.97)</td>
+              <td class="num">($2.89)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-14</td>
+              <td>Uber Trip</td>
+              <td class="num">($41.92)</td>
+              <td class="num">($30.47)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-14</td>
+              <td>Uber Trip</td>
+              <td class="num">($8.38)</td>
+              <td class="num">($6.09)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-18</td>
+              <td>Uber Trip</td>
+              <td class="num">($91.09)</td>
+              <td class="num">($66.20)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-18</td>
+              <td>Uber Trip</td>
+              <td class="num">($71.97)</td>
+              <td class="num">($52.30)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-19</td>
+              <td>Uber Trip</td>
+              <td class="num">($50.37)</td>
+              <td class="num">($36.61)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-19</td>
+              <td>Uber Trip</td>
+              <td class="num">($60.63)</td>
+              <td class="num">($44.06)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-19</td>
+              <td>Uber Trip</td>
+              <td class="num">($7.08)</td>
+              <td class="num">($5.15)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-19</td>
+              <td>Uber Trip</td>
+              <td class="num">($5.25)</td>
+              <td class="num">($3.82)</td>
+              <td>Travel</td>
+            </tr>
+<tr>
+              <td>2026-04-20</td>
+              <td>Uber Trip</td>
+              <td class="num">($98.15)</td>
+              <td class="num">($71.33)</td>
+              <td>Travel</td>
+            </tr>
+        </table>
+      </details>
+    </div>
+  <div class="summary-row gross">
+    <span>Gross Profit</span>
+    <span>$123,433.79</span>
+  </div>
+  <div class="summary-row net">
+    <span>Net Operating Income</span>
+    <span class="positive">$144,044.15</span>
+  </div></div><div class="tab-panel" id="panel-2026-05">
+    <div class="section section-revenue">
+      <div class="section-header">
+        <span>Revenue</span>
+        <span class="section-total">$61,520.16</span>
+      </div>
+      
+      <details class="category">
+        <summary>
+          <span class="cat-name">Coaching Revenue</span>
+          <span class="cat-amount">$61,520.16</span>
+          <span class="cat-count">14 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-05-04</td>
+              <td></td>
+              <td class="num">$2,677.51</td>
+              <td class="num">$1,945.86</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-05-11</td>
+              <td></td>
+              <td class="num">$1,280.31</td>
+              <td class="num">$930.46</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-05-12</td>
+              <td></td>
+              <td class="num">$8,452.15</td>
+              <td class="num">$6,142.55</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-05-13</td>
+              <td></td>
+              <td class="num">$10,651.06</td>
+              <td class="num">$7,740.60</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-05-13</td>
+              <td></td>
+              <td class="num">$13,666.81</td>
+              <td class="num">$9,932.27</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-05-13</td>
+              <td></td>
+              <td class="num">$1,308.82</td>
+              <td class="num">$951.18</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-05-14</td>
+              <td></td>
+              <td class="num">$4,984.29</td>
+              <td class="num">$3,622.30</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-05-14</td>
+              <td></td>
+              <td class="num">$5.54</td>
+              <td class="num">$4.03</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-05-15</td>
+              <td></td>
+              <td class="num">$26,090.39</td>
+              <td class="num">$18,961.04</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-05-19</td>
+              <td></td>
+              <td class="num">$9.08</td>
+              <td class="num">$6.60</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-05-20</td>
+              <td></td>
+              <td class="num">$8.89</td>
+              <td class="num">$6.46</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-05-20</td>
+              <td></td>
+              <td class="num">$4,545.88</td>
+              <td class="num">$3,303.69</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-05-21</td>
+              <td></td>
+              <td class="num">$10,991.67</td>
+              <td class="num">$7,988.13</td>
+              <td>Sales:Coaching</td>
+            </tr>
+<tr>
+              <td>2026-05-22</td>
+              <td></td>
+              <td class="num">($20.66)</td>
+              <td class="num">($15.01)</td>
+              <td>Sales:Coaching</td>
+            </tr>
+        </table>
+      </details>
+    </div>
+    <div class="section section-cogs">
+      <div class="section-header">
+        <span>Cost of Goods Sold (COGS)</span>
+        <span class="section-total">$0.00</span>
+      </div>
+      
+    </div>
+    <div class="section section-opex">
+      <div class="section-header">
+        <span>Operating Expenses (OpEx)</span>
+        <span class="section-total">$2,607.76</span>
+      </div>
+      
+      <details class="category">
+        <summary>
+          <span class="cat-name">Meta Ads (Facebook/Instagram)</span>
+          <span class="cat-amount">$2,398.19</span>
+          <span class="cat-count">2 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-05-04</td>
+              <td></td>
+              <td class="num">$3,174.89</td>
+              <td class="num">$2,307.33</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-05-06</td>
+              <td>Facebook - USD</td>
+              <td class="num">$125.02</td>
+              <td class="num">$90.86</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Team Ops & Communications</span>
+          <span class="cat-amount">($9,190.89)</span>
+          <span class="cat-count">9 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-05-02</td>
+              <td></td>
+              <td class="num">$81.59</td>
+              <td class="num">$59.30</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+<tr>
+              <td>2026-05-03</td>
+              <td>Course Creator 360</td>
+              <td class="num">$199.69</td>
+              <td class="num">$145.12</td>
+              <td>Dues and Subscriptions</td>
+            </tr>
+<tr>
+              <td>2026-05-04</td>
+              <td>Emil Hodzovic</td>
+              <td class="num">($6,812.41)</td>
+              <td class="num">($4,950.88)</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-05-04</td>
+              <td>Slack.</td>
+              <td class="num">$188.61</td>
+              <td class="num">$137.07</td>
+              <td>Office Supplies</td>
+            </tr>
+<tr>
+              <td>2026-05-04</td>
+              <td></td>
+              <td class="num">$265.52</td>
+              <td class="num">$192.97</td>
+              <td>Dues and Subscriptions</td>
+            </tr>
+<tr>
+              <td>2026-05-05</td>
+              <td>Emil Hodzovic</td>
+              <td class="num">($6,806.47)</td>
+              <td class="num">($4,946.56)</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-05-06</td>
+              <td>Frame IO</td>
+              <td class="num">$40.92</td>
+              <td class="num">$29.74</td>
+              <td>Dues and Subscriptions</td>
+            </tr>
+<tr>
+              <td>2026-05-07</td>
+              <td>Hubstaff.com.</td>
+              <td class="num">$117.49</td>
+              <td class="num">$85.39</td>
+              <td>Office Supplies</td>
+            </tr>
+<tr>
+              <td>2026-05-20</td>
+              <td>Quickbooks</td>
+              <td class="num">$78.40</td>
+              <td class="num">$56.98</td>
+              <td>Dues and Subscriptions</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Core Tech & SaaS</span>
+          <span class="cat-amount">$4,727.46</span>
+          <span class="cat-count">22 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-05-01</td>
+              <td>Amazon USD</td>
+              <td class="num">$28.68</td>
+              <td class="num">$20.84</td>
+              <td>Supplies and materials - COS</td>
+            </tr>
+<tr>
+              <td>2026-05-01</td>
+              <td>Google - USD</td>
+              <td class="num">$510.40</td>
+              <td class="num">$370.93</td>
+              <td>Computer Hosting</td>
+            </tr>
+<tr>
+              <td>2026-05-01</td>
+              <td>Google - USD</td>
+              <td class="num">$39.54</td>
+              <td class="num">$28.74</td>
+              <td>Computer Hosting</td>
+            </tr>
+<tr>
+              <td>2026-05-01</td>
+              <td>Google - USD</td>
+              <td class="num">$3.93</td>
+              <td class="num">$2.86</td>
+              <td>Computer Hosting</td>
+            </tr>
+<tr>
+              <td>2026-05-01</td>
+              <td>Google - USD</td>
+              <td class="num">$30.64</td>
+              <td class="num">$22.27</td>
+              <td>Computer Hosting</td>
+            </tr>
+<tr>
+              <td>2026-05-01</td>
+              <td></td>
+              <td class="num">$1,359.75</td>
+              <td class="num">$988.19</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-05-01</td>
+              <td></td>
+              <td class="num">$18.91</td>
+              <td class="num">$13.74</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-05-01</td>
+              <td></td>
+              <td class="num">($2.00)</td>
+              <td class="num">($1.45)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-05-01</td>
+              <td></td>
+              <td class="num">($50.99)</td>
+              <td class="num">($37.06)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-05-01</td>
+              <td></td>
+              <td class="num">($6.00)</td>
+              <td class="num">($4.36)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-05-02</td>
+              <td>Amazon USD</td>
+              <td class="num">$30.03</td>
+              <td class="num">$21.82</td>
+              <td>Supplies and materials - COS</td>
+            </tr>
+<tr>
+              <td>2026-05-03</td>
+              <td>ShieldApp.AI</td>
+              <td class="num">$21.74</td>
+              <td class="num">$15.80</td>
+              <td>Office Supplies</td>
+            </tr>
+<tr>
+              <td>2026-05-04</td>
+              <td>Amazon USD</td>
+              <td class="num">$56.37</td>
+              <td class="num">$40.97</td>
+              <td>Supplies and materials - COS</td>
+            </tr>
+<tr>
+              <td>2026-05-04</td>
+              <td>Amazon USD</td>
+              <td class="num">$56.37</td>
+              <td class="num">$40.97</td>
+              <td>Supplies and materials - COS</td>
+            </tr>
+<tr>
+              <td>2026-05-04</td>
+              <td>Kit.com</td>
+              <td class="num">$4,290.45</td>
+              <td class="num">$3,118.06</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-05-04</td>
+              <td></td>
+              <td class="num">($27.25)</td>
+              <td class="num">($19.80)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-05-05</td>
+              <td></td>
+              <td class="num">$6.16</td>
+              <td class="num">$4.48</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-05-05</td>
+              <td></td>
+              <td class="num">$7.55</td>
+              <td class="num">$5.49</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-05-05</td>
+              <td></td>
+              <td class="num">$6.16</td>
+              <td class="num">$4.48</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-05-05</td>
+              <td></td>
+              <td class="num">$6.16</td>
+              <td class="num">$4.48</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-05-05</td>
+              <td></td>
+              <td class="num">($27.20)</td>
+              <td class="num">($19.77)</td>
+              <td>Bank charges and Transaction Fees</td>
+            </tr>
+<tr>
+              <td>2026-05-22</td>
+              <td>Google Suite</td>
+              <td class="num">$145.59</td>
+              <td class="num">$105.81</td>
+              <td>Computer Hosting</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Marketing Systems & Tools</span>
+          <span class="cat-amount">$294.17</span>
+          <span class="cat-count">1 txn</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-05-11</td>
+              <td>Riverside.FM</td>
+              <td class="num">$404.78</td>
+              <td class="num">$294.17</td>
+              <td>Advertising/Promotional</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Professional Services</span>
+          <span class="cat-amount">$3,458.67</span>
+          <span class="cat-count">1 txn</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-05-01</td>
+              <td></td>
+              <td class="num">$4,759.13</td>
+              <td class="num">$3,458.67</td>
+              <td>Professional Fee</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">AI & Automation R&D</span>
+          <span class="cat-amount">$94.50</span>
+          <span class="cat-count">4 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-05-14</td>
+              <td>Anthropic USD</td>
+              <td class="num">$67.41</td>
+              <td class="num">$48.99</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-05-17</td>
+              <td>OpenAI ChatGPT - USD</td>
+              <td class="num">$32.66</td>
+              <td class="num">$23.74</td>
+              <td>Computer - Software</td>
+            </tr>
+<tr>
+              <td>2026-05-21</td>
+              <td>Anthropic USD</td>
+              <td class="num">$29.95</td>
+              <td class="num">$21.77</td>
+              <td>Office Supplies</td>
+            </tr>
+<tr>
+              <td>2026-05-21</td>
+              <td>Anthropic USD</td>
+              <td class="num">$0.01</td>
+              <td class="num">$0.01</td>
+              <td>Office Supplies</td>
+            </tr>
+        </table>
+      </details>
+      <details class="category">
+        <summary>
+          <span class="cat-name">Office & Admin</span>
+          <span class="cat-amount">$825.65</span>
+          <span class="cat-count">4 txns</span>
+        </summary>
+        <table class="txn-table">
+          <tr><th>Date</th><th>Vendor</th><th>Amount (CAD)</th><th>Amount (USD)</th><th>QB Account</th></tr>
+          <tr>
+              <td>2026-05-02</td>
+              <td></td>
+              <td class="num">$279.30</td>
+              <td class="num">$202.98</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-05-11</td>
+              <td></td>
+              <td class="num">$288.75</td>
+              <td class="num">$209.85</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-05-21</td>
+              <td></td>
+              <td class="num">$288.75</td>
+              <td class="num">$209.85</td>
+              <td>Subcontract</td>
+            </tr>
+<tr>
+              <td>2026-05-21</td>
+              <td></td>
+              <td class="num">$279.30</td>
+              <td class="num">$202.98</td>
+              <td>Subcontract</td>
+            </tr>
+        </table>
+      </details>
+    </div>
+  <div class="summary-row gross">
+    <span>Gross Profit</span>
+    <span>$61,520.16</span>
+  </div>
+  <div class="summary-row net">
+    <span>Net Operating Income</span>
+    <span class="positive">$64,127.92</span>
+  </div></div>
+
+<div class="footer">
+  Generated 2026-06-02 &middot; Source: QuickBooks API via Supabase &middot; FX rate: 1 CAD = 0.7267 USD (fixed)<br>
+  Coaching revenue only (YouTube, X, sponsorship, courses excluded). Balance sheet transfers and owner personal expenses excluded.
+</div>
+
+<script>
+const tabs = document.querySelectorAll('.tab-btn');
+const panels = document.querySelectorAll('.tab-panel');
+tabs.forEach(btn => {
+  btn.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active'));
+    panels.forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + btn.dataset.month).classList.add('active');
+  });
+});
+tabs[0].click();
+
+function toggleAll() {
+  const active = document.querySelector('.tab-panel.active');
+  const details = active.querySelectorAll('details');
+  const anyOpen = [...details].some(d => d.open);
+  details.forEach(d => d.open = !anyOpen);
+}
+</script>
+
+</body>
+</html>
