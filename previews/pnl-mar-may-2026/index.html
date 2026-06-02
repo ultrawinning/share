@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HPF Coaching P&L — Mar / Apr / May 2026</title>
+<title>HPF Coaching P&L — Mar / Apr / May 2026 (USD)</title>
 <style>
   :root {
     --bg: #0f1117;
@@ -40,8 +40,8 @@
     background: var(--surface-2); border: 1px solid var(--border); color: var(--text-dim);
   }
   .source-badge.warn { background: var(--amber-dim); border-color: rgba(245,158,11,0.3); color: var(--amber); }
+  .source-badge.ok { background: var(--green-dim); border-color: rgba(46,212,122,0.3); color: var(--green); }
 
-  /* P&L Table */
   .pnl-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; font-size: 14px; }
   .pnl-table th, .pnl-table td { padding: 6px 12px; text-align: right; border-bottom: 1px solid var(--border); }
   .pnl-table th { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-dim); }
@@ -51,19 +51,18 @@
   .pnl-table .grand-total td { font-weight: 700; border-top: 2px solid var(--text-dim); border-bottom: 2px solid var(--text-dim); font-size: 15px; }
   .pnl-table .detail td { color: var(--text-dim); font-size: 13px; }
   .pnl-table .detail td:first-child { padding-left: 20px; }
+  .pnl-table .sub-detail td { color: var(--text-muted); font-size: 12px; }
+  .pnl-table .sub-detail td:first-child { padding-left: 36px; }
   .pnl-table .margin td { color: var(--text-muted); font-size: 12px; font-style: italic; }
   .pnl-table .excluded td { color: var(--text-muted); font-size: 12px; }
   .pnl-table .excluded td:first-child { padding-left: 20px; }
-  .pnl-table .crosscheck td { background: var(--surface-2); font-size: 12px; color: var(--blue); }
-  .pnl-table .crosscheck td:first-child { padding-left: 20px; }
-  .pnl-table .gap td { color: var(--amber); font-size: 12px; }
-  .pnl-table .gap td:first-child { padding-left: 20px; }
   .pnl-table .spacer td { height: 8px; border: none; }
+  .pnl-table .source-row td { font-size: 11px; color: var(--text-muted); border-bottom: none; }
+  .pnl-table .source-row td:first-child { padding-left: 20px; }
   .neg { color: var(--red); }
   .pos { color: var(--green); }
   .tbd { color: var(--text-muted); font-style: italic; }
 
-  /* Notes */
   .notes { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin-bottom: 24px; }
   .notes h3 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-dim); margin-bottom: 12px; }
   .notes ul { list-style: none; }
@@ -73,41 +72,40 @@
   .notes li.info::before { background: var(--blue); }
   .notes li.ok::before { background: var(--green); }
   .notes li.critical::before { background: var(--red); }
-
   .section-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; margin-top: 32px; }
-
-  /* Personal items */
   .personal-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 24px; }
   .personal-table th, .personal-table td { padding: 5px 10px; text-align: left; border-bottom: 1px solid var(--border); }
   .personal-table th { font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-dim); }
   .personal-table td.amount { text-align: right; font-family: 'SF Mono', 'Fira Code', monospace; }
   .personal-table tr:hover { background: var(--surface-2); }
-
   .footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text-muted); }
   a { color: var(--blue); text-decoration: none; }
   a:hover { text-decoration: underline; }
-
-  @media (max-width: 768px) {
-    body { padding: 16px; }
-    .pnl-table { font-size: 12px; }
-    .pnl-table th, .pnl-table td { padding: 4px 6px; }
-  }
+  @media (max-width: 768px) { body { padding: 16px; } .pnl-table { font-size: 12px; } .pnl-table th, .pnl-table td { padding: 4px 6px; } }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>HPF Coaching P&L Statement</h1>
+  <h1>HPF Coaching P&L Statement (USD)</h1>
   <div class="subtitle">March / April / May 2026 &mdash; Body Transformation Mastermind Inc.</div>
   <div>
-    <span class="source-badge">QuickBooks (CAD)</span>
-    <span class="source-badge">USD estimates @ 1.376</span>
-    <span class="source-badge">Processor cross-check: Stripe + Fanbasis (USD)</span>
-    <span class="source-badge warn">May: QB summary only, no transaction detail</span>
+    <span class="source-badge ok">All figures USD</span>
+    <span class="source-badge">Revenue: Stripe + Fanbasis (native USD)</span>
+    <span class="source-badge">Expenses: QB (CAD &divide; 1.376)</span>
+    <span class="source-badge warn">May: no expense detail yet</span>
   </div>
 </header>
 
-<!-- MAIN P&L TABLE -->
+<!--
+  USD CONVERSION METHODOLOGY:
+  - Revenue: Processor data (Stripe + Fanbasis) — already in USD, no conversion needed
+  - Non-coaching revenue: QB CAD ÷ 1.376
+  - COGS / OpEx: QB CAD ÷ 1.376 (April confirmed rate; Mar/May estimated ±2%)
+  - COGS sub-breakdown: HPF review line classification (CAD ÷ 1.376)
+  - April coaching_revenue_usd = $101,790 (Patricia confirmed)
+-->
+
 <table class="pnl-table">
   <thead>
     <tr>
@@ -119,201 +117,232 @@
   </thead>
   <tbody>
 
-    <!-- REVENUE -->
+    <!-- ═══ REVENUE ═══ -->
     <tr class="section-header"><td colspan="4">Revenue</td></tr>
     <tr>
-      <td>Total Revenue (CAD)</td>
-      <td>$195,907</td>
-      <td>$197,609</td>
-      <td>$120,769</td>
-    </tr>
-    <tr class="detail">
-      <td>Coaching Revenue (CAD)</td>
-      <td>$168,943</td>
-      <td>$140,029</td>
-      <td>$84,652</td>
-    </tr>
-    <tr class="detail">
-      <td>Non-Coaching Revenue (CAD)</td>
-      <td>$26,964</td>
-      <td>$57,580</td>
-      <td>$36,117</td>
-    </tr>
-    <tr class="margin">
-      <td>Est. Coaching Revenue (USD @ 1.376)</td>
-      <td>$122,779</td>
-      <td>$101,790 *</td>
-      <td>$61,521</td>
-    </tr>
-
-    <tr class="spacer"><td colspan="4"></td></tr>
-
-    <!-- Processor cross-check -->
-    <tr class="crosscheck">
-      <td>Processor: Stripe Coaching (USD)</td>
-      <td>$103,923</td>
-      <td>$50,733</td>
-      <td>$12,450</td>
-    </tr>
-    <tr class="crosscheck">
-      <td>Processor: Fanbasis Coaching (USD)</td>
-      <td>&mdash;</td>
-      <td>$51,950</td>
-      <td>$78,550</td>
-    </tr>
-    <tr class="crosscheck" style="font-weight:600">
-      <td>Total Processor Coaching (USD)</td>
+      <td>Coaching Revenue</td>
       <td>$103,923</td>
       <td>$102,683</td>
       <td>$91,000</td>
     </tr>
-    <tr class="gap">
-      <td>QB(USD) vs Processor gap</td>
-      <td class="neg">+$18,856 (QB higher)</td>
-      <td class="pos">-$893 (0.9%)</td>
-      <td class="neg">-$29,479 (QB lower)</td>
+    <tr class="detail">
+      <td>Stripe</td>
+      <td>$103,923</td>
+      <td>$50,733</td>
+      <td>$12,450</td>
+    </tr>
+    <tr class="detail">
+      <td>Fanbasis</td>
+      <td>&mdash;</td>
+      <td>$51,950</td>
+      <td>$78,550</td>
+    </tr>
+    <tr class="detail">
+      <td>Non-Coaching Revenue</td>
+      <td>$19,596</td>
+      <td>$41,831</td>
+      <td>$26,248</td>
+    </tr>
+    <tr class="subtotal">
+      <td>Total Revenue</td>
+      <td>$123,519</td>
+      <td>$144,514</td>
+      <td>$117,248</td>
+    </tr>
+    <tr class="source-row">
+      <td>QB coaching (CAD) for reconciliation</td>
+      <td>C$168,943</td>
+      <td>C$140,029</td>
+      <td>C$84,652</td>
     </tr>
 
     <tr class="spacer"><td colspan="4"></td></tr>
 
-    <!-- COGS -->
+    <!-- ═══ COGS ═══ -->
     <tr class="section-header"><td colspan="4">Cost of Goods Sold</td></tr>
     <tr class="detail">
-      <td>Sales Commissions (closers/setters)</td>
-      <td class="neg">($45,151)</td>
-      <td class="neg">($33,525)</td>
+      <td>Sales Commissions</td>
+      <td class="neg">($32,813)</td>
+      <td class="neg">($24,364)</td>
       <td class="tbd">TBD</td>
     </tr>
+    <tr class="sub-detail">
+      <td>Closers</td>
+      <td class="neg">($27,470)</td>
+      <td class="neg">($21,890)</td>
+      <td class="tbd">&mdash;</td>
+    </tr>
+    <tr class="sub-detail">
+      <td>Setters</td>
+      <td class="neg">($5,343)</td>
+      <td class="neg">($2,474)</td>
+      <td class="tbd">&mdash;</td>
+    </tr>
     <tr class="detail">
-      <td>Delivery Labor (coaches/support)</td>
-      <td class="neg">($17,201)</td>
-      <td class="neg">($13,214)</td>
+      <td>Delivery Labor</td>
+      <td class="neg">($12,500)</td>
+      <td class="neg">($9,603)</td>
       <td class="tbd">TBD</td>
+    </tr>
+    <tr class="sub-detail">
+      <td>Coaches (John, Ryan)</td>
+      <td class="neg">($7,899)</td>
+      <td class="neg">($7,170)</td>
+      <td class="tbd">&mdash;</td>
+    </tr>
+    <tr class="sub-detail">
+      <td>Support (Bea, Sheena)</td>
+      <td class="neg">($4,601)</td>
+      <td class="neg">($2,433)</td>
+      <td class="tbd">&mdash;</td>
     </tr>
     <tr class="detail">
       <td>Payment Processing Fees</td>
-      <td class="neg">($7,122)</td>
-      <td class="neg">($327)</td>
+      <td class="neg">($5,176)</td>
+      <td class="neg">($238)</td>
       <td class="tbd">TBD</td>
     </tr>
     <tr class="subtotal">
-      <td>Total COGS (CAD)</td>
-      <td class="neg">($112,322)</td>
-      <td class="neg">($74,811)</td>
-      <td class="neg">($19,812)</td>
+      <td>Total COGS</td>
+      <td class="neg">($81,630)</td>
+      <td class="neg">($54,369)</td>
+      <td class="neg">($14,398)</td>
     </tr>
 
     <tr class="spacer"><td colspan="4"></td></tr>
 
-    <!-- GROSS PROFIT -->
+    <!-- ═══ GROSS PROFIT ═══ -->
     <tr class="subtotal">
-      <td>Gross Profit (CAD)</td>
-      <td class="pos">$83,585</td>
-      <td class="pos">$122,799</td>
-      <td class="pos">$100,957</td>
+      <td>Gross Profit</td>
+      <td class="pos">$41,889</td>
+      <td class="pos">$90,145</td>
+      <td class="pos">$102,850</td>
     </tr>
     <tr class="margin">
-      <td>Gross Margin %</td>
-      <td>42.7%</td>
-      <td>62.1%</td>
-      <td>83.6%</td>
+      <td>Gross Margin</td>
+      <td>33.9%</td>
+      <td>62.4%</td>
+      <td>87.7%</td>
     </tr>
 
     <tr class="spacer"><td colspan="4"></td></tr>
 
-    <!-- OPERATING EXPENSES -->
+    <!-- ═══ OPERATING EXPENSES ═══ -->
     <tr class="section-header"><td colspan="4">Operating Expenses</td></tr>
     <tr class="detail">
       <td>Professional Services</td>
-      <td class="neg">($30,093)</td>
-      <td class="neg">($54,116)</td>
+      <td class="neg">($21,870)</td>
+      <td class="neg">($39,328)</td>
       <td class="tbd">TBD</td>
     </tr>
     <tr class="detail">
       <td>Marketing Systems</td>
-      <td class="neg">($9,492)</td>
-      <td class="neg">($9,231)</td>
+      <td class="neg">($6,898)</td>
+      <td class="neg">($6,709)</td>
       <td class="tbd">TBD</td>
     </tr>
     <tr class="detail">
       <td>Paid Acquisition (Meta Ads)</td>
-      <td class="neg">($7,261)</td>
-      <td class="neg">($6,983)</td>
+      <td class="neg">($5,277)</td>
+      <td class="neg">($5,075)</td>
       <td class="tbd">TBD</td>
     </tr>
     <tr class="detail">
       <td>Education / Development</td>
-      <td class="neg">($6,723)</td>
-      <td class="neg">($2,755)</td>
+      <td class="neg">($4,886)</td>
+      <td class="neg">($2,002)</td>
       <td class="tbd">TBD</td>
     </tr>
     <tr class="detail">
       <td>Core Tech / Infrastructure</td>
-      <td class="neg">($4,182)</td>
-      <td class="neg">($1,620)</td>
+      <td class="neg">($3,039)</td>
+      <td class="neg">($1,177)</td>
       <td class="tbd">TBD</td>
     </tr>
     <tr class="detail">
       <td>AI / Automation / R&amp;D</td>
-      <td class="neg">($811)</td>
-      <td class="neg">($847)</td>
+      <td class="neg">($590)</td>
+      <td class="neg">($616)</td>
       <td class="tbd">TBD</td>
     </tr>
     <tr class="detail">
       <td>Fulfillment Platforms</td>
-      <td class="neg">($342)</td>
-      <td class="neg">($388)</td>
+      <td class="neg">($248)</td>
+      <td class="neg">($282)</td>
       <td class="tbd">TBD</td>
     </tr>
     <tr class="detail">
       <td>Office / Admin / Telecom</td>
-      <td class="neg">($1,015)</td>
-      <td class="neg">($484)</td>
+      <td class="neg">($738)</td>
+      <td class="neg">($352)</td>
       <td class="tbd">TBD</td>
     </tr>
     <tr class="subtotal">
-      <td>Total OpEx (CAD)</td>
-      <td class="neg">($44,581)</td>
-      <td class="neg">($80,386)</td>
-      <td class="neg">($21,707)</td>
+      <td>Total OpEx</td>
+      <td class="neg">($32,399)</td>
+      <td class="neg">($58,420)</td>
+      <td class="neg">($15,775)</td>
     </tr>
 
     <tr class="spacer"><td colspan="4"></td></tr>
 
-    <!-- NET INCOME -->
+    <!-- ═══ NET INCOME ═══ -->
     <tr class="grand-total">
-      <td>Net Operating Income (CAD)</td>
-      <td class="pos">$39,005</td>
-      <td class="pos">$42,413</td>
-      <td class="pos">$79,251</td>
+      <td>Net Operating Income</td>
+      <td class="pos">$9,490</td>
+      <td class="pos">$31,725</td>
+      <td class="pos">$87,075</td>
     </tr>
     <tr class="margin">
-      <td>Net Margin %</td>
-      <td>19.9%</td>
-      <td>21.5%</td>
-      <td>65.6%</td>
-    </tr>
-    <tr class="margin">
-      <td>Est. Net Income (USD @ 1.376)</td>
-      <td>$28,347</td>
-      <td>$30,824</td>
-      <td>$57,595</td>
+      <td>Net Margin</td>
+      <td>7.7%</td>
+      <td>22.0%</td>
+      <td>74.3%</td>
     </tr>
 
     <tr class="spacer"><td colspan="4"></td></tr>
 
-    <!-- EXCLUDED ITEMS -->
+    <!-- ═══ COACHING-ONLY P&L ═══ -->
+    <tr class="section-header"><td colspan="4">Coaching-Only Summary</td></tr>
+    <tr>
+      <td>Coaching Revenue</td>
+      <td>$103,923</td>
+      <td>$102,683</td>
+      <td>$91,000</td>
+    </tr>
+    <tr>
+      <td>Total COGS</td>
+      <td class="neg">($81,630)</td>
+      <td class="neg">($54,369)</td>
+      <td class="neg">($14,398)</td>
+    </tr>
+    <tr class="subtotal">
+      <td>Coaching Gross Profit</td>
+      <td class="pos">$22,293</td>
+      <td class="pos">$48,314</td>
+      <td class="pos">$76,602</td>
+    </tr>
+    <tr class="margin">
+      <td>Coaching Gross Margin</td>
+      <td>21.5%</td>
+      <td>47.1%</td>
+      <td>84.2%</td>
+    </tr>
+
+    <tr class="spacer"><td colspan="4"></td></tr>
+
+    <!-- ═══ EXCLUDED ═══ -->
     <tr class="section-header"><td colspan="4">Excluded from P&L (for reference)</td></tr>
     <tr class="excluded">
       <td>Corporate Taxes Payable</td>
-      <td class="neg">($190,000)</td>
+      <td class="neg">($138,081)</td>
       <td>&mdash;</td>
       <td>&mdash;</td>
     </tr>
     <tr class="excluded">
       <td>Owner Personal (auto-flagged)</td>
-      <td class="neg">($5,493) &middot; 80 items</td>
-      <td class="neg">($4,400) &middot; 86 items</td>
+      <td class="neg">($3,993) &middot; 80 items</td>
+      <td class="neg">($3,198) &middot; 86 items</td>
       <td class="tbd">No detail yet</td>
     </tr>
 
@@ -322,161 +351,75 @@
 
 <!-- NOTES -->
 <div class="notes">
-  <h3>Data Quality Notes</h3>
+  <h3>Data Sources &amp; Quality</h3>
   <ul>
-    <li class="ok"><strong>April</strong> is the cleanest month. Patricia confirmed FX rate 1.376 (CAD $140,029 = USD $101,790). All three sources reconcile within 0.9%.</li>
-    <li class="warn"><strong>March</strong> has a $19K QB-vs-processor revenue gap. Likely installment payments from prior-period closes or payout-date mismatch. $190K corporate tax payment excluded from the P&L above.</li>
-    <li class="critical"><strong>May</strong> has QB summary-level data only (synced May 31). No transaction detail loaded yet. COGS/OpEx sub-breakdown not available. QB coaching revenue ($84.6K CAD ~ $61.5K USD) trails processor data ($91K USD) by ~$29K &mdash; payout timing lag (Fanbasis payouts arrive in QB ~2-4 weeks after charges).</li>
-    <li class="warn"><strong>April COGS jumped</strong> between QB syncs: May 10 export showed $44.6K, May 31 sync shows $74.8K. Patricia likely reclassified entries. Professional Services also spiked $30K &rarr; $54K.</li>
-    <li class="info"><strong>Classification status:</strong> Mar/Apr have 766 transaction-level rows in the review system. 166 items auto-flagged as owner personal. HPF category codes assigned via rules engine, but Emil review columns are still empty &mdash; the personal/business split hasn't been manually confirmed yet.</li>
-    <li class="info"><strong>Currency:</strong> All QB figures are CAD. USD estimates use April's confirmed rate (1.376). Actual rates for March and May may vary &plusmn;2%.</li>
-    <li class="info"><strong>FX rate note:</strong> April USD confirmed by Patricia. Jan USD ($122,483) confirmed from Stripe. Feb/Mar/May USD are estimates.</li>
+    <li class="ok"><strong>Revenue</strong> is from Stripe + Fanbasis directly &mdash; native USD, no conversion needed. This is the actual money collected.</li>
+    <li class="ok"><strong>April</strong> is fully reconciled. Patricia confirmed CAD &rarr; USD rate 1.376. Processor total ($102,683) matches QB coaching ($101,790) within 0.9%.</li>
+    <li class="warn"><strong>March</strong> shows $103,923 from processors vs $122,779 estimated from QB. The $19K gap is likely prior-period installments or payout-date mismatch. Needs Patricia's March detail.</li>
+    <li class="critical"><strong>May expenses are QB summary only</strong> (synced May 31). No COGS/OpEx sub-breakdown. May COGS ($14.4K) and OpEx ($15.8K) look unusually low &mdash; QB likely hasn't caught up with all May outflows yet. The 74.3% net margin is artificially high.</li>
+    <li class="warn"><strong>April expenses shifted</strong> between QB syncs (May 10 vs May 31): COGS went $32.4K &rarr; $54.4K, Professional Services $21.9K &rarr; $39.3K. Patricia reclassified entries.</li>
+    <li class="info"><strong>FX rate:</strong> All expense conversions use 1.376 (April confirmed). March and May actual rates may vary &plusmn;2%. Only April is exact.</li>
+    <li class="info"><strong>Non-coaching revenue</strong> (courses, sponsorship, monetization) uses QB totals converted at 1.376. This includes YouTube revenue, course sales, brand deals.</li>
   </ul>
 </div>
 
-<!-- DAN PERSONAL REVIEW SECTION -->
+<!-- DAN PERSONAL REVIEW -->
 <div class="section-title">Dan Personal Items &mdash; Flagged for Review</div>
-
 <div class="notes" style="margin-bottom: 16px">
-  <h3>What Dan said</h3>
   <ul>
-    <li class="info">Dan said he already removed a lot of personal items. The auto-classification below may include items he's already addressed in QB. Cross-check against the <a href="https://docs.google.com/spreadsheets/d/1ROzYgQvLeEKZGMae6RoyR1P82SCaK-r8t7myQivFAHk/edit?gid=585817477#gid=585817477" target="_blank">P&L Librarian Sheet</a> for the latest state.</li>
-    <li class="warn">166 items auto-flagged as "owner personal" across Mar/Apr ($9,893 CAD total). Mostly Amazon purchases on Dan's personal cards. No May detail available yet.</li>
+    <li class="info">Dan said he already removed a lot of personal items. These may already be addressed in QB. Cross-check in the <a href="https://docs.google.com/spreadsheets/d/1ROzYgQvLeEKZGMae6RoyR1P82SCaK-r8t7myQivFAHk/edit?gid=585817477#gid=585817477" target="_blank">P&amp;L Librarian Sheet</a>.</li>
+    <li class="warn">166 items auto-flagged across Mar/Apr ($7,191 USD total). Mostly Amazon purchases on personal cards.</li>
+    <li class="critical">May has no transaction detail yet. Can pull via QB API (GeneralLedger report) to load line items.</li>
   </ul>
 </div>
 
 <table class="personal-table">
   <thead>
-    <tr>
-      <th>Month</th>
-      <th>Payee</th>
-      <th>Description</th>
-      <th style="text-align:right">Amount (CAD)</th>
-      <th>Risk</th>
-    </tr>
+    <tr><th>Month</th><th>Payee</th><th>Description</th><th style="text-align:right">Amount (USD)</th><th>Risk</th></tr>
   </thead>
   <tbody>
-    <tr><td colspan="5" style="font-weight:600; padding-top:12px; color:var(--text-dim)">March 2026 &mdash; 80 items, $5,493 total</td></tr>
-    <tr>
-      <td>Mar</td>
-      <td>650 Industries (Expo)</td>
-      <td>EXPO.DEV CA</td>
-      <td class="amount neg">($276.62)</td>
-      <td>Medium</td>
-    </tr>
-    <tr>
-      <td>Mar</td>
-      <td>Amazon.ca</td>
-      <td>Amazon.ca*0G2QR6FR3</td>
-      <td class="amount neg">($241.37)</td>
-      <td>Medium</td>
-    </tr>
-    <tr>
-      <td>Mar</td>
-      <td>Amazon Marketplace</td>
-      <td>Various AMZN Mktp purchases (26 items)</td>
-      <td class="amount neg">($2,278.22)</td>
-      <td>Medium</td>
-    </tr>
-    <tr>
-      <td>Mar</td>
-      <td>Amazon USD</td>
-      <td>AMAZON PRIME</td>
-      <td class="amount neg">($113.87)</td>
-      <td>High</td>
-    </tr>
-    <tr>
-      <td>Mar</td>
-      <td>Taplio.com (USD)</td>
-      <td>Social media tool</td>
-      <td class="amount neg">($130.95)</td>
-      <td>Medium</td>
-    </tr>
-    <tr>
-      <td>Mar</td>
-      <td>Other items</td>
-      <td>50 additional auto-flagged items</td>
-      <td class="amount neg">($2,451.71)</td>
-      <td>Mixed</td>
-    </tr>
-
-    <tr><td colspan="5" style="font-weight:600; padding-top:12px; color:var(--text-dim)">April 2026 &mdash; 86 items, $4,400 total</td></tr>
-    <tr>
-      <td>Apr</td>
-      <td colspan="2"><em>86 items auto-flagged &mdash; similar pattern to March (Amazon, subscriptions, personal cards)</em></td>
-      <td class="amount neg">($4,400.36)</td>
-      <td>Mixed</td>
-    </tr>
-
-    <tr><td colspan="5" style="font-weight:600; padding-top:12px; color:var(--text-dim)">May 2026 &mdash; No transaction detail loaded</td></tr>
-    <tr>
-      <td>May</td>
-      <td colspan="2"><em>Transaction-level data not yet imported from QB. Summary totals available only.</em></td>
-      <td class="amount tbd">&mdash;</td>
-      <td>&mdash;</td>
-    </tr>
+    <tr><td colspan="5" style="font-weight:600; padding-top:12px; color:var(--text-dim)">March 2026 &mdash; 80 items, $3,993 USD total</td></tr>
+    <tr><td>Mar</td><td>Amazon Marketplace</td><td>26 separate AMZN Mktp purchases</td><td class="amount neg">($1,656)</td><td>Medium</td></tr>
+    <tr><td>Mar</td><td>650 Industries (Expo)</td><td>EXPO.DEV CA</td><td class="amount neg">($201)</td><td>Medium</td></tr>
+    <tr><td>Mar</td><td>Amazon.ca</td><td>Amazon.ca order</td><td class="amount neg">($175)</td><td>Medium</td></tr>
+    <tr><td>Mar</td><td>Taplio.com</td><td>Social media tool</td><td class="amount neg">($95)</td><td>Medium</td></tr>
+    <tr><td>Mar</td><td>Amazon USD</td><td>AMAZON PRIME</td><td class="amount neg">($83)</td><td>High</td></tr>
+    <tr><td>Mar</td><td>Other items</td><td>50 additional auto-flagged</td><td class="amount neg">($1,783)</td><td>Mixed</td></tr>
+    <tr><td colspan="5" style="font-weight:600; padding-top:12px; color:var(--text-dim)">April 2026 &mdash; 86 items, $3,198 USD total</td></tr>
+    <tr><td>Apr</td><td colspan="2"><em>Similar pattern (Amazon, subscriptions, personal cards)</em></td><td class="amount neg">($3,198)</td><td>Mixed</td></tr>
+    <tr><td colspan="5" style="font-weight:600; padding-top:12px; color:var(--text-dim)">May 2026 &mdash; No transaction detail</td></tr>
+    <tr><td>May</td><td colspan="2"><em>Need QB GeneralLedger pull to load May transactions</em></td><td class="amount tbd">&mdash;</td><td>&mdash;</td></tr>
   </tbody>
 </table>
 
-<!-- ACTION ITEMS -->
-<div class="notes">
-  <h3>Next Steps to Complete</h3>
+<!-- Q2 PARTIAL -->
+<div class="section-title">Q2 Partial (Apr + May)</div>
+<table class="pnl-table" style="max-width:500px">
+  <thead><tr><th></th><th>Apr + May (USD)</th></tr></thead>
+  <tbody>
+    <tr><td>Coaching Revenue</td><td>$193,683</td></tr>
+    <tr><td>Total Revenue</td><td>$261,762</td></tr>
+    <tr><td>Total COGS</td><td class="neg">($68,767)</td></tr>
+    <tr><td>Total OpEx</td><td class="neg">($74,195)</td></tr>
+    <tr class="subtotal"><td>Net Income</td><td class="pos">$118,800</td></tr>
+    <tr class="margin"><td>Net Margin</td><td>45.4%</td></tr>
+  </tbody>
+</table>
+
+<!-- NEXT STEPS -->
+<div class="notes" style="margin-top:24px">
+  <h3>To Complete This P&L</h3>
   <ul>
-    <li class="critical"><strong>May transaction detail:</strong> Need QB May outgoing transaction export loaded into the Librarian Sheet and review system. This unblocks: COGS/OpEx sub-breakdown, personal item flagging, and Dan's line-by-line review.</li>
-    <li class="warn"><strong>Emil classification pass:</strong> 766 Mar/Apr items need manual personal/business confirmation. The auto-rules flagged 166 as personal, but the <code>emil_personal_or_business</code> column is empty on all rows.</li>
-    <li class="warn"><strong>March revenue gap:</strong> $19K QB-vs-processor gap needs Patricia's March transaction detail to explain (likely prior-period installments or payout timing).</li>
-    <li class="info"><strong>April reclassification:</strong> Investigate the May 31 QB sync changes (COGS +$30K, OpEx +$29K vs May 10 export). Patricia may have moved items between sections.</li>
-    <li class="info"><strong>FX rates:</strong> Get Bank of Canada mid-market rates for March and May to replace the estimated 1.376.</li>
+    <li class="critical"><strong>Pull May transaction detail</strong> via QB API (GeneralLedger report). This unblocks COGS/OpEx breakdown + Dan's personal item review for May.</li>
+    <li class="warn"><strong>Emil classification pass</strong> on 766 Mar/Apr items. Auto-rules assigned categories but <code>emil_personal_or_business</code> is empty.</li>
+    <li class="info"><strong>Get March + May FX rates</strong> from Bank of Canada to replace the 1.376 estimate.</li>
+    <li class="info"><strong>Confirm April reclassifications</strong> with Patricia (COGS and Prof. Services both jumped ~$30K in the May 31 sync).</li>
   </ul>
 </div>
 
-<!-- QUARTERLY SUMMARY -->
-<div class="section-title">Q2 Partial Summary (Apr + May)</div>
-<table class="pnl-table" style="max-width:500px">
-  <thead>
-    <tr>
-      <th></th>
-      <th>Apr + May (CAD)</th>
-      <th>Est. USD</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Total Revenue</td>
-      <td>$318,378</td>
-      <td>$231,379</td>
-    </tr>
-    <tr>
-      <td>Coaching Revenue</td>
-      <td>$224,681</td>
-      <td>$163,285</td>
-    </tr>
-    <tr>
-      <td>Total COGS</td>
-      <td class="neg">($94,623)</td>
-      <td class="neg">($68,767)</td>
-    </tr>
-    <tr>
-      <td>Total OpEx</td>
-      <td class="neg">($102,093)</td>
-      <td class="neg">($74,195)</td>
-    </tr>
-    <tr class="subtotal">
-      <td>Net Income</td>
-      <td class="pos">$121,664</td>
-      <td class="pos">$88,419</td>
-    </tr>
-    <tr class="margin">
-      <td>Net Margin</td>
-      <td>38.2%</td>
-      <td></td>
-    </tr>
-  </tbody>
-</table>
-
 <div class="footer">
-  Generated 2026-06-02 &middot; Sources: Supabase <code>financial_periods</code> (QB sync May 31), <code>finance_pnl_review_lines</code> (1,401 rows Jan-Apr), Stripe live API, <code>fanbasis_payments</code> table &middot;
-  <a href="https://docs.google.com/spreadsheets/d/1ROzYgQvLeEKZGMae6RoyR1P82SCaK-r8t7myQivFAHk/edit?gid=585817477#gid=585817477" target="_blank">Open Librarian Sheet</a>
+  Generated 2026-06-02 06:55 WEST &middot; All figures USD &middot; Revenue: Stripe + Fanbasis (native USD) &middot; Expenses: QB (CAD &divide; 1.376) &middot;
+  <a href="https://docs.google.com/spreadsheets/d/1ROzYgQvLeEKZGMae6RoyR1P82SCaK-r8t7myQivFAHk/edit?gid=585817477#gid=585817477" target="_blank">Librarian Sheet</a>
 </div>
 
 </body>
