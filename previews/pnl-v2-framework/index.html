@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P&L V2 Framework — Contract Compliance (§4.5)</title>
+<style>
+  :root {
+    --bg: #0d1117; --surface: #161b22; --surface2: #21262d; --border: #30363d;
+    --text: #e6edf3; --text-muted: #8b949e; --text-dim: #484f58;
+    --green: #3fb950; --green-bg: rgba(63,185,80,.08);
+    --red: #f85149; --red-bg: rgba(248,81,73,.08);
+    --yellow: #d29922; --yellow-bg: rgba(210,153,34,.08);
+    --blue: #58a6ff; --blue-bg: rgba(88,166,255,.08);
+    --purple: #bc8cff; --purple-bg: rgba(188,140,255,.08);
+    --gray-bg: rgba(139,148,158,.06);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+  /* Header */
+  .header { border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 0; }
+  .header h1 { font-size: 24px; font-weight: 600; }
+  .header .subtitle { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
+  .header .date { color: var(--text-dim); font-size: 12px; margin-top: 2px; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 24px; background: var(--surface); }
+  .tab { padding: 12px 24px; cursor: pointer; font-size: 14px; font-weight: 500; color: var(--text-muted); border-bottom: 2px solid transparent; transition: all .15s; }
+  .tab:hover { color: var(--text); background: var(--surface2); }
+  .tab.active { color: var(--text); border-bottom-color: var(--blue); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* Sections */
+  h2 { font-size: 20px; font-weight: 600; margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  h2:first-child { margin-top: 0; }
+  h3 { font-size: 16px; font-weight: 600; margin: 24px 0 12px; }
+  h4 { font-size: 14px; font-weight: 600; margin: 16px 0 8px; color: var(--text-muted); }
+  p { margin-bottom: 12px; font-size: 14px; }
+  ul, ol { margin: 8px 0 16px 24px; font-size: 14px; }
+  li { margin-bottom: 4px; }
+  code { background: var(--surface2); padding: 2px 6px; border-radius: 4px; font-size: 13px; font-family: 'SF Mono', 'Fira Code', monospace; }
+
+  /* Cards / boxes */
+  .box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+  .box.green { border-left: 3px solid var(--green); background: var(--green-bg); }
+  .box.red { border-left: 3px solid var(--red); background: var(--red-bg); }
+  .box.yellow { border-left: 3px solid var(--yellow); background: var(--yellow-bg); }
+  .box.blue { border-left: 3px solid var(--blue); background: var(--blue-bg); }
+  .box.purple { border-left: 3px solid var(--purple); background: var(--purple-bg); }
+  .box h4 { margin-top: 0; color: var(--text); }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 13px; }
+  th { text-align: left; padding: 10px 12px; background: var(--surface2); border-bottom: 1px solid var(--border); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:hover { background: var(--surface); }
+  .amount { text-align: right; font-family: 'SF Mono', monospace; font-size: 13px; }
+  .subtotal td { font-weight: 600; background: var(--surface); }
+  .total td { font-weight: 700; background: var(--surface2); font-size: 14px; }
+  .section-header td { font-weight: 700; background: var(--surface2); font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; padding: 12px; }
+  .indent td:first-child { padding-left: 32px; }
+  .indent2 td:first-child { padding-left: 48px; }
+
+  /* Tags */
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .tag.permitted { background: var(--green-bg); color: var(--green); border: 1px solid rgba(63,185,80,.3); }
+  .tag.not-permitted { background: var(--red-bg); color: var(--red); border: 1px solid rgba(248,81,73,.3); }
+  .tag.flag { background: var(--yellow-bg); color: var(--yellow); border: 1px solid rgba(210,153,34,.3); }
+  .tag.excluded { background: var(--gray-bg); color: var(--text-muted); border: 1px solid var(--border); }
+  .tag.allocate { background: var(--purple-bg); color: var(--purple); border: 1px solid rgba(188,140,255,.3); }
+  .tag.revenue { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(88,166,255,.3); }
+  .tag.new { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(88,166,255,.3); font-size: 10px; }
+
+  /* Collapsible */
+  details { margin-bottom: 12px; }
+  summary { cursor: pointer; font-weight: 600; font-size: 14px; padding: 8px 0; }
+  summary:hover { color: var(--blue); }
+  details > div { padding: 8px 0 8px 16px; }
+
+  /* Comparison */
+  .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 768px) { .comparison { grid-template-columns: 1fr; } }
+
+  /* Impact callout */
+  .callout { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+  .callout.warn { border-color: var(--yellow); background: var(--yellow-bg); }
+  .callout.info { border-color: var(--blue); background: var(--blue-bg); }
+  .callout.danger { border-color: var(--red); background: var(--red-bg); }
+  .callout strong { display: block; margin-bottom: 4px; }
+
+  /* Rule rows */
+  .rule-pass { color: var(--green); }
+  .rule-fail { color: var(--red); }
+  .rule-flag { color: var(--yellow); }
+  .rule-hold { color: var(--purple); }
+
+  .neg { color: var(--red); }
+  .pos { color: var(--green); }
+  .muted { color: var(--text-muted); }
+  .dim { color: var(--text-dim); }
+  .mono { font-family: 'SF Mono', monospace; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>P&L V2 Framework — Contract Compliance</h1>
+  <div class="subtitle">§4.5(a)-(g) Membership Test as Master Classification Filter</div>
+  <div class="date">Draft for walkthrough — 2026-06-03 | Data: March 2026 QB API (399 transactions)</div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('readme')">README</div>
+  <div class="tab" onclick="switchTab('pnl')">Example P&L (March)</div>
+  <div class="tab" onclick="switchTab('rules')">Rules</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- README TAB -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="readme" class="tab-content active">
+
+<h2>What is V2?</h2>
+<p>V1 used <strong>"is it a business cost?"</strong> as the deductibility test. That's wrong per the contract. V2 uses <strong>§4.5(a)-(g) exclusively</strong> — the contract's exhaustive list of Permitted Expenses. If an expense isn't in one of (a) through (g), it cannot reduce Net Coaching Profit, regardless of being a real business cost.</p>
+
+<div class="callout info">
+  <strong>Core change:</strong> "Net Coaching Profit" = Coaching Revenue (§4.4) minus Permitted Expenses §4.5(a)-(g) ONLY. Everything else is a company cost that Dan bears — it doesn't touch the coaching P&L.
+</div>
+
+<h2>The §4.5 Membership Test</h2>
+<p>Every expense line must pass one of these gates to be a Permitted Expense:</p>
+
+<table>
+  <tr><th>§</th><th>Category</th><th>What Passes</th><th>What Fails</th></tr>
+  <tr>
+    <td><strong>(a)</strong></td>
+    <td>Coaching Staff Compensation</td>
+    <td>Coaches (John, Ryan), coaching support (Sheena)</td>
+    <td>General EA (Bea — <span class="tag flag">FLAG</span>), former COO (TKS)</td>
+  </tr>
+  <tr>
+    <td><strong>(b)</strong></td>
+    <td>Sales Team Compensation</td>
+    <td>Closers (Brandon B, Brandon D), Setters (Angelica, Cole, Riley)</td>
+    <td>Former staff (Soulmatics/Dillon — through 2026-03-28 only)</td>
+  </tr>
+  <tr>
+    <td><strong>(c)</strong></td>
+    <td>Direct Coaching Fulfillment</td>
+    <td>Client welcome cards (Handwrytten), client gifts, training app costs</td>
+    <td>Content production, office supplies</td>
+  </tr>
+  <tr>
+    <td><strong>(d)</strong></td>
+    <td>Payment Processing Fees</td>
+    <td>Stripe fees, PayPal fees, wire/transfer fees</td>
+    <td>Bank fees on non-coaching accounts</td>
+  </tr>
+  <tr>
+    <td><strong>(e)</strong></td>
+    <td>Software — Coaching Delivery/Sales/Client Mgmt <strong>ONLY</strong></td>
+    <td>Trainerize, GHL/CC360, ManyChat, SendBlue, Fathom, Slack, Google Workspace, Typeform, Zoom, Hubstaff, Trustpilot</td>
+    <td>Kit.com (newsletter), Anthropic/OpenAI (build tools), Make/Zapier (automation infra), Wisprflow, Epidemic Sound (content)</td>
+  </tr>
+  <tr>
+    <td><strong>(f)</strong></td>
+    <td>HST/GST Estimates</td>
+    <td>Estimated tax line (contract-permitted deduction)</td>
+    <td>Corporate income tax, Receiver General payments</td>
+  </tr>
+  <tr>
+    <td><strong>(g)</strong></td>
+    <td>Marketing/Advertising — Coaching ONLY</td>
+    <td>Meta/Facebook ads (coaching funnels), Google Ads (if coaching)</td>
+    <td>Content marketing, monetization marketing</td>
+  </tr>
+</table>
+
+<div class="callout warn">
+  <strong>§4.5 is exhaustive.</strong> "Permitted Expenses... consist exclusively of the following:" — items not in (a)-(g) are excluded by absence. This is the airtight basis for every exclusion. Don't cite specific bars (like "CEO comp") when the simpler argument is: it's not listed.
+</div>
+
+<h2>What Changes from V1</h2>
+
+<div class="comparison">
+  <div class="box red">
+    <h4>Items REMOVED from P&L (fail membership test)</h4>
+    <ul>
+      <li><strong>Emil Hodzovic SP fee</strong> (~$13.6K/mo) — not in (a)-(g). Excluded by absence, not by a CEO-comp bar (Emil isn't CEO, isn't a Company principal)</li>
+      <li><strong>Stanley Goldberg (legal)</strong> (~$3.3K/mo) — legal is not listed in (a)-(g). Not a §4.11 consulting issue — just absent from the permitted list</li>
+      <li><strong>Kit.com</strong> ($4.3K/mo) — influencer newsletter, fails "directly in coaching" under (e)</li>
+      <li><strong>AI/build tools</strong> (Anthropic, OpenAI, Make, Zapier, Wisprflow) — builds HPFHQ, doesn't deliver coaching. Fails (e)</li>
+      <li><strong>Content tools</strong> (Epidemic Sound, Makeagif, ShieldApp) — monetization/content, not coaching</li>
+      <li><strong>TKS Management / Tyrus</strong> — former COO, not coaching staff</li>
+      <li><strong>Agencies</strong> (pending §4.11 dual approval) — AUTO-HOLD until logged</li>
+    </ul>
+  </div>
+  <div class="box green">
+    <h4>Items STAYING in P&L (pass membership test)</h4>
+    <ul>
+      <li>Coaches (John, Ryan) — (a)</li>
+      <li>Sheena Lao — (a) coaching assistant</li>
+      <li>Closers, setters — (b)</li>
+      <li>Handwrytten, client fulfillment — (c)</li>
+      <li>All payment processing fees — (d)</li>
+      <li>Coaching software (Trainerize, GHL, ManyChat, etc.) — (e)</li>
+      <li>Meta ads — (g)</li>
+    </ul>
+  </div>
+</div>
+
+<h2>New Requirements</h2>
+
+<h3>1. Revenue Completeness (§4.4)</h3>
+<div class="box blue">
+  <p>§4.4 says "all merchant accounts and payment processors." V1 only has Stripe (net). V2 must:</p>
+  <ul>
+    <li><strong>Stripe:</strong> Gross revenue (not net payouts). Stripe fees become a (d) line</li>
+    <li><strong>Fanbasis:</strong> Live processor — confirm if coaching revenue flows through it</li>
+    <li><strong>PayPal:</strong> PayPal fees already appear in data. If coaching payments come through PayPal, that revenue is missing</li>
+    <li><strong>Other:</strong> Confirm no other processor carries coaching revenue</li>
+  </ul>
+</div>
+
+<h3>2. Software (e) Sub-Filter</h3>
+<div class="box yellow">
+  <p>The §4.5(a)-(g) membership test alone won't catch software misclassification — software vendors look like (e) on their face. Need a sub-rule:</p>
+  <ul>
+    <li><strong>Content tools</strong> (Kit.com, Epidemic Sound, etc.) → <code>not_permitted.content_software</code></li>
+    <li><strong>Build/dev tooling</strong> (Anthropic, OpenAI, Make, Zapier, Wisprflow, Abacus) → <code>not_permitted.build_tooling</code></li>
+    <li><strong>Coaching delivery/sales/client mgmt</strong> → <code>permitted.e.*</code></li>
+  </ul>
+  <p>Test: "Does this software directly serve coaching delivery, sales closing, or client management?" If no → fails (e).</p>
+</div>
+
+<h3>3. Non-Coaching Revenue Split (§4.9)</h3>
+<div class="box blue">
+  <p>V1 dumped everything non-coaching into "Excluded." V2 must separate:</p>
+  <ul>
+    <li><strong>Non-Coaching Revenue</strong> — AdSense ($4,775), X Corp, sponsorship ($7,939), course payouts. Shown separately, proves the coaching/non-coaching split holds</li>
+    <li><strong>Taxes</strong> — Receiver General ($190K). Not an expense, not revenue — separate bucket</li>
+    <li><strong>Balance Sheet Transfers</strong> — Card payments, FX, internal moves</li>
+    <li><strong>CapEx</strong> (§4.6) — TENEX LABS pending Dan election (>$10K, amortize over 4Q)</li>
+  </ul>
+</div>
+
+<h3>4. §4.11 Consulting Gate (Auto-Hold Rule)</h3>
+<div class="box purple">
+  <p>External consulting/advisory requires dual written approval (Dan + Emil) before deduction. Must be a <strong>classifier rule</strong>, not just a blocker in your head:</p>
+  <ul>
+    <li>Agoge Consulting → auto-hold</li>
+    <li>DJUniverse, AgencyScalingSecrets, Setter Company → auto-hold</li>
+    <li>Any new vendor in QB "Subcontract" / "Professional Development" → auto-hold until reviewed</li>
+  </ul>
+  <p>Rule: <code>review_status = 'Pending §4.11'</code> → out of totals until approval logged in <code>decision_log</code></p>
+</div>
+
+<h2>Impact on Net Coaching Profit</h2>
+
+<div class="callout warn">
+  <strong>V2 increases Net Coaching Profit.</strong> By removing ~$25K/mo in expenses that V1 was deducting (Emil's fee, legal, content/build tools), the coaching P&L gets tighter. Fewer deductions = higher NCP = higher bonus base for Emil. This is correct per the contract — those costs are real but not Permitted Expenses. Dan still bears them as company costs; they just don't reduce the coaching line of business.
+</div>
+
+<p>Expect the March V2 P&L to show NCP roughly $25K higher than V1. This isn't a windfall — it's the contract being applied correctly.</p>
+
+<h2>V2 Classification Note</h2>
+<p>"Zero unclassified" from V1 won't survive V2. Once the membership test runs, items that were comfortably classified under V1 (Emil's fee as "OpEx Team Labor," legal as "Professional Services") flip to <strong>not_permitted</strong>. That's the system working. The flag count will jump — that's expected, not a regression.</p>
+
+<h2>Blockers — Items Needing Dan</h2>
+<table>
+  <tr><th>Item</th><th>Question</th><th>Impact</th></tr>
+  <tr><td>Emil's operator fee</td><td>Confirm not deductible (excluded by absence from (a)-(g))</td><td>~$13.6K/mo moves out of P&L</td></tr>
+  <tr><td>Bea Guevara</td><td>General EA = coaching support staff under (a)?</td><td>~$2.8K/mo: in or out</td></tr>
+  <tr><td>Agencies (§4.11)</td><td>Get dual written approval on file</td><td>$592+ held until approved</td></tr>
+  <tr><td>TENEX LABS</td><td>Coaching platform CapEx or non-coaching?</td><td>$14.9K/mo: CapEx or excluded</td></tr>
+  <tr><td>Notion ($2.4K/mo)</td><td>Team management = coaching ops software (e)?</td><td>In or out of (e)</td></tr>
+  <tr><td>Loom ($260/mo)</td><td>Coaching content delivery or internal?</td><td>In or out of (e)</td></tr>
+  <tr><td>Vimeo ($814/mo)</td><td>Coaching video hosting or monetization?</td><td>In or out of (e)</td></tr>
+</table>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- EXAMPLE P&L TAB -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="pnl" class="tab-content">
+
+<h2>March 2026 — V2 Coaching P&L (Draft)</h2>
+<p class="muted">All amounts USD. Stripe revenue is net (gross-up pending). 399 QB API transactions.</p>
+
+<div class="callout info">
+  <strong>This is the V2 framework applied to March data.</strong> Not final — needs: Stripe gross-up, Fanbasis/PayPal revenue check, Bea ruling, borderline software decisions, HST/GST estimate. Numbers marked with * are estimates.
+</div>
+
+<table>
+  <colgroup>
+    <col style="width: 55%">
+    <col style="width: 15%">
+    <col style="width: 15%">
+    <col style="width: 15%">
+  </colgroup>
+  <thead>
+    <tr><th>Line Item</th><th class="amount">Amount (USD)</th><th>§4.5</th><th>Status</th></tr>
+  </thead>
+  <tbody>
+    <!-- REVENUE -->
+    <tr class="section-header"><td colspan="4">COACHING REVENUE (§4.4)</td></tr>
+    <tr class="indent"><td>Stripe Payouts (net — 17 deposits)</td><td class="amount">$162,372</td><td></td><td><span class="tag revenue">revenue</span></td></tr>
+    <tr class="indent"><td>Stripe Fee Gross-Up*</td><td class="amount dim">~$3,300*</td><td></td><td><span class="tag flag">pending</span></td></tr>
+    <tr class="indent"><td>Fanbasis Revenue</td><td class="amount dim">$???</td><td></td><td><span class="tag flag">check</span></td></tr>
+    <tr class="indent"><td>PayPal Coaching Revenue</td><td class="amount dim">$???</td><td></td><td><span class="tag flag">check</span></td></tr>
+    <tr class="total"><td>Total Coaching Revenue</td><td class="amount">$162,372+</td><td></td><td></td></tr>
+
+    <!-- PERMITTED EXPENSES -->
+    <tr class="section-header"><td colspan="4">PERMITTED EXPENSES (§4.5)</td></tr>
+
+    <!-- (a) -->
+    <tr class="subtotal"><td>(a) Coaching Staff Compensation</td><td class="amount"></td><td>(a)</td><td></td></tr>
+    <tr class="indent2"><td>John Guevara (coach)</td><td class="amount">$5,435</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent2"><td>Ryan Deschenes (coach)</td><td class="amount">$5,435</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent2"><td>Sheena Lao (coaching assistant, via Veem)</td><td class="amount">~$3,500*</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent"><td><em>Subtotal (a)</em></td><td class="amount"><em>~$14,370</em></td><td></td><td></td></tr>
+
+    <!-- (b) -->
+    <tr class="subtotal"><td>(b) Sales Team Compensation</td><td class="amount"></td><td>(b)</td><td></td></tr>
+    <tr class="indent2"><td>Brandon Burns (closer)</td><td class="amount">$17,404</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent2"><td>Brandon D'Ambrosio (closer)</td><td class="amount">$17,405</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent2"><td>Angelica Delos Reyes (setter)</td><td class="amount">$9,629</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent"><td><em>Subtotal (b)</em></td><td class="amount"><em>$44,438</em></td><td></td><td></td></tr>
+
+    <!-- (c) -->
+    <tr class="subtotal"><td>(c) Direct Coaching Fulfillment</td><td class="amount"></td><td>(c)</td><td></td></tr>
+    <tr class="indent2"><td>Handwrytten (client welcome/challenge cards, 17 orders)</td><td class="amount">$116</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent2"><td>Amazon — client gifts (AG1, creatine, bands)</td><td class="amount">$217</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent"><td><em>Subtotal (c)</em></td><td class="amount"><em>$333</em></td><td></td><td></td></tr>
+
+    <!-- (d) -->
+    <tr class="subtotal"><td>(d) Payment Processing Fees</td><td class="amount"></td><td>(d)</td><td></td></tr>
+    <tr class="indent2"><td>Stripe Fees*</td><td class="amount dim">~$3,300*</td><td></td><td><span class="tag flag">pending gross-up</span></td></tr>
+    <tr class="indent2"><td>PayPal/Wire Fees (RBC, Veem processing)</td><td class="amount">$306</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent"><td><em>Subtotal (d)</em></td><td class="amount"><em>~$3,606</em></td><td></td><td></td></tr>
+
+    <!-- (e) -->
+    <tr class="subtotal"><td>(e) Software — Coaching Delivery/Sales/Client Mgmt</td><td class="amount"></td><td>(e)</td><td></td></tr>
+    <tr class="indent2"><td>ManyChat (setter/sales chatbot)</td><td class="amount">$2,238</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent2"><td>SendBlue (setter outreach)</td><td class="amount">$1,366</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent2"><td>Google Workspace (team ops)</td><td class="amount">$510</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent2"><td>Trustpilot (social proof / client-facing)</td><td class="amount">$471</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent2"><td>Fathom (sales call recording)</td><td class="amount">$399</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent2"><td>Zoom (coaching calls)</td><td class="amount">$366</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent2"><td>Trainerize (coaching delivery app)</td><td class="amount">$342</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent2"><td>Typeform (intake forms / sales)</td><td class="amount">$309</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent2"><td>Course Creator 360 / GHL (CRM)</td><td class="amount">$201</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent2"><td>Slack (team coordination)</td><td class="amount">$168</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent2"><td>Hubstaff (team tracking)</td><td class="amount">$164</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent2"><td>Testimonial.to (social proof)</td><td class="amount">$82</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent2"><td>Squarespace (website + workspace)</td><td class="amount">$51</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent2"><td>GoDaddy (coaching domains)</td><td class="amount">$36</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent2"><td>Amazon Prime (business account, client shipping)</td><td class="amount">$21</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent"><td><em>Subtotal (e)</em></td><td class="amount"><em>$6,724</em></td><td></td><td></td></tr>
+
+    <!-- (f) -->
+    <tr class="subtotal"><td>(f) HST/GST Estimate</td><td class="amount"></td><td>(f)</td><td></td></tr>
+    <tr class="indent2"><td>Estimated HST/GST</td><td class="amount dim">TBD</td><td></td><td><span class="tag flag">not yet calculated</span></td></tr>
+    <tr class="indent"><td><em>Subtotal (f)</em></td><td class="amount"><em>TBD</em></td><td></td><td></td></tr>
+
+    <!-- (g) -->
+    <tr class="subtotal"><td>(g) Marketing &amp; Advertising — Coaching</td><td class="amount"></td><td>(g)</td><td></td></tr>
+    <tr class="indent2"><td>Meta/Facebook Ads (coaching funnels)</td><td class="amount">$7,120</td><td></td><td><span class="tag permitted">auto</span></td></tr>
+    <tr class="indent"><td><em>Subtotal (g)</em></td><td class="amount"><em>$7,120</em></td><td></td><td></td></tr>
+
+    <tr class="total"><td>Total Permitted Expenses</td><td class="amount neg">($76,591)</td><td></td><td></td></tr>
+
+    <!-- NET COACHING PROFIT -->
+    <tr class="section-header"><td colspan="4" style="background: var(--green-bg); color: var(--green);">NET COACHING PROFIT</td></tr>
+    <tr class="total" style="background: var(--green-bg);"><td>Net Coaching Profit (§4.3)</td><td class="amount pos" style="font-size: 16px;">$85,781+</td><td></td><td></td></tr>
+
+    <!-- ═══ BELOW THE LINE ═══ -->
+    <tr><td colspan="4" style="padding: 24px 0 8px; font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px;">Below the line — not in coaching P&L</td></tr>
+
+    <!-- NOT PERMITTED -->
+    <tr class="section-header"><td colspan="4" style="background: var(--red-bg);">NOT PERMITTED (fail §4.5 membership test)</td></tr>
+    <tr class="indent"><td>Emil Hodzovic — SP service fee (2 payments)</td><td class="amount">$13,608</td><td class="muted">absent</td><td><span class="tag not-permitted">not in (a)-(g)</span></td></tr>
+    <tr class="indent"><td>Kit.com — influencer newsletter</td><td class="amount">$4,318</td><td class="muted">fails (e)</td><td><span class="tag not-permitted">content, not coaching</span></td></tr>
+    <tr class="indent"><td>Stanley Goldberg — legal (2 payments)</td><td class="amount">$3,301</td><td class="muted">absent</td><td><span class="tag not-permitted">legal not in (a)-(g)</span></td></tr>
+    <tr class="indent"><td>Notion — team management</td><td class="amount">$2,396</td><td class="muted">borderline (e)</td><td><span class="tag flag">needs ruling</span></td></tr>
+    <tr class="indent"><td>Vimeo — video hosting (2x $407)</td><td class="amount">$814</td><td class="muted">borderline (e)</td><td><span class="tag flag">needs ruling</span></td></tr>
+    <tr class="indent"><td>Make.com — automation infra</td><td class="amount">$296</td><td class="muted">fails (e)</td><td><span class="tag not-permitted">build tooling</span></td></tr>
+    <tr class="indent"><td>Zapier — automation infra</td><td class="amount">$271</td><td class="muted">fails (e)</td><td><span class="tag not-permitted">build tooling</span></td></tr>
+    <tr class="indent"><td>Loom — video messages</td><td class="amount">$260</td><td class="muted">borderline (e)</td><td><span class="tag flag">needs ruling</span></td></tr>
+    <tr class="indent"><td>Wisprflow — AI transcription</td><td class="amount">$200</td><td class="muted">fails (e)</td><td><span class="tag not-permitted">build tooling</span></td></tr>
+    <tr class="indent"><td>Anthropic — AI (HPFHQ dev)</td><td class="amount">$182</td><td class="muted">fails (e)</td><td><span class="tag not-permitted">build tooling</span></td></tr>
+    <tr class="indent"><td>Epidemic Sound — content production</td><td class="amount">$165</td><td class="muted">fails (e)</td><td><span class="tag not-permitted">content, not coaching</span></td></tr>
+    <tr class="indent"><td>Quaderno — tax/invoicing</td><td class="amount">$136</td><td class="muted">absent</td><td><span class="tag not-permitted">accounting, not (a)-(g)</span></td></tr>
+    <tr class="indent"><td>QuickBooks — accounting</td><td class="amount">$73</td><td class="muted">absent</td><td><span class="tag not-permitted">accounting, not (a)-(g)</span></td></tr>
+    <tr class="indent"><td>OpenAI — AI (HPFHQ dev)</td><td class="amount">$63</td><td class="muted">fails (e)</td><td><span class="tag not-permitted">build tooling</span></td></tr>
+    <tr class="indent"><td>Paddle.com — billing platform</td><td class="amount">$45</td><td class="muted">absent</td><td><span class="tag not-permitted">unclear vendor</span></td></tr>
+    <tr class="indent"><td>GoDaddy — non-coaching domains</td><td class="amount">$340</td><td class="muted">fails (e)</td><td><span class="tag not-permitted">non-coaching sites</span></td></tr>
+    <tr class="indent"><td>ShieldApp — cancelled service</td><td class="amount">$22</td><td class="muted">fails (e)</td><td><span class="tag not-permitted">content tool, dead</span></td></tr>
+    <tr class="indent"><td>Makeagif — content tool</td><td class="amount">$16</td><td class="muted">fails (e)</td><td><span class="tag not-permitted">content, not coaching</span></td></tr>
+    <tr class="indent"><td>Google Notewise AI</td><td class="amount">$4</td><td class="muted">fails (e)</td><td><span class="tag not-permitted">build tooling</span></td></tr>
+    <tr class="indent"><td>Thread Reader (PayPal)</td><td class="amount">$4</td><td class="muted">fails (e)</td><td><span class="tag not-permitted">content tool</span></td></tr>
+    <tr class="subtotal"><td><em>Total Not Permitted</em></td><td class="amount"><em>$26,514</em></td><td></td><td></td></tr>
+
+    <!-- PENDING §4.11 -->
+    <tr class="section-header"><td colspan="4" style="background: var(--purple-bg);">PENDING §4.11 — DUAL APPROVAL REQUIRED</td></tr>
+    <tr class="indent"><td>Setter Company (agency)</td><td class="amount">$592</td><td class="muted">§4.11</td><td><span class="tag allocate">hold</span></td></tr>
+    <tr class="indent"><td>Agoge, DJUniverse, AgencyScaling</td><td class="amount dim">check Apr/May</td><td class="muted">§4.11</td><td><span class="tag allocate">hold</span></td></tr>
+    <tr class="subtotal"><td><em>Total Pending §4.11</em></td><td class="amount"><em>$592+</em></td><td></td><td></td></tr>
+
+    <!-- FLAGS -->
+    <tr class="section-header"><td colspan="4" style="background: var(--yellow-bg);">FLAGS — PENDING DAN CONFIRMATION</td></tr>
+    <tr class="indent"><td>Bea Guevara — general EA (coaching support?)</td><td class="amount">~$2,800*</td><td class="muted">(a)?</td><td><span class="tag flag">ask Dan</span></td></tr>
+    <tr class="indent"><td>Coach flagged items (Aaron Christophe?)</td><td class="amount">$679</td><td class="muted">(a)?</td><td><span class="tag flag">review</span></td></tr>
+    <tr class="indent"><td>Transfer Blue e-Transfer</td><td class="amount">$164</td><td class="muted">???</td><td><span class="tag flag">what is this</span></td></tr>
+    <tr class="indent"><td>Veem business PAD</td><td class="amount">$35</td><td class="muted">???</td><td><span class="tag flag">what is this</span></td></tr>
+    <tr class="subtotal"><td><em>Total Flags</em></td><td class="amount"><em>~$3,678</em></td><td></td><td></td></tr>
+
+    <!-- STRADDLES -->
+    <tr class="section-header"><td colspan="4" style="background: var(--purple-bg);">STRADDLES — ALLOCATION REQUIRED</td></tr>
+    <tr class="indent"><td>Tommy DeWitt — video editor (50% coaching*)</td><td class="amount">$3,245</td><td class="muted">(c)?</td><td><span class="tag allocate">50/50</span></td></tr>
+    <tr class="indent"><td>Calder Clean — gym cleaning (% TBD)</td><td class="amount">$1,207</td><td class="muted">(c)?</td><td><span class="tag allocate">TBD</span></td></tr>
+    <tr class="subtotal"><td><em>Total Straddles</em></td><td class="amount"><em>$4,452</em></td><td></td><td></td></tr>
+
+    <!-- NON-COACHING REVENUE -->
+    <tr class="section-header"><td colspan="4" style="background: var(--blue-bg);">NON-COACHING REVENUE (shown, not in coaching P&L)</td></tr>
+    <tr class="indent"><td>Monetization (YouTube/Google LLC, X Corp)</td><td class="amount pos">$13,923</td><td></td><td><span class="tag excluded">non-coaching</span></td></tr>
+    <tr class="indent"><td>Sponsorship</td><td class="amount pos">$10,974</td><td></td><td><span class="tag excluded">non-coaching</span></td></tr>
+    <tr class="indent"><td>Courses (Kajabi)</td><td class="amount pos">$9,079</td><td></td><td><span class="tag excluded">non-coaching</span></td></tr>
+    <tr class="subtotal"><td><em>Total Non-Coaching Revenue</em></td><td class="amount pos"><em>$33,976</em></td><td></td><td></td></tr>
+
+    <!-- EXCLUDED -->
+    <tr class="section-header"><td colspan="4">EXCLUDED (never P&L)</td></tr>
+    <tr class="indent"><td>Balance Sheet Transfers (card payments, FX, internal)</td><td class="amount muted">$364,857</td><td></td><td><span class="tag excluded">balance sheet</span></td></tr>
+    <tr class="indent"><td>Receiver General — corporate tax</td><td class="amount muted">$190,000</td><td></td><td><span class="tag excluded">taxes</span></td></tr>
+    <tr class="indent"><td>Owner Personal (Dan — 186 items)</td><td class="amount muted">$169,502</td><td></td><td><span class="tag excluded">personal</span></td></tr>
+    <tr class="indent"><td>Non-Coaching Business (TENEX LABS + Taplio)</td><td class="amount muted">$20,940</td><td></td><td><span class="tag excluded">non-coaching</span></td></tr>
+    <tr class="subtotal"><td><em>Total Excluded</em></td><td class="amount muted"><em>$745,299</em></td><td></td><td></td></tr>
+  </tbody>
+</table>
+
+<h2>V1 vs V2 Comparison (March)</h2>
+<table>
+  <tr><th>Metric</th><th class="amount">V1 (old)</th><th class="amount">V2 (new)</th><th>Delta</th></tr>
+  <tr><td>Coaching Revenue</td><td class="amount">$162,372 (net)</td><td class="amount">~$165,672 (gross)*</td><td class="pos">+$3,300 (Stripe gross-up)</td></tr>
+  <tr><td>Permitted Expenses</td><td class="amount">~$101,500</td><td class="amount">~$76,591</td><td class="pos">-$24,909 (tighter filter)</td></tr>
+  <tr><td>Net Coaching Profit</td><td class="amount">~$60,872</td><td class="amount">~$85,781+</td><td class="pos">+$24,909+ (higher NCP)</td></tr>
+  <tr><td>Items in P&L</td><td class="amount">~120</td><td class="amount">~85</td><td>35 items moved below-the-line</td></tr>
+  <tr><td>Flag count</td><td class="amount">0</td><td class="amount">~25+</td><td class="muted">Expected — system working</td></tr>
+</table>
+
+<div class="callout warn">
+  <strong>V1 "zero unclassified" was a V1 metric.</strong> V2 will show 25+ flagged items — that's the membership test catching expenses that V1 auto-included. Don't read "0 → 25" as regression. It's the contract being applied.
+</div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!-- RULES TAB -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div id="rules" class="tab-content">
+
+<h2>V2 Classification Rules</h2>
+<p>These rules replace the V1 <code>finance_classification_rules</code> entries. The key addition is the <code>contract_section</code> column — if null, the item fails the membership test and is excluded from the coaching P&L.</p>
+
+<h3>Implementation: New Column</h3>
+<div class="box blue">
+  <p>Add <code>contract_section</code> to both <code>finance_classification_rules</code> and <code>finance_pnl_review_lines</code>:</p>
+  <ul>
+    <li><code>'a'</code> through <code>'g'</code> = Permitted Expense under that section</li>
+    <li><code>null</code> = Not a Permitted Expense (excluded from P&L totals)</li>
+    <li><code>'hold_411'</code> = Pending §4.11 dual approval</li>
+    <li><code>'flag'</code> = Needs Dan ruling before classification</li>
+  </ul>
+  <p>P&L query: <code>WHERE contract_section IN ('a','b','c','d','e','f','g')</code> = all permitted expenses. Simple, auditable.</p>
+</div>
+
+<h3>Revenue Rules</h3>
+<table>
+  <tr><th>Pattern</th><th>Match</th><th>V2 Code</th><th>§</th><th>Notes</th></tr>
+  <tr><td>STRIPE Misc Payment</td><td>memo contains</td><td><code>revenue.coaching</code></td><td>§4.4</td><td>Currently net — needs gross-up</td></tr>
+  <tr><td>Fanbasis / DIVISIBLE</td><td>name contains</td><td><code>revenue.coaching</code></td><td>§4.4</td><td>Confirm coaching payments flow here</td></tr>
+  <tr><td>Sales:Courses</td><td>QB category</td><td><code>revenue.non_coaching.courses</code></td><td>-</td><td>Excluded from coaching P&L</td></tr>
+  <tr><td>Google LLC / YouTube</td><td>name contains</td><td><code>revenue.non_coaching.monetization</code></td><td>-</td><td>AdSense, YouTube</td></tr>
+  <tr><td>XCorp / Twitter</td><td>name contains</td><td><code>revenue.non_coaching.monetization</code></td><td>-</td><td>X Corp revenue</td></tr>
+  <tr><td>Sponsorship</td><td>QB category</td><td><code>revenue.non_coaching.sponsorship</code></td><td>-</td><td>Sponsorship deals</td></tr>
+</table>
+
+<h3>Permitted Expense Rules — (a) Coaching Staff</h3>
+<table>
+  <tr><th>Pattern</th><th>Match</th><th>V2 Code</th><th>§</th><th>Notes</th></tr>
+  <tr class="rule-pass"><td>John Guevara</td><td>name</td><td><code>permitted.a.coaches</code></td><td>a</td><td>Active coach</td></tr>
+  <tr class="rule-pass"><td>Ryan Deschenes</td><td>name</td><td><code>permitted.a.coaches</code></td><td>a</td><td>Active coach</td></tr>
+  <tr class="rule-pass"><td>Sheena Lao (via Veem)</td><td>name+memo</td><td><code>permitted.a.support</code></td><td>a</td><td>Coaching assistant — need Veem→person mapping</td></tr>
+  <tr class="rule-flag"><td>Bea Guevara (via Veem)</td><td>name+memo</td><td><code>flag.pending_dan</code></td><td>flag</td><td>General EA — is she coaching support?</td></tr>
+</table>
+
+<h3>Permitted Expense Rules — (b) Sales Team</h3>
+<table>
+  <tr><th>Pattern</th><th>Match</th><th>V2 Code</th><th>§</th><th>Notes</th></tr>
+  <tr class="rule-pass"><td>Brandon Burns</td><td>name</td><td><code>permitted.b.closers</code></td><td>b</td><td>Active closer</td></tr>
+  <tr class="rule-pass"><td>Brandon D'Ambrosio</td><td>name</td><td><code>permitted.b.closers</code></td><td>b</td><td>Active closer</td></tr>
+  <tr class="rule-pass"><td>Angelica Delos Reyes</td><td>name</td><td><code>permitted.b.setters</code></td><td>b</td><td>Active setter</td></tr>
+  <tr class="rule-pass"><td>Soulmatics LLC</td><td>name</td><td><code>permitted.b.closers</code></td><td>b</td><td>Dillon Pollard, left 2026-03-28. Only through that date</td></tr>
+</table>
+
+<h3>Permitted Expense Rules — (c) Fulfillment</h3>
+<table>
+  <tr><th>Pattern</th><th>Match</th><th>V2 Code</th><th>§</th><th>Notes</th></tr>
+  <tr class="rule-pass"><td>HANDWRYTTEN</td><td>memo contains</td><td><code>permitted.c.client_ops</code></td><td>c</td><td>Client welcome + challenge cards</td></tr>
+  <tr class="rule-pass"><td>Amazon (US Visa Gold, confirmed client gifts)</td><td>name + card</td><td><code>permitted.c.client_ops</code></td><td>c</td><td>AG1, creatine, bands to client names</td></tr>
+</table>
+
+<h3>Permitted Expense Rules — (d) Payment Processing</h3>
+<table>
+  <tr><th>Pattern</th><th>Match</th><th>V2 Code</th><th>§</th><th>Notes</th></tr>
+  <tr class="rule-pass"><td>Stripe fees (from gross-up calc)</td><td>computed</td><td><code>permitted.d.stripe_fees</code></td><td>d</td><td><span class="tag new">NEW</span> Stripe gross - net = fees</td></tr>
+  <tr class="rule-pass"><td>Payment from * - fee (PayPal)</td><td>memo contains</td><td><code>permitted.d.paypal_fees</code></td><td>d</td><td>PayPal transaction fees</td></tr>
+  <tr class="rule-pass"><td>Wire fees (RBC)</td><td>memo</td><td><code>permitted.d.wire_fees</code></td><td>d</td><td>Bank wire/transfer fees</td></tr>
+</table>
+
+<h3>Permitted Expense Rules — (e) Software</h3>
+<div class="callout warn">
+  <strong>(e) sub-filter is critical.</strong> Many vendors look like software but fail "directly in coaching delivery/sales/client management." Each vendor needs an explicit ruling.
+</div>
+
+<table>
+  <tr><th>Vendor</th><th>V2 Code</th><th>§</th><th>Ruling</th></tr>
+  <tr class="rule-pass"><td>Trainerize</td><td><code>permitted.e.coaching_delivery</code></td><td>e</td><td>Training app — direct coaching delivery</td></tr>
+  <tr class="rule-pass"><td>Course Creator 360 / GHL</td><td><code>permitted.e.crm</code></td><td>e</td><td>CRM + booking — client management</td></tr>
+  <tr class="rule-pass"><td>ManyChat</td><td><code>permitted.e.sales_tools</code></td><td>e</td><td>Setter/sales chatbot</td></tr>
+  <tr class="rule-pass"><td>SendBlue</td><td><code>permitted.e.sales_tools</code></td><td>e</td><td>Setter outreach (SMS)</td></tr>
+  <tr class="rule-pass"><td>Fathom</td><td><code>permitted.e.sales_tools</code></td><td>e</td><td>Sales call recording/notes</td></tr>
+  <tr class="rule-pass"><td>Typeform</td><td><code>permitted.e.sales_tools</code></td><td>e</td><td>Intake/qualification forms</td></tr>
+  <tr class="rule-pass"><td>Zoom</td><td><code>permitted.e.coaching_delivery</code></td><td>e</td><td>Coaching calls + sales calls</td></tr>
+  <tr class="rule-pass"><td>Slack</td><td><code>permitted.e.team_ops</code></td><td>e</td><td>Team coordination for coaching ops</td></tr>
+  <tr class="rule-pass"><td>Google Workspace</td><td><code>permitted.e.team_ops</code></td><td>e</td><td>Email, docs, calendar for coaching</td></tr>
+  <tr class="rule-pass"><td>Hubstaff</td><td><code>permitted.e.team_ops</code></td><td>e</td><td>Team time tracking</td></tr>
+  <tr class="rule-pass"><td>Trustpilot</td><td><code>permitted.e.social_proof</code></td><td>e</td><td>Client reviews — sales-facing</td></tr>
+  <tr class="rule-pass"><td>Testimonial.to</td><td><code>permitted.e.social_proof</code></td><td>e</td><td>Video testimonials — sales-facing</td></tr>
+  <tr class="rule-pass"><td>Squarespace</td><td><code>permitted.e.coaching_delivery</code></td><td>e</td><td>Website + workspace (coaching site)</td></tr>
+  <tr class="rule-pass"><td>GoDaddy (coaching domains only)</td><td><code>permitted.e.coaching_delivery</code></td><td>e</td><td>Split: coaching domains pass, others don't</td></tr>
+  <tr style="background: var(--surface2)"><td colspan="4"><strong>BORDERLINE — needs ruling</strong></td></tr>
+  <tr class="rule-flag"><td>Notion ($2,396/mo)</td><td><code>flag.pending_dan</code></td><td>?</td><td>Team SOPs/management. Coaching ops tool? Or general admin?</td></tr>
+  <tr class="rule-flag"><td>Loom ($260/mo)</td><td><code>flag.pending_dan</code></td><td>?</td><td>Video messages. Coaching delivery? Or internal/content?</td></tr>
+  <tr class="rule-flag"><td>Vimeo ($814/mo)</td><td><code>flag.pending_dan</code></td><td>?</td><td>Video hosting. Coaching content or monetization?</td></tr>
+  <tr style="background: var(--surface2)"><td colspan="4"><strong>FAIL (e) — not coaching delivery/sales/client mgmt</strong></td></tr>
+  <tr class="rule-fail"><td>Kit.com ($4,318/mo)</td><td><code>not_permitted.content_software</code></td><td>-</td><td>Influencer newsletter. Not coaching</td></tr>
+  <tr class="rule-fail"><td>Anthropic ($182/mo)</td><td><code>not_permitted.build_tooling</code></td><td>-</td><td>AI API. Builds HPFHQ, not coaching delivery</td></tr>
+  <tr class="rule-fail"><td>OpenAI ($63/mo)</td><td><code>not_permitted.build_tooling</code></td><td>-</td><td>AI API + ChatGPT. Builds HPFHQ</td></tr>
+  <tr class="rule-fail"><td>Make.com ($296/mo)</td><td><code>not_permitted.build_tooling</code></td><td>-</td><td>Automation infra — builds, not delivers</td></tr>
+  <tr class="rule-fail"><td>Zapier ($271/mo)</td><td><code>not_permitted.build_tooling</code></td><td>-</td><td>Automation infra — builds, not delivers</td></tr>
+  <tr class="rule-fail"><td>Wisprflow ($200/mo)</td><td><code>not_permitted.build_tooling</code></td><td>-</td><td>AI transcription — build/dev tool</td></tr>
+  <tr class="rule-fail"><td>Epidemic Sound ($165/mo)</td><td><code>not_permitted.content_software</code></td><td>-</td><td>Music licensing — content production</td></tr>
+  <tr class="rule-fail"><td>Quaderno ($136/mo)</td><td><code>not_permitted.general_admin</code></td><td>-</td><td>Tax/invoicing. Not in (a)-(g)</td></tr>
+  <tr class="rule-fail"><td>QuickBooks ($73/mo)</td><td><code>not_permitted.general_admin</code></td><td>-</td><td>Accounting. Not coaching delivery</td></tr>
+  <tr class="rule-fail"><td>Paddle.com ($45/mo)</td><td><code>not_permitted.general_admin</code></td><td>-</td><td>Billing/checkout platform</td></tr>
+  <tr class="rule-fail"><td>ShieldApp ($22/mo)</td><td><code>not_permitted.content_software</code></td><td>-</td><td>Social media shield. Service shut down</td></tr>
+  <tr class="rule-fail"><td>Makeagif ($16/mo)</td><td><code>not_permitted.content_software</code></td><td>-</td><td>GIF maker — content tool</td></tr>
+  <tr class="rule-fail"><td>Google Notewise AI ($4/mo)</td><td><code>not_permitted.build_tooling</code></td><td>-</td><td>AI tool — build/dev</td></tr>
+</table>
+
+<h3>Permitted Expense Rules — (g) Marketing</h3>
+<table>
+  <tr><th>Pattern</th><th>Match</th><th>V2 Code</th><th>§</th><th>Notes</th></tr>
+  <tr class="rule-pass"><td>Facebook / Meta Ads</td><td>name contains</td><td><code>permitted.g.meta_ads</code></td><td>g</td><td>Coaching funnel ads</td></tr>
+  <tr class="rule-pass"><td>Google Ads (if coaching)</td><td>name + memo</td><td><code>permitted.g.google_ads</code></td><td>g</td><td>Needs verification — any active?</td></tr>
+</table>
+
+<h3>Not Permitted — Non-Software</h3>
+<table>
+  <tr><th>Pattern</th><th>Match</th><th>V2 Code</th><th>Reason</th></tr>
+  <tr class="rule-fail"><td>Emil Hodzovic</td><td>name</td><td><code>not_permitted.operator_fee</code></td><td>SP service fee. Not listed in (a)-(g) — excluded by absence</td></tr>
+  <tr class="rule-fail"><td>Stanley Goldberg</td><td>name</td><td><code>not_permitted.legal</code></td><td>Legal services. Not in (a)-(g)</td></tr>
+  <tr class="rule-fail"><td>TKS Management</td><td>name</td><td><code>not_permitted.former_exec</code></td><td>Former COO. Not coaching staff (a) or sales (b)</td></tr>
+</table>
+
+<h3>§4.11 Auto-Hold Rules</h3>
+<div class="box purple">
+  <p><strong>Implementation:</strong> These vendors auto-classify as <code>review_status = 'Pending §4.11'</code> and <code>contract_section = 'hold_411'</code>. They are excluded from P&L totals until a matching record in <code>decision_log</code> confirms dual written approval.</p>
+</div>
+<table>
+  <tr><th>Pattern</th><th>Match</th><th>V2 Code</th><th>Status</th></tr>
+  <tr class="rule-hold"><td>Agoge Consulting</td><td>name</td><td><code>pending_411.advisory</code></td><td>Needs Dan + Emil written approval</td></tr>
+  <tr class="rule-hold"><td>DJUniverse</td><td>name</td><td><code>pending_411.agency</code></td><td>Setter agency — needs approval</td></tr>
+  <tr class="rule-hold"><td>AgencyScalingSecrets</td><td>name</td><td><code>pending_411.agency</code></td><td>Setter agency — needs approval</td></tr>
+  <tr class="rule-hold"><td>Setter Company</td><td>name</td><td><code>pending_411.agency</code></td><td>Setter agency — needs approval</td></tr>
+  <tr class="rule-hold"><td><em>Any new "Subcontract" vendor</em></td><td>QB category</td><td><code>pending_411.unknown</code></td><td>Auto-hold all new subcontract vendors</td></tr>
+</table>
+
+<h3>Excluded Rules (unchanged from V1)</h3>
+<table>
+  <tr><th>Pattern</th><th>V2 Code</th><th>Notes</th></tr>
+  <tr><td>Due to Shareholders (QB category)</td><td><code>excluded.owner_personal</code></td><td>Always personal</td></tr>
+  <tr><td>Meals and entertainment on Visa</td><td><code>excluded.owner_personal</code></td><td>Blanket personal (Dan flags exceptions)</td></tr>
+  <tr><td>Supplies and materials on Visa</td><td><code>excluded.owner_personal</code></td><td>Blanket personal</td></tr>
+  <tr><td>PAYMENT - THANK YOU</td><td><code>excluded.balance_sheet</code></td><td>Card payment</td></tr>
+  <tr><td>Online Banking transfer</td><td><code>excluded.balance_sheet</code></td><td>Internal transfer</td></tr>
+  <tr><td>Receiver General</td><td><code>excluded.taxes</code></td><td>Corporate tax payment</td></tr>
+  <tr><td>TENEX LABS</td><td><code>excluded.non_coaching_biz</code></td><td>Dev team ($14.9K/mo) — or CapEx pending Dan</td></tr>
+</table>
+
+<h3>Revenue Completeness Checks <span class="tag new">NEW</span></h3>
+<div class="box blue">
+  <p>Run monthly before P&L finalization:</p>
+  <ol>
+    <li>Sum Stripe gross revenue (API <code>balance_transactions</code>) — compare to QB Stripe deposits + fees</li>
+    <li>Check Fanbasis for coaching payments not appearing in QB</li>
+    <li>Check PayPal for coaching payments (PayPal fees exist, so payments likely do too)</li>
+    <li>Reconcile: Stripe gross + Fanbasis + PayPal = total coaching revenue per §4.4</li>
+  </ol>
+</div>
+
+<h3>Duplicate Detection Rules <span class="tag new">NEW</span></h3>
+<div class="box yellow">
+  <p>QB API imports both credit card charges AND PayPal payments for the same underlying purchase. Detection:</p>
+  <ul>
+    <li>Same vendor + same absolute amount + same date (±1 day) = candidate duplicate</li>
+    <li>Known patterns: Vimeo ($295.64 ×2), GoDaddy (doubled), Apple/Uber/Trip.com (doubled)</li>
+    <li>PayPal "Payment to X" + credit card charge for X = same purchase</li>
+  </ul>
+  <p>Action: flag as <code>review_status = 'Possible duplicate'</code>, exclude one from totals.</p>
+</div>
+
+<h3>V2 Category Code Taxonomy (full)</h3>
+<details>
+  <summary>Expand full taxonomy</summary>
+  <div>
+<pre style="background: var(--surface); padding: 16px; border-radius: 8px; font-size: 12px; overflow-x: auto;">
+# REVENUE
+revenue.coaching.stripe          # Stripe gross coaching revenue
+revenue.coaching.fanbasis        # Fanbasis/DIVISIBLE coaching revenue
+revenue.coaching.paypal          # PayPal coaching revenue (if any)
+revenue.non_coaching.courses     # Kajabi course revenue
+revenue.non_coaching.monetization # YouTube, X Corp, AdSense
+revenue.non_coaching.sponsorship # Sponsorship deals
+
+# PERMITTED EXPENSES §4.5(a)-(g)
+permitted.a.coaches              # Coaching delivery staff
+permitted.a.support              # Coaching support staff (Sheena)
+permitted.b.closers              # Sales: closer commissions
+permitted.b.setters              # Sales: setter commissions
+permitted.c.fulfillment          # Direct coaching fulfillment
+permitted.c.client_ops           # Client gifts, welcome cards
+permitted.d.stripe_fees          # Stripe processing fees
+permitted.d.paypal_fees          # PayPal processing fees
+permitted.d.wire_fees            # Wire/transfer fees
+permitted.e.crm                  # CRM/booking: GHL, CC360
+permitted.e.coaching_delivery    # Training: Trainerize, Zoom, Squarespace
+permitted.e.sales_tools          # Sales: ManyChat, SendBlue, Typeform, Fathom
+permitted.e.team_ops             # Team: Slack, Google Workspace, Hubstaff
+permitted.e.social_proof         # Trustpilot, Testimonial.to
+permitted.f.hst_gst              # HST/GST estimate
+permitted.g.meta_ads             # Meta/Facebook ads
+permitted.g.google_ads           # Google ads
+permitted.g.other_ads            # Other coaching marketing
+
+# NOT PERMITTED (fail §4.5 membership test)
+not_permitted.operator_fee       # Emil SP service fee
+not_permitted.legal              # Legal (Stanley Goldberg)
+not_permitted.content_software   # Kit.com, Epidemic Sound, content tools
+not_permitted.build_tooling      # Anthropic, OpenAI, Make, Zapier, Wisprflow
+not_permitted.general_admin      # QuickBooks, Quaderno (not in (a)-(g))
+not_permitted.former_exec        # TKS/Tyrus (former COO)
+
+# PENDING §4.11
+pending_411.advisory             # Consulting pending dual approval
+pending_411.agency               # Agency pending dual approval
+pending_411.unknown              # New subcontract vendor pending review
+
+# FLAGS
+flag.pending_dan                 # Awaiting Dan confirmation
+flag.possible_duplicate          # Duplicate detection hit
+
+# STRADDLE / ALLOCATION
+straddle.allocate                # Shared coaching/non-coaching
+
+# EXCLUDED (never P&L)
+excluded.balance_sheet           # Internal transfers, card payments, FX
+excluded.taxes                   # Receiver General, corporate tax
+excluded.owner_personal          # Dan's personal expenses
+excluded.non_coaching_biz        # TENEX LABS, content business costs
+
+# CapEx (§4.6)
+capex.pending_election           # >$10K, needs Dan election to amortize
+</pre>
+  </div>
+</details>
+
+</div>
+
+</div><!-- /container -->
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelector(`.tab[onclick="switchTab('${id}')"]`).classList.add('active');
+}
+</script>
+</body>
+</html>
