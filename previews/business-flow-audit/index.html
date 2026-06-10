@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HPFHQ Business Flow Map — Audit 2026-06-10 (snapshot 36a0c494)</title>
+<style>
+  /* No JS. No external resources. Readable from 1–3 m. */
+  * { box-sizing: border-box; }
+  html { background: #f4f5f7; }
+  body {
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: #16181d; margin: 0; padding: 28px 20px 60px;
+    font-size: 19px; line-height: 1.45;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+  h1 { font-size: 42px; line-height: 1.1; margin: 0 0 6px; }
+  h2 { font-size: 32px; margin: 60px 0 6px; border-bottom: 4px solid #16181d; padding-bottom: 8px; }
+  h3 { font-size: 24px; margin: 26px 0 10px; }
+  .sub { color: #444a55; font-size: 19px; margin-bottom: 6px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 6px; }
+  .legend .key { display: flex; align-items: center; gap: 7px; font-size: 16px; font-weight: 600; }
+  .swatch { width: 22px; height: 22px; border-radius: 5px; display: inline-block; border: 2px solid rgba(0,0,0,.25); }
+
+  /* color system (per audit spec) */
+  .green  { background: #e3f6ea; border-color: #0e8a46 !important; }
+  .yellow { background: #fdf3d0; border-color: #b58900 !important; }
+  .red    { background: #fde7e5; border-color: #c62828 !important; }
+  .blue   { background: #e6f0fc; border-color: #1565c0 !important; }
+  .purple { background: #f0e9fb; border-color: #6a3fb5 !important; }
+  .grey   { background: #eceef1; border-color: #5f6672 !important; }
+
+  .box {
+    border: 3px solid #5f6672; border-radius: 12px;
+    padding: 14px 18px; margin: 0 auto; max-width: 880px;
+    background: #fff;
+  }
+  .box .t { font-size: 22px; font-weight: 800; }
+  .box .d { font-size: 18px; margin-top: 4px; }
+  .arrow { text-align: center; font-size: 38px; line-height: 1; padding: 6px 0; color: #16181d; font-weight: 700; }
+  .arrow small { display: block; font-size: 15px; color: #444a55; font-weight: 600; }
+
+  /* tag chips */
+  .chip {
+    display: inline-block; font-size: 14px; font-weight: 800; letter-spacing: .4px;
+    padding: 2px 9px; border-radius: 999px; margin: 0 4px 2px 0; vertical-align: middle;
+    color: #fff; white-space: nowrap;
+  }
+  .c-auto    { background: #6a3fb5; }
+  .c-manual  { background: #1565c0; }
+  .c-broken  { background: #c62828; }
+  .c-risk    { background: #fff; color: #c62828; border: 2px solid #c62828; }
+  .c-unclear { background: #b58900; }
+  .c-dup     { background: #d97706; }
+  .c-debris  { background: #5f6672; }
+  .c-doc     { background: #fff; color: #5f6672; border: 2px solid #5f6672; }
+  .c-verdict-part { background: #b58900; font-size: 16px; padding: 4px 14px; }
+  .c-crit    { background: #7b1212; }
+  .c-high    { background: #c62828; }
+  .c-med     { background: #d97706; }
+  .c-owner   { background: #16181d; }
+
+  .cite { font-size: 13.5px; color: #5f6672; font-family: ui-monospace, Menlo, Consolas, monospace; margin-top: 6px; }
+  .cite-block { font-size: 14px; color: #5f6672; font-family: ui-monospace, Menlo, Consolas, monospace; margin: 14px auto 0; max-width: 880px; }
+
+  /* 4-way branch */
+  .branch { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; max-width: 1180px; margin: 0 auto; }
+  .branch .box { max-width: none; margin: 0; padding: 12px 14px; }
+  .branch .t { font-size: 20px; }
+  .branch .d { font-size: 16px; }
+  .fate { margin-top: 10px; font-size: 16px; font-weight: 700; }
+  .exit { margin-top: 8px; font-size: 16px; padding: 8px 10px; border-radius: 8px; background: #fde7e5; border: 2px solid #c62828; }
+  .exit.ok { background: #e3f6ea; border-color: #0e8a46; }
+  .exit.warn { background: #fdf3d0; border-color: #b58900; }
+  .branch-rail { text-align: center; font-size: 26px; font-weight: 800; padding: 8px 0 2px; }
+
+  /* two/three column grids */
+  .cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+  .cols3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; align-items: start; }
+  .col-card { border: 3px solid #5f6672; border-radius: 12px; padding: 16px 18px; background: #fff; }
+  .col-card h3 { margin-top: 0; }
+  .col-card ol, .col-card ul { padding-left: 24px; margin: 8px 0; }
+  .col-card li { margin: 7px 0; font-size: 17.5px; }
+
+  /* finding cards */
+  .fcard { border: 3px solid #c62828; border-radius: 12px; background: #fde7e5; padding: 14px 18px; margin: 14px 0; }
+  .fcard.yellow { border-color: #b58900; background: #fdf3d0; }
+  .fcard .ft { font-size: 21px; font-weight: 800; }
+  .fcard .fd { font-size: 17.5px; margin-top: 5px; }
+  .fix { margin-top: 7px; font-size: 16.5px; font-weight: 600; }
+  .fix::before { content: "Fix → "; font-weight: 800; }
+
+  table { border-collapse: collapse; width: 100%; margin: 14px 0; background: #fff; font-size: 17px; }
+  th, td { border: 2px solid #5f6672; padding: 9px 12px; text-align: left; vertical-align: top; }
+  th { background: #16181d; color: #fff; font-size: 16px; letter-spacing: .3px; }
+  tr:nth-child(even) td { background: #f4f5f7; }
+
+  .ranklist { counter-reset: crack; list-style: none; padding: 0; max-width: 980px; }
+  .ranklist li {
+    counter-increment: crack; position: relative; padding: 12px 16px 12px 64px; margin: 10px 0;
+    border: 3px solid #c62828; border-radius: 12px; background: #fde7e5; font-size: 18px;
+  }
+  .ranklist li.warn { border-color: #b58900; background: #fdf3d0; }
+  .ranklist li::before {
+    content: counter(crack); position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+    width: 38px; height: 38px; border-radius: 50%; background: #16181d; color: #fff;
+    font-weight: 800; font-size: 20px; display: flex; align-items: center; justify-content: center;
+  }
+
+  .qlist { padding: 0; list-style: none; max-width: 980px; }
+  .qlist li { border: 3px solid #b58900; background: #fdf3d0; border-radius: 12px; padding: 12px 16px; margin: 10px 0; font-size: 18px; }
+
+  .verdict-banner {
+    border: 4px solid #b58900; background: #fdf3d0; border-radius: 14px;
+    padding: 16px 20px; max-width: 980px; margin: 16px auto; font-size: 20px; font-weight: 700;
+  }
+  footer { margin-top: 70px; border-top: 4px solid #16181d; padding-top: 18px; font-size: 16px; color: #444a55; }
+  footer h3 { font-size: 19px; margin: 14px 0 6px; color: #16181d; }
+  dl.gloss dt { font-weight: 800; margin-top: 8px; color: #16181d; }
+  dl.gloss dd { margin: 2px 0 0 0; }
+  @media (max-width: 900px) {
+    .branch, .cols2, .cols3 { grid-template-columns: 1fr; }
+    body { font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>HPFHQ Business Flow Map</h1>
+<div class="sub">How a lead actually moves through the system — verified against code + live database, 2026-06-10, snapshot <b>36a0c494</b>. Worst problems are drawn where they happen.</div>
+<div class="sub"><b>Note:</b> GHL live-probe lane degraded this run (stale local token) — anything inside GoHighLevel itself is <span class="chip c-doc">DOC-SOURCED</span> (read from docs last verified 2026-05-04 → 2026-06-09, not probed live).</div>
+
+<div class="legend">
+  <span class="key"><span class="swatch green"></span> Connected / healthy</span>
+  <span class="key"><span class="swatch yellow"></span> Unclear / needs review</span>
+  <span class="key"><span class="swatch red"></span> Broken / risky</span>
+  <span class="key"><span class="swatch blue"></span> Manual operator step</span>
+  <span class="key"><span class="swatch purple"></span> Automated system step</span>
+  <span class="key"><span class="swatch grey"></span> Unknown / debris</span>
+</div>
+<div class="legend">
+  <span class="chip c-auto">AUTO</span><span class="chip c-manual">MANUAL</span><span class="chip c-broken">BROKEN</span><span class="chip c-risk">RISK</span><span class="chip c-unclear">UNCLEAR</span><span class="chip c-dup">DUPLICATE</span><span class="chip c-debris">DEBRIS</span><span class="chip c-doc">DOC-SOURCED</span>
+</div>
+
+<!-- ============================================================ -->
+<h2>1 · The Lead Journey — top to bottom</h2>
+<div class="sub">One person's path from first form to paying client. Purple = the machine does it. Blue = a human must do it. Red = it breaks here.</div>
+
+<div class="box purple">
+  <div class="t"><span class="chip c-auto">AUTO</span> LEAD ENTERS — four live doors + one dead one</div>
+  <div class="d">
+    Typeform application (3 forms; 884 leads, 130 in last 7d) · Meta Lead Ads (369 leads, 28/7d) · GHL booking catch-all (self-books that skip the form) · manual imports/CSV <span class="chip c-manual">MANUAL</span>.<br>
+    <b style="color:#c62828">Dead door:</b> the ManyChat webhook is fully built but has ingested <b>0 leads ever</b> — Instagram-DM leads only arrive via the GHL catch-all (4 rows, last 2026-05-29). <span class="chip c-broken">BROKEN</span>
+  </div>
+  <div class="cite">Q1, Q2 · E2-F06 (ManyChat 0 ever) · counts as-of 2026-06-10</div>
+</div>
+<div class="arrow">↓</div>
+
+<div class="box purple">
+  <div class="t"><span class="chip c-auto">AUTO</span> THE PERSON IS CREATED — identity first, lead second</div>
+  <div class="d">
+    System resolves a person ID (<b>hpf_id</b>) → creates ONE <b>leads</b> row per person (deduped by email) → logs a touchpoint → mirrors the person into GHL as a contact.<br>
+    <b style="color:#c62828">Crack:</b> 2,667 of 6,761 leads (39%) have <b>no GHL contact mirror</b> — the repo's own non-negotiable "mirror rule" is violated; the documented retry/alert mechanism for mirror failures <b>does not exist in code</b>. (Only 7 of the unmirrored are booked leads.) <span class="chip c-broken">BROKEN</span> <span class="chip c-risk">RISK</span>
+  </div>
+  <div class="cite">Q2 · E4-F02 (SQL 2026-06-10) · E5-F1 (lib/overseer-report.ts:1-52; data-integrity cron has no mirror retry)</div>
+</div>
+<div class="arrow">↓</div>
+
+<div class="box purple">
+  <div class="t"><span class="chip c-auto">AUTO</span> CALL BOOKED — GHL calendar fires the booking webhook</div>
+  <div class="d">
+    Lead gets <b>booked=true</b>, call date, a Slack booking card in #sales-calls-booked, and (if unattributed or Angelica's) an auto-created dialer confirm card.<br>
+    <b style="color:#c62828">Risk:</b> this webhook — the main automated mover of booking state — <b>accepts unauthenticated requests when its secret env var is missing</b> ("fail-open"; the other four ingest webhooks are fail-closed). Whether the secret is set in production is unverified from the repo. <span class="chip c-risk">RISK</span><br>
+    <b style="color:#b58900">Asymmetry:</b> an unattributed booking on an <i>existing</i> lead gets a confirm card; an unattributed self-book that <i>creates</i> the lead gets none — the coldest, highest no-show-risk calls get zero confirm coverage. <span class="chip c-risk">RISK</span>
+  </div>
+  <div class="cite">Q3 · E5-F3 / E6-F12 (app/api/ghl/webhook/route.ts:280-297 fail-open) · E2-F04 (route.ts:659-694)</div>
+</div>
+<div class="arrow">↓</div>
+
+<div class="box blue">
+  <div class="t"><span class="chip c-manual">MANUAL</span> <span class="chip c-auto">AUTO</span> SETTER ATTRIBUTION — a human stars the Slack message</div>
+  <div class="d">
+    A person reacts with an emoji on the booking card → a cron (every 30 min) writes the setter's credit into <b>setter_leads</b>. The machinery is automated; the trigger is a human emoji.<br>
+    <b style="color:#c62828">Crack:</b> setter names are stored in <b>10 different spellings for ~6 humans</b> (full name vs first name vs lowercase slug, written by 3 different code paths) — attribution and the Angelica auto-card gate are a casing lottery. <span class="chip c-risk">RISK</span>
+  </div>
+  <div class="cite">Q4 · E2-F03 (setter_leads 978 rows, 10 name variants; app/api/cron/sync-setter-reactions/route.ts:108,197)</div>
+</div>
+<div class="arrow">↓</div>
+
+<div class="box blue">
+  <div class="t"><span class="chip c-manual">MANUAL</span> DIALER CONFIRM LOOP — Angelica works her card</div>
+  <div class="d">
+    Dialer board card (490 open cards under Angelica, status=open scope): confirm → confirmed (75 of the open BOOKED cards), no answer → attempt counter (19 reached_out, 6 none). Confirmation lives <b>only on the card</b> — never written to the lead, never to GHL.
+  </div>
+  <div class="cite">Q11 (app/api/dialer/kanban/confirm/route.ts) · Angelica count per contradiction-resolution SQL 2026-06-10 (open=490; total=494)</div>
+</div>
+
+<div class="branch-rail">↓ &nbsp; THE CALL STATUS SPLITS FOUR WAYS &nbsp; ↓</div>
+<div class="branch">
+  <div class="box green">
+    <div class="t">CONFIRMED</div>
+    <span class="chip c-manual">MANUAL</span>
+    <div class="d">Dialer clicks confirm → card marked confirmed, copied to the lead's other open dialer cards.</div>
+    <div class="fate">→ proceeds to the closer call.</div>
+    <div class="exit warn">Confirmation never reaches the <b>leads</b> row or GHL — it exists only on the kanban card. <span class="chip c-unclear">UNCLEAR</span></div>
+    <div class="cite">Q11 · A12b verified</div>
+  </div>
+  <div class="box red">
+    <div class="t">CANCELLED</div>
+    <span class="chip c-broken">BROKEN</span>
+    <div class="d">GHL cancel webhook posts a Slack card to #sales-calls-cancelled… <b>and stops</b>.</div>
+    <div class="exit">✗ ZERO database writes. The lead stays <b>booked=true</b>, stage stays "booked", the call date stays set, no card moves. 10 cancel events in the last 7 days got this treatment. <b>Nothing in the system ever sets booked=false.</b></div>
+    <div class="exit warn">4 disconnected manual rescue lanes exist (setter inbox, closer EOD, dialer confirm) — none updates the others. Live proof of drift: <b>60</b> leads carry a cancel reason but only <b>2</b> have stage "cancelled".</div>
+    <div class="cite">E2-F01 (Critical; ghl/webhook:325-408) · E2-F02 (High) · Q12</div>
+  </div>
+  <div class="box red">
+    <div class="t">NO-SHOW</div>
+    <span class="chip c-manual">MANUAL</span> <span class="chip c-broken">BROKEN</span>
+    <div class="d">The ONLY durable record is the closer manually submitting outcome "no_show" after the empty call slot.</div>
+    <div class="exit">✗ No card moves anywhere automatically — the dialer's recovery column (86 open cards) fills only by hand. GHL's own appointment status is shown on screen but <b>saved nowhere</b>.</div>
+    <div class="cite">E2-F14 · Q14 (closer/outcome/route.ts:95-98)</div>
+  </div>
+  <div class="box yellow">
+    <div class="t">RESCHEDULED</div>
+    <span class="chip c-auto">AUTO</span> <span class="chip c-manual">MANUAL</span>
+    <div class="d">Webhook overwrites the call date in place + posts a Slack card. Two further manual lanes (dialer reschedule, Angelica slot pilot).</div>
+    <div class="exit warn">✗ No record of the ORIGINAL date exists anywhere (the planned appointment-history tables were never built) — show-rate and reschedule-decay analysis impossible. <span class="chip c-unclear">UNCLEAR</span></div>
+    <div class="exit warn">Each webhook re-fire also <b>resets Angelica's card</b> to BOOKED/unconfirmed — confirm work lost. <span class="chip c-risk">RISK</span></div>
+    <div class="cite">Q13 · E2-F09 (High; ghl_appointment_state = not built) · E2-F05 (ghl/webhook:675-693)</div>
+  </div>
+</div>
+
+<div class="arrow">↓<small>(confirmed / showed path continues)</small></div>
+
+<div class="box purple">
+  <div class="t"><span class="chip c-auto">AUTO</span> CLOSER'S DAY VIEW — composed live, not from cards</div>
+  <div class="d">
+    The closer's "today's calls" come straight from GHL's live appointment list (merged with notes + past outcomes) — not from any kanban card. The closer is assigned by GHL's calendar round-robin <span class="chip c-doc">DOC-SOURCED</span>; HPFHQ only learns who closed at outcome time (self-claimed).
+  </div>
+  <div class="cite">Q5, Q9 · E2-F20 (app/api/closer/calls/route.ts:71-83) · contradiction-1 resolution (both board spines are real)</div>
+</div>
+<div class="arrow">↓</div>
+
+<div class="box blue">
+  <div class="t"><span class="chip c-manual">MANUAL</span>→<span class="chip c-auto">AUTO</span> CLOSER SUBMITS THE OUTCOME — won / lost / follow-up</div>
+  <div class="d">
+    One manual submit, then automated cascade:<br>
+    <b>WON</b> → close record (closer_eod_entries) + lead updated + <b>card flip</b>: closer cards → won, setter/dialer sibling cards → WON (the "A7a flip"). <span class="chip c-auto">AUTO</span><br>
+    <b>LOST (quick DQ)</b> → cascade works: cards → dead / LOST_NO_FU + audit Slack. <span class="chip c-auto">AUTO</span><br>
+    <b style="color:#c62828">LOST (showed, pitched, "No FU") → outcome saved as NULL → NOTHING flips.</b> No card moves, the setter sees an open card forever, the closer's own lost tray can't find it. <b>8 invisible losses live, 7 since May.</b> <span class="chip c-broken">BROKEN</span><br>
+    <b>FOLLOW-UP</b> → a closer follow-up card is created (FU_IMMEDIATE / FU_NURTURE). <span class="chip c-auto">AUTO</span>
+  </div>
+  <div class="cite">Q15, Q16, Q17 · E3-F01 (High; closer/outcome/route.ts:95-98, 272-293) · A7a flip verified, 8 sibling WON rows live</div>
+</div>
+<div class="arrow">↓</div>
+
+<div class="box purple">
+  <div class="t"><span class="chip c-auto">AUTO</span> PAYMENT — money arrives via Stripe or Fanbasis webhooks</div>
+  <div class="d">
+    Both signature-verified. Payment row saved → lead matched → <b>leads.closed=true</b> → close record back-filled → Meta CAPI purchase event → Slack win card.<br>
+    <b style="color:#c62828">Break 1:</b> payment <b>never touches the kanban cards</b> — 6 paid clients currently still sit as open cards on setter/dialer boards (setters can keep chasing people who already bought). <span class="chip c-broken">BROKEN</span><br>
+    <b style="color:#c62828">Break 2:</b> <b>failed payments → dead end.</b> charge.failed is skipped in code; the only alert is an off-repo Zapier→Slack zap (Stripe only; Fanbasis payment-plan defaults have nothing). Refunds are recorded but never subtracted. <span class="chip c-risk">RISK</span><br>
+    <b style="color:#b58900">Fragility:</b> 100% of live Fanbasis traffic still flows through the legacy Zapier ingress; the hardened direct path has been shadow-only since April. <span class="chip c-risk">RISK</span><br>
+    <b style="color:#d97706">Money-field hazard:</b> leads.cash_collected has two writers with opposite semantics (closer claim OVERWRITES, payment webhook ADDS) — claim-before-payment sequences double-count on the lead row (canon dashboards are safe; they read the payment tables). <span class="chip c-dup">DUPLICATE</span>
+  </div>
+  <div class="cite">Q18-Q20 · E3-F02 (High) · E3-F09 (stripe-webhook:71-75) · E4-F05 (High; outcome:184-189 vs stripe:203-206) · Q18 (Fanbasis Zapier ingress)</div>
+</div>
+<div class="arrow">↓</div>
+
+<div class="box grey">
+  <div class="t"><span class="chip c-doc">DOC-SOURCED</span> ONBOARDING — happens entirely OUTSIDE this codebase</div>
+  <div class="d">
+    Trigger is the <b>signed contract</b>, not the payment: GHL workflow fires when the membership document is completed AND the "hpf - purchased" tag is present → Zapier invites the client to Trainerize → community access + welcome email. <b>Zero in-repo code</b> fires any of this (verified absence).<br>
+    <b style="color:#c62828">Dead end:</b> a client who <b>pays but never signs</b> gets no onboarding — and nothing in HPFHQ notices. No watchdog exists. <span class="chip c-broken">BROKEN</span> <span class="chip c-manual">MANUAL</span><br>
+    <i>GHL internals not live-probed this run (degraded token) — chain mapped from docs last verified 2026-06-09.</i>
+  </div>
+  <div class="cite">Q21 (DOC_SOURCED) · E3-F03 (High) · E4-F10 (High)</div>
+</div>
+<div class="arrow">↓</div>
+
+<div class="box blue">
+  <div class="t"><span class="chip c-manual">MANUAL</span> FULFILMENT HANDOFF — a Slack message and a human click</div>
+  <div class="d">
+    Trainerize "new client" webhook → Slack ask to Bea + Sheena ("add to group, assign coach") — a request, <b>not a task record</b>. Coach assigned by a human click in /coaching/roster. The client row appears next morning via the 08:00 sheet sync.<br>
+    <b style="color:#c62828">Identity chain severed:</b> coaching_clients has <b>no lead_id</b> and only <b>106 of 500</b> rows (21%) carry an hpf_id (fuzzy name-match only) — 4 of 5 clients cannot be traced back to their lead. <span class="chip c-broken">BROKEN</span><br>
+    <b style="color:#c62828">Churn blind spot:</b> the deactivation feed has fired <b>once ever</b> vs <b>282 inactive clients</b>; the tag stream stopped 2026-05-29. <span class="chip c-broken">BROKEN</span>
+  </div>
+  <div class="cite">Q22 · E3-F06 / E4-F09 (coaching-cockpit.ts:1715-1718 name-match) · E3-F08 (trainerize_events SQL 2026-06-10)</div>
+</div>
+
+<!-- ============================================================ -->
+<h2>2 · Setter → Closer Handoff — are the two Kanbans connected?</h2>
+<div class="verdict-banner">VERDICT: <span class="chip c-verdict-part">PARTIALLY CONNECTED</span> — one shared card table joined by <b>lead_id</b>, with a real automated write-back… but the closer's <i>board</i> reads a different data model, and two breaks put cards outside the connection.</div>
+
+<div class="box green">
+  <div class="t"><span class="chip c-auto">AUTO</span> THE CONNECTION (real, code-verified)</div>
+  <div class="d">
+    All setter, dialer, and closer cards live in <b>ONE table: lead_pipeline</b>. The join key is <b>lead_id</b> (the lead's UUID), enforced by a live unique rule — one card per (lead, owner, role) — plus a live database trigger making lead_id mandatory on new closer cards. A card never moves between boards; instead each role gets a <b>sibling row for the same lead</b>.
+  </div>
+  <div class="cite">Q6-Q8 · E1-F02 (migration 20260505 unified_lead_pipeline.sql:48; pg_constraint verified live 2026-06-10) · trg_closer_lead_id (A6) live</div>
+</div>
+<div class="arrow">↓<small>handoff direction</small></div>
+
+<div class="cols3">
+  <div class="col-card green">
+    <h3>Setter card</h3>
+    <span class="chip c-manual">MANUAL</span>
+    <p style="font-size:17px">Created only by explicit claim (kanban claim, GHL import). The emoji-attribution lane <b>never</b> creates a card — it only writes setter_leads credit. 40 setter cards live.</p>
+    <div class="cite">E1-F09 · contradiction-12 (wiring-map's "⭐→card" hop is wrong)</div>
+  </div>
+  <div class="col-card green">
+    <h3>Dialer card</h3>
+    <span class="chip c-auto">AUTO</span> <span class="chip c-manual">MANUAL</span>
+    <p style="font-size:17px">Auto-created for Angelica on unattributed bookings (existing leads only) or claimed manually. Confirm state lives here.</p>
+    <div class="cite">E2-F04 / E2-F05</div>
+  </div>
+  <div class="col-card green">
+    <h3>Closer card</h3>
+    <span class="chip c-manual">MANUAL</span>
+    <p style="font-size:17px">Created at <b>outcome time</b> (follow-up cards) — not at booking. The booking-time closer-card path has 0 live rows ever.</p>
+    <div class="cite">E1-F05 (source='eod'; booking_engine path dark)</div>
+  </div>
+</div>
+
+<div class="arrow">↑↓<small>joined by lead_id — and flipped backwards on outcome</small></div>
+
+<div class="box green">
+  <div class="t"><span class="chip c-auto">AUTO</span> THE A7a FLIP — closer outcome informs the setter/dialer boards</div>
+  <div class="d">When a closer marks won or dead, the system flips the closer's cards AND stamps the same lead's setter/dialer sibling cards to WON / LOST_NO_FU — keyed by lead_id, scoped per role. Live proof: 8 sibling WON rows, 69 sibling lost rows.</div>
+  <div class="cite">app/api/closer/outcome/route.ts:282-293 (line range re-verified in contradiction-14) · Q6</div>
+</div>
+
+<h3>The two breaks in the connection</h3>
+<div class="fcard">
+  <div class="ft">✗ Break 1 — the closer BOARD merges the cards onto a leads source silently capped at 1,000 rows <span class="chip c-broken">BROKEN</span> <span class="chip c-high">HIGH</span></div>
+  <div class="fd">The closer board (/closer/[name] and /sales/pipeline) is built from an unbounded query on the <b>leads</b> table — which the database silently caps at the newest 1,000 of ~6.7k leads. Open follow-up cards are <b>NOT hidden</b>: an unlinked-entry fallback (route.ts:194-241) still renders all 120, but <b>59 of 120</b> arrive as context-stripped "unlinked" cards (no qualification tier, call date, paid flag, or lead link; revision-round SQL: 46 matched only to older leads + 13 matching no lead). The real damage: the BOOKED/CANCELLED/NO_SHOW/WON/LOST columns plus the summary and conversion stats <b>silently exclude every lead older than the cap window</b> — degrading monotonically as leads grow. setter_leads (980 rows) is ~20 rows from the same cap. Downgraded Critical→High at the revision round: a hiding path could not be constructed.</div>
+  <div class="fix">re-spine pipeline-view: paginate, or build from open cards/EOD rows and fetch only the leads they reference.</div>
+  <div class="cite">E1-F01 (app/api/sales/pipeline-view/route.ts:60-64, 71-75, 86-88, 109-113, 194-241; SQL counts as-of 2026-06-10 + revision re-verification) · E1-F05 / Q9 (two data models)</div>
+</div>
+<div class="fcard">
+  <div class="ft">✗ Break 2 — 22 open legacy closer cards have NO lead_id <span class="chip c-manual">MANUAL</span></div>
+  <div class="fd">32 legacy closer cards (22 still open) carry NULL lead_id. They bypass the unique rule, are invisible to the A7a flip and every lead join — exactly where deals rot. The live trigger means no NEW ones can be created; the backlog needs a one-time manual match (by email/phone — not by name).</div>
+  <div class="fix">[Emil] manual resolution pass on the 22 open cards.</div>
+  <div class="cite">E1-F07 (SQL 2026-06-10; trg_closer_lead_id live)</div>
+</div>
+<div class="fcard yellow">
+  <div class="ft">⚠ Known limits of the connection <span class="chip c-unclear">UNCLEAR</span> <span class="chip c-risk">RISK</span></div>
+  <div class="fd">
+    · Only <b>59 of 118</b> linked closer cards have a setter/dialer sibling — for the rest the flip is a structural no-op (by design for self-booked leads).<br>
+    · <b>21 leads</b> currently hold two open-ish dialer cards under different owners — double-outreach allowed by the key. <span class="chip c-dup">DUPLICATE</span><br>
+    · Closer card identity is a bare first name ("Brandon") — when Brandon Burns goes live as a second closer named Brandon, both humans' cards <b>silently merge</b>. Fix before go-live.<br>
+    · Six write sites update/delete cards by raw ID with no role scope — one stale ID away from cross-board corruption (the other 26 sites are compliant).
+  </div>
+  <div class="cite">E1-F08 · E1-F10 · E1-F03</div>
+</div>
+
+<!-- ============================================================ -->
+<h2>3 · Manual vs Automated — who does what</h2>
+<div class="sub">Everything a human must do for the journey to advance, vs what runs hands-free. The journey's middle (confirm / cancel / no-show / outcome) and its end (onboarding chase, coach assignment) are human-dependent.</div>
+
+<div class="cols2">
+  <div class="col-card blue">
+    <h3><span class="chip c-manual">MANUAL</span> A human must…</h3>
+    <ol>
+      <li>Star the Slack booking message (setter attribution trigger)</li>
+      <li>Claim leads onto setter kanban cards (nothing auto-creates them)</li>
+      <li>Run all imports outside webhooks (GHL import, dialer import, CSV)</li>
+      <li>Confirm calls (dialer loop; actor self-reported)</li>
+      <li><b>Record EVERY durable cancellation</b> — the automated lane writes nothing</li>
+      <li>Work dialer reschedule lanes</li>
+      <li>Record no-shows (closer outcome submit only)</li>
+      <li>Submit won / lost / follow-up (the cascade is automated after the click)</li>
+      <li>Claim closer identity at outcome (or manual override)</li>
+      <li>Drag cancel/no-show cards into recovery on the dialer board</li>
+      <li>Assign the coach (click in /coaching/roster)</li>
+      <li>Execute the fulfilment handoff itself (Bea/Sheena acting on a Slack message — no task record)</li>
+    </ol>
+    <div class="cite">Q23</div>
+  </div>
+  <div class="col-card purple">
+    <h3><span class="chip c-auto">AUTO</span> The machine does…</h3>
+    <ol>
+      <li>Lead ingestion (Typeform / Meta / GHL webhooks → identity, lead, touchpoint, GHL mirror)</li>
+      <li>Booking bookkeeping (lead update, Slack card, Angelica confirm card)</li>
+      <li>Reschedule detection (call-date update + Slack card)</li>
+      <li>Setter attribution sync (emoji cron + UTM backfill)</li>
+      <li>Payment bookkeeping (payment row, lead close, EOD write-back, CAPI, Slack win)</li>
+      <li>The A7a won/lost cascade onto sibling cards (after the closer's manual submit)</li>
+      <li>Trainerize new-client webhook → Slack notify</li>
+      <li>Daily coaching-sync creating/updating client rows</li>
+    </ol>
+    <h3 style="margin-top:18px"><span class="chip c-debris">DARK</span> Built but switched off / never fired</h3>
+    <ul>
+      <li>GHL pipeline reflection — flag OFF, 317 suppressed sends in 14d, 0 successes</li>
+      <li>NPS + incomplete-application follow-up messages — <b>0 messages ever sent</b></li>
+      <li>ManyChat webhook — 0 leads ever</li>
+      <li>Native bookings engine — 0 rows ever</li>
+      <li>GHL cancel webhook — automated but writes nothing durable</li>
+    </ul>
+    <div class="cite">Q24 · E3-F05 verdict (317/0, SQL 2026-06-10) · E6-F05 (message_sends=0)</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<h2>4 · Broken & Unclear Connections — worst first</h2>
+
+<div class="fcard">
+  <div class="ft">1 · Cancellation writes nothing — cancelled calls keep looking booked <span class="chip c-broken">BROKEN</span> <span class="chip c-crit">CRITICAL</span></div>
+  <div class="fd">GHL cancel webhook = Slack card only, zero DB writes; nothing ever sets booked=false. Dialers confirm dead appointments; booked counts inflated. 10 events in last 7d.</div>
+  <div class="cite">E2-F01 · ghl/webhook:325-408</div>
+</div>
+<div class="fcard">
+  <div class="ft">2 · Closer board's 1,000-row cap — follow-up cards degraded, other columns and stats drop older leads <span class="chip c-broken">BROKEN</span> <span class="chip c-high">HIGH</span></div>
+  <div class="fd">Newest 1,000 of ~6.7k leads only. FU cards are NOT hidden (the unlinked fallback renders all 120) but 59 arrive stripped of lead context; the non-FU columns and summary/conversion stats silently exclude every older lead. Downgraded Critical→High at revision.</div>
+  <div class="cite">E1-F01 · pipeline-view/route.ts:60-64, 194-241</div>
+</div>
+<div class="fcard">
+  <div class="ft">3 · Four cancellation lanes, four different shapes, none synced <span class="chip c-broken">BROKEN</span> <span class="chip c-high">HIGH</span></div>
+  <div class="fd">Slack-only / lead-fields / lead+EOD+GHL / card-only. No single field an operator can trust; funnel math silently includes cancelled calls (60 cancel reasons vs 2 cancelled stages).</div>
+  <div class="cite">E2-F02</div>
+</div>
+<div class="fcard">
+  <div class="ft">4 · A plain loss ("showed, no follow-up") flips nothing anywhere <span class="chip c-broken">BROKEN</span> <span class="chip c-high">HIGH</span></div>
+  <div class="fd">Outcome saved as NULL → no card flip, no lost tray, no reflection. 8 invisible losses live (7 since May). The setter who booked sees an open card forever.</div>
+  <div class="cite">E3-F01 · closer/outcome:95-98, 272</div>
+</div>
+<div class="fcard">
+  <div class="ft">5 · Payment never closes the kanban cards <span class="chip c-broken">BROKEN</span> <span class="chip c-high">HIGH</span></div>
+  <div class="fd">Money received sets leads.closed=true but never touches lead_pipeline — 6 paid clients sit as open cards; setters may chase people who already bought.</div>
+  <div class="cite">E3-F02</div>
+</div>
+<div class="fcard">
+  <div class="ft">6 · The repo's own GHL-mirror rule is unimplemented <span class="chip c-broken">BROKEN</span> <span class="chip c-high">HIGH</span></div>
+  <div class="fd">CLAUDE.md mandates Slack alerts + cron retries for mirror failures; neither exists (alerts go elsewhere, the cron has no mirror check). Gaps accumulate with no mechanism: 39% of leads unmirrored.</div>
+  <div class="cite">E5-F1 · E4-F02</div>
+</div>
+<div class="fcard">
+  <div class="ft">7 · GHL stage reflection fully dark — GHL boards are stale <span class="chip c-broken">BROKEN</span> <span class="chip c-high">HIGH</span></div>
+  <div class="fd">Flag OFF: 317 dry-run rows in 14 days, zero real writes. Anyone working inside GHL sees stages that stopped updating. Blocked on the ~870-lead mirror backfill.</div>
+  <div class="cite">E5-F2 · E3-F05 verdict (SQL 2026-06-10)</div>
+</div>
+<div class="fcard">
+  <div class="ft">8 · The "new route must declare auth" gate doesn't actually run <span class="chip c-broken">BROKEN</span> <span class="chip c-high">HIGH</span></div>
+  <div class="fd">The pre-commit hook exits early on any commit not touching business/ files — the auth guard placed after that line is unreachable on normal commits and runs nowhere else. The team believes a mechanism is enforcing route auth; it is not.</div>
+  <div class="cite">E6-F01 · .githooks/pre-commit:184-186 · contradiction-8 (memory claim overruled by code)</div>
+</div>
+<div class="fcard">
+  <div class="ft">9 · Main booking webhook is fail-open <span class="chip c-risk">RISK</span> <span class="chip c-high">HIGH</span></div>
+  <div class="fd">If its secret env var is unset, /api/ghl/webhook accepts ALL requests (a forged cancellation could silently remove a real sales call). Prod env value unverifiable from the repo — needs a names-only env check. All four other ingest webhooks are fail-closed.</div>
+  <div class="cite">E5-F3 / E6-F12 · ghl/webhook:280-297</div>
+</div>
+<div class="fcard">
+  <div class="ft">10 · Lead money field has two writers with opposite semantics <span class="chip c-dup">DUPLICATE</span> <span class="chip c-high">HIGH</span></div>
+  <div class="fd">Closer claim OVERWRITES leads.cash_collected; payment webhooks ADD to it. Claim-before-payment = double-count on the lead row. (Canon dashboards read the payment tables and are safe.)</div>
+  <div class="cite">E4-F05 · outcome:184-189 vs stripe-webhook:203-206 / fanbasis-webhook:534-541</div>
+</div>
+<div class="fcard">
+  <div class="ft">11 · Onboarding is a blind window owned by two external systems <span class="chip c-manual">MANUAL</span> <span class="chip c-high">HIGH</span></div>
+  <div class="fd">Between payment (visible) and the client row (sheet sync, days later) everything lives in GHL + Zapier; the signed-contract event is never ingested. Pays-but-never-signs is undetectable. <span class="chip c-doc">DOC-SOURCED</span> — GHL probe degraded this run.</div>
+  <div class="cite">E3-F03 · E4-F10 · Q21</div>
+</div>
+<div class="fcard yellow">
+  <div class="ft">12 · Setter names stored in 10 spellings for ~6 humans <span class="chip c-risk">RISK</span> <span class="chip c-high">HIGH</span></div>
+  <div class="fd">Three code families write three formats; the Angelica booking gate matches exactly one. Attribution and auto-card behavior become a casing lottery across 978 rows.</div>
+  <div class="cite">E2-F03</div>
+</div>
+<div class="fcard yellow">
+  <div class="ft">13 · Cold self-bookers get no confirm coverage <span class="chip c-risk">RISK</span> <span class="chip c-high">HIGH</span></div>
+  <div class="fd">The new-lead branch of the booking webhook skips the Angelica confirm card that the existing-lead branch creates — the highest no-show-risk segment goes unworked (76 booked-since-May leads with no dialer card).</div>
+  <div class="cite">E2-F04 · Q25 #6</div>
+</div>
+<div class="fcard yellow">
+  <div class="ft">14 · No appointment history exists <span class="chip c-unclear">UNCLEAR</span> <span class="chip c-high">HIGH</span></div>
+  <div class="fd">Planned appointment-state tables were never built; reschedules overwrite the call date in place. "When was this call originally booked?" has no answer. The plan doc still claims this workstream ships first — stale.</div>
+  <div class="cite">E2-F09 · contradiction-13 (live DB: table absent)</div>
+</div>
+
+<!-- ============================================================ -->
+<h2>5 · Source of Truth — which table is "the real one"?</h2>
+<div class="sub">Plain-English map of the five objects an operator needs, plus who writes them. When two screens disagree, this is what wins.</div>
+
+<table>
+  <tr><th style="width:24%">The thing</th><th style="width:26%">The real table</th><th>Who writes it</th></tr>
+  <tr>
+    <td><b>The person</b></td>
+    <td><b>leads</b> (one row per person, email-unique, 6,761 rows) on top of the identity graph (hpf_identities + person_identifiers)</td>
+    <td>Ingest webhooks create; GHL booking webhook stamps booking fields; closer outcome stamps closer/showed/cash; payment webhooks stamp closed. <span class="chip c-auto">AUTO</span></td>
+  </tr>
+  <tr>
+    <td><b>The cards</b> (all three boards)</td>
+    <td><b>lead_pipeline</b> — one card per (lead, owner, role); status = board visibility, stage = column. 1,026 open / 8 won / 26 dead</td>
+    <td>Claims (setters/dialers), the booking webhook (Angelica auto-card), closer outcome (FU cards + A7a flips). <span class="chip c-manual">MANUAL</span>+<span class="chip c-auto">AUTO</span></td>
+  </tr>
+  <tr>
+    <td><b>The close CLAIM</b> (what the closer says happened)</td>
+    <td><b>closer_eod_entries</b> (unique per lead + call date + closer)</td>
+    <td>Closer outcome submit; payment webhooks write back outcome='closed'. <span class="chip c-manual">MANUAL</span>→<span class="chip c-auto">AUTO</span></td>
+  </tr>
+  <tr>
+    <td><b>The money</b> (what actually got paid)</td>
+    <td><b>stripe_payments + fanbasis_payments</b> — the canon for every cash metric. Close = money received, per the sales-data rules</td>
+    <td>Payment webhooks only. <span class="chip c-auto">AUTO</span></td>
+  </tr>
+  <tr>
+    <td><b>The client</b></td>
+    <td><b>coaching_clients</b> (500 rows) — keyed by a content hash, <b>no lead_id</b>, hpf_id on 106/500 only <span class="chip c-broken">BROKEN</span></td>
+    <td>Daily 08:00 sheet sync; Trainerize webhook flips lifecycle; humans assign the coach. <span class="chip c-auto">AUTO</span>+<span class="chip c-manual">MANUAL</span></td>
+  </tr>
+</table>
+
+<div class="cols2">
+  <div class="col-card yellow">
+    <h3>⚠ Things with NO single source of truth</h3>
+    <ul>
+      <li><b>Closer assignment</b> — three encodings (leads.closer_name, card owner_name, EOD closer_name) plus GHL appointment-title parsing; assignment itself happens in GHL round-robin. <span class="chip c-dup">DUPLICATE</span></li>
+      <li><b>The booking itself</b> — truth lives in GHL's appointment, mirrored as flags on leads; the native bookings table has <b>0 rows ever</b>. Only 106 of 760 booked leads carry a GHL appointment ID. <span class="chip c-debris">DEBRIS</span></li>
+      <li><b>"Where is this person?"</b> — four parallel status systems (lead booleans, lead stage, card status×stage, EOD status×outcome) + colliding vocabularies ("BOOKED" means different things on different boards). <span class="chip c-dup">DUPLICATE</span></li>
+    </ul>
+    <div class="cite">Q26-Q28 · E4 objects · E2-F15 · E4-F06</div>
+  </div>
+  <div class="col-card green">
+    <h3>✓ Authority per question (verified)</h3>
+    <ul>
+      <li>Board visibility → <b>lead_pipeline.status</b></li>
+      <li>Board column → <b>lead_pipeline.stage</b></li>
+      <li>Close (claimed) → <b>closer_eod_entries.outcome</b></li>
+      <li>Close (paid — the one that counts) → <b>leads.closed</b>, set ONLY by payment webhooks</li>
+      <li>Cash metrics → <b>payment tables</b>, never lead rows</li>
+      <li>June reconciliation check: claimed 8 closes / paid 8 closes but only 7 overlap; $30,350 claimed vs $29,550 paid vs $37,000 contracted <span class="chip c-unclear">UNCLEAR</span></li>
+    </ul>
+    <div class="cite">Q28 authority map · E4-F08 (June MTD SQL 2026-06-10)</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<h2>6 · Where Leads Fall Through the Cracks — ranked</h2>
+<div class="sub">From the sealed audit answer (Q25). Worst first.</div>
+<ol class="ranklist">
+  <li><b>The closer board's 1,000-row cap</b> — 59 of 120 open follow-up cards render only as context-stripped "unlinked" cards, and the non-FU columns/stats silently exclude leads older than the newest 1,000; degrades as leads grow (downgraded Critical→High at revision). <span class="cite">E1-F01</span></li>
+  <li><b>Cancellation</b> — the automated lane writes zero state; nothing un-books a lead (60 cancel reasons vs 2 cancelled stages). <span class="cite">E2-F01/F02</span></li>
+  <li><b>Lost-without-follow-up</b> — outcome NULL flips nothing; 8 invisible losses live. <span class="cite">E3-F01</span></li>
+  <li><b>Paid leads with open cards</b> — payment never touches the boards; 6 live instances. <span class="cite">E3-F02</span></li>
+  <li><b>No-shows never move cards</b> — recovery is human-notice only (86-card recovery column fills by hand). <span class="cite">E2-F14</span></li>
+  <li><b>Unattributed self-bookers</b> — no dialer/confirm card (76 booked-since-May leads; 40 of them on no board at all) via the new-lead asymmetry + casing hole. <span class="cite">E2-F03/F04</span></li>
+  <li><b>Pays-but-never-signs</b> — onboarding keys on the signed contract; no HPFHQ watchdog. <span class="cite">E3-F03/E4-F10</span></li>
+  <li class="warn"><b>Funnel→fulfilment identity break</b> — clients have no lead_id, ~21% hpf_id; 4 of 5 clients untraceable to their lead. <span class="cite">E3-F06/E4-F09</span></li>
+  <li class="warn"><b>Churn invisibility</b> — 1 deactivation event ever vs 282 inactive clients. <span class="cite">E3-F08</span></li>
+  <li class="warn"><b>22 NULL-lead_id legacy closer cards</b> — outside every automated flip. <span class="cite">E1-F07</span></li>
+  <li class="warn"><b>21 leads with two dialer cards</b> — double-outreach allowed by the key. <span class="cite">E1-F08</span></li>
+  <li class="warn"><b>Failed installments + refunds invisible in-repo</b> — only an off-repo Zapier alert (Stripe only). <span class="cite">E3-F09</span></li>
+  <li class="warn"><b>The ManyChat lane</b> — anyone entering there never lands (0 leads ever). <span class="cite">E2-F06</span></li>
+  <li class="warn"><b>GHL mirror gap</b> — 2,667 of 6,761 leads have no GHL contact (7 booked leads affected); GHL-side automation is blind to them. <span class="cite">E4-F02</span></li>
+</ol>
+
+<!-- ============================================================ -->
+<h2>7 · Operator Questions — what the audit could NOT settle</h2>
+<div class="sub">Each needs an owner action. <span class="chip c-owner">[Emil]</span> = your call/check. <span class="chip c-owner">[probe-after-token-refresh]</span> = re-verify inside GHL once the live-probe token is refreshed.</div>
+<ul class="qlist">
+  <li><span class="chip c-owner">[probe-after-token-refresh]</span> <b>Onboarding chain (Q21)</b> — the whole signed-contract → Zapier → Trainerize chain is <span class="chip c-doc">DOC-SOURCED</span> (docs of 2026-06-09). Re-verify the GHL workflows are still on and wired exactly as documented.</li>
+  <li><span class="chip c-owner">[probe-after-token-refresh]</span> <b>Closer round-robin (Q5)</b> — closer assignment logic lives in GHL's calendar config and is undocumented beyond "round-robin". Confirm the actual rules.</li>
+  <li><span class="chip c-owner">[Emil]</span> <b>Is GHL_WEBHOOK_SECRET set in production?</b> The verified fact is the fail-open code pattern, not an open endpoint — a names-only Vercel env listing settles it. Same check for the SendBlue webhook secret (absent from the env example file). <span class="cite">E6-F12 / E2-F17 / E6-F13</span></li>
+  <li><span class="chip c-owner">[Emil]</span> <b>Is CLOSER_SLACK_LIVE on in prod?</b> Determines whether closer win announcements actually post (example default is false). <span class="cite">E3-F11</span></li>
+  <li><span class="chip c-owner">[Emil]</span> <b>Is the appointment-history workstream (B1) still on the roadmap?</b> Live DB says it was never built; the master plan says it ships first — one of the two must change. <span class="cite">E2-F09</span></li>
+  <li><span class="chip c-owner">[Emil]</span> <b>Is the Trainerize "Product Ends" zap actually ON?</b> Doc says ON; reality is 1 event ever vs 282 inactive clients. <span class="cite">E3-F08</span></li>
+  <li><span class="chip c-owner">[Emil]</span> <b>Resolve the 22 open NULL-lead_id closer cards</b> — manual email/phone match; do not auto-map by name. <span class="cite">E1-F07</span></li>
+  <li><span class="chip c-owner">[Emil]</span> <b>Identify June's two divergent closes</b> — one claimed-not-paid, one paid-not-claimed ($30,350 claimed vs $29,550 paid). <span class="cite">E4-F08</span></li>
+  <li><span class="chip c-owner">[Emil]</span> <b>Decide: arm or formally mark dark</b> the NPS + incomplete-application messaging lane (0 messages ever, kill-switch off). <span class="cite">E6-F05</span></li>
+  <li><span class="chip c-owner">[Emil]</span> <b>Scripts inventory before any archive</b> — 8 of 141 one-off scripts sampled; the "30+ more in the same class" is extrapolation, not a verified inventory. <span class="cite">E6-F07 · weak-evidence sweep</span></li>
+</ul>
+
+<!-- ============================================================ -->
+<footer>
+  <b>Audit snapshot:</b> 36a0c494 (origin/main, 2026-06-10 ~06:55 WEST). All counts are live-database SQL reads on 2026-06-10 unless a different as-of is printed next to the number. Evidence read at this snapshot only.<br>
+  <b>Degraded lane disclosure:</b> the GHL live-probe lane was degraded this run (stale local token) — everything inside GoHighLevel (workflows, calendar round-robin, contract triggers) is <b>[DOC-SOURCED]</b> from integration docs last verified 2026-05-04 → 2026-06-09 and is flagged as such wherever it appears above.<br>
+  <b>Companion files:</b> 00-executive-summary.md · 01-lead-journey-map.md · 02-kanban-and-data-map.md · 03-disconnects-risks-debris.md · 05-mermaid-diagrams.md · 06-operator-review-checklist.md
+
+  <h3>Glossary (the few unavoidable terms)</h3>
+  <dl class="gloss">
+    <dt>GHL (GoHighLevel)</dt><dd>The external CRM/calendar product. Booking, closer assignment, and onboarding workflows live there, outside this codebase.</dd>
+    <dt>Webhook</dt><dd>An automated message an external system (Typeform, Meta, GHL, Stripe…) sends to HPFHQ the moment something happens. "Fail-open" = the receiving door accepts messages even when its password is missing.</dd>
+    <dt>Cron</dt><dd>A scheduled job that runs automatically (e.g. every 30 minutes / daily at 08:00).</dd>
+    <dt>lead_pipeline ("card")</dt><dd>The single database table holding every kanban card on the setter, dialer, and closer boards — one card per (lead, owner, role).</dd>
+    <dt>lead_id</dt><dd>The lead's unique database ID — the join key that connects a lead's cards, close records, and payments.</dd>
+    <dt>hpf_id</dt><dd>The person's identity-graph ID, linking emails, phones, GHL contact, Stripe customer, and Trainerize client to one human.</dd>
+    <dt>EOD entry (closer_eod_entries)</dt><dd>The closer's end-of-call outcome record — the "close claim" (vs. the payment tables, which are the "close proof").</dd>
+    <dt>A7a flip</dt><dd>The automated write-back: when a closer marks won/dead, the same lead's setter/dialer cards get stamped WON / LOST_NO_FU.</dd>
+    <dt>§7 invariant</dt><dd>The internal write rule: every card update must be keyed by lead_id and scoped to the writer's role, so one board can never corrupt another's cards.</dd>
+    <dt>Dry-run / feature flag</dt><dd>Code that executes but is switched off — it logs what it WOULD have done (e.g. GHL reflection: 317 suppressed sends in 14 days) without doing it.</dd>
+    <dt>1,000-row cap</dt><dd>The database API silently returns at most 1,000 rows for an unbounded query — no error, just missing data.</dd>
+  </dl>
+</footer>
+
+</div>
+</body>
+</html>
