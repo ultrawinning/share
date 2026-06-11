@@ -33,7 +33,43 @@
 <body>
 <h1>ADJUTANT // VOICE AUDITION<small>zero-shot clones · F5-TTS (MLX) vs Chatterbox · benched on GHOST 2026-06-11 · personal use only</small></h1>
 
-<h2 style="color:var(--amber)">★ TAKE 2 — F5 × SC1, onset-cleaned (your pick)</h2>
+<h2 style="color:var(--green)">★★ TAKE 3 — FAST + COMMS BEEP (the answer to the rasp)</h2>
+<div class="card note" style="margin-bottom:18px;border-color:rgba(46,212,122,.4)">
+  Your idea — cover the onset with the comms-activation sound — works, and it's <em>authentic</em>: this is the real SC1 Adjutant terminal beep, lifted straight from the game's Adjutant clips. <audio controls preload="none" src="audio3/_beep.mp3" style="max-width:200px;display:inline-block;vertical-align:middle;margin-left:8px"></audio><br><br>
+  All takes below are the <strong>fast steps=8 config (1.4–2.5s synth — the usable one)</strong>. The beep's tail crossfades over the first 130ms where the rasp lived, so the ear hears "comms open → Adjutant speaks" and the rasp is gone. Each line has the two fast seeds with the beep, plus a no-beep version so you can hear what the beep is covering. All whisper-verified — the beep never clips the first word. <strong>seed 42</strong> and <strong>seed 1337</strong> are just two different voice rolls; pick whichever sounds more Adjutant.
+</div>
+<div class="card">
+  <div class="label">LINE 1 — “Nuclear launch detected.”</div>
+  <div class="grid">
+    <div class="cell"><span class="eng">seed 42 · beep</span><audio controls preload="none" src="audio3/beep_st8_s42_1.mp3"></audio></div>
+    <div class="cell"><span class="eng">seed 1337 · beep</span><audio controls preload="none" src="audio3/beep_st8_s1337_1.mp3"></audio></div>
+    <div class="cell"><span class="eng">seed 42 · no beep (for compare)</span><audio controls preload="none" src="audio3/nobeep_st8_s42_1.mp3"></audio></div>
+  </div>
+</div>
+<div class="card">
+  <div class="label">LINE 2 — “Uplink established. Adjutant online. All systems nominal.”</div>
+  <div class="grid">
+    <div class="cell"><span class="eng">seed 42 · beep</span><audio controls preload="none" src="audio3/beep_st8_s42_2.mp3"></audio></div>
+    <div class="cell"><span class="eng">seed 1337 · beep</span><audio controls preload="none" src="audio3/beep_st8_s1337_2.mp3"></audio></div>
+    <div class="cell"><span class="eng">seed 42 · no beep (for compare)</span><audio controls preload="none" src="audio3/nobeep_st8_s42_2.mp3"></audio></div>
+  </div>
+</div>
+<div class="card">
+  <div class="label">LINE 3 — “Build succeeded. Three commits pushed… eleven open events, two critical.”</div>
+  <div class="grid">
+    <div class="cell"><span class="eng">seed 42 · beep</span><audio controls preload="none" src="audio3/beep_st8_s42_3.mp3"></audio></div>
+    <div class="cell"><span class="eng">seed 1337 · beep</span><audio controls preload="none" src="audio3/beep_st8_s1337_3.mp3"></audio></div>
+    <div class="cell"><span class="eng">seed 42 · no beep (for compare)</span><audio controls preload="none" src="audio3/nobeep_st8_s42_3.mp3"></audio></div>
+  </div>
+</div>
+<div class="card note" style="margin-bottom:24px">
+  If steps=8 body still sounds a touch rough mid-line, there's a <strong>steps=12</strong> seed-42 set too (≈2–4s synth, cleaner body, same beep):
+  <audio controls preload="none" src="audio3/beep_st12_s42_1.mp3" style="max-width:160px;display:inline-block;vertical-align:middle"></audio>
+  <audio controls preload="none" src="audio3/beep_st12_s42_2.mp3" style="max-width:160px;display:inline-block;vertical-align:middle"></audio>
+  <audio controls preload="none" src="audio3/beep_st12_s42_3.mp3" style="max-width:160px;display:inline-block;vertical-align:middle"></audio>
+</div>
+
+<h2 style="color:var(--amber)">TAKE 2 — F5 × SC1, onset-cleaned (no beep)</h2>
 <div class="card note" style="margin-bottom:18px">
   The "weird breathing sound" was a conditioning-leak blip F5 injects in the first ~120ms, followed by a gap, then the line — measured in every take 1 output. These takes are auto-trimmed at the detected speech onset (15ms fade-in) and every one re-transcribed to prove no clipped first words. <strong>s7/s42/s1337/s2026</strong> are four different seeds at 32 diffusion steps (quality config, ~6–13s synth); <strong>steps8</strong> is the fast draft config (~1.3–2.6s synth — what CITADEL would serve for snappiest replies). Pick the take that sounds most Adjutant per line — or just name a seed if one voice-feel wins across all three.
 </div>
