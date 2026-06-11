@@ -33,6 +33,44 @@
 <body>
 <h1>ADJUTANT // VOICE AUDITION<small>zero-shot clones · F5-TTS (MLX) vs Chatterbox · benched on GHOST 2026-06-11 · personal use only</small></h1>
 
+<h2 style="color:var(--amber)">★ TAKE 2 — F5 × SC1, onset-cleaned (your pick)</h2>
+<div class="card note" style="margin-bottom:18px">
+  The "weird breathing sound" was a conditioning-leak blip F5 injects in the first ~120ms, followed by a gap, then the line — measured in every take 1 output. These takes are auto-trimmed at the detected speech onset (15ms fade-in) and every one re-transcribed to prove no clipped first words. <strong>s7/s42/s1337/s2026</strong> are four different seeds at 32 diffusion steps (quality config, ~6–13s synth); <strong>steps8</strong> is the fast draft config (~1.3–2.6s synth — what CITADEL would serve for snappiest replies). Pick the take that sounds most Adjutant per line — or just name a seed if one voice-feel wins across all three.
+</div>
+<div class="card">
+  <div class="label">LINE 1</div>
+  <p class="quote">“Nuclear launch detected.”</p>
+  <div class="grid">
+    <div class="cell"><span class="eng">steps8 · fast</span><audio controls preload="none" src="audio2/steps8_1.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio2/steps8_1_fx.mp3"></audio></div>
+    <div class="cell"><span class="eng">seed 7 · 32 steps</span><audio controls preload="none" src="audio2/s7_1.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio2/s7_1_fx.mp3"></audio></div>
+    <div class="cell"><span class="eng">seed 42 · 32 steps</span><audio controls preload="none" src="audio2/s42_1.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio2/s42_1_fx.mp3"></audio></div>
+    <div class="cell"><span class="eng">seed 1337 · 32 steps</span><audio controls preload="none" src="audio2/s1337_1.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio2/s1337_1_fx.mp3"></audio></div>
+    <div class="cell"><span class="eng">seed 2026 · 32 steps</span><audio controls preload="none" src="audio2/s2026_1.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio2/s2026_1_fx.mp3"></audio></div>
+  </div>
+</div>
+<div class="card">
+  <div class="label">LINE 2</div>
+  <p class="quote">“Uplink established. Adjutant online. All systems nominal.”</p>
+  <div class="grid">
+    <div class="cell"><span class="eng">steps8 · fast</span><audio controls preload="none" src="audio2/steps8_2.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio2/steps8_2_fx.mp3"></audio></div>
+    <div class="cell"><span class="eng">seed 7 · 32 steps</span><audio controls preload="none" src="audio2/s7_2.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio2/s7_2_fx.mp3"></audio></div>
+    <div class="cell"><span class="eng">seed 42 · 32 steps</span><audio controls preload="none" src="audio2/s42_2.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio2/s42_2_fx.mp3"></audio></div>
+    <div class="cell"><span class="eng">seed 1337 · 32 steps</span><audio controls preload="none" src="audio2/s1337_2.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio2/s1337_2_fx.mp3"></audio></div>
+    <div class="cell"><span class="eng">seed 2026 · 32 steps</span><audio controls preload="none" src="audio2/s2026_2.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio2/s2026_2_fx.mp3"></audio></div>
+  </div>
+</div>
+<div class="card">
+  <div class="label">LINE 3 — realistic Adjutant reply</div>
+  <p class="quote">“Build succeeded. Three commits pushed to origin. The queue holds eleven open events, two of them critical.”</p>
+  <div class="grid">
+    <div class="cell"><span class="eng">steps8 · fast</span><audio controls preload="none" src="audio2/steps8_3.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio2/steps8_3_fx.mp3"></audio></div>
+    <div class="cell"><span class="eng">seed 7 · 32 steps</span><audio controls preload="none" src="audio2/s7_3.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio2/s7_3_fx.mp3"></audio></div>
+    <div class="cell"><span class="eng">seed 42 · 32 steps</span><audio controls preload="none" src="audio2/s42_3.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio2/s42_3_fx.mp3"></audio></div>
+    <div class="cell"><span class="eng">seed 1337 · 32 steps</span><audio controls preload="none" src="audio2/s1337_3.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio2/s1337_3_fx.mp3"></audio></div>
+    <div class="cell"><span class="eng">seed 2026 · 32 steps</span><audio controls preload="none" src="audio2/s2026_3.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio2/s2026_3_fx.mp3"></audio></div>
+  </div>
+</div>
+
 <h2>① Ground truth — the reference clips the clones learned from</h2>
 <div class="card">
   <div class="label">REF 1 · SC2 Wings of Liberty Adjutant (calm informational) <span class="tag">SC2</span></div>
