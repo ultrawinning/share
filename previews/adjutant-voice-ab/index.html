@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Adjutant Voice — A/B Audition</title>
+<style>
+  :root{--bg:#04060a;--surface:#182228;--text:#edeef3;--faded:rgba(237,238,243,.56);--cyan:#54e0ff;--green:#2ed47a;--amber:#ff9f43;--line:rgba(237,238,243,.09)}
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:0;padding:32px 16px 80px;max-width:980px;margin-inline:auto}
+  h1{font-size:22px;letter-spacing:4px;color:var(--green);text-shadow:0 0 12px rgba(46,212,122,.45)}
+  h1 small{color:var(--faded);letter-spacing:1px;font-size:12px;display:block;margin-top:6px;text-shadow:none}
+  h2{font-size:13px;letter-spacing:2.5px;color:var(--cyan);margin:38px 0 12px;text-transform:uppercase}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:14px}
+  .label{font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:1.5px;color:var(--faded);text-transform:uppercase;margin-bottom:6px}
+  .quote{font-size:15px;margin:0 0 10px;color:var(--text)}
+  audio{width:100%;height:34px;margin-top:4px;filter:invert(.88) hue-rotate(180deg)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:640px){.grid{grid-template-columns:1fr}}
+  .cell{background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+  .cell .eng{font-weight:600;font-size:13px;color:var(--cyan)}
+  .cell .fxlabel{font-family:ui-monospace,Menlo,monospace;font-size:9px;letter-spacing:1.2px;color:var(--faded);margin-top:8px;text-transform:uppercase}
+  table{border-collapse:collapse;width:100%;font-size:13px}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left}
+  th{color:var(--faded);font-weight:600;font-size:11px;letter-spacing:1px;text-transform:uppercase}
+  td.num{font-family:ui-monospace,Menlo,monospace}
+  .note{font-size:12px;color:var(--faded);line-height:1.6}
+  .tag{display:inline-block;border:1px solid rgba(84,224,255,.4);color:var(--cyan);border-radius:4px;padding:1px 7px;font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:1px;margin-left:6px;vertical-align:middle}
+  .tag.sc1{border-color:rgba(255,159,67,.5);color:var(--amber)}
+</style>
+</head>
+<body>
+<h1>ADJUTANT // VOICE AUDITION<small>zero-shot clones · F5-TTS (MLX) vs Chatterbox · benched on GHOST 2026-06-11 · personal use only</small></h1>
+
+<h2>① Ground truth — the reference clips the clones learned from</h2>
+<div class="card">
+  <div class="label">REF 1 · SC2 Wings of Liberty Adjutant (calm informational) <span class="tag">SC2</span></div>
+  <p class="quote">“The 1850 service to New Gettysburg is running four years, five months, twelve days, eight hours and seventeen minutes late.”</p>
+  <audio controls preload="none" src="audio/ref1_source.mp3"></audio>
+</div>
+<div class="card">
+  <div class="label">REF 2 · SC1 Remastered announcer (heavily vocoded — the “Nuclear launch detected” voice) <span class="tag sc1">SC1</span></div>
+  <p class="quote">“Base is under attack. Your forces are under attack. Research complete. Add-on complete. Nuclear launch detected.”</p>
+  <audio controls preload="none" src="audio/ref2_source.mp3"></audio>
+</div>
+<div class="card">
+  <div class="label">REF 3 · SC2 Adjutant alert register (not used in bench — same voice as ref 1)</div>
+  <p class="quote">“Commander, I'm detecting a massive concentration of Zerg biosignatures landing at the abandoned dig site.”</p>
+  <audio controls preload="none" src="audio/ref3_source.mp3"></audio>
+</div>
+
+<h2>② The audition — same line, four clones (+ comms-filter variant of each)</h2>
+
+<div class="card">
+  <div class="label">LINE 1</div>
+  <p class="quote">“Nuclear launch detected.”</p>
+  <div class="grid">
+    <div class="cell"><span class="eng">F5-TTS</span> <span class="tag">SC2 ref</span><audio controls preload="none" src="audio/f5_ref1_1.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio/f5_ref1_1_fx.mp3"></audio></div>
+    <div class="cell"><span class="eng">F5-TTS</span> <span class="tag sc1">SC1 ref</span><audio controls preload="none" src="audio/f5_ref2_1.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio/f5_ref2_1_fx.mp3"></audio></div>
+    <div class="cell"><span class="eng">Chatterbox</span> <span class="tag">SC2 ref</span><audio controls preload="none" src="audio/chatterbox_ref1_1.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio/chatterbox_ref1_1_fx.mp3"></audio></div>
+    <div class="cell"><span class="eng">Chatterbox</span> <span class="tag sc1">SC1 ref</span><audio controls preload="none" src="audio/chatterbox_ref2_1.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio/chatterbox_ref2_1_fx.mp3"></audio></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="label">LINE 2</div>
+  <p class="quote">“Uplink established. Adjutant online. All systems nominal.”</p>
+  <div class="grid">
+    <div class="cell"><span class="eng">F5-TTS</span> <span class="tag">SC2 ref</span><audio controls preload="none" src="audio/f5_ref1_2.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio/f5_ref1_2_fx.mp3"></audio></div>
+    <div class="cell"><span class="eng">F5-TTS</span> <span class="tag sc1">SC1 ref</span><audio controls preload="none" src="audio/f5_ref2_2.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio/f5_ref2_2_fx.mp3"></audio></div>
+    <div class="cell"><span class="eng">Chatterbox</span> <span class="tag">SC2 ref</span><audio controls preload="none" src="audio/chatterbox_ref1_2.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio/chatterbox_ref1_2_fx.mp3"></audio></div>
+    <div class="cell"><span class="eng">Chatterbox</span> <span class="tag sc1">SC1 ref</span><audio controls preload="none" src="audio/chatterbox_ref2_2.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio/chatterbox_ref2_2_fx.mp3"></audio></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="label">LINE 3 — realistic Adjutant reply</div>
+  <p class="quote">“Build succeeded. Three commits pushed to origin. The queue holds eleven open events, two of them critical.”</p>
+  <div class="grid">
+    <div class="cell"><span class="eng">F5-TTS</span> <span class="tag">SC2 ref</span><audio controls preload="none" src="audio/f5_ref1_3.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio/f5_ref1_3_fx.mp3"></audio></div>
+    <div class="cell"><span class="eng">F5-TTS</span> <span class="tag sc1">SC1 ref</span><audio controls preload="none" src="audio/f5_ref2_3.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio/f5_ref2_3_fx.mp3"></audio></div>
+    <div class="cell"><span class="eng">Chatterbox</span> <span class="tag">SC2 ref</span><audio controls preload="none" src="audio/chatterbox_ref1_3.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio/chatterbox_ref1_3_fx.mp3"></audio></div>
+    <div class="cell"><span class="eng">Chatterbox</span> <span class="tag sc1">SC1 ref</span><audio controls preload="none" src="audio/chatterbox_ref2_3.mp3"></audio><div class="fxlabel">+ comms filter</div><audio controls preload="none" src="audio/chatterbox_ref2_3_fx.mp3"></audio></div>
+  </div>
+</div>
+
+<h2>③ Latency (warm model, GHOST M5 Max — CITADEL M4 Max will be somewhat slower)</h2>
+<div class="card">
+<table>
+  <tr><th>Engine</th><th>Line 1 (short)</th><th>Line 2 (medium)</th><th>Line 3 (long)</th><th>Cold start</th></tr>
+  <tr><td>F5-TTS (MLX)</td><td class="num">1.6s</td><td class="num">1.3–1.9s</td><td class="num">1.7–2.6s</td><td class="num">~24s first-ever, 0.4s warm load</td></tr>
+  <tr><td>Chatterbox (MPS)</td><td class="num">3.9–4.2s</td><td class="num">5.5–7.0s</td><td class="num">7.3–9.9s</td><td class="num">~33s + 6.4s model load</td></tr>
+</table>
+<p class="note" style="margin-bottom:0">All 12 clones were re-transcribed with whisper large-v3-turbo and match their target lines exactly — both engines are fully intelligible; this audition is purely about <em>character</em>. Note: Chatterbox embeds a Perth perceptual watermark in its output audio. The comms filter is one fixed preset (250–3800Hz band-pass, light bit-crush, compression) — tunable to taste.</p>
+</div>
+
+<h2>④ Decide</h2>
+<div class="card note">
+  Two independent choices: <strong>which engine</strong> (F5 is ~4× faster and Apple-Silicon-native via MLX — favored for the CITADEL deploy unless Chatterbox clearly wins on character) and <strong>which Adjutant</strong> (SC2 ref = the soft filtered campaign voice; SC1 ref = the harsh vocoded announcer). Raw vs comms-filter is a free third dial. Reply with e.g. “F5 / SC1 / filtered” and the winner gets stood up on CITADEL behind <code>/synthesize</code>, then one Swift file swaps the phone from Zarvox to the real thing.
+</div>
+</body>
+</html>
