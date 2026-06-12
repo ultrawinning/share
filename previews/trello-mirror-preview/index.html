@@ -1,0 +1,797 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trello → Setter Kanban — Mirror Preview</title>
+<style>
+  :root{--bg:#0E1116;--panel:#161B22;--col:#1C2230;--text:#E6EAF0;--dim:#8B95A5;--line:#252C3A}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 -apple-system,'Inter',Segoe UI,sans-serif}
+  header{padding:24px 28px;border-bottom:1px solid var(--line);background:var(--panel)}
+  h1{margin:0 0 6px;font:600 20px/1.2 'Space Grotesk','Inter',sans-serif}
+  .sub{color:var(--dim);font-size:13px}
+  .stats{display:flex;gap:22px;margin-top:14px;flex-wrap:wrap}
+  .stat{background:var(--col);padding:10px 16px;border-radius:8px;border:1px solid var(--line)}
+  .stat b{display:block;font:600 22px/1 'Space Grotesk',sans-serif;margin-bottom:3px}
+  .stat span{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+  .legend{display:flex;gap:18px;margin-top:14px;font-size:12px;color:var(--dim);flex-wrap:wrap}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:middle}
+  .board{padding:20px 28px}
+  .board h2{font:600 16px/1.2 'Space Grotesk',sans-serif;margin:0 0 4px} .bmeta{color:var(--dim);font-weight:400;font-size:12px;margin-left:8px}
+  .flagrow{background:#2A2410;border:1px solid #4A3F15;color:#FFC107;padding:8px 12px;border-radius:6px;font-size:12px;margin:8px 0 14px}
+  .kanban{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px}
+  .col{flex:0 0 230px;background:var(--col);border:1px solid var(--line);border-radius:8px;padding:8px}
+  .colhead{font:600 12px/1.4 'Inter',sans-serif;padding:6px 4px 8px;text-transform:uppercase;letter-spacing:.4px;color:var(--text)}
+  .colhead .ct{float:right;background:#0E1116;color:var(--dim);border-radius:10px;padding:1px 8px;font-size:11px}
+  .card{background:#0E1116;border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin-bottom:7px}
+  .cname{font-size:13px;font-weight:500} .csub{font-size:11px;color:var(--dim);margin-top:2px} .cbadge{font-size:10px;margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+</style></head><body>
+<header>
+  <h1>Trello → Setter Kanban — Mirror Preview</h1>
+  <div class="sub">READ-ONLY. Live pull of both boards, laid into the real setter stages. No leads written. Generated for review before any import.</div>
+  <div class="stats">
+    <div class="stat"><b>166</b><span>Total cards</span></div>
+    <div class="stat"><b>23</b><span>Already a lead</span></div>
+    <div class="stat"><b>70</b><span>Named, no lead (GHL-anchor)</span></div>
+    <div class="stat"><b>73</b><span>ManyChat URL only (excluded)</span></div>
+    <div class="stat"><b>25%</b><span>Named cards already leads</span></div>
+  </div>
+  <div class="legend">
+    <span><i style="background:#2ED47A"></i>Matched existing lead</span>
+    <span><i style="background:#FFC107"></i>Real name, no lead yet — GHL-anchor at import</span>
+    <span><i style="background:#5A6472"></i>ManyChat URL placeholder — excluded (Lane 7)</span>
+  </div>
+</header>
+<section class="board">
+      <h2>HPF Toni <span class="bmeta">35 cards · 11 lists</span></h2>
+      <div class="flagrow">⚠ Mapping to confirm: app-filled-no-book → LINK_SENT (confirm)</div>
+      <div class="kanban">
+      <div class="col">
+        <div class="colhead" style="border-top:3px solid #26A69A">
+          Hot <span class="ct">12</span>
+        </div>
+        <div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Donna Heav</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Nigel</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Graeme</div>
+      <div class="csub">→ Graeme</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div><div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Ed</div>
+      <div class="csub">→ Ed</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Adrian</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Chris</div>
+      <div class="csub">→ Chris</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div>
+      </div>
+      <div class="col">
+        <div class="colhead" style="border-top:3px solid #26A69A">
+          Call Proposed <span class="ct">8</span>
+        </div>
+        <div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Mark</div>
+      <div class="csub">→ Mark</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div><div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Mike</div>
+      <div class="csub">→ Mike</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div>
+      </div>
+      <div class="col">
+        <div class="colhead" style="border-top:3px solid #26A69A">
+          Link Sent <span class="ct">8</span>
+        </div>
+        <div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Krista Van kessel</div>
+      <div class="csub">→ Krista Van Kessel</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Conrad</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Chris</div>
+      <div class="csub">→ Chris</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div>
+      </div>
+      <div class="col">
+        <div class="colhead" style="border-top:3px solid #FFC107">
+          Call Booked <span class="ct">3</span>
+        </div>
+        <div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Sabrina</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div>
+      </div>
+      <div class="col">
+        <div class="colhead" style="border-top:3px solid #26A69A">
+          LTFU <span class="ct">2</span>
+        </div>
+        <div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div>
+      </div>
+      <div class="col">
+        <div class="colhead" style="border-top:3px solid #AB47BC">
+          Cancel / No-Show <span class="ct">1</span>
+        </div>
+        <div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div>
+      </div></div>
+    </section><section class="board">
+      <h2>HPF Afzal <span class="bmeta">131 cards · 11 lists</span></h2>
+      <div class="flagrow">⚠ Mapping to confirm: ANBs → WARM (confirm: intake holding pen?) · CLIENT → existing client; exclude from import?</div>
+      <div class="kanban">
+      <div class="col">
+        <div class="colhead" style="border-top:3px solid #78909C">
+          Warm <span class="ct">43</span>
+        </div>
+        <div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Laurel Wray Jones</div>
+      <div class="csub">→ Laurel Jones</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div><div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Caitlin Hocking</div>
+      <div class="csub">→ Caitlin Hocking</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div><div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Sashila Ozukum</div>
+      <div class="csub">→ Sashila Ozukum</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Raphael Magalhaes</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Adam Morris</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Yudith Elena</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Lauren Shuyler</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Tara Wood</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Earl O'Neil</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">James Keoughan</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Anastasiya No</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Mona Malek</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Diana</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Nikolaj Kišfalvi</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">chris huff</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Armida Abellera</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Lynn Truong</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Monica Mojica</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Koulla Kyratzis</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Leticia Swofford</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Maria Jo</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Andrew Criswell</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Pedro Cordon</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Brandi Chanelle Harner</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Helena Werner</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Angie Whittle</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Dane Tamayo</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Lidija Prskalo</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Jeff McConnell</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Gabi Cobb</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Steven Labate</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Colleen Frazier</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Marjun Brockie</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Amy Kinnaird</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Miria Fent</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div>
+      </div>
+      <div class="col">
+        <div class="colhead" style="border-top:3px solid #26A69A">
+          Hot <span class="ct">16</span>
+        </div>
+        <div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Edmund Browning</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Vlad Musat</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Jacek Dub</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Bill Klein</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Jeffrey Lodewijkx</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Barbara W. Deskey</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Thomas Skråmestø</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Ryan Daley</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Dawn RebuildingMe</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Bran CK</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Lei Xie</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Sam Rakes</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Ben Sweatt</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Cristina Constantina</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Rachelle Hughes</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Adam Wisniewski</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div>
+      </div>
+      <div class="col">
+        <div class="colhead" style="border-top:3px solid #26A69A">
+          Call Proposed <span class="ct">19</span>
+        </div>
+        <div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Ellen Chao</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Sara Stone</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Michelle Cornella</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Nicole Mercier</div>
+      <div class="csub">→ Nicole Mercier</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Roy Huntley</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Cassandra Franco</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Marzena Nowicka-Brak</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div>
+      </div>
+      <div class="col">
+        <div class="colhead" style="border-top:3px solid #26A69A">
+          Link Sent <span class="ct">32</span>
+        </div>
+        <div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Brett Holsh</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Carly Smith</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Nicholas Stirpé</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Courtney Campbell</div>
+      <div class="csub">→ Courtney Campbell</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Jennifer Green</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div>
+      </div>
+      <div class="col">
+        <div class="colhead" style="border-top:3px solid #FFC107">
+          Call Booked <span class="ct">7</span>
+        </div>
+        <div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Marcelo Shou</div>
+      <div class="csub">→ Marcelo Shou</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div><div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Carina Freitas Lindberg</div>
+      <div class="csub">→ Carina Freitas Lindberg</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Melissa Mastroianni</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Jessica Prince</div>
+      <div class="csub">→ Jessica Prince</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div><div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Leo Escartin-Guerrero (M)</div>
+      <div class="csub">→ leo Escartin</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div><div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Piki Taiaroa-Whatarangi (M)</div>
+      <div class="csub">→ Piki Taiaroa</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div><div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Ed Gnad</div>
+      <div class="csub">→ Ed Gnad</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div>
+      </div>
+      <div class="col">
+        <div class="colhead" style="border-top:3px solid #26A69A">
+          LTFU <span class="ct">9</span>
+        </div>
+        <div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #5A6472">
+      <div class="cname">(ManyChat URL — no name)</div>
+      
+      <div class="cbadge" style="color:#5A6472">ManyChat</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Naz Mobin</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Inga Litvinsky</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Lee Gandy</div>
+      <div class="csub">→ Lee Gandy</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Anni</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Ted Eckman</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Mena Moretti</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div>
+      </div>
+      <div class="col">
+        <div class="colhead" style="border-top:3px solid #AB47BC">
+          Cancel / No-Show <span class="ct">4</span>
+        </div>
+        <div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Brett Meadows</div>
+      <div class="csub">→ Brett Meadows</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div><div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Tarek Daher</div>
+      <div class="csub">→ Tarek Daher</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div><div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Monica Y Gelder Moran</div>
+      <div class="csub">→ monica Moran Leyva</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div><div class="card" style="border-left:3px solid #FFC107">
+      <div class="cname">Melissa (Missy Bee)</div>
+      
+      <div class="cbadge" style="color:#FFC107">GHL?</div>
+    </div>
+      </div>
+      <div class="col">
+        <div class="colhead" style="border-top:3px solid #4CAF50">
+          Won <span class="ct">1</span>
+        </div>
+        <div class="card" style="border-left:3px solid #2ED47A">
+      <div class="cname">Alexiomar Rodríguez</div>
+      <div class="csub">→ Alexiomar Rodriguez</div>
+      <div class="cbadge" style="color:#2ED47A">✓ lead</div>
+    </div>
+      </div></div>
+    </section>
+<footer style="padding:20px 28px;color:var(--dim);font-size:12px;border-top:1px solid var(--line)">
+  Matcher: hyphen + middle-name + accent-folded, first+last token. ManyChat-URL cards carry no identity and are excluded until ManyChat-id ingestion (Lane 7) lands.
+</footer>
+</body></html>
