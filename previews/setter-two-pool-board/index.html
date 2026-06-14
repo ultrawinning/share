@@ -115,7 +115,7 @@
 
   <div class="note">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E0A85C" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-    <div><b>v2 — Confirm pool placement (your call).</b> The "To Confirm" set is <b>not</b> a second column on the busy intake. It's a <b>collapsed amber rail beside CALL BOOKED</b> — out of the qualify→book flow, but one glance away. Badge only shows when there are sets to confirm. NEW intake stays a single clean column. Mock data; counts = verified prod (739 / 22).</div>
+    <div><b>v3 — Confirm ≠ Set.</b> "To Confirm" = a call that <b>booked itself</b> (direct Typeform) and needs a setter to <b>confirm</b> the prospect shows — confirming <b>claims the call</b> to them (confirmation credit). The button is <b>"Confirm,"</b> not "I set this." ("I set this" lives only on the Needs-Attribution queue below — that's <i>set</i> attribution: who worked a loose lead.) Placement: a <b>collapsed amber rail beside CALL BOOKED</b>, badge only when populated. <b>Meta-booked calls don't appear here — they stay with Riley</b> (his dialer board). Counts = verified prod (739 / 22).</div>
   </div>
 
   <!-- ============ BOARD — collapsed rail in context ============ -->
@@ -154,7 +154,7 @@
     </div>
     <div class="col pipe"><div class="col-hd"><span class="ttl">CONFIRMED</span><span class="cnt">6</span></div><div class="mini">Lara V.</div></div>
   </div>
-  <div class="flowtag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg> Sits right before CALL BOOKED — claiming a set moves it into that setter's booked column. Pool → owned, left to right.</div>
+  <div class="flowtag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg> Sits right before CALL BOOKED — confirming a call moves it into that setter's booked column. Pool → owned, left to right.</div>
 
   <!-- ============ EXPANDED ============ -->
   <div class="stage-eyebrow">Clicked open — work the sets, then back to collapsed</div>
@@ -166,11 +166,11 @@
         <span class="ttl">To Confirm <span class="badge-new">NEW</span></span><span class="cnt">3</span>
         <svg style="margin-left:6px;color:var(--confirm)" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
       </div>
-      <div class="sub">Booked direct via Typeform — qualified, no setter yet. Confirm &amp; claim the set.</div>
+      <div class="sub">Booked direct via Typeform — qualified, no setter yet. Confirm the call → that claims it to you. (Meta-booked stays with Riley.)</div>
       <div class="cards">
-        <div class="card" style="--edge:var(--confirm)"><div class="row1"><span class="dot" style="background:var(--green-dot)"></span><span class="nm">Jordan Embry</span><span class="src">Self-booked</span></div><div class="meta"><span class="b">Call: Mon 2:00 PM</span><span>booked 3h ago</span></div><button class="claim"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3BAE72" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> I set this</button></div>
-        <div class="card" style="--edge:var(--confirm)"><div class="row1"><span class="dot" style="background:var(--green-dot)"></span><span class="nm">Lena Brooks</span><span class="src">Self-booked</span></div><div class="meta"><span class="b">Call: Tue 10:30 AM</span><span>booked 1d ago</span></div><button class="claim"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3BAE72" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> I set this</button></div>
-        <div class="card" style="--edge:var(--confirm)"><div class="row1"><span class="dot" style="background:var(--amber-dot)"></span><span class="nm">Tomas Vega</span><span class="src">Self-booked</span></div><div class="meta"><span class="b">Call: Tue 4:00 PM</span><span>booked 1d ago</span></div><button class="claim"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3BAE72" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> I set this</button></div>
+        <div class="card" style="--edge:var(--confirm)"><div class="row1"><span class="dot" style="background:var(--green-dot)"></span><span class="nm">Jordan Embry</span><span class="src">Self-booked</span></div><div class="meta"><span class="b">Call: Mon 2:00 PM</span><span>booked 3h ago</span></div><button class="claim"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3BAE72" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> Confirm</button></div>
+        <div class="card" style="--edge:var(--confirm)"><div class="row1"><span class="dot" style="background:var(--green-dot)"></span><span class="nm">Lena Brooks</span><span class="src">Self-booked</span></div><div class="meta"><span class="b">Call: Tue 10:30 AM</span><span>booked 1d ago</span></div><button class="claim"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3BAE72" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> Confirm</button></div>
+        <div class="card" style="--edge:var(--confirm)"><div class="row1"><span class="dot" style="background:var(--amber-dot)"></span><span class="nm">Tomas Vega</span><span class="src">Self-booked</span></div><div class="meta"><span class="b">Call: Tue 4:00 PM</span><span>booked 1d ago</span></div><button class="claim"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3BAE72" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> Confirm</button></div>
       </div>
     </div>
     <div class="col bookedcol"><div class="col-hd"><span class="ttl">CALL BOOKED</span><span class="cnt">4</span></div><div class="mini">Ivy R. · Mon 11am</div><div class="mini">Sam D. · Tue 3pm</div></div>
@@ -179,7 +179,7 @@
   <div class="legend">
     <div><span class="k" style="background:var(--confirm)"></span><b>Collapsed by default</b> — when there are 0 sets to confirm, no badge, zero noise. It only grows the amber count when there's work.</div>
     <div><span class="k" style="background:var(--booked)"></span><b>Next to CALL BOOKED</b> — these leads are already booked; they belong by the booked stage, not the unbooked NEW intake.</div>
-    <div><span class="k" style="background:var(--success)"></span><b>"I set this"</b> → light claim (`setter_confirmation`), card moves into that setter's CALL BOOKED. The flow tells the story.</div>
+    <div><span class="k" style="background:var(--success)"></span><b>"Confirm"</b> → one tap, claims the call to the current setter (<code>method=confirmation</code>), card moves into their CALL BOOKED to be confirmed. Confirming = claiming.</div>
     <div><span class="k" style="background:var(--info)"></span><b>NEW intake stays clean</b> — one column ("Qualify &amp; Book"), Meta now routed to Riley. No second intake column.</div>
   </div>
 
@@ -188,13 +188,13 @@
   </div>
 
   <!-- claim modal -->
-  <h2 class="sec"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3BAE72" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg> Claim modal — "I set this"</h2>
-  <p class="seclead">Opens from a To-Confirm card (or the Needs-Attribution queue). Light by design — the system already has the booking; this just attributes the set.</p>
+  <h2 class="sec"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3BAE72" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg> "I set this" modal — set attribution (Needs-Attribution queue only)</h2>
+  <p class="seclead">Opens from the Needs-Attribution queue — a loose booked lead with no setter on record: pick who <i>set</i> it (can be on-behalf). To-Confirm cards do NOT use this: there, <b>"Confirm" is one tap</b> that claims the call to the current setter — no dropdown.</p>
   <div class="modal">
-    <h3>Claim this set — Jordan Embry</h3><p>Booked direct Mon 2:00 PM. Who worked this lead?</p>
-    <div class="fld"><label>Setter</label><div class="selbox">Afzal ▾</div></div>
-    <div class="fld"><label>Note (optional)</label><div class="txt" style="color:var(--hpf-fg3)">e.g. DM'd on IG last week, sent the link…</div></div>
-    <button class="go">Claim the set</button>
+    <h3>Who set this lead? — Hannah Steele</h3><p>Booked Wed 1pm via LinkedIn — no setter credited.</p>
+    <div class="fld"><label>Setter who worked it</label><div class="selbox">Angelica ▾ &nbsp;<span style="color:var(--info);font-size:10.5px">suggested</span></div></div>
+    <div class="fld"><label>Note (optional)</label><div class="txt" style="color:var(--hpf-fg3)">e.g. DM'd on LinkedIn last week, sent the link…</div></div>
+    <button class="go">Assign the set</button>
   </div>
 
   <!-- needs attribution -->
