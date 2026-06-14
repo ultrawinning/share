@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Setter Two-Pool Board — Phase 1b design review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --hpf-base:#15171C; --hpf-section:#1C1E24; --hpf-card:#20232B;
+    --hpf-fg1:#F0F2F5; --hpf-fg2:#A0A8B4; --hpf-fg3:#7A828F;
+    --hpf-border:rgba(255,255,255,0.08); --hpf-border-strong:rgba(255,255,255,0.14);
+    --info:#8EC5F0;        /* Qualify & Book accent (existing NEW pool) */
+    --confirm:#E0A85C;     /* To Confirm accent (NEW pool) */
+    --success:#3BAE72;     /* claim / set action */
+    --green-dot:#2ED47A; --amber-dot:#E0A85C; --red-dot:#E05C5C;
+    --radius-sm:6px; --radius-md:10px; --radius-lg:12px;
+    --font:'Inter',system-ui,sans-serif; --display:'Space Grotesk',var(--font);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--hpf-base);color:var(--hpf-fg1);font-family:var(--font);font-size:13px;line-height:1.45;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1500px;margin:0 auto;padding:20px 24px 80px}
+  a{color:var(--info)}
+  /* top rail */
+  .rail{display:flex;align-items:center;gap:14px;padding:12px 16px;border:1px solid var(--hpf-border);border-radius:var(--radius-lg);background:var(--hpf-section);margin-bottom:18px}
+  .logo{font-family:var(--display);font-weight:700;letter-spacing:.02em}
+  .logo b{color:var(--green-dot)}
+  .rail .sep{color:var(--hpf-fg3)}
+  .eyebrow{font-family:var(--display);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--hpf-fg3);font-weight:600}
+  .tabs{margin-left:auto;display:flex;gap:6px}
+  .tab{padding:5px 12px;border-radius:var(--radius-sm);font-size:12px;font-weight:600;color:var(--hpf-fg2);border:1px solid transparent}
+  .tab.on{background:rgba(142,197,240,.12);color:var(--info);border-color:rgba(142,197,240,.25)}
+  /* annotation banner */
+  .note{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:var(--radius-md);background:color-mix(in oklab,var(--info) 9%,var(--hpf-section));border:1px solid color-mix(in oklab,var(--info) 22%,transparent);margin-bottom:18px;font-size:12.5px;color:var(--hpf-fg2)}
+  .note b{color:var(--hpf-fg1)}
+  .badge-new{display:inline-block;font-family:var(--display);font-size:9px;font-weight:700;letter-spacing:.1em;padding:2px 6px;border-radius:4px;background:var(--confirm);color:#16140F;vertical-align:middle}
+  /* board */
+  .board{display:flex;gap:12px;align-items:flex-start;overflow-x:auto;padding-bottom:8px}
+  .col{flex:0 0 320px;border-radius:var(--radius-lg);background:var(--hpf-section);border:1px solid var(--hpf-border);overflow:hidden}
+  .col.pool{background:color-mix(in oklab,var(--accent) 7%,var(--hpf-section));border-left:3px solid var(--accent)}
+  .col-hd{padding:11px 13px;border-bottom:1px solid var(--hpf-border);display:flex;align-items:center;gap:8px}
+  .col-hd .ttl{font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.01em}
+  .col-hd .cnt{margin-left:auto;font-family:var(--display);font-weight:700;font-size:11px;padding:2px 8px;border-radius:20px;background:var(--accent);color:#13161B}
+  .sub{font-size:11px;color:var(--hpf-fg3);padding:0 13px 9px;border-bottom:1px solid var(--hpf-border)}
+  .pills{display:flex;gap:5px;padding:9px 13px;border-bottom:1px solid var(--hpf-border)}
+  .pill{font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:var(--radius-sm);color:var(--hpf-fg2);border:1px solid var(--hpf-border-strong)}
+  .pill.on{background:rgba(142,197,240,.14);color:var(--info);border-color:rgba(142,197,240,.3)}
+  .search{margin:9px 13px;padding:6px 9px;border-radius:var(--radius-sm);background:var(--hpf-base);border:1px solid var(--hpf-border);color:var(--hpf-fg3);font-size:11.5px}
+  .cards{padding:9px 11px;display:flex;flex-direction:column;gap:8px;max-height:560px;overflow:auto}
+  .card{background:var(--hpf-card);border:1px solid var(--hpf-border);border-left:2px solid var(--edge,transparent);border-radius:var(--radius-md);padding:10px 11px}
+  .card .row1{display:flex;align-items:center;gap:7px}
+  .dot{width:7px;height:7px;border-radius:50%;flex:0 0 auto}
+  .nm{font-weight:600;font-size:13px}
+  .src{margin-left:auto;font-size:9.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--hpf-fg3);padding:2px 6px;border:1px solid var(--hpf-border);border-radius:4px}
+  .meta{font-size:11px;color:var(--hpf-fg3);margin-top:5px;display:flex;gap:8px;flex-wrap:wrap}
+  .meta .b{color:var(--hpf-fg2)}
+  .hint{font-size:10.5px;color:var(--hpf-fg3);font-style:italic;margin-top:7px}
+  .claim{margin-top:8px;width:100%;padding:7px;border-radius:var(--radius-sm);background:color-mix(in oklab,var(--success) 16%,transparent);border:1px solid color-mix(in oklab,var(--success) 40%,transparent);color:var(--success);font-weight:700;font-size:12px;font-family:var(--display);display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer}
+  .pipe{flex:0 0 150px;opacity:.62}
+  .pipe .col-hd .ttl{font-size:11px;color:var(--hpf-fg2)}
+  .mini{background:var(--hpf-card);border:1px solid var(--hpf-border);border-radius:var(--radius-sm);padding:7px 8px;font-size:11px;color:var(--hpf-fg2);margin:6px 8px}
+  /* section heads */
+  h2.sec{font-family:var(--display);font-size:15px;font-weight:700;margin:34px 0 4px;display:flex;align-items:center;gap:9px}
+  .seclead{color:var(--hpf-fg3);font-size:12px;margin-bottom:14px}
+  /* needs-attribution */
+  .naq{border-radius:var(--radius-lg);background:var(--hpf-section);border:1px solid var(--hpf-border);overflow:hidden;max-width:760px}
+  .naq-hd{display:flex;align-items:center;gap:9px;padding:12px 15px;border-bottom:1px solid var(--hpf-border)}
+  .naq-hd .ttl{font-family:var(--display);font-weight:700}
+  .naq-hd .cnt{margin-left:auto;font-family:var(--display);font-weight:700;font-size:11px;padding:2px 9px;border-radius:20px;background:var(--red-dot);color:#1a0e0e}
+  .naq-row{display:flex;align-items:center;gap:11px;padding:11px 15px;border-bottom:1px solid var(--hpf-border)}
+  .naq-row:last-child{border-bottom:none}
+  .sugg{font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:20px;background:color-mix(in oklab,var(--info) 14%,transparent);color:var(--info);border:1px solid color-mix(in oklab,var(--info) 30%,transparent)}
+  .sugg.none{background:var(--hpf-border);color:var(--hpf-fg3);border-color:var(--hpf-border-strong)}
+  .iset{margin-left:auto;padding:6px 12px;border-radius:var(--radius-sm);background:color-mix(in oklab,var(--success) 16%,transparent);border:1px solid color-mix(in oklab,var(--success) 40%,transparent);color:var(--success);font-weight:700;font-size:11.5px;font-family:var(--display);white-space:nowrap}
+  .addby{padding:11px 15px;font-size:11.5px;color:var(--hpf-fg3)}
+  .addby span{color:var(--info);font-weight:600}
+  /* modal */
+  .modal-wrap{position:relative;margin:18px 0 0;max-width:420px}
+  .modal{border-radius:var(--radius-lg);background:var(--hpf-card);border:1px solid var(--hpf-border-strong);box-shadow:0 16px 50px rgba(0,0,0,.5);padding:16px}
+  .modal h3{font-family:var(--display);font-size:14px;margin-bottom:3px}
+  .modal p{font-size:11.5px;color:var(--hpf-fg3);margin-bottom:13px}
+  .fld{margin-bottom:11px}
+  .fld label{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--hpf-fg3);margin-bottom:5px;font-weight:600}
+  .selbox,.txt{width:100%;padding:8px 10px;border-radius:var(--radius-sm);background:var(--hpf-base);border:1px solid var(--hpf-border-strong);color:var(--hpf-fg1);font-size:12.5px;font-family:var(--font)}
+  .modal .go{width:100%;margin-top:4px;padding:9px;border-radius:var(--radius-sm);background:var(--success);color:#08130d;font-weight:700;font-family:var(--display);font-size:13px;border:none}
+  .legend{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 0;font-size:11.5px}
+  .legend div{padding:9px 11px;border-radius:var(--radius-md);background:var(--hpf-section);border:1px solid var(--hpf-border);color:var(--hpf-fg2)}
+  .legend b{color:var(--hpf-fg1)}
+  .k{display:inline-block;width:10px;height:10px;border-radius:3px;vertical-align:middle;margin-right:5px}
+  .foot{margin-top:40px;font-size:11px;color:var(--hpf-fg3);border-top:1px solid var(--hpf-border);padding-top:14px}
+  svg{display:inline-block;vertical-align:middle}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="rail">
+    <span class="logo">HPF<b>HQ</b></span><span class="sep">·</span>
+    <span class="eyebrow">Setter Workstation</span>
+    <span class="sep">·</span><b style="font-family:var(--display)">Afzal</b>
+    <div class="tabs">
+      <span class="tab">Inbox</span>
+      <span class="tab on">Pipeline</span>
+      <span class="tab">Needs Attribution <span class="badge-new">NEW</span></span>
+      <span class="tab">EOD</span>
+    </div>
+  </div>
+
+  <div class="note">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8EC5F0" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+    <div><b>Phase 1b design review.</b> This is the <b>setter workstation</b> (<code>/setter/afzal · toni · roseve</code>) — the operators' board, not a leadership page. The single "New Leads" column is split into <b>two routing-derived intake pools</b>. The "Needs Attribution" tab + a compact banner on the leadership <code>/setters</code> dashboard (analogous to <code>/coaching</code>) is the pull-queue that replaces Slack emoji attribution. Mock data; counts reflect verified prod (739 / 22).</div>
+  </div>
+
+  <!-- ============ TWO-POOL INTAKE BOARD ============ -->
+  <div class="board">
+
+    <!-- Pool 1 -->
+    <div class="col pool" style="--accent:var(--info)">
+      <div class="col-hd">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8EC5F0" stroke-width="2"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+        <span class="ttl">Leads to Qualify &amp; Book</span><span class="cnt">739</span>
+      </div>
+      <div class="pills"><span class="pill on">All</span><span class="pill">TF</span><span class="pill">MC</span></div>
+      <div class="search">🔎  Search leads…</div>
+      <div class="cards">
+        <div class="card" style="--edge:var(--green-dot)">
+          <div class="row1"><span class="dot" style="background:var(--green-dot)"></span><span class="nm">Marcus Reyll</span><span class="src">ManyChat</span></div>
+          <div class="meta"><span class="b">Founder · $250k+</span><span>2h ago</span></div>
+          <div class="hint">Drag to a stage to claim →</div>
+        </div>
+        <div class="card" style="--edge:var(--amber-dot)">
+          <div class="row1"><span class="dot" style="background:var(--amber-dot)"></span><span class="nm">Priya Naidoo</span><span class="src">Typeform</span></div>
+          <div class="meta"><span class="b">Coach · $150k</span><span>5h ago</span></div>
+          <div class="hint">Drag to a stage to claim →</div>
+        </div>
+        <div class="card" style="--edge:var(--green-dot)">
+          <div class="row1"><span class="dot" style="background:var(--green-dot)"></span><span class="nm">Devon Clarke</span><span class="src">ManyChat</span></div>
+          <div class="meta"><span class="b">Agency owner</span><span>1d ago</span></div>
+          <div class="hint">Drag to a stage to claim →</div>
+        </div>
+        <div class="card" style="--edge:var(--green-dot)">
+          <div class="row1"><span class="dot" style="background:var(--green-dot)"></span><span class="nm">Sara Whitfield</span><span class="src">Typeform</span></div>
+          <div class="meta"><span class="b">Consultant · $300k</span><span>1d ago</span></div>
+          <div class="hint">Drag to a stage to claim →</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pool 2 — NEW -->
+    <div class="col pool" style="--accent:var(--confirm)">
+      <div class="col-hd">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#E0A85C" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+        <span class="ttl">To Confirm <span class="badge-new">NEW</span></span><span class="cnt">22</span>
+      </div>
+      <div class="sub">Booked direct via Typeform — qualified, no setter yet. Confirm the call &amp; claim the set.</div>
+      <div class="cards">
+        <div class="card" style="--edge:var(--confirm)">
+          <div class="row1"><span class="dot" style="background:var(--green-dot)"></span><span class="nm">Jordan Embry</span><span class="src">Self-booked</span></div>
+          <div class="meta"><span class="b">Call: Mon 2:00 PM</span><span>booked 3h ago</span></div>
+          <button class="claim"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3BAE72" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> I set this</button>
+        </div>
+        <div class="card" style="--edge:var(--confirm)">
+          <div class="row1"><span class="dot" style="background:var(--green-dot)"></span><span class="nm">Lena Brooks</span><span class="src">Self-booked</span></div>
+          <div class="meta"><span class="b">Call: Tue 10:30 AM</span><span>booked 1d ago</span></div>
+          <button class="claim"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3BAE72" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> I set this</button>
+        </div>
+        <div class="card" style="--edge:var(--confirm)">
+          <div class="row1"><span class="dot" style="background:var(--amber-dot)"></span><span class="nm">Tomas Vega</span><span class="src">Self-booked</span></div>
+          <div class="meta"><span class="b">Call: Tue 4:00 PM</span><span>booked 1d ago</span></div>
+          <button class="claim"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3BAE72" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> I set this</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- pipeline context (dimmed) -->
+    <div class="col pipe"><div class="col-hd"><span class="ttl">WARM</span></div><div class="mini">Alex P.</div><div class="mini">Nadia K.</div></div>
+    <div class="col pipe"><div class="col-hd"><span class="ttl">HOT</span></div><div class="mini">Greg T.</div></div>
+    <div class="col pipe"><div class="col-hd"><span class="ttl">CALL BOOKED</span></div><div class="mini">Ivy R.</div><div class="mini">Sam D.</div></div>
+  </div>
+
+  <div class="legend">
+    <div><span class="k" style="background:var(--info)"></span><b>Qualify &amp; Book</b> — ManyChat + DM/direct Typeform, not yet booked. The setter qualifies + books. (existing pool, Meta now excluded)</div>
+    <div><span class="k" style="background:var(--confirm)"></span><b>To Confirm</b> — qualified leads who booked themselves with no setter conversation. Confirm + claim. Marked for future payment split.</div>
+    <div><span class="k" style="background:var(--success)"></span><b>"I set this"</b> — one-tap claim → credits the setter (<code>setter_confirmation</code>), card moves into their pipeline. Lighter than the full evidence claim.</div>
+    <div><span class="k" style="background:var(--green-dot)"></span><b>Qual dot</b> — green = qualified (green tier), amber = amber tier. Same card language as today.</div>
+  </div>
+
+  <!-- ============ CONFIRM CLAIM MODAL ============ -->
+  <h2 class="sec"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3BAE72" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg> Claim modal — "I set this"</h2>
+  <p class="seclead">Opens from a To-Confirm card (or the Needs-Attribution queue). Deliberately light — the system already has the booking; this just attributes the set.</p>
+  <div class="modal-wrap">
+    <div class="modal">
+      <h3>Claim this set — Jordan Embry</h3>
+      <p>Booked direct Mon 2:00 PM. Who worked this lead?</p>
+      <div class="fld"><label>Setter</label><div class="selbox">Afzal ▾</div></div>
+      <div class="fld"><label>Note (optional)</label><div class="txt" style="color:var(--hpf-fg3)">e.g. DM'd on IG last week, sent the link…</div></div>
+      <button class="go">Claim the set</button>
+    </div>
+  </div>
+
+  <!-- ============ NEEDS ATTRIBUTION QUEUE ============ -->
+  <h2 class="sec"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#E05C5C" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg> Needs Attribution <span class="badge-new">NEW</span></h2>
+  <p class="seclead">The pull queue that replaces Slack emoji reactions. Booked leads with <b>no setter signal</b> — surfaced so the right setter taps once. Auto-suggests a setter when there's a weak hint. Mounts as a workstation tab + a compact "N need attribution" banner on the leadership <code>/setters</code> dashboard.</p>
+  <div class="naq">
+    <div class="naq-hd">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#E05C5C" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+      <span class="ttl">Booked, no setter credited</span><span class="cnt">7</span>
+    </div>
+    <div class="naq-row">
+      <span class="dot" style="background:var(--green-dot)"></span>
+      <div><div class="nm">Hannah Steele</div><div class="meta"><span>Call Wed 1pm</span><span>LinkedIn</span></div></div>
+      <span class="sugg">Likely: Angelica</span>
+      <button class="iset">I set this</button>
+    </div>
+    <div class="naq-row">
+      <span class="dot" style="background:var(--green-dot)"></span>
+      <div><div class="nm">Raj Malhotra</div><div class="meta"><span>Call Thu 11am</span><span>Email</span></div></div>
+      <span class="sugg">Likely: Angelica</span>
+      <button class="iset">I set this</button>
+    </div>
+    <div class="naq-row">
+      <span class="dot" style="background:var(--amber-dot)"></span>
+      <div><div class="nm">Chris Donovan</div><div class="meta"><span>Call Fri 9am</span><span>Typeform</span></div></div>
+      <span class="sugg none">No hint — pick setter</span>
+      <button class="iset">I set this</button>
+    </div>
+    <div class="addby">Worked someone who isn't here yet? <span>+ Add by email</span> — pulls from GHL.</div>
+  </div>
+
+  <div class="foot">
+    Static mockup for design review · HPFHQ Phase 1b (lead routing engine) · spec: <code>docs/plans/sales/2026-06-14-routing-phase1b-spec.md</code><br>
+    Lands on the <b>setter workstation</b> (<code>/setter/[name]</code>). The two-pool board is operator-facing; the Needs-Attribution count also banners on the leadership <code>/setters</code> dashboard.
+  </div>
+
+</div>
+</body>
+</html>
