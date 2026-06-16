@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Payment Lifecycle Ledger — Phase 2 Build Handover</title>
+<style>
+  :root { --bg:#0f1115; --fg:#e6e8eb; --mut:#9aa3ad; --grn:#2ED47A; --card:#171a21; --bd:#262b34; --code:#1d2128; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 -apple-system,Inter,Segoe UI,Roboto,sans-serif; }
+  .wrap { max-width:820px; margin:0 auto; padding:48px 22px 96px; }
+  h1 { font-size:26px; margin:0 0 4px; border-left:4px solid var(--grn); padding-left:12px; }
+  .sub { color:var(--mut); margin:0 0 28px; padding-left:16px; font-size:14px; }
+  h2 { font-size:18px; margin:34px 0 10px; }
+  h3 { font-size:15px; margin:18px 0 6px; color:var(--grn); }
+  p, li { color:var(--fg); }
+  .mut { color:var(--mut); }
+  code { background:var(--code); padding:1px 6px; border-radius:4px; font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace; }
+  .card { background:var(--card); border:1px solid var(--bd); border-radius:10px; padding:14px 18px; margin:12px 0; }
+  .done { border-left:3px solid var(--grn); }
+  .warn { border-left:3px solid #e0a93a; }
+  ul { padding-left:20px; } li { margin:4px 0; }
+  .tag { display:inline-block; font-size:11px; color:var(--mut); border:1px solid var(--bd); border-radius:20px; padding:1px 9px; margin-left:6px; }
+  hr { border:0; border-top:1px solid var(--bd); margin:30px 0; }
+  b { color:#fff; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Payment Lifecycle Ledger — Phase 2 Build Handover</h1>
+  <p class="sub">2026-06-16 · HPFHQ · pick up here to build phase 2a · spec on origin/main <code>ed0faabc</code></p>
+
+  <div class="card done">
+    <h3 style="margin-top:0">✅ Shipped + verified this session</h3>
+    <ul>
+      <li><b>Charge-classification override</b> <span class="tag">8813aa98 · deployed</span> — the sanctioned cash-bucket reclassification path (rule-25). Table <code>charge_classification_override</code> (RLS) + pure tested <code>applyOverridesToRows</code> applied in <code>classifyWindow</code> after the ladder. 16/16 tests.</li>
+      <li><b>Scott Olthoff</b> reclassified new→renewal via an override row — resolver-verified: June new $74,110→$70,110, renewal $2,500→$6,500.</li>
+      <li>Stripe <code>contract_value=0</code> fix + backfill (June contracted/AOV corrected) · per-deal AOV canon · master sheet correct for Dan (renewal $6,500) · Telegram purged from <code>/api/health</code> · Overseer PRD-F11 · booking-precall <code>cron_runs</code> telemetry green.</li>
+    </ul>
+  </div>
+
+  <h2>Build next — Phase 2a</h2>
+  <p class="mut">Spec: <code>docs/plans/sales/2026-06-15-payment-lifecycle-ledger-phase2.md</code> — read the REVIEW VERDICT + Decisions RESOLVED + M0–M7. v1 below them is SUPERSEDED.</p>
+
+  <h3>Decisions resolved (build with these)</h3>
+  <ul>
+    <li><b>D1</b> — <code>recurring_cash_collected</code> = the monthly RETAINER, the only recurring. Net the retainer OUT of <code>new_cash</code> INTO <code>recurring</code> (fixes <code>cash-collected.ts:37-41</code>).</li>
+    <li><b>D2</b> — override vocab stays the 5 cash buckets; <code>lifecycle_stage</code> is DERIVED downstream of the post-override <code>cash_bucket</code> (humans set cash_bucket only). new+seq1→first_payment · payment_plan→installment · renewal→extension · date-rule→term_complete marker.</li>
+    <li><b>D3</b> — ship new-vs-returning FIRST (2a–2d); retention RATE next (2e, date-derived completion); arrivals feed = refinement, not a blocker.</li>
+  </ul>
+
+  <h3>Build order</h3>
+  <ul>
+    <li><b>2a</b> — <code>payment_lifecycle</code> as a TS MATERIALIZER over <code>classifyWindow</code> finalRows (override-applied). NEVER parallel SQL (override is TS-only → SQL re-breaks Scott). cash_bucket (unchanged) + derived lifecycle_stage + contract_episode_id; <b>union-find identity</b> over {hpf_id, email, stripe_customer_id}; deterministic order; full per-person history.</li>
+    <li><b>2b</b> — reversal ingestion (PREREQ): Stripe <code>charge.refunded</code>/dispute + Fanbasis refund path + <code>charge_status</code>/net. No metric reads the ledger until reversals representable.</li>
+    <li><b>2c</b> — SHADOW-AND-RECONCILE gate: per-charge diff vs live over every closed month since 2025-06 (zero unexplained), AOV-delta enumeration, DB-level lock guard on <code>metric_actuals</code>, register as a cron-registry checker.</li>
+    <li><b>2d</b> — new-vs-returning metrics cutover.</li>
+    <li><b>2e</b> (later) — date-derived completion (<code>close_date + term_months</code> from <code>PLAN_SHAPES</code> in <code>cash-ledger.ts</code>; add <code>12-mo-9600pif</code>) → retention rate.</li>
+  </ul>
+
+  <div class="card warn">
+    <b>Don't skip:</b> M2 (union-find identity — the in-flight hpf_id backfill, 49% NULL, will fragment a scalar <code>hpf_id ?? email</code> key) and M6 (shadow-and-reconcile BEFORE any metric cutover — these are golden-sealed, block-class numbers Dan has seen).
+  </div>
+
+  <h3>Recon (grounds the schema)</h3>
+  <p class="mut">388 clients / 758 charges; 135 (35%) multi-payment. Product mix: 219 installment · 135 Ascend/Membership (retention) · 67 new program/academy · 77 other/blank. Term coverage: Fanbasis plan_tag 97%, Stripe invoice-seq 41% / term-in-desc 26%.</p>
+
+  <h3>Read first</h3>
+  <p class="mut">Memory <code>project_retention_cash_canon_blindspot_2026_06_15</code> (backstory + decisions + rule-44 review). Key files: <code>close-classifier.ts</code>, <code>classified-cash.ts</code> (override wiring), <code>cash-ledger.ts</code> (PLAN_SHAPES).</p>
+
+  <hr>
+  <p class="mut" style="font-size:13px">⚠️ Shared tree — another session gutted <code>/setters</code> (Phase 3, <code>189bbbc6</code>). Always <code>git fetch</code> + <code>git pull --rebase</code> before work. · rule-44 adversarial review (Codex + 6-lens council) verdict was REWORK-before-build; this is the reworked v2.</p>
+</div>
+</body>
+</html>
