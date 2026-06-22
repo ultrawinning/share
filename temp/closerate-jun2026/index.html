@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Close Rate Analysis — June 2026</title>
+<style>
+  :root{
+    --bg:#0d0f12; --panel:#15181d; --panel2:#1b1f26; --line:#262b33;
+    --ink:#e8ebef; --mut:#9aa3ad; --dim:#6b7079;
+    --green:#2ED47A; --red:#ff5d5d; --amber:#ffb454; --blue:#5aa9ff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:48px 22px 96px}
+  .eyebrow{letter-spacing:.14em;text-transform:uppercase;font-size:12px;color:var(--dim);margin:0 0 10px}
+  h1{font-size:34px;line-height:1.15;margin:0 0 8px;font-weight:700;letter-spacing:-.01em}
+  h1 .accent{color:var(--green)}
+  .sub{color:var(--mut);font-size:15px;margin:0 0 4px}
+  .meta{color:var(--dim);font-size:13px;margin:14px 0 0}
+  .conf{display:inline-block;border:1px solid var(--line);color:var(--mut);
+    font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:5px;margin-bottom:26px}
+  h2{font-size:22px;margin:46px 0 6px;font-weight:650;letter-spacing:-.01em}
+  h2 .n{color:var(--dim);font-weight:600;margin-right:8px}
+  h3{font-size:16px;margin:26px 0 6px;color:var(--ink)}
+  p{margin:10px 0}
+  .lead{font-size:17px;color:var(--ink)}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:18px 0}
+  .panel.tldr{border-left:3px solid var(--green)}
+  .kpis{display:flex;flex-wrap:wrap;gap:12px;margin:20px 0}
+  .kpi{flex:1 1 150px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .kpi .lbl{font-size:12px;color:var(--mut);letter-spacing:.03em}
+  .kpi .val{font-size:28px;font-weight:700;margin-top:4px;letter-spacing:-.02em}
+  .kpi .val.bad{color:var(--red)} .kpi .val.good{color:var(--green)} .kpi .val.flat{color:var(--blue)}
+  .kpi .note{font-size:12px;color:var(--dim);margin-top:3px}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14.5px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+  th{color:var(--mut);font-weight:600;font-size:12.5px;letter-spacing:.03em;text-transform:uppercase}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  tr:last-child td{border-bottom:none}
+  .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600}
+  .tag.red{background:rgba(255,93,93,.13);color:var(--red)}
+  .tag.green{background:rgba(46,212,122,.13);color:var(--green)}
+  .tag.amber{background:rgba(255,180,84,.13);color:var(--amber)}
+  .verdict{font-weight:650}
+  .verdict.no{color:var(--green)} .verdict.yes{color:var(--red)}
+  ul{margin:10px 0;padding-left:22px} li{margin:7px 0}
+  .small{font-size:13px;color:var(--dim)}
+  a{color:var(--blue);text-decoration:none;border-bottom:1px solid rgba(90,169,255,.3)}
+  a:hover{border-bottom-color:var(--blue)}
+  .rule{height:1px;background:var(--line);border:0;margin:40px 0}
+  .quote{border-left:2px solid var(--line);padding:2px 0 2px 16px;color:var(--mut);font-style:italic;margin:8px 0}
+  .rec{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:6px 22px;margin:14px 0}
+  .rec ol{padding-left:20px} .rec li{margin:12px 0}
+  .rec b{color:var(--ink)}
+  .footnote{font-size:13px;color:var(--dim);margin-top:8px}
+  .hl-green{color:var(--green);font-weight:600}
+  .hl-red{color:var(--red);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">HPF Sales · Diagnostic</p>
+  <h1>Why did close rate drop after <span class="accent">June 16</span>?</h1>
+  <p class="sub">Reviewed every sales call from the week before and the week after, plus both sales huddles.</p>
+  <p class="meta">Prepared for Dan &amp; Brandon · June 22, 2026 · by Emil</p>
+  <div style="height:18px"></div>
+  <span class="conf">Confidential — internal</span>
+
+  <div class="panel tldr">
+    <p class="lead" style="margin-top:0"><b>Bottom line:</b> The price never went up, and the closers did <span class="hl-green">not</span> revert to leading with the high-ticket offer. The drop was driven by the <b>lead mix on the calendar</b> (every warm/paid lead disappeared) and a <b>pullback in discounting</b> — not by anything wrong with the offer or the price.</p>
+    <ul style="margin-bottom:0">
+      <li><b>Price unchanged:</b> $4,800 / 4-month was the quoted entry price in <i>both</i> weeks. Zero prospects were told the price was rising.</li>
+      <li><b>Closers stayed on-strategy:</b> they led with the $4–5k 4-month and offered 12-month as the upsell — the same playbook that doubled close rate earlier this year. No drift back to leading high.</li>
+      <li><b>Real causes:</b> the week lost <i>all</i> of its warm/paid leads (which produced half of the prior week's closes), and discounting fell by ~half.</li>
+    </ul>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="lbl">Close rate — prior week<br><span class="small">Jun 8–15</span></div><div class="val">~21%</div><div class="note">8 closes / 39 pitched</div></div>
+    <div class="kpi"><div class="lbl">Close rate — recent week<br><span class="small">Jun 16–20</span></div><div class="val bad">0%</div><div class="note">0 closes / 15 pitched</div></div>
+    <div class="kpi"><div class="lbl">Show rate</div><div class="val flat">≈ flat</div><div class="note">53% → 47% (no collapse)</div></div>
+    <div class="kpi"><div class="lbl">Calls reviewed</div><div class="val">56</div><div class="note">+ 2 huddles, full transcripts</div></div>
+  </div>
+
+  <hr class="rule">
+
+  <h2><span class="n">Q1</span>Did the price actually go up?</h2>
+  <p class="verdict no">No — the quoted price was identical in both weeks.</p>
+  <p>Across all 54 pitched calls, the median quoted entry price was <b>$4,800 for the 4-month program</b> in both windows. The 12-month / spouse options ($8,000–$9,600) appeared as upsells, exactly as before.</p>
+  <table>
+    <thead><tr><th>Metric (from call transcripts)</th><th class="num">Prior (Jun 8–15)</th><th class="num">Recent (Jun 16–20)</th></tr></thead>
+    <tbody>
+      <tr><td>Median quoted base price</td><td class="num">$4,800</td><td class="num">$4,800</td></tr>
+      <tr><td>Base price range</td><td class="num">$4,000–8,000</td><td class="num">$3,630–5,000</td></tr>
+      <tr><td>Prospects told "price is increasing"</td><td class="num">1 of 38</td><td class="num">0 of 16</td></tr>
+    </tbody>
+  </table>
+  <p class="small">The base price did not move. Whatever changed, it wasn't the sticker.</p>
+
+  <h2><span class="n">Q2</span>Were the closers over-pushing the high-ticket offer?</h2>
+  <p class="verdict no">No — they led with the 4-month in both weeks. This was the key thing to check, and it's clean.</p>
+  <p>Context: we know from earlier this year that <b>the order you present the offer in drives close rate</b>. Leading with the $8–10k high-ticket (Jan–Mar) closed at <span class="hl-red">~15%</span>; flipping to lead with the $4–5k 4-month <b>roughly doubled it to ~30% almost overnight</b>. So the worry was that closers had drifted back to leading high.</p>
+  <p>They hadn't. The transcripts show closers leading with the $4,800 4-month as the headline in both weeks, with 12-month as an optional upsell:</p>
+  <div class="quote">Recent week: "Brandon led with PIF $4,800, then mentioned the monthly installment." · "Joel said the investment is $4,800 for a 120-day program." · "4-month headline quoted first at $4,800; year extension framed as an option."</div>
+  <p>Only one recent call presented it as a flat "$4,800 or $9,600" binary (a minor execution miss). <b>The strategy held.</b> Dan's instinct to opportunistically push 8–10k when it fits is intact — and it still works when the lead is warm (the prior week's one steered-to-annual call closed at $8,000).</p>
+
+  <h2><span class="n">Q3</span>So what actually caused the drop?</h2>
+  <p>Two things, neither of them the offer.</p>
+
+  <h3>① The calendar lost every warm / paid lead <span class="tag red">primary cause</span></h3>
+  <p>The prior week's closes leaned heavily on warm sources that simply weren't on the calendar the following week:</p>
+  <table>
+    <thead><tr><th>Lead source</th><th class="num">Prior week</th><th class="num">Recent week</th></tr></thead>
+    <tbody>
+      <tr><td>Meta paid ads</td><td class="num"><span class="tag green">3 calls → 2 closes</span></td><td class="num">0 calls</td></tr>
+      <tr><td>Existing buyers (LB90 dialer upsell)</td><td class="num"><span class="tag green">2 calls → 2 closes</span></td><td class="num">0 (1 booked, no-showed)</td></tr>
+      <tr><td>Cold / organic + DM-set</td><td class="num">~33 calls → 3 closes <span class="small">(9%)</span></td><td class="num">15 calls → 0</td></tr>
+    </tbody>
+  </table>
+  <ul>
+    <li><b>4 of the prior week's 8 closes</b> came from just ~5 warm/paid calls. The recent week had essentially <b>none</b> of those — the one existing-buyer call that was booked no-showed.</li>
+    <li>The prior week's closers also got several <b>"lay-down" buyers</b> (paid on the call, no objections — David K. at $8,000, Mike A. at $4,300, Justin B. at $9,600). The recent week had <b>zero</b> lay-downs — every prospect had a live objection.</li>
+    <li>Strip out the warm/paid leads and the prior week's cold-organic close rate was only <b>~9%</b>. <b>0 closes from 15 cold-organic calls is statistically ordinary</b> at that base rate — not a collapse.</li>
+    <li>This is <b>not</b> a top-of-funnel problem: Meta still generated ~43 leads the week of Jun 15. They just aren't converting into booked, shown closer calls. The team also flagged a wave of unqualified "Dan fans" booking calls with no real intent (Jun 18 huddle).</li>
+  </ul>
+
+  <h3>② Discounting was pulled back <span class="tag amber">secondary</span></h3>
+  <p>The one real "price" effect — but it's about discount discipline, not the sticker. Discounts offered fell by roughly half:</p>
+  <table>
+    <thead><tr><th>&nbsp;</th><th class="num">Prior week</th><th class="num">Recent week</th></tr></thead>
+    <tbody>
+      <tr><td>Calls where a discount was offered</td><td class="num">21 / 38 <span class="small">(55%)</span></td><td class="num">5 / 16 <span class="small">(31%)</span></td></tr>
+      <tr><td>Price as the main objection</td><td class="num">~16%</td><td class="num">~31%</td></tr>
+    </tbody>
+  </table>
+  <p>In the prior week closers proactively softened the ask (referral discounts, currency discounts, annual promos, spouse deals). After Jun 16 most calls were a flat reveal with no discount and the payment plan only offered reactively. So the <b>effective</b> ask went up while the sticker stayed flat — and price objections roughly doubled. Still a minority objection (spouse / "think about it" / shopping dominate both weeks), but real.</p>
+
+  <hr class="rule">
+
+  <h2>What to do</h2>
+  <div class="rec"><ol>
+    <li><b>Don't change the price or the offer order.</b> Neither caused this. Leading with $4–5k and upselling to 8–10k is working and should stay the default.</li>
+    <li><b>Get warm/paid leads back on the calendar</b> — the highest-leverage fix. Why are ~43/week Meta leads not converting into shown calls (setter booking throughput / lag)? Restart the existing-buyer (LB90) dialer upsells — they closed 2/2.</li>
+    <li><b>Pick a discount posture and train to it.</b> If we're holding firmer on price to lift cart value, drill closers to defend $4,800 on value rather than going flat/quiet. The worst outcome is the current one — they stopped discounting <i>and</i> didn't close.</li>
+    <li><b>Tighten setter qualification</b> so the cold-organic calendar fills with real buyers, not curiosity "Dan fans" (DJ already reviewing ManyChat).</li>
+    <li><b>Don't over-read 5 days.</b> The recent window is 15 calls over 5 days, including the Father's Day weekend, during a warm-lead drought. Give it one more week with the lead mix fixed before drawing conclusions.</li>
+  </ol></div>
+
+  <hr class="rule">
+
+  <h2>Receipts &amp; method</h2>
+  <p class="small">Analyzed full transcripts of all 54 pitched calls (Jun 8–20) + both sales huddles, cross-checked against closers' EOD logs and lead-attribution data. Example calls:</p>
+  <ul class="small">
+    <li>Prior-week lay-down closes: David K. ($8,000, paid on call) · Mike A. ($4,300, enrolled on-call) · Justin B. ($9,600, existing buyer)</li>
+    <li>Recent-week price-bite: Dennis S. ("$4,800 is more than I was mentally prepared for") · Gia M. ("way over my budget") · Elise S. ("that is quite a lot")</li>
+    <li>Recent-week lead-quality: Drew K. (DQ'd himself — "no gap, already served") · one call ended early on a handling miss</li>
+  </ul>
+  <p class="footnote">Close-rate history (verified): May 27% → June month-to-date 18% → recent week 0%. Jan–Mar ~15% (leading high) vs ~30% (leading with 4–5k) per team experience. All metrics from closers' own call logs + transcripts; close rate = closes ÷ pitched calls (closer cohort). Sample sizes are small — directional, not precise.</p>
+
+</div>
+</body>
+</html>
