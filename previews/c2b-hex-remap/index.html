@@ -1,0 +1,572 @@
+<!doctype html><html><head><meta charset="utf8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>C2-B hex→token — eyeball review</title><style>
+body{font:13px/1.5 -apple-system,Segoe UI,sans-serif;margin:0;background:#15171C;color:#F0F2F5}
+.wrap{max-width:1180px;margin:0 auto;padding:28px}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:16px;margin:28px 0 8px;border-bottom:1px solid #30363D;padding-bottom:6px}
+.sub{color:#A0A8B4;margin:0 0 18px} .pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;margin-right:6px}
+table{border-collapse:collapse;width:100%;margin:8px 0} th,td{text-align:left;padding:6px 8px;border-bottom:1px solid #23262e;vertical-align:middle}
+th{color:#8089A0;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+.mono{font-family:ui-monospace,Menlo,monospace;font-size:12px} .reason{color:#A0A8B4;font-size:12px;max-width:280px}
+.sw{display:inline-block;width:22px;height:22px;border-radius:4px;border:1px solid rgba(255,255,255,.18);vertical-align:middle;margin:0 3px}
+.pair .cell{display:inline-flex;align-items:center;padding:5px 8px;border-radius:6px;font-size:11px}
+.cell.dark{background:#15171C;border:1px solid #30363D} .cell.light{background:#F4F2EA;border:1px solid #ccc}
+.cell.light .sw{border-color:rgba(0,0,0,.2)}
+td.hi{color:#FF8D8D;font-weight:700} td.mid{color:#F5B400} td.lo{color:#3BAE72}
+.legend{background:#1C1E24;border:1px solid #30363D;border-radius:8px;padding:12px 16px;margin:12px 0}
+code{background:#23262e;padding:1px 5px;border-radius:4px}
+</style></head><body><div class="wrap">
+<h1>C2-B — hardcoded hex → design token</h1>
+<p class="sub">Non-protected live surfaces. Eyeball the <b>PERCEPTIBLE</b> remaps (left=dark, right=light, deltaE = how visible the shift is). Generated 2026-06-26 18:42 WEST · base origin/main @6fc1c45e.</p>
+<div class="legend">
+<span class="pill" style="background:#3BAE7233;color:#3BAE72">EXACT 25</span> blind-safe (hex==token dark value) ·
+<span class="pill" style="background:#F5B40033;color:#F5B400">PERCEPTIBLE 54</span> need your eye ·
+<span class="pill" style="background:#8EC5F033;color:#8EC5F0">KEEP-brand 8</span> ·
+<span class="pill" style="background:#8089A033;color:#A0A8B4">KEEP-intentional 72</span> ·
+<span class="pill" style="background:#8089A033;color:#A0A8B4">KEEP-svg 3</span>
+</div>
+<h2>① PERCEPTIBLE remaps — 54 (your call, light + dark)</h2>
+<table><thead><tr><th>file:line</th><th>old hex</th><th>→ token</th><th>dark</th><th>light</th><th>ΔE</th><th>why</th></tr></thead><tbody>
+<tr>
+    <td class="mono">page.tsx:20</td>
+    <td class="mono">#2ED47A</td>
+    <td class="mono">var(--status-success)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#3BAE72"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#1B8F54"></span></div></div></td>
+    <td class="hi">22.1</td>
+    <td class="reason">promoter badge text = positive/success sentiment; correct semantic token is --status-success (#3BAE72) ≠ #2ED47A → remap</td></tr>
+<tr>
+    <td class="mono">page.tsx:21</td>
+    <td class="mono">#FB8C00</td>
+    <td class="mono">var(--status-warn)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#FB8C00"></span>→<span class="sw" style="background:#F5B400"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#FB8C00"></span>→<span class="sw" style="background:#B8860B"></span></div></div></td>
+    <td class="hi">25.4</td>
+    <td class="reason">passive badge text = warning sentiment; semantic home --status-warn (#F5B400) ≠ #FB8C00 → remap (not dept-marketing)</td></tr>
+<tr>
+    <td class="mono">page.tsx:22</td>
+    <td class="mono">#E53935</td>
+    <td class="mono">var(--status-error)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#E53935"></span>→<span class="sw" style="background:#FF3B30"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#E53935"></span>→<span class="sw" style="background:#E11D1D"></span></div></div></td>
+    <td class="hi">12.5</td>
+    <td class="reason">detractor badge text = negative/error sentiment; --status-error (#FF3B30) ≠ #E53935 → remap (not dept-sales)</td></tr>
+<tr>
+    <td class="mono">page.tsx:94</td>
+    <td class="mono">#2ED47A</td>
+    <td class="mono">var(--status-success)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#3BAE72"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#1B8F54"></span></div></div></td>
+    <td class="hi">22.1</td>
+    <td class="reason">NPS score &gt;=50 → good/success metric color; --status-success #3BAE72 ≠ #2ED47A → remap</td></tr>
+<tr>
+    <td class="mono">page.tsx:94</td>
+    <td class="mono">#FB8C00</td>
+    <td class="mono">var(--status-warn)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#FB8C00"></span>→<span class="sw" style="background:#F5B400"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#FB8C00"></span>→<span class="sw" style="background:#B8860B"></span></div></div></td>
+    <td class="hi">25.4</td>
+    <td class="reason">NPS score neutral band → warn metric color; --status-warn #F5B400 ≠ #FB8C00 → remap</td></tr>
+<tr>
+    <td class="mono">page.tsx:94</td>
+    <td class="mono">#E53935</td>
+    <td class="mono">var(--status-error)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#E53935"></span>→<span class="sw" style="background:#FF3B30"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#E53935"></span>→<span class="sw" style="background:#E11D1D"></span></div></div></td>
+    <td class="hi">12.5</td>
+    <td class="reason">NPS score negative band → error metric color; --status-error #FF3B30 ≠ #E53935 → remap</td></tr>
+<tr>
+    <td class="mono">page.tsx:95</td>
+    <td class="mono">#E6EDF3</td>
+    <td class="mono">var(--hpf-fg1)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#E6EDF3"></span>→<span class="sw" style="background:#F0F2F5"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#E6EDF3"></span>→<span class="sw" style="background:#0B0C0E"></span></div></div></td>
+    <td class="mid">3.1</td>
+    <td class="reason">Avg Score stat value = primary near-white fg text; semantic --hpf-fg1 (#F0F2F5) ≠ #E6EDF3 → remap</td></tr>
+<tr>
+    <td class="mono">page.tsx:96</td>
+    <td class="mono">#E6EDF3</td>
+    <td class="mono">var(--hpf-fg1)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#E6EDF3"></span>→<span class="sw" style="background:#F0F2F5"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#E6EDF3"></span>→<span class="sw" style="background:#0B0C0E"></span></div></div></td>
+    <td class="mid">3.1</td>
+    <td class="reason">Total stat value = primary near-white fg text; semantic --hpf-fg1 (#F0F2F5) ≠ #E6EDF3 → remap</td></tr>
+<tr>
+    <td class="mono">page.tsx:97</td>
+    <td class="mono">#2ED47A</td>
+    <td class="mono">var(--status-success)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#3BAE72"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#1B8F54"></span></div></div></td>
+    <td class="hi">22.1</td>
+    <td class="reason">Promoters count = positive metric; --status-success #3BAE72 ≠ #2ED47A → remap</td></tr>
+<tr>
+    <td class="mono">page.tsx:98</td>
+    <td class="mono">#FB8C00</td>
+    <td class="mono">var(--status-warn)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#FB8C00"></span>→<span class="sw" style="background:#F5B400"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#FB8C00"></span>→<span class="sw" style="background:#B8860B"></span></div></div></td>
+    <td class="hi">25.4</td>
+    <td class="reason">Passives count = neutral/warn metric; --status-warn #F5B400 ≠ #FB8C00 → remap</td></tr>
+<tr>
+    <td class="mono">page.tsx:99</td>
+    <td class="mono">#E53935</td>
+    <td class="mono">var(--status-error)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#E53935"></span>→<span class="sw" style="background:#FF3B30"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#E53935"></span>→<span class="sw" style="background:#E11D1D"></span></div></div></td>
+    <td class="hi">12.5</td>
+    <td class="reason">Detractors count = negative metric; --status-error #FF3B30 ≠ #E53935 → remap</td></tr>
+<tr>
+    <td class="mono">page.tsx:123</td>
+    <td class="mono">#2ED47A</td>
+    <td class="mono">var(--status-success)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#3BAE72"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#1B8F54"></span></div></div></td>
+    <td class="hi">22.1</td>
+    <td class="reason">scoreColor for score&gt;=9 = good/success; --status-success #3BAE72 ≠ #2ED47A → remap</td></tr>
+<tr>
+    <td class="mono">page.tsx:123</td>
+    <td class="mono">#FB8C00</td>
+    <td class="mono">var(--status-warn)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#FB8C00"></span>→<span class="sw" style="background:#F5B400"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#FB8C00"></span>→<span class="sw" style="background:#B8860B"></span></div></div></td>
+    <td class="hi">25.4</td>
+    <td class="reason">scoreColor for score 7-8 = neutral/warn; --status-warn #F5B400 ≠ #FB8C00 → remap</td></tr>
+<tr>
+    <td class="mono">page.tsx:123</td>
+    <td class="mono">#E53935</td>
+    <td class="mono">var(--status-error)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#E53935"></span>→<span class="sw" style="background:#FF3B30"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#E53935"></span>→<span class="sw" style="background:#E11D1D"></span></div></div></td>
+    <td class="hi">12.5</td>
+    <td class="reason">scoreColor for low score = negative/error; --status-error #FF3B30 ≠ #E53935 → remap</td></tr>
+<tr>
+    <td class="mono">page.tsx:137</td>
+    <td class="mono">#6E7681</td>
+    <td class="mono">var(--status-muted)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#6E7681"></span>→<span class="sw" style="background:#8089A0"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#6E7681"></span>→<span class="sw" style="background:#5A6270"></span></div></div></td>
+    <td class="hi">10.3</td>
+    <td class="reason">Quick Links label = muted/de-emphasized uppercase text (Primer #6E7681); semantic --status-muted #8089A0 ≠ #6E7681 → remap</td></tr>
+<tr>
+    <td class="mono">page.tsx:162</td>
+    <td class="mono">#42A5F5</td>
+    <td class="mono">var(--dept-ops)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#42A5F5"></span>→<span class="sw" style="background:#1E88E5"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#42A5F5"></span>→<span class="sw" style="background:#1565C0"></span></div></div></td>
+    <td class="hi">14.3</td>
+    <td class="reason">NPS Guide link = info/ops blue accent on rgba(30,136,229)=#1E88E5(dept-ops) tint; Material Blue400 ≠ token → remap to dept-ops family</td></tr>
+<tr>
+    <td class="mono">client.tsx:183</td>
+    <td class="mono">#FB8C00</td>
+    <td class="mono">var(--status-warn)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#FB8C00"></span>→<span class="sw" style="background:#F5B400"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#FB8C00"></span>→<span class="sw" style="background:#B8860B"></span></div></div></td>
+    <td class="hi">25.4</td>
+    <td class="reason">Funnel 'cancelled' caution indicator = warn semantics. --status-warn dark #F5B400 ≠ #FB8C00 → visible shift, remap.</td></tr>
+<tr>
+    <td class="mono">client.tsx:185</td>
+    <td class="mono">#E53935</td>
+    <td class="mono">var(--status-error)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#E53935"></span>→<span class="sw" style="background:#FF3B30"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#E53935"></span>→<span class="sw" style="background:#E11D1D"></span></div></div></td>
+    <td class="hi">12.5</td>
+    <td class="reason">Funnel 'quick_dq' bad/error indicator. --status-error dark #FF3B30 ≠ #E53935 → visible shift (value matches --dept-sales/--stage-hot but those aren't the meaning).</td></tr>
+<tr>
+    <td class="mono">client.tsx:186</td>
+    <td class="mono">#2ED47A</td>
+    <td class="mono">var(--status-success)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#3BAE72"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#1B8F54"></span></div></div></td>
+    <td class="hi">22.1</td>
+    <td class="reason">Funnel 'showed' positive/success indicator. Correct token --status-success dark #3BAE72 ≠ #2ED47A (neon) → remap, not exact.</td></tr>
+<tr>
+    <td class="mono">client.tsx:187</td>
+    <td class="mono">#2ED47A</td>
+    <td class="mono">var(--status-success)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#3BAE72"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#1B8F54"></span></div></div></td>
+    <td class="hi">22.1</td>
+    <td class="reason">Funnel 'closed' positive/success indicator. --status-success dark #3BAE72 ≠ #2ED47A → remap (neon ≠ success token).</td></tr>
+<tr>
+    <td class="mono">client.tsx:188</td>
+    <td class="mono">#2ED47A</td>
+    <td class="mono">var(--status-success)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#3BAE72"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#1B8F54"></span></div></div></td>
+    <td class="hi">22.1</td>
+    <td class="reason">Funnel 'cash' positive/success indicator. --status-success dark #3BAE72 ≠ #2ED47A → remap (neon ≠ success token).</td></tr>
+<tr>
+    <td class="mono">client.tsx:380</td>
+    <td class="mono">#2ED47A</td>
+    <td class="mono">var(--status-success)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#3BAE72"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#1B8F54"></span></div></div></td>
+    <td class="hi">22.1</td>
+    <td class="reason">Qualified = positive/success accent. Correct token --status-success dark=#3BAE72 (not the neon #2ED47A) -&gt; visible shift. Canonical remap case.</td></tr>
+<tr>
+    <td class="mono">client.tsx:382</td>
+    <td class="mono">#2ED47A</td>
+    <td class="mono">var(--status-success)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#3BAE72"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#1B8F54"></span></div></div></td>
+    <td class="hi">22.1</td>
+    <td class="reason">Closes success dot; same card uses valueColor=var(--hpf-green)=#3BAE72. Success token --status-success dark=#3BAE72 != #2ED47A -&gt; remap fixes the inconsistency.</td></tr>
+<tr>
+    <td class="mono">client.tsx:408</td>
+    <td class="mono">#2ED47A</td>
+    <td class="mono">var(--status-success)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#3BAE72"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#1B8F54"></span></div></div></td>
+    <td class="hi">22.1</td>
+    <td class="reason">Qualified funnel step = positive/success green. --status-success dark=#3BAE72 != #2ED47A (neon) -&gt; visible shift; success is the right semantic home.</td></tr>
+<tr>
+    <td class="mono">client.tsx:411</td>
+    <td class="mono">#2ED47A</td>
+    <td class="mono">var(--status-success)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#3BAE72"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#1B8F54"></span></div></div></td>
+    <td class="hi">22.1</td>
+    <td class="reason">Closed funnel step (cash collected) = success green. --status-success dark=#3BAE72 != #2ED47A -&gt; remap; matches the green-for-success rubric case.</td></tr>
+<tr>
+    <td class="mono">client.tsx:536</td>
+    <td class="mono">#2ED47A</td>
+    <td class="mono">var(--status-success)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#3BAE72"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#1B8F54"></span></div></div></td>
+    <td class="hi">22.1</td>
+    <td class="reason">Pixel-health = positive/healthy green status. Correct token --status-success dark=#3BAE72 != #2ED47A (neon) -&gt; visible shift; remap.</td></tr>
+<tr>
+    <td class="mono">client.tsx:537</td>
+    <td class="mono">#2ED47A</td>
+    <td class="mono">var(--status-success)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#3BAE72"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#2ED47A"></span>→<span class="sw" style="background:#1B8F54"></span></div></div></td>
+    <td class="hi">22.1</td>
+    <td class="reason">Token-OK = positive/healthy green status. --status-success dark=#3BAE72 != #2ED47A -&gt; visible shift; success is the right semantic.</td></tr>
+<tr>
+    <td class="mono">global-error.tsx:12</td>
+    <td class="mono">#08090B</td>
+    <td class="mono">var(--hpf-base)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#08090B"></span>→<span class="sw" style="background:#15171C"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#08090B"></span>→<span class="sw" style="background:#E3E0D4"></span></div></div></td>
+    <td class="mid">6.1</td>
+    <td class="reason">Body page background; semantic home is --hpf-base (dark #15171C) but value differs (near-black). NOTE: global-error renders outside root layout — verify token CSS loads.</td></tr>
+<tr>
+    <td class="mono">global-error.tsx:21</td>
+    <td class="mono">#16181F</td>
+    <td class="mono">var(--hpf-section)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#16181F"></span>→<span class="sw" style="background:#1C1E24"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#16181F"></span>→<span class="sw" style="background:#F4F2EA"></span></div></div></td>
+    <td class="mid">3.1</td>
+    <td class="reason">Retry button surface bg; semantic home is a panel/section surface (--hpf-section dark #1C1E24) but value differs. No exact surface token matches.</td></tr>
+<tr>
+    <td class="mono">global-error.tsx:26</td>
+    <td class="mono">#5C6370</td>
+    <td class="mono">var(--hpf-fg3)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#5C6370"></span>→<span class="sw" style="background:#8089A0"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#5C6370"></span>→<span class="sw" style="background:#4A515C"></span></div></div></td>
+    <td class="hi">16.2</td>
+    <td class="reason">Muted Error-ID/digest text; legacy fg3 literal — semantic home --hpf-fg3 (dark #8089A0), value differs (visible shift). Canonical spec example.</td></tr>
+<tr>
+    <td class="mono">CalendarLoad.tsx:103</td>
+    <td class="mono">#3D4F66</td>
+    <td class="mono">var(--hpf-fg3)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#3D4F66"></span>→<span class="sw" style="background:#8089A0"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#3D4F66"></span>→<span class="sw" style="background:#4A515C"></span></div></div></td>
+    <td class="hi">24.3</td>
+    <td class="reason">"Not open yet" tooltip row text — muted/dim foreground meaning; --hpf-fg3 is the muted-fg token (dark #8089A0 ≠ #3D4F66, visible shift).</td></tr>
+<tr>
+    <td class="mono">CalendarLoad.tsx:445</td>
+    <td class="mono">#64B5F6</td>
+    <td class="mono">var(--dept-ops)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#64B5F6"></span>→<span class="sw" style="background:#1E88E5"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#64B5F6"></span>→<span class="sw" style="background:#1565C0"></span></div></div></td>
+    <td class="hi">24.4</td>
+    <td class="reason">Active button bg tint at /[0.12], part of the dept-ops blue accent pair; lighter blue ≠ --dept-ops #1E88E5 (perceptible).</td></tr>
+<tr>
+    <td class="mono">CalendarLoad.tsx:514</td>
+    <td class="mono">#1E2228</td>
+    <td class="mono">var(--hpf-section)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#1E2228"></span>→<span class="sw" style="background:#1C1E24"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#1E2228"></span>→<span class="sw" style="background:#F4F2EA"></span></div></div></td>
+    <td class="lo">2.0</td>
+    <td class="reason">Bg fill of the "not open yet" legend swatch — dark surface fill; closest surface token --hpf-section #1C1E24 (slight shift).</td></tr>
+<tr>
+    <td class="mono">NewLeadsColumnHeader.tsx:36</td>
+    <td class="mono">#42A5F5</td>
+    <td class="mono">var(--dept-ops)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#42A5F5"></span>→<span class="sw" style="background:#1E88E5"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#42A5F5"></span>→<span class="sw" style="background:#1565C0"></span></div></div></td>
+    <td class="hi">14.3</td>
+    <td class="reason">JSDoc default for accentColor (the blue ops accent); Material Blue 400 ≠ --dept-ops #1E88E5 — semantic home is the ops blue token.</td></tr>
+<tr>
+    <td class="mono">NewLeadsColumnHeader.tsx:79</td>
+    <td class="mono">#42A5F5</td>
+    <td class="mono">var(--dept-ops)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#42A5F5"></span>→<span class="sw" style="background:#1E88E5"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#42A5F5"></span>→<span class="sw" style="background:#1565C0"></span></div></div></td>
+    <td class="hi">14.3</td>
+    <td class="reason">Runtime fallback for accent (ops blue accent); Material Blue 400 ≠ --dept-ops #1E88E5 (perceptible shift).</td></tr>
+<tr>
+    <td class="mono">NewLeadsColumnHeader.tsx:132</td>
+    <td class="mono">#FFC107</td>
+    <td class="mono">var(--status-warn)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#FFC107"></span>→<span class="sw" style="background:#F5B400"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#FFC107"></span>→<span class="sw" style="background:#B8860B"></span></div></div></td>
+    <td class="mid">5.6</td>
+    <td class="reason">Filtered-state count badge text (warning amber, paired rgba(255,193,7) bg); Material Amber ≠ --status-warn #F5B400 (visible).</td></tr>
+<tr>
+    <td class="mono">NewLeadsColumnHeader.tsx:227</td>
+    <td class="mono">#4CAF50</td>
+    <td class="mono">var(--status-success)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#4CAF50"></span>→<span class="sw" style="background:#3BAE72"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#4CAF50"></span>→<span class="sw" style="background:#1B8F54"></span></div></div></td>
+    <td class="hi">18.3</td>
+    <td class="reason">Add-button active text (success/positive create, paired rgba(76,175,80) bg); Material Green 500 ≠ --status-success #3BAE72 (perceptible).</td></tr>
+<tr>
+    <td class="mono">UniversalSidebar.tsx:82</td>
+    <td class="mono">#08090B</td>
+    <td class="mono">var(--hpf-base)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#08090B"></span>→<span class="sw" style="background:#15171C"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#08090B"></span>→<span class="sw" style="background:#E3E0D4"></span></div></div></td>
+    <td class="mid">6.1</td>
+    <td class="reason">Stale CSS-var fallback for --hpf-base (search-trigger bg); token dark=#15171C ≠ #08090B → remap fallback to the token.</td></tr>
+<tr>
+    <td class="mono">UniversalSidebar.tsx:86</td>
+    <td class="mono">#5C6370</td>
+    <td class="mono">var(--hpf-fg3)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#5C6370"></span>→<span class="sw" style="background:#8089A0"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#5C6370"></span>→<span class="sw" style="background:#4A515C"></span></div></div></td>
+    <td class="hi">16.2</td>
+    <td class="reason">Legacy fg3 fallback in var(--hpf-fg3) on search-icon stroke; token dark=#8089A0 ≠ #5C6370 → remap.</td></tr>
+<tr>
+    <td class="mono">UniversalSidebar.tsx:161</td>
+    <td class="mono">#5C6370</td>
+    <td class="mono">var(--hpf-fg3)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#5C6370"></span>→<span class="sw" style="background:#8089A0"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#5C6370"></span>→<span class="sw" style="background:#4A515C"></span></div></div></td>
+    <td class="hi">16.2</td>
+    <td class="reason">Legacy fg3 fallback in var(--hpf-fg3) on collapse-toggle color; token dark=#8089A0 ≠ #5C6370 → remap.</td></tr>
+<tr>
+    <td class="mono">SidebarItem.tsx:21</td>
+    <td class="mono">#5C6370</td>
+    <td class="mono">var(--hpf-fg3)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#5C6370"></span>→<span class="sw" style="background:#8089A0"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#5C6370"></span>→<span class="sw" style="background:#4A515C"></span></div></div></td>
+    <td class="hi">16.2</td>
+    <td class="reason">Legacy fg3 fallback in dot default var(--hpf-fg3); token dark=#8089A0 ≠ #5C6370 → remap.</td></tr>
+<tr>
+    <td class="mono">SidebarItem.tsx:79</td>
+    <td class="mono">#5C6370</td>
+    <td class="mono">var(--hpf-fg3)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#5C6370"></span>→<span class="sw" style="background:#8089A0"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#5C6370"></span>→<span class="sw" style="background:#4A515C"></span></div></div></td>
+    <td class="hi">16.2</td>
+    <td class="reason">Legacy fg3 fallback in var(--hpf-fg3) on disabled-item color; token dark=#8089A0 ≠ #5C6370 → remap.</td></tr>
+<tr>
+    <td class="mono">CommandPalette.tsx:105</td>
+    <td class="mono">#16181F</td>
+    <td class="mono">var(--hpf-card)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#16181F"></span>→<span class="sw" style="background:#252830"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#16181F"></span>→<span class="sw" style="background:#FFFFFF"></span></div></div></td>
+    <td class="mid">7.8</td>
+    <td class="reason">Stale fallback in var(--hpf-card) on palette panel bg; token dark=#252830 ≠ #16181F → remap fallback to the token.</td></tr>
+<tr>
+    <td class="mono">DeckClient.tsx:656</td>
+    <td class="mono">#FF8D8D</td>
+    <td class="mono">var(--status-error)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#FF8D8D"></span>→<span class="sw" style="background:#FF3B30"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#FF8D8D"></span>→<span class="sw" style="background:#E11D1D"></span></div></div></td>
+    <td class="hi">46.1</td>
+    <td class="reason">.editor-button.danger color — error/destructive text; --status-error is the semantic home, dark #FF3B30 differs from #FF8D8D (visible shift).</td></tr>
+<tr>
+    <td class="mono">DeckClient.tsx:937</td>
+    <td class="mono">#FF8D8D</td>
+    <td class="mono">var(--status-error)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#FF8D8D"></span>→<span class="sw" style="background:#FF3B30"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#FF8D8D"></span>→<span class="sw" style="background:#E11D1D"></span></div></div></td>
+    <td class="hi">46.1</td>
+    <td class="reason">'Super Admin login required' text in blocked/error section — error semantic; --status-error dark #FF3B30 differs (visible shift).</td></tr>
+<tr>
+    <td class="mono">DeckClient.tsx:1250</td>
+    <td class="mono">#FF8D8D</td>
+    <td class="mono">var(--status-error)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#FF8D8D"></span>→<span class="sw" style="background:#FF3B30"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#FF8D8D"></span>→<span class="sw" style="background:#E11D1D"></span></div></div></td>
+    <td class="hi">46.1</td>
+    <td class="reason">item.error_message text — error semantic; --status-error is correct home, dark #FF3B30 differs from #FF8D8D (visible shift).</td></tr>
+<tr>
+    <td class="mono">FinanceTab.tsx:2672</td>
+    <td class="mono">#F5A623</td>
+    <td class="mono">var(--status-warn)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#F5A623"></span>→<span class="sw" style="background:#F5B400"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#F5A623"></span>→<span class="sw" style="background:#B8860B"></span></div></div></td>
+    <td class="hi">11.8</td>
+    <td class="reason">amber 'Flagged for Dan' count = warning/attention semantic; --status-warn is right home but dark val #F5B400 != #F5A623 (visible shift).</td></tr>
+<tr>
+    <td class="mono">FinanceTab.tsx:2762</td>
+    <td class="mono">#F5A623</td>
+    <td class="mono">var(--status-warn)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#F5A623"></span>→<span class="sw" style="background:#F5B400"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#F5A623"></span>→<span class="sw" style="background:#B8860B"></span></div></div></td>
+    <td class="hi">11.8</td>
+    <td class="reason">amber for per-month Flagged&gt;0 cell (warn semantic; falls back to var(--hpf-fg3)). --status-warn dark #F5B400 != #F5A623.</td></tr>
+<tr>
+    <td class="mono">OnboardingWatchSection.tsx:82</td>
+    <td class="mono">#3B82F6</td>
+    <td class="mono">var(--status-info)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#3B82F6"></span>→<span class="sw" style="background:#8EC5F0"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#3B82F6"></span>→<span class="sw" style="background:#5B9BD5"></span></div></div></td>
+    <td class="hi">49.8</td>
+    <td class="reason">Blue onboarding-watch accent (Tailwind blue-500); info semantics. --status-info dark #8EC5F0 differs → visible shift.</td></tr>
+<tr>
+    <td class="mono">OnboardingWatchSection.tsx:83</td>
+    <td class="mono">#EF4444</td>
+    <td class="mono">var(--status-error)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#EF4444"></span>→<span class="sw" style="background:#FF3B30"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#EF4444"></span>→<span class="sw" style="background:#E11D1D"></span></div></div></td>
+    <td class="hi">15.1</td>
+    <td class="reason">Red accent for payment-failure recovery; error semantics. --status-error dark #FF3B30 differs → visible shift.</td></tr>
+<tr>
+    <td class="mono">CleanupSection.tsx:37</td>
+    <td class="mono">#FF7043</td>
+    <td class="mono">var(--status-warn)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#FF7043"></span>→<span class="sw" style="background:#F5B400"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#FF7043"></span>→<span class="sw" style="background:#B8860B"></span></div></div></td>
+    <td class="hi">51.2</td>
+    <td class="reason">Warm-orange needs-attention label accent; warn semantics. --status-warn dark #F5B400 differs → visible shift.</td></tr>
+<tr>
+    <td class="mono">RecoverArchivedDialerCards.tsx:43</td>
+    <td class="mono">#EF5350</td>
+    <td class="mono">var(--status-error)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#EF5350"></span>→<span class="sw" style="background:#FF3B30"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#EF5350"></span>→<span class="sw" style="background:#E11D1D"></span></div></div></td>
+    <td class="hi">21.1</td>
+    <td class="reason">Material red error-message text color; error semantics. --status-error dark #FF3B30 differs → visible shift.</td></tr>
+<tr>
+    <td class="mono">page.tsx:174</td>
+    <td class="mono">#C5CDD7</td>
+    <td class="mono">var(--hpf-fg1)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#C5CDD7"></span>→<span class="sw" style="background:#F0F2F5"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#C5CDD7"></span>→<span class="sw" style="background:#0B0C0E"></span></div></div></td>
+    <td class="hi">14.0</td>
+    <td class="reason">Emphasis (strong) foreground brighter than the secondary li body text; semantic home = primary fg --hpf-fg1, value #C5CDD7≠#F0F2F5 → remap.</td></tr>
+<tr>
+    <td class="mono">page.tsx:57</td>
+    <td class="mono">#E8B64F</td>
+    <td class="mono">var(--status-warn)</td>
+    <td><div class="pair"><div class="cell dark"><span class="sw" style="background:#E8B64F"></span>→<span class="sw" style="background:#F5B400"></span></div></div></td>
+    <td><div class="pair"><div class="cell light"><span class="sw" style="background:#E8B64F"></span>→<span class="sw" style="background:#B8860B"></span></div></div></td>
+    <td class="hi">22.7</td>
+    <td class="reason">Warn-threshold (0.85) border, same branch that uses DESIGN_STATUS_COLORS.warn for fill; semantic = --status-warn, value #E8B64F≠#F5B400 → remap.</td></tr></tbody></table>
+<h2>② EXACT-token — 25 (blind-safe, dark-identical; I can ship without eyeball like C3-mechanical)</h2>
+<table><thead><tr><th>file:line</th><th>hex</th><th>→ token</th><th>why</th></tr></thead><tbody><tr><td class="mono">page.tsx:107</td><td class="mono">#2ED47A</td><td class="mono">var(--brand-green)</td><td class="reason">score-btn:hover border-color = HPF brand-green accent (matches bg-hpf-green usage), not success-data; #2ED47A == --brand-green dark → exact</td></tr>
+<tr><td class="mono">page.tsx:149</td><td class="mono">#2ED47A</td><td class="mono">var(--brand-green)</td><td class="reason">NPS Survey pill link text = brand-green accent on green-tint bg (decorative, not success-data); #2ED47A == --brand-green dark → exact</td></tr>
+<tr><td class="mono">client.tsx:184</td><td class="mono">#A0A8B4</td><td class="mono">var(--hpf-fg2)</td><td class="reason">#A0A8B4 == --hpf-fg2 dark (globals.css:208) EXACTLY; muted no_show label is a secondary-foreground gray. EXACT+blind-safe beats perceptible status-muted (#8089A0).</td></tr>
+<tr><td class="mono">client.tsx:308</td><td class="mono">#1E88E5</td><td class="mono">var(--stage-new)</td><td class="reason">'Scheduled' KPI dot = newly-scheduled blue. --stage-new #1E88E5 (also --dept-ops dark) equals hex exactly; stage colors identical both themes → blind-safe.</td></tr>
+<tr><td class="mono">client.tsx:318</td><td class="mono">#2ED47A</td><td class="mono">var(--brand-green)</td><td class="reason">Decorative KpiCard dot, NOT success: sibling dots are blue/purple (308/333), not outcome-coded. #2ED47A==--brand-green exact (logo/mark dot). status-success(#3BAE72) is wrong home+perceptible.</td></tr>
+<tr><td class="mono">client.tsx:333</td><td class="mono">#9C27B0</td><td class="mono">var(--stage-booked)</td><td class="reason">'Net Show Rate' KPI purple dot = --stage-booked #9C27B0 exactly; stage colors identical both themes → blind-safe.</td></tr>
+<tr><td class="mono">client.tsx:352</td><td class="mono">#2ED47A</td><td class="mono">var(--brand-green)</td><td class="reason">Close Rate decorative KPI dot, not a success signal (that's Delta variant up/down). #2ED47A==--brand-green dark exact; blind-safe. status-success is wrong semantic home.</td></tr>
+<tr><td class="mono">client.tsx:371</td><td class="mono">#2ED47A</td><td class="mono">var(--brand-green)</td><td class="reason">Decorative dot; the card pairs it with a SEPARATE valueColor=var(--hpf-green)(=#3BAE72), proving dot!=success color. #2ED47A==--brand-green exact, blind-safe.</td></tr>
+<tr><td class="mono">client.tsx:592</td><td class="mono">#FB8C00</td><td class="mono">var(--stage-prop)</td><td class="reason">Decorative AuditCard dot; the warn/ok signal is carried SEPARATELY by metricColor=var(--status-warn) (L594). Dot!=status. #FB8C00==--stage-prop exact, blind-safe.</td></tr>
+<tr><td class="mono">client.tsx:599</td><td class="mono">#1E88E5</td><td class="mono">var(--stage-new)</td><td class="reason">Audit 'Attribution' info-blue dot = --stage-new/--dept-ops dark #1E88E5 exactly; stage colors identical both themes → blind-safe.</td></tr>
+<tr><td class="mono">client.tsx:606</td><td class="mono">#2E7D32</td><td class="mono">var(--dept-fulfillment)</td><td class="reason">Audit 'Cash Collected' deep-green dot = --dept-fulfillment dark #2E7D32 exactly. Hex equals dark value; flips to #1B5E20 in light → blind-safe.</td></tr>
+<tr><td class="mono">client.tsx:612</td><td class="mono">#2ED47A</td><td class="mono">var(--brand-green)</td><td class="reason">Decorative AuditCard dot; semantic good/bad carried by metricColor=var(--status-warn)/var(--hpf-green) (L614). Dot!=success. #2ED47A==--brand-green exact, blind-safe.</td></tr>
+<tr><td class="mono">client.tsx:374</td><td class="mono">#FB8C00</td><td class="mono">var(--dept-marketing)</td><td class="reason">Spend dot in marketing cockpit = marketing dept accent. --dept-marketing dark=#FB8C00 exact; flips #E65100 light. File already uses var(--dept-marketing) (L72).</td></tr>
+<tr><td class="mono">client.tsx:378</td><td class="mono">#1E88E5</td><td class="mono">var(--dept-ops)</td><td class="reason">CPL = paid-ads metric; file maps Paid Ads-&gt;var(--dept-ops) (L464). --dept-ops dark=#1E88E5 exact; flips #1565C0 light.</td></tr>
+<tr><td class="mono">client.tsx:381</td><td class="mono">#1E88E5</td><td class="mono">var(--dept-ops)</td><td class="reason">Blue funnel/paid metric accent; file convention blue=var(--dept-ops) (L464). --dept-ops dark=#1E88E5 exact; flips #1565C0 light.</td></tr>
+<tr><td class="mono">client.tsx:405</td><td class="mono">#FB8C00</td><td class="mono">var(--dept-marketing)</td><td class="reason">Funnel Spend step = marketing dept accent. --dept-marketing dark=#FB8C00 exact; flips #E65100 light.</td></tr>
+<tr><td class="mono">client.tsx:409</td><td class="mono">#1E88E5</td><td class="mono">var(--dept-ops)</td><td class="reason">Blue funnel step accent; file convention blue=var(--dept-ops). --dept-ops dark=#1E88E5 exact; flips #1565C0 light.</td></tr>
+<tr><td class="mono">client.tsx:531</td><td class="mono">#FB8C00</td><td class="mono">var(--dept-marketing)</td><td class="reason">Attribution audit dot in marketing cockpit = marketing dept accent. --dept-marketing dark=#FB8C00 exact; flips #E65100 light.</td></tr>
+<tr><td class="mono">client.tsx:535</td><td class="mono">#1E88E5</td><td class="mono">var(--dept-ops)</td><td class="reason">Blue audit dot; file convention blue=var(--dept-ops). --dept-ops dark=#1E88E5 exact; flips #1565C0 light.</td></tr>
+<tr><td class="mono">global-error.tsx:12</td><td class="mono">#F0F2F5</td><td class="mono">var(--hpf-fg1)</td><td class="reason">Primary body text color; equals --hpf-fg1 dark #F0F2F5 exactly. Blind-safe swap (flips to #0B0C0E in light).</td></tr>
+<tr><td class="mono">global-error.tsx:16</td><td class="mono">#A0A8B4</td><td class="mono">var(--hpf-fg2)</td><td class="reason">Secondary/subtext paragraph color; equals --hpf-fg2 dark #A0A8B4 exactly. Blind-safe.</td></tr>
+<tr><td class="mono">global-error.tsx:21</td><td class="mono">#F0F2F5</td><td class="mono">var(--hpf-fg1)</td><td class="reason">Retry button label color; equals --hpf-fg1 dark #F0F2F5 exactly. Blind-safe.</td></tr>
+<tr><td class="mono">CalendarLoad.tsx:445</td><td class="mono">#1E88E5</td><td class="mono">var(--dept-ops)</td><td class="reason">Active closer-filter button border, paired with text-dept-ops — ops/blue accent; equals --dept-ops dark #1E88E5 exactly, blind-safe.</td></tr>
+<tr><td class="mono">page.tsx:995</td><td class="mono">#2E7D32</td><td class="mono">var(--dept-fulfillment)</td><td class="reason">bg of Restore button; sibling uses text-dept-fulfillment. #2E7D32 == --dept-fulfillment dark value; flips correctly in light.</td></tr>
+<tr><td class="mono">page.tsx:1004</td><td class="mono">#2E7D32</td><td class="mono">var(--dept-fulfillment)</td><td class="reason">border on 'Restore this version' btn paired with text-dept-fulfillment. #2E7D32 == --dept-fulfillment dark value.</td></tr></tbody></table>
+<h2>③ KEEP — brand 8 · intentional 72 · svg 3 (no change)</h2>
+<table><thead><tr><th>file:line</th><th>hex</th><th>why</th></tr></thead><tbody><tr><td class="mono">page.tsx:70</td><td class="mono">#4285F4</td><td class="reason">Google logo SVG fill (official Google blue) on the Continue-with-Google button. Third-party brand color, not a conformance violation.</td></tr>
+<tr><td class="mono">page.tsx:71</td><td class="mono">#34A853</td><td class="reason">Google logo SVG fill (official Google green). Third-party brand color on the Google-auth button.</td></tr>
+<tr><td class="mono">page.tsx:72</td><td class="mono">#FBBC05</td><td class="reason">Google logo SVG fill (official Google yellow). Third-party brand color on the Google-auth button.</td></tr>
+<tr><td class="mono">page.tsx:73</td><td class="mono">#EA4335</td><td class="reason">Google logo SVG fill (official Google red). Third-party brand color on the Google-auth button.</td></tr>
+<tr><td class="mono">AuthGate.tsx:112</td><td class="mono">#4285F4</td><td class="reason">Google logo SVG fill (official Google blue) on the Sign-in-with-Google button. Third-party brand color.</td></tr>
+<tr><td class="mono">AuthGate.tsx:112</td><td class="mono">#34A853</td><td class="reason">Google logo SVG fill (official Google green) on the Google-auth button. Third-party brand color.</td></tr>
+<tr><td class="mono">AuthGate.tsx:112</td><td class="mono">#FBBC05</td><td class="reason">Google logo SVG fill (official Google yellow) on the Google-auth button. Third-party brand color.</td></tr>
+<tr><td class="mono">AuthGate.tsx:112</td><td class="mono">#EA4335</td><td class="reason">Google logo SVG fill (official Google red) on the Google-auth button. Third-party brand color.</td></tr>
+<tr><td class="mono">form-renderer.tsx:139</td><td class="mono">#2ED47A</td><td class="reason">Runtime-overridable default for form.accent_color (a per-form user-config accent), used as decorative accent/progress/button fill — NOT a logo/mark, so --brand-green is the wrong semantic home. It's a configurable literal default, keep.</td></tr>
+<tr><td class="mono">form-renderer.tsx:281</td><td class="mono">#08090B</td><td class="reason">Hardcoded near-black canvas for the standalone public form; deliberately darker than --hpf-base #15171C; no token fits; surface ignores app theme.</td></tr>
+<tr><td class="mono">form-renderer.tsx:281</td><td class="mono">#F0F2F5</td><td class="reason">Light text paired with fixed #08090B dark canvas. Flipping to --hpf-fg1 light value (#0B0C0E) would hide text since canvas stays dark; not blind-safe.</td></tr>
+<tr><td class="mono">form-renderer.tsx:289</td><td class="mono">#08090B</td><td class="reason">Hardcoded dark canvas for the submitting/spinner state; intentional theme-independent form background; no token fits.</td></tr>
+<tr><td class="mono">form-renderer.tsx:297</td><td class="mono">#08090B</td><td class="reason">Hardcoded dark canvas for the ending state; intentional standalone form background; no token fits.</td></tr>
+<tr><td class="mono">form-renderer.tsx:297</td><td class="mono">#F0F2F5</td><td class="reason">Light text on fixed dark canvas; theme-locked pair with #08090B; flipping the fg token alone breaks contrast; not blind-safe.</td></tr>
+<tr><td class="mono">form-renderer.tsx:310</td><td class="mono">#08090B</td><td class="reason">Hardcoded dark canvas for the main form view; intentional theme-independent background; no token fits.</td></tr>
+<tr><td class="mono">form-renderer.tsx:310</td><td class="mono">#F0F2F5</td><td class="reason">Main-view light text on fixed dark canvas; theme-locked pair with #08090B; not blind-safe to flip independently.</td></tr>
+<tr><td class="mono">form-renderer.tsx:312</td><td class="mono">#1A1D25</td><td class="reason">Progress-bar track on the dark form chrome; not in palette (near --hpf-section #1C1E24 but not equal); intentional literal.</td></tr>
+<tr><td class="mono">form-renderer.tsx:365</td><td class="mono">#08090B</td><td class="reason">Dark text on the accent-colored Continue button (statement). Paired contrast color for the fixed dark/accent scheme; no token fits.</td></tr>
+<tr><td class="mono">form-renderer.tsx:385</td><td class="mono">#16181F</td><td class="reason">Unselected choice-option background on the dark form canvas; not in palette (between --hpf-base/--hpf-section); intentional literal.</td></tr>
+<tr><td class="mono">form-renderer.tsx:426</td><td class="mono">#16181F</td><td class="reason">Unselected multi-choice option background on the dark form canvas; not in palette; intentional dark-surface literal.</td></tr>
+<tr><td class="mono">form-renderer.tsx:448</td><td class="mono">#08090B</td><td class="reason">Dark text on accent-colored Continue button (multi-choice); paired contrast color for the fixed dark/accent scheme; no token fits.</td></tr>
+<tr><td class="mono">form-renderer.tsx:470</td><td class="mono">#16181F</td><td class="reason">Unselected scale-button background on the dark form canvas; not in palette; intentional dark-surface literal.</td></tr>
+<tr><td class="mono">form-renderer.tsx:472</td><td class="mono">#08090B</td><td class="reason">Selected scale-button text: dark text shown on accent bg. Paired contrast color for the fixed dark/accent scheme; no token fits.</td></tr>
+<tr><td class="mono">form-renderer.tsx:472</td><td class="mono">#F0F2F5</td><td class="reason">Unselected scale-button text on dark form canvas; theme-locked light fg paired with #08090B/#16181F; not blind-safe to flip independently.</td></tr>
+<tr><td class="mono">form-renderer.tsx:509</td><td class="mono">#08090B</td><td class="reason">Dark text on accent-colored OK button (text/email/phone inputs); paired contrast color for the fixed dark/accent scheme; no token fits.</td></tr>
+<tr><td class="mono">form-renderer.tsx:562</td><td class="mono">#08090B</td><td class="reason">Dark text on accent-colored Continue button (contact_info); paired contrast color for the fixed dark/accent scheme; no token fits.</td></tr>
+<tr><td class="mono">page.tsx:313</td><td class="mono">#127881</td><td class="reason">NOT a color — HTML numeric entity &amp;#127881; = 🎉 emoji codepoint; regex false-positive, no token applies</td></tr>
+<tr><td class="mono">page.tsx:389</td><td class="mono">#128591</td><td class="reason">NOT a color — HTML numeric entity &amp;#128591; = 🙏 emoji codepoint; regex false-positive, no token applies</td></tr>
+<tr><td class="mono">page.tsx:402</td><td class="mono">#128591</td><td class="reason">NOT a color — HTML numeric entity &amp;#128591; = 🙏 emoji codepoint; regex false-positive, no token applies</td></tr>
+<tr><td class="mono">client.tsx:379</td><td class="mono">#9C27B0</td><td class="reason">Purple Leads dot in a hand-tuned per-metric KPI palette. Only #9C27B0 token is --stage-booked, but 'Leads' is not the booked stage; no semantic token means leads. Keep.</td></tr>
+<tr><td class="mono">StageadminTab.tsx:38</td><td class="mono">#42A5F5</td><td class="reason">Member of COLOR_PALETTE — a hand-tuned multi-hue swatch set for the admin stage color-picker; value persisted as color_token, not a semantic role.</td></tr>
+<tr><td class="mono">StageadminTab.tsx:38</td><td class="mono">#78909C</td><td class="reason">COLOR_PALETTE picker swatch; rendered as a chip and stored as the chosen color_token. Distinct hue in a designed picker ramp, no token fits.</td></tr>
+<tr><td class="mono">StageadminTab.tsx:38</td><td class="mono">#26A69A</td><td class="reason">COLOR_PALETTE picker swatch (teal); admin-selectable arbitrary stage color, applied via inline backgroundColor. Deliberate distinct-hue picker entry.</td></tr>
+<tr><td class="mono">StageadminTab.tsx:38</td><td class="mono">#FFC107</td><td class="reason">COLOR_PALETTE picker swatch (amber); offered as a selectable stage color, persisted literally. Distinct hue in the designed picker set, no semantic token.</td></tr>
+<tr><td class="mono">StageadminTab.tsx:39</td><td class="mono">#4CAF50</td><td class="reason">COLOR_PALETTE picker swatch (green); admin-selectable color chip stored as color_token. Designed distinct-hue picker entry, not a status role.</td></tr>
+<tr><td class="mono">StageadminTab.tsx:39</td><td class="mono">#AB47BC</td><td class="reason">COLOR_PALETTE picker swatch (purple); selectable stage color persisted literally and rendered via inline backgroundColor. Deliberate picker hue.</td></tr>
+<tr><td class="mono">StageadminTab.tsx:39</td><td class="mono">#EF5350</td><td class="reason">COLOR_PALETTE picker swatch (red); a selectable color chip, stored as the literal color_token, not used for error semantics. Designed picker entry.</td></tr>
+<tr><td class="mono">StageadminTab.tsx:39</td><td class="mono">#6E7681</td><td class="reason">COLOR_PALETTE picker swatch (gray); admin-selectable stage color persisted literally. Picker chip identity, not muted-text semantics — token swap would change stored value.</td></tr>
+<tr><td class="mono">StageadminTab.tsx:40</td><td class="mono">#FB8C00</td><td class="reason">COLOR_PALETTE picker swatch (orange); selectable stage color chip stored as literal color_token. Distinct hue in the designed picker set.</td></tr>
+<tr><td class="mono">StageadminTab.tsx:40</td><td class="mono">#E57373</td><td class="reason">COLOR_PALETTE picker swatch (soft red); admin-selectable color chip persisted literally via inline backgroundColor. Deliberate distinct picker hue.</td></tr>
+<tr><td class="mono">StageadminTab.tsx:40</td><td class="mono">#1E88E5</td><td class="reason">COLOR_PALETTE picker swatch (blue); a selectable stage-color chip stored literally as color_token. Picker-set identity, not stage-new semantics — value must persist as-is.</td></tr>
+<tr><td class="mono">StageadminTab.tsx:40</td><td class="mono">#2ED47A</td><td class="reason">COLOR_PALETTE picker swatch (green); admin-selectable color chip stored literally as color_token. A picker hue, not a success/brand role — token swap would alter the persisted value.</td></tr>
+<tr><td class="mono">page.tsx:22</td><td class="mono">#FFFFFF</td><td class="reason">linear-gradient(180deg,#ffffff,#f1f2f4) face of the white Google sign-in button — hand-tuned static brand-button gradient; not theme-flipping. Pairs with #f1f2f4.</td></tr>
+<tr><td class="mono">page.tsx:22</td><td class="mono">#F1F2F4</td><td class="reason">Lower stop of the white Google-button gradient. Deliberate static off-white pair with #ffffff; no card token fits (would invert dark↔light).</td></tr>
+<tr><td class="mono">page.tsx:22</td><td class="mono">#1F2430</td><td class="reason">Dark text ON the always-white Google button; an fg token flips with theme and would vanish on the static white face. Purposeful literal.</td></tr>
+<tr><td class="mono">CalendarLoad.tsx:292</td><td class="mono">#30363D</td><td class="reason">Primer border-gray #30363D used as a thin divider line (h-[96px] w-px) inside opacity-30 WeekLabel; --hpf-elevated is a card/surface token, wrong semantic home for a border/divider. No border token in palette -&gt; keep literal.</td></tr>
+<tr><td class="mono">CalendarLoad.tsx:514</td><td class="mono">#2E486E</td><td class="reason">Hand-tuned dim slate-blue dashed border for the "not open yet" legend swatch; no semantic token fits, deliberate indicator color.</td></tr>
+<tr><td class="mono">CalendarLoad.tsx:526</td><td class="mono">#30363D</td><td class="reason">#30363D is the scrollbar-thumb color in [scrollbar-color:#30363D_transparent]; a thumb/border gray, not an elevated card surface. --hpf-elevated is the wrong semantic home; no border token fits -&gt; keep literal.</td></tr>
+<tr><td class="mono">UniversalSidebar.tsx:120</td><td class="mono">#2ED47A</td><td class="reason">Avatar-badge identity gradient stop, paired with non-token #1BB864 — hand-tuned two-stop set, not a success/mark semantic.</td></tr>
+<tr><td class="mono">UniversalSidebar.tsx:120</td><td class="mono">#1BB864</td><td class="reason">Second stop of the avatar gradient; matches no token — purposeful gradient literal.</td></tr>
+<tr><td class="mono">UniversalSidebar.tsx:121</td><td class="mono">#08090B</td><td class="reason">Deliberate near-black text on the neon avatar gradient for contrast; not a var fallback, paired with the gradient.</td></tr>
+<tr><td class="mono">DeckClient.tsx:659</td><td class="mono">#050607</td><td class="reason">.import-thumb backdrop — near-pure-black thumbnail background, deliberately darker than --hpf-base (#15171C); no token fits.</td></tr>
+<tr><td class="mono">MediaGrid.tsx:260</td><td class="mono">#3D1F1F</td><td class="reason">dismissed-tag background — hand-tuned dark error-tint SURFACE paired with --status-error text; no error-surface token exists in palette.</td></tr>
+<tr><td class="mono">MediaGrid.tsx:261</td><td class="mono">#6B3030</td><td class="reason">dismissed-tag border — dim error-red border tint; no error-border token in palette; --status-error (#FF3B30 FG) would change the muted intent.</td></tr>
+<tr><td class="mono">MediaGrid.tsx:364</td><td class="mono">#6B3030</td><td class="reason">Dismiss button borderColor — dim error-red border paired with var(--status-error) text; no error-border token; bright FG red would change intent.</td></tr>
+<tr><td class="mono">page.tsx:86</td><td class="mono">#30363D</td><td class="reason">vertical divider (h-5 w-px) — ultra-dim Primer border-gray, far darker than any fg/muted token (#8089A0); structural separator, no border token in palette.</td></tr>
+<tr><td class="mono">page.tsx:115</td><td class="mono">#30363D</td><td class="reason">footer 'Not for distribution' text — deliberately near-invisible dim gray; --status-muted (#8089A0) would lighten it readable, changing the faint intent.</td></tr>
+<tr><td class="mono">DataTable.tsx:424</td><td class="mono">#252830</td><td class="reason">Hex is inside a // comment describing the surface, not an applied style value (style uses var(--surface-card)). A comment literal is not a token-swap candidate; replacing it would make the doc lie.</td></tr>
+<tr><td class="mono">DataTable.tsx:425</td><td class="mono">#15171C</td><td class="reason">Hex is documentary text in the same // comment (line 424-425), not a live color. No style here applies a page background; nothing to swap to var(--hpf-base).</td></tr>
+<tr><td class="mono">PipelineFilterBar.tsx:88</td><td class="mono">#42A5F5</td><td class="reason">Active date-range toggle text = Material Blue 400 board accent. Equals no token (info #8EC5F0, stage-new/ops #1E88E5 differ); not a dept/stage/status. Hand-tuned default accent.</td></tr>
+<tr><td class="mono">PipelineFilterBar.tsx:177</td><td class="mono">#42A5F5</td><td class="reason">Active activity-filter toggle text = same Material Blue 400 accent. No semantic token matches value or meaning; deliberate interactive accent literal (paired rgba(66,165,245)).</td></tr>
+<tr><td class="mono">PipelineEncapsulation.tsx:27</td><td class="mono">#42A5F5</td><td class="reason">JSDoc default value for the configurable `accent` prop. Material Blue 400 board accent; matches no token value or semantic role (not dept/stage/status).</td></tr>
+<tr><td class="mono">PipelineEncapsulation.tsx:70</td><td class="mono">#42A5F5</td><td class="reason">Runtime fallback for accent prop (props.accent ?? '#42A5F5'). Generic configurable board accent; no semantic token fits at this value.</td></tr>
+<tr><td class="mono">KanbanTopBar.tsx:15</td><td class="mono">#42A5F5</td><td class="reason">JSDoc default for configurable `accent` prop. Material Blue 400 board accent; equals no token value, no matching semantic role.</td></tr>
+<tr><td class="mono">KanbanTopBar.tsx:45</td><td class="mono">#42A5F5</td><td class="reason">Runtime fallback for accent prop. Generic per-consumer board accent literal; no semantic token fits at this value.</td></tr>
+<tr><td class="mono">KanbanFiltersDropdown.tsx:27</td><td class="mono">#42A5F5</td><td class="reason">JSDoc default for configurable `accent` prop. Material Blue 400 board accent; equals no token value, no matching semantic role.</td></tr>
+<tr><td class="mono">KanbanFiltersDropdown.tsx:45</td><td class="mono">#42A5F5</td><td class="reason">Runtime fallback for accent prop, used to build accent-derived borders/bg (`${accent}40`/`08`). Generic configurable accent; no semantic token fits.</td></tr>
+<tr><td class="mono">DecisionLogTab.tsx:13</td><td class="mono">#26A69A</td><td class="reason">DOMAIN_COLORS categorical palette: finance=teal. Deliberate multi-hue domain set; no semantic token = teal. Keep.</td></tr>
+<tr><td class="mono">DecisionLogTab.tsx:14</td><td class="mono">#FF7043</td><td class="reason">DOMAIN_COLORS categorical palette: team=coral. Hand-tuned per-domain hue set; no token matches coral. Keep.</td></tr>
+<tr><td class="mono">KnowledgeBaseTab.tsx:16</td><td class="mono">#FF7043</td><td class="reason">DOMAIN_COLORS categorical palette: hr=coral. Deliberate multi-hue domain set alongside design tokens; no token = coral. Keep.</td></tr>
+<tr><td class="mono">form-editor.tsx:604</td><td class="mono">#2ED47A</td><td class="reason">Default VALUE for an &lt;input type="color"&gt; / DB-seed accent — a color input rejects var(); it's data, not a rendered style. Brand-green seed, keep literal.</td></tr>
+<tr><td class="mono">form-editor.tsx:867</td><td class="mono">#08090B</td><td class="reason">Near-black phone-mockup frame bg, darker than --hpf-base #15171C; no token equals it. Purposeful literal device-frame color.</td></tr>
+<tr><td class="mono">page.tsx:57</td><td class="mono">#2ED47A</td><td class="reason">Fallback DATA value for a per-form accent_color column consumed as raw hex in style/color-input; var() would break it. Brand-green default, keep literal.</td></tr>
+<tr><td class="mono">page.tsx:84</td><td class="mono">#2ED47A</td><td class="reason">Fallback DATA value for the accent_color column consumed as raw hex (color input + inline bg); var() invalid here. Brand-green default, keep literal.</td></tr>
+<tr><td class="mono">manage-client.tsx:86</td><td class="mono">#2ED47A</td><td class="reason">Fallback DATA value for a tenant-configured booking-page color_hex used as raw hex in inline styles; var() would break it. Brand-green default, keep literal.</td></tr>
+<tr><td class="mono">manage-client.tsx:87</td><td class="mono">#0A0B0D</td><td class="reason">Fallback DATA value for a configurable booking-page background hex used in inline styles; near-black, not equal to --hpf-base; var() invalid. Keep literal.</td></tr>
+<tr><td class="mono">page.tsx:13</td><td class="mono">#0A0B0D</td><td class="reason">Near-black Suspense-fallback bg matching the booking page's default accent_hex (#0a0b0d); darker than --hpf-base #15171C, no token equals it. Purposeful literal.</td></tr>
+<tr><td class="mono">page.tsx:126</td><td class="mono">#8E8BF0</td><td class="reason">Deliberate fallback for the named --ai accent CSS var (indigo/AI hue); no token in palette covers an AI accent — purposeful literal fallback.</td></tr>
+<tr><td class="mono">page.tsx:14</td><td class="mono">#4DB6AC</td><td class="reason">Member of a hand-assigned category/series color map (green/orange/blue/red/purple/teal); teal has no semantic token — designed multi-hue palette.</td></tr>
+<tr><td class="mono">AskView.tsx:118</td><td class="mono">#0A0F0C</td><td class="reason">Near-black on-accent CTA text that must NOT flip with theme; annotated ui-canon-ok, no on-accent token exists — intentional non-flipping literal.</td></tr>
+<tr><td class="mono">page.tsx:101</td><td class="mono">#04130B</td><td class="reason">HPF monogram logo-mark SVG fill (dark-green facet). Presentation attr — var() breaks SVG fill; bespoke mark color, no token.</td></tr>
+<tr><td class="mono">page.tsx:102</td><td class="mono">#FFFFFF</td><td class="reason">HPF monogram logo-mark SVG fill (white facet). Presentation attr on the brand mark — keep as literal SVG fill.</td></tr>
+<tr><td class="mono">DelegationsSection.tsx:133</td><td class="mono">#2ED47A</td><td class="reason">SVG stroke= presentation attr on a checkmark; var() breaks SVG. Keep as literal.</td></tr></tbody></table>
+
+</div></body></html>
