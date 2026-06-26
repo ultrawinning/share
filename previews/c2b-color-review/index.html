@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C2-B color review — HPF UI token remaps</title>
+<style>
+  :root { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+  body { margin: 0; background: #0a0a0a; color: #e8e8e8; line-height: 1.5; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 32px 20px 80px; }
+  h1 { font-size: 24px; margin: 0 0 6px; }
+  .sub { color: #9aa0aa; font-size: 14px; margin: 0 0 4px; }
+  .ruling { background: #1a1d22; border: 1px solid #30363D; border-radius: 10px; padding: 14px 16px; margin: 18px 0 28px; font-size: 13.5px; color: #c9d1d9; }
+  .ruling b { color: #fff; }
+  .map { border: 1px solid #2a2d33; border-radius: 12px; margin: 0 0 22px; overflow: hidden; }
+  .map-hd { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; padding: 12px 16px; background: #14161a; border-bottom: 1px solid #2a2d33; }
+  .map-hd .swap { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; color: #fff; }
+  .map-hd .arrow { color: #6e7681; }
+  .map-hd .tok { color: #5cc98c; }
+  .map-hd .meta { color: #9aa0aa; font-size: 12.5px; }
+  .badge { font-size: 11px; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+  .b-fix { background: #1e3a2a; color: #6ee29e; }
+  .b-perceptible { background: #3a2e1e; color: #f0c060; }
+  .b-close { background: #23262c; color: #9aa0aa; }
+  .panels { display: grid; grid-template-columns: 1fr 1fr; }
+  .panel { padding: 18px 16px; }
+  .panel.dark { background: #15171C; }
+  .panel.light { background: #E3E0D4; }
+  .panel-tag { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; margin: 0 0 12px; }
+  .panel.dark .panel-tag { color: #8089a0; }
+  .panel.light .panel-tag { color: #6b6256; }
+  .card { border-radius: 8px; padding: 14px 16px; }
+  .panel.dark .card { background: #252830; }
+  .panel.light .card { background: #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 14px; padding: 7px 0; }
+  .row + .row { border-top: 1px dashed rgba(128,128,128,.25); }
+  .lbl { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; opacity: .55; }
+  .panel.dark .lbl { color: #8089a0; }
+  .panel.light .lbl { color: #6b6256; }
+  .sample { font-size: 15px; font-weight: 500; }
+  .hexcode { font-family: ui-monospace, monospace; font-size: 11px; opacity: .6; margin-left: 8px; }
+  .legend { display:flex; gap:18px; flex-wrap:wrap; font-size:12.5px; color:#9aa0aa; margin: 0 0 24px; }
+  .legend span b { color:#e8e8e8; }
+  @media (max-width: 680px){ .panels{ grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>C2-B color review — HPF UI token remaps</h1>
+  <p class="sub">6 hardcoded text-color hexes → semantic <code>text-hpf-*</code> tokens. 38 occurrences across ~9 pages.</p>
+  <p class="sub">Each row shows the SAME label rendered <b>OLD</b> (the dark-locked literal) vs <b>NEW</b> (the token), on the real dark and light surfaces.</p>
+
+  <div class="ruling">
+    <b>Why this needs your eye:</b> the literal hexes are <b>dark-locked</b> — identical in both themes. The tokens <b>flip per theme</b>.
+    So in <b>light mode</b>, near-white labels (<code>#E6EDF3</code>/<code>#E8E8E8</code>) that were nearly invisible become near-black — the actual light-mode fix.
+    In <b>dark mode</b>, three remaps shift the gray perceptibly (<code>#6E7681</code>, <code>#8B949E</code>, <code>#4A5158</code>). Compile gates can't see any of this — that's why you do.
+  </div>
+
+  <div class="legend">
+    <span><span class="badge b-fix">light-fix</span> big, intended change in light mode</span>
+    <span><span class="badge b-perceptible">perceptible</span> noticeable shift in dark mode</span>
+    <span><span class="badge b-close">close</span> minor shift</span>
+  </div>
+
+  <!-- 1 -->
+  <div class="map">
+    <div class="map-hd">
+      <span class="swap">#E6EDF3 <span class="arrow">→</span> <span class="tok">text-hpf-primary</span></span>
+      <span class="badge b-fix">light-fix</span>
+      <span class="meta">23 occ · ops/docs, team/nps, testimonials, marketing LeadsTable ×5, TypeformDropoff ×14</span>
+    </div>
+    <div class="panels">
+      <div class="panel dark"><div class="panel-tag">Dark</div><div class="card">
+        <div class="row"><span class="lbl">old</span><span class="sample" style="color:#E6EDF3">Total responses<span class="hexcode">#E6EDF3</span></span></div>
+        <div class="row"><span class="lbl">new</span><span class="sample" style="color:#F0F2F5">Total responses<span class="hexcode">#F0F2F5</span></span></div>
+      </div></div>
+      <div class="panel light"><div class="panel-tag">Light</div><div class="card">
+        <div class="row"><span class="lbl">old</span><span class="sample" style="color:#E6EDF3">Total responses<span class="hexcode">#E6EDF3</span></span></div>
+        <div class="row"><span class="lbl">new</span><span class="sample" style="color:#0B0C0E">Total responses<span class="hexcode">#0B0C0E</span></span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="map">
+    <div class="map-hd">
+      <span class="swap">#6E7681 <span class="arrow">→</span> <span class="tok">text-hpf-tertiary</span></span>
+      <span class="badge b-perceptible">perceptible · ΔE≈41</span>
+      <span class="meta">4 occ · team/nps</span>
+    </div>
+    <div class="panels">
+      <div class="panel dark"><div class="panel-tag">Dark</div><div class="card">
+        <div class="row"><span class="lbl">old</span><span class="sample" style="color:#6E7681">Updated 2 hours ago<span class="hexcode">#6E7681</span></span></div>
+        <div class="row"><span class="lbl">new</span><span class="sample" style="color:#8089A0">Updated 2 hours ago<span class="hexcode">#8089A0</span></span></div>
+      </div></div>
+      <div class="panel light"><div class="panel-tag">Light</div><div class="card">
+        <div class="row"><span class="lbl">old</span><span class="sample" style="color:#6E7681">Updated 2 hours ago<span class="hexcode">#6E7681</span></span></div>
+        <div class="row"><span class="lbl">new</span><span class="sample" style="color:#4A515C">Updated 2 hours ago<span class="hexcode">#4A515C</span></span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="map">
+    <div class="map-hd">
+      <span class="swap">#8B949E <span class="arrow">→</span> <span class="tok">text-hpf-secondary</span></span>
+      <span class="badge b-perceptible">perceptible · ΔE≈36</span>
+      <span class="meta">3 occ · team/nps</span>
+    </div>
+    <div class="panels">
+      <div class="panel dark"><div class="panel-tag">Dark</div><div class="card">
+        <div class="row"><span class="lbl">old</span><span class="sample" style="color:#8B949E">Promoters · Passives · Detractors<span class="hexcode">#8B949E</span></span></div>
+        <div class="row"><span class="lbl">new</span><span class="sample" style="color:#A0A8B4">Promoters · Passives · Detractors<span class="hexcode">#A0A8B4</span></span></div>
+      </div></div>
+      <div class="panel light"><div class="panel-tag">Light</div><div class="card">
+        <div class="row"><span class="lbl">old</span><span class="sample" style="color:#8B949E">Promoters · Passives · Detractors<span class="hexcode">#8B949E</span></span></div>
+        <div class="row"><span class="lbl">new</span><span class="sample" style="color:#373E48">Promoters · Passives · Detractors<span class="hexcode">#373E48</span></span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="map">
+    <div class="map-hd">
+      <span class="swap">#C9D1D9 <span class="arrow">→</span> <span class="tok">text-hpf-secondary</span></span>
+      <span class="badge b-close">close</span>
+      <span class="meta">2 occ · team/nps</span>
+    </div>
+    <div class="panels">
+      <div class="panel dark"><div class="panel-tag">Dark</div><div class="card">
+        <div class="row"><span class="lbl">old</span><span class="sample" style="color:#C9D1D9">Score breakdown<span class="hexcode">#C9D1D9</span></span></div>
+        <div class="row"><span class="lbl">new</span><span class="sample" style="color:#A0A8B4">Score breakdown<span class="hexcode">#A0A8B4</span></span></div>
+      </div></div>
+      <div class="panel light"><div class="panel-tag">Light</div><div class="card">
+        <div class="row"><span class="lbl">old</span><span class="sample" style="color:#C9D1D9">Score breakdown<span class="hexcode">#C9D1D9</span></span></div>
+        <div class="row"><span class="lbl">new</span><span class="sample" style="color:#373E48">Score breakdown<span class="hexcode">#373E48</span></span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="map">
+    <div class="map-hd">
+      <span class="swap">#4A5158 <span class="arrow">→</span> <span class="tok">text-hpf-tertiary</span></span>
+      <span class="badge b-perceptible">perceptible (dark) · shared cards</span>
+      <span class="meta">2 occ · UnifiedLeadCard, CardNotes — renders in many lead views (closer EODNotes EXCLUDED)</span>
+    </div>
+    <div class="panels">
+      <div class="panel dark"><div class="panel-tag">Dark</div><div class="card">
+        <div class="row"><span class="lbl">old</span><span class="sample" style="color:#4A5158">No notes yet<span class="hexcode">#4A5158</span></span></div>
+        <div class="row"><span class="lbl">new</span><span class="sample" style="color:#8089A0">No notes yet<span class="hexcode">#8089A0</span></span></div>
+      </div></div>
+      <div class="panel light"><div class="panel-tag">Light</div><div class="card">
+        <div class="row"><span class="lbl">old</span><span class="sample" style="color:#4A5158">No notes yet<span class="hexcode">#4A5158</span></span></div>
+        <div class="row"><span class="lbl">new</span><span class="sample" style="color:#4A515C">No notes yet<span class="hexcode">#4A515C</span></span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- 6 -->
+  <div class="map">
+    <div class="map-hd">
+      <span class="swap">#E8E8E8 <span class="arrow">→</span> <span class="tok">text-hpf-primary</span></span>
+      <span class="badge b-fix">light-fix</span>
+      <span class="meta">4 occ · team/sops/[slug]/edit</span>
+    </div>
+    <div class="panels">
+      <div class="panel dark"><div class="panel-tag">Dark</div><div class="card">
+        <div class="row"><span class="lbl">old</span><span class="sample" style="color:#E8E8E8">SOP title<span class="hexcode">#E8E8E8</span></span></div>
+        <div class="row"><span class="lbl">new</span><span class="sample" style="color:#F0F2F5">SOP title<span class="hexcode">#F0F2F5</span></span></div>
+      </div></div>
+      <div class="panel light"><div class="panel-tag">Light</div><div class="card">
+        <div class="row"><span class="lbl">old</span><span class="sample" style="color:#E8E8E8">SOP title<span class="hexcode">#E8E8E8</span></span></div>
+        <div class="row"><span class="lbl">new</span><span class="sample" style="color:#0B0C0E">SOP title<span class="hexcode">#0B0C0E</span></span></div>
+      </div></div>
+    </div>
+  </div>
+
+  <p class="sub" style="margin-top:28px">Token values: fg1 #F0F2F5→#0B0C0E · fg2 #A0A8B4→#373E48 · fg3 #8089A0→#4A515C (dark→light). Backgrounds: dark #15171C/card #252830, light #E3E0D4/card #FFFFFF — pulled live from app/globals.css.</p>
+</div>
+</body>
+</html>
