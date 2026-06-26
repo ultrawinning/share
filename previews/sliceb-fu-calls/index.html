@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>S3 Slice B — Follow-up calls (eyeball preview)</title>
+<style>
+  /* Dark-theme token values copied verbatim from app/globals.css so this matches the real app. */
+  :root{
+    --hpf-base:#15171C; --hpf-section:#1C1E24; --hpf-card:#252830; --hpf-elevated:#2D3039;
+    --hpf-border:rgba(255,255,255,0.06); --hpf-border-strong:rgba(255,255,255,0.12);
+    --hpf-fg1:#F0F2F5; --hpf-fg2:#A0A8B4; --hpf-fg3:#5C6370;
+    --brand-green:#2ED47A; --status-error:#E53935; --stage-new:#1E88E5; --intent-teal:#26A69A;
+    /* CALL_TYPE tokens (lib/workstation/design.ts) */
+    --ct-set:#26A69A; --ct-unclaimed:#616161;
+    --ct-fu-border:#AB47BC; --ct-fu-bg:rgba(171,71,188,0.15); --ct-fu-text:#CE93D8;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--hpf-base);color:var(--hpf-fg1);
+    font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:32px 20px 80px}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{font-size:20px;font-weight:700;margin:0 0 4px;font-family:"Space Grotesk",Inter,sans-serif}
+  .sub{font-size:13px;color:var(--hpf-fg3);margin:0 0 28px}
+  h2{font-size:13px;font-weight:600;color:var(--hpf-fg2);text-transform:uppercase;letter-spacing:.05em;
+    margin:34px 0 12px;border-bottom:1px solid var(--hpf-border);padding-bottom:8px}
+  .note{font-size:12px;color:var(--hpf-fg3);margin:6px 0 0;line-height:1.5}
+
+  /* ── Today summary header (closer-dashboard) ── */
+  .summary{display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--hpf-fg2);margin-bottom:14px}
+  .summary .lead{color:var(--hpf-fg1);font-weight:600}
+  .dot{display:inline-flex;align-items:center;gap:6px}
+  .dot::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--c)}
+
+  /* ── Call card (CallCard.tsx → CardShell) ── */
+  .card{background:var(--hpf-card);border:1px solid var(--hpf-border);border-left:4px solid var(--bc);
+    border-radius:10px;padding:10px 14px;margin-bottom:12px}
+  .card .row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .card .left{display:flex;align-items:center;gap:12px;min-width:0}
+  .time{font-size:13px;color:var(--hpf-fg2);font-variant-numeric:tabular-nums;font-weight:500}
+  .name{font-size:14px;font-weight:600;color:var(--hpf-fg1)}
+  .pill{font-size:10px;font-weight:600;letter-spacing:.04em;padding:2px 6px;border-radius:5px;white-space:nowrap}
+  .pill.fu{background:var(--ct-fu-bg);color:var(--ct-fu-text)}
+  .pill.status{background:rgba(255,255,255,0.06);color:var(--hpf-fg2)}
+  .chev{color:var(--hpf-fg3);font-size:12px}
+
+  /* ── Kanban FU card action buttons (UnifiedLeadCard) ── */
+  .kcard{background:var(--hpf-card);border:1px solid var(--hpf-border);border-left:4px solid #FB8C00;
+    border-radius:10px;padding:12px 14px;margin-bottom:12px}
+  .khead{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .btns{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .btn{font-size:11px;font-weight:500;padding:2px 8px;border-radius:6px;border:none;cursor:default}
+  .btn.book{background:rgba(30,136,229,0.14);color:var(--stage-new);font-weight:500}
+  .btn.close{background:rgba(46,212,122,0.22);color:var(--brand-green);font-weight:600}
+  .btn.won{background:rgba(76,175,80,0.12);color:#4CAF50}
+  .btn.dead{background:rgba(239,83,80,0.08);color:#FF3B30}
+  .btn.nurture{background:rgba(38,166,154,0.12);color:var(--intent-teal)}
+
+  /* ── Book modal (useFollowUpBook) ── */
+  .modalwrap{margin-top:14px;display:flex;justify-content:center}
+  .modal{width:100%;max-width:380px;border-radius:14px;padding:20px;background:var(--hpf-section);
+    border:1px solid var(--hpf-border);box-shadow:0 12px 40px rgba(0,0,0,.5)}
+  .modal .title{font-size:15px;font-weight:700;color:var(--hpf-fg1);font-family:"Space Grotesk",Inter,sans-serif}
+  .modal .meta{font-size:12px;color:var(--hpf-fg3);margin:2px 0 16px}
+  .modal label{display:block;font-size:11px;font-weight:600;color:var(--hpf-fg3);margin-bottom:4px}
+  .modal input{width:100%;padding:9px 11px;border-radius:8px;margin-bottom:12px;background:var(--hpf-base);
+    color:var(--hpf-fg1);border:1px solid var(--hpf-border);font-size:14px;font-family:inherit}
+  .modal .actions{display:flex;gap:8px;margin-top:8px}
+  .modal .cancel{flex:1;padding:9px 0;border-radius:8px;font-size:13px;font-weight:600;background:transparent;
+    color:var(--hpf-fg3);border:1px solid var(--hpf-border);cursor:default}
+  .modal .save{flex:1;padding:9px 0;border-radius:8px;font-size:13px;font-weight:700;background:var(--brand-green);
+    color:var(--hpf-base);border:none;cursor:default}
+  .legend{font-size:11px;color:var(--hpf-fg3);margin-top:8px}
+  .swatch{display:inline-block;width:10px;height:10px;border-radius:2px;vertical-align:middle;margin-right:5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>S3 Slice B — HPFHQ-native follow-up calls</h1>
+  <p class="sub">Eyeball preview · closer-dashboard only · built from the real dark-theme tokens + component styles.
+    NOT the live app (the running code is ship-gate-green). Verify the <b>visual distinctness</b> + the booking UX.</p>
+
+  <h2>1 · Today tab — a follow-up call card next to a normal call</h2>
+  <div class="summary">
+    <span class="lead">1 call</span>
+    <span class="dot" style="--c:#FFC107">1 pending</span>
+    <span class="dot" style="--c:var(--ct-fu-text)">2 follow-ups</span>
+  </div>
+
+  <!-- normal new-call card (set call → teal left border) -->
+  <div class="card" style="--bc:var(--ct-set)">
+    <div class="row">
+      <div class="left">
+        <span class="time">2:00 PM</span>
+        <span class="name">Marcus Reyes</span>
+        <span class="pill status">showed</span>
+      </div>
+      <span class="chev">▾</span>
+    </div>
+  </div>
+
+  <!-- FU call card, upcoming (violet left border + ↩ FOLLOW-UP pill) -->
+  <div class="card" style="--bc:var(--ct-fu-border)">
+    <div class="row">
+      <div class="left">
+        <span class="time">3:00 PM</span>
+        <span class="name">Nehal Shah</span>
+        <span class="pill fu">↩ FOLLOW-UP</span>
+      </div>
+      <span class="chev">▾</span>
+    </div>
+  </div>
+
+  <!-- FU call card, submitted -->
+  <div class="card" style="--bc:var(--ct-fu-border);opacity:.6">
+    <div class="row">
+      <div class="left">
+        <span class="time">11:30 AM</span>
+        <span class="name">Priyal Mehta</span>
+        <span class="pill fu">↩ FOLLOW-UP</span>
+        <span class="pill status">closed</span>
+      </div>
+      <span style="font-size:11px;font-weight:600;color:var(--brand-green)">Submitted</span>
+    </div>
+  </div>
+  <p class="note"><span class="swatch" style="background:var(--ct-fu-border)"></span>Violet 4px left-border + “↩ FOLLOW-UP” pill in every card state =
+    the closer instantly sees it’s a follow-up, not a new booked call. Normal calls keep their teal (set) / grey (unclaimed) border.</p>
+  <p class="note">The header counts <b>only new booked calls</b> (“1 call”); follow-ups are tallied separately (“2 follow-ups”) and never feed Calls-Scheduled / show-rate (R1 funnel-exclude).</p>
+
+  <h2>2 · Pipeline / Today FU card — the “📅 Book” action</h2>
+  <div class="kcard">
+    <div class="khead">
+      <div class="left">
+        <span class="name">Nehal Shah</span>
+        <span class="time" style="margin-left:8px">due 2d ago</span>
+      </div>
+      <div class="btns">
+        <button class="btn nurture">Nurture</button>
+        <button class="btn book">📅 Book</button>
+        <button class="btn close">Closed 💰</button>
+        <button class="btn won">Won</button>
+        <button class="btn dead">Dead</button>
+      </div>
+    </div>
+  </div>
+  <p class="note"><b>📅 Book</b> (blue) opens the date+time picker → sets <code>lead_pipeline.fu_call_scheduled_at</code> →
+    the FU surfaces as the violet call card above on its scheduled day. <b>Closed 💰</b> (Slice A) stays for a quick close-now.
+    Both are prop-gated ON only on /closer-dashboard; the retiring /closer/[name] fallback is byte-identical (no buttons).</p>
+
+  <h2>3 · The “Book follow-up call” modal</h2>
+  <div class="modalwrap">
+    <div class="modal">
+      <div class="title">Book follow-up call 📅</div>
+      <div class="meta">Nehal Shah · it shows as a full call card on its day (ET)</div>
+      <label>Date *</label>
+      <input type="date" value="2026-06-27" />
+      <label>Time * <span style="font-weight:400;color:var(--hpf-fg3)">(ET)</span></label>
+      <input type="time" value="15:00" />
+      <div class="actions">
+        <button class="cancel">Cancel</button>
+        <button class="save">Book call</button>
+      </div>
+    </div>
+  </div>
+  <p class="note">Time is always interpreted as <b>ET</b> (the business tz) regardless of the browser’s location, so the
+    stored instant buckets to the right ET day + renders the right ET time. Past dates are blocked.</p>
+
+  <h2>Known residual (flagged, not fixed here)</h2>
+  <p class="note">A FU outcome logged via the full form writes a <code>closer_eod_entries</code> row with
+    <code>is_new_call=false</code>. The board + summary exclude it, but the <b>sales-cockpit scorecard</b>
+    (<code>lib/cockpit/metrics/scorecard.ts</code>) still counts <code>showed</code>/<code>scheduled</code> by status without
+    filtering <code>is_new_call</code> — so FU shows/no-shows can still touch show-rate / close-rate. That’s the
+    R1-deferred “track FUs entirely separately” canon step (CC-12/F9), a gated metric change — out of scope for Slice B.</p>
+</div>
+</body>
+</html>
