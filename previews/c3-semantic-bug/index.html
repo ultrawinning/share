@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C3 · semantic-bug fix — invisible text → legible</title>
+<style>
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif; background:#0a0a0a; color:#e8e8e8; line-height:1.5; }
+  .wrap { max-width:980px; margin:0 auto; padding:32px 20px 80px; }
+  h1 { font-size:22px; margin:0 0 6px; }
+  .sub { color:#9aa0aa; font-size:14px; margin:0 0 4px; }
+  code { font-family:ui-monospace,monospace; font-size:12.5px; }
+  .info { background:#1a1d22; border:1px solid #30363D; border-radius:10px; padding:14px 16px; margin:18px 0 26px; font-size:13.5px; color:#c9d1d9; }
+  .info b { color:#fff; }
+  .panels { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .panel { border-radius:12px; padding:20px 18px; }
+  .panel.dark { background:#15171C; border:1px solid #2a2d33; }
+  .panel.light { background:#E3E0D4; }
+  .ptag { font-size:11px; text-transform:uppercase; letter-spacing:.08em; font-weight:700; margin:0 0 14px; }
+  .panel.dark .ptag { color:#8089a0; } .panel.light .ptag { color:#6b6256; }
+  .card { border-radius:10px; padding:14px 16px; }
+  .panel.dark .card { background:#252830; } .panel.light .card { background:#FFFFFF; box-shadow:0 1px 3px rgba(0,0,0,.08); }
+  .card + .card { margin-top:14px; }
+  .lbl { font-size:10px; text-transform:uppercase; letter-spacing:.06em; opacity:.6; margin-bottom:8px; }
+  .panel.dark .lbl { color:#8089a0; } .panel.light .lbl { color:#6b6256; }
+  .row { font-size:13px; margin:5px 0; }
+  /* THE BUG: text painted with the border token */
+  .old  { color: rgba(255,255,255,0.08); }   /* HPF_THEME.border — what it is now */
+  .panel.light .old { color: rgba(0,0,0,0.06); } /* on light it's just as gone */
+  .new-d { color:#8089A0; }   /* var(--hpf-fg3) dark */
+  .new-l { color:#4A515C; }   /* var(--hpf-fg3) light */
+  .badge { display:inline-block; font-size:10px; font-weight:600; padding:2px 8px; border-radius:999px; }
+  .badge.old { background:rgba(72,79,88,0.12); color:rgba(255,255,255,0.08); }
+  .badge.newd { background:rgba(72,79,88,0.12); color:#8089A0; }
+  .panel.light .badge.old { background:rgba(72,79,88,0.10); color:rgba(0,0,0,0.06); }
+  .badge.newl { background:rgba(72,79,88,0.10); color:#4A515C; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>C3 · semantic-bug fix — <code>color: HPF_THEME.border</code></h1>
+  <p class="sub">10 spots painted <b>text</b> with the <b>border</b> token (<code>rgba(255,255,255,0.08)</code>) → effectively invisible. Fixed to <code>var(--hpf-fg3)</code> (legible, theme-flipping).</p>
+  <div class="info">
+    <b>This is a bug, not a restyle.</b> Affected: MediaGrid keyboard hints · Compass "to toggle"/empty-states/footer · QuarterZone "No active quarter" · CalendarLoad tooltip rows ("No slots", "Cancelled", "No calls") · LeadsTable "seed" badge · UTM empty-value cell. All <b>non-protected</b> (no closer/dialer/setter reach). The OLD column below renders the actual 8%-opacity text — you basically can't read it, which is the point.
+  </div>
+
+  <div class="panels">
+    <div class="panel dark">
+      <div class="ptag">Dark</div>
+      <div class="card">
+        <div class="lbl">OLD · color = HPF_THEME.border (rgba 255,255,255,.08)</div>
+        <div class="row old">⌘K to toggle</div>
+        <div class="row old">No active quarter found</div>
+        <div class="row old">No slots available · Cancelled · No calls</div>
+        <div class="row"><span class="badge old">seed</span></div>
+      </div>
+      <div class="card">
+        <div class="lbl">NEW · var(--hpf-fg3) = #8089A0</div>
+        <div class="row new-d">⌘K to toggle</div>
+        <div class="row new-d">No active quarter found</div>
+        <div class="row new-d">No slots available · Cancelled · No calls</div>
+        <div class="row"><span class="badge newd">seed</span></div>
+      </div>
+    </div>
+
+    <div class="panel light">
+      <div class="ptag">Light</div>
+      <div class="card">
+        <div class="lbl">OLD · (border token — gone here too)</div>
+        <div class="row old">⌘K to toggle</div>
+        <div class="row old">No active quarter found</div>
+        <div class="row old">No slots available · Cancelled · No calls</div>
+        <div class="row"><span class="badge old">seed</span></div>
+      </div>
+      <div class="card">
+        <div class="lbl">NEW · var(--hpf-fg3) = #4A515C</div>
+        <div class="row new-l">⌘K to toggle</div>
+        <div class="row new-l">No active quarter found</div>
+        <div class="row new-l">No slots available · Cancelled · No calls</div>
+        <div class="row"><span class="badge newl">seed</span></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="sub" style="margin-top:24px">Files: MediaGrid.tsx · LeadsTable.tsx · CalendarLoad.tsx ×3 · CompassDrawer.tsx ×3 · QuarterZone.tsx · UTMPrimitives.tsx. Each <code>color: HPF_THEME.border</code> → <code>color: "var(--hpf-fg3)"</code> (removes an inline HPF_THEME → guard-friendly; theme-flips).</p>
+</div>
+</body>
+</html>
