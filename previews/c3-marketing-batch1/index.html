@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C3 marketing batch-1 — eyeball</title>
+<style>
+  :root{
+    /* live token values pulled from app/globals.css 2026-06-26 */
+    --d-bg:#15171C; --d-sec:#1C1E24; --d-card:#252830;
+    --d-fg1:#F0F2F5; --d-fg2:#A0A8B4; --d-fg3:#8089A0; --d-green:#3BAE72; --d-error:#FF3B30;
+    --l-bg:#E3E0D4; --l-sec:#F4F2EA; --l-card:#FFFFFF;
+    --l-fg1:#0B0C0E; --l-fg2:#373E48; --l-fg3:#4A515C; --l-green:#1F9A5E; --l-error:#FF3B30;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0d0f12;color:#e8eaed;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:32px;max-width:1180px;margin:0 auto}
+  h1{font-size:22px;font-weight:700;margin-bottom:6px}
+  h2{font-size:15px;font-weight:600;margin:30px 0 12px;color:#cfd3d8;border-bottom:1px solid #2a2e35;padding-bottom:6px}
+  .lede{color:#9aa0a8;margin-bottom:8px;max-width:760px}
+  .pill{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;margin-right:6px}
+  .ok{background:rgba(59,174,114,.16);color:#56d39a}
+  .chg{background:rgba(255,176,32,.16);color:#ffc24d}
+  code{background:#1b1e24;padding:1px 6px;border-radius:4px;font:12px/1 ui-monospace,Menlo,monospace;color:#c9d1d9}
+  table.map{border-collapse:collapse;margin:10px 0;font-size:13px}
+  table.map td,table.map th{border:1px solid #2a2e35;padding:7px 12px;text-align:left}
+  table.map th{background:#1b1e24;font-weight:600;color:#aeb4bc}
+  .sw{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px;border:1px solid rgba(255,255,255,.15)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .pane{border-radius:12px;padding:18px 20px;border:1px solid rgba(255,255,255,.06)}
+  .pane.dark{background:var(--d-bg)}
+  .pane.light{background:var(--l-bg)}
+  .pane .tag{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;opacity:.55;margin-bottom:14px}
+  .pane.dark .tag{color:var(--d-fg2)} .pane.light .tag{color:var(--l-fg2)}
+  .card{border-radius:10px;padding:14px 16px;margin-bottom:10px}
+  .pane.dark .card{background:var(--d-card)} .pane.light .card{background:var(--l-card);box-shadow:0 1px 2px rgba(0,0,0,.06)}
+  /* funnel stage sample */
+  .lbl{font-size:11px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;margin-bottom:3px}
+  .pane.dark .lbl{color:var(--d-fg3)} .pane.light .lbl{color:var(--l-fg3)}
+  .val{font-size:22px;font-weight:700;margin-bottom:2px}
+  .pane.dark .val{color:var(--d-fg1)} .pane.light .val{color:var(--l-fg1)}
+  .sub{font-size:12px}
+  /* stage pill + stepper */
+  .stagepill{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;padding:3px 9px;border-radius:7px;margin:0 6px 6px 0}
+  .step{display:flex;align-items:flex-start;gap:12px;margin-bottom:2px}
+  .dot{width:9px;height:9px;border-radius:50%;border:1.5px solid;margin-top:4px;flex:0 0 auto}
+  .steplbl{font-size:14px;text-transform:capitalize}
+  .x{display:inline-flex;width:34px;height:34px;align-items:center;justify-content:center;border-radius:8px;font-size:20px;cursor:pointer}
+  .note{font-size:12px;color:#8b9098;margin-top:8px}
+  .flag{background:#1a1207;border:1px solid #4a3410;border-radius:10px;padding:14px 18px;margin-top:14px;color:#e8c98a;font-size:13px}
+  ul{margin:8px 0 0 20px} li{margin:4px 0}
+  .col2{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .before-after{font-size:10px;font-weight:700;letter-spacing:.5px;opacity:.5;margin-bottom:8px;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<h1>C3 marketing batch-1 — color-token migration</h1>
+<p class="lede"><b>Files:</b> <code>MetaAdsTab.tsx</code> + <code>LeadDrawer.tsx</code> &nbsp;·&nbsp; <b>15 swaps.</b>
+Hardcoded <code>HPF_THEME.secondary/green</code> (dark-locked hex) → theme-flipping CSS vars, so light mode renders correctly.
+<code>SocialTab.tsx</code> = verified all-KEEP (every use is SVG <code>fill</code> or static <code>error</code>), untouched.</p>
+<p><span class="pill ok">DARK = pixel-identical</span> <span class="pill chg">LIGHT = the fix</span></p>
+<p class="lede" style="margin-top:8px">The dark token values equal the old hex byte-for-byte, so <b>nothing changes in the mode the app renders today</b> — verify it looks unchanged. The only visible difference is in light mode, where washed-out light-gray text becomes readable.</p>
+
+<table class="map">
+  <tr><th>swap</th><th>dark (before = after)</th><th>light before</th><th>light after</th></tr>
+  <tr>
+    <td><code>secondary → var(--hpf-fg2)</code></td>
+    <td><span class="sw" style="background:#A0A8B4"></span><code>#A0A8B4</code> = <code>#A0A8B4</code></td>
+    <td><span class="sw" style="background:#A0A8B4"></span><code>#A0A8B4</code> (washed)</td>
+    <td><span class="sw" style="background:#373E48"></span><code>#373E48</code> (readable)</td>
+  </tr>
+  <tr>
+    <td><code>green → var(--hpf-green)</code></td>
+    <td><span class="sw" style="background:#3BAE72"></span><code>#3BAE72</code> = <code>#3BAE72</code></td>
+    <td><span class="sw" style="background:#3BAE72"></span><code>#3BAE72</code></td>
+    <td><span class="sw" style="background:#1F9A5E"></span><code>#1F9A5E</code> (deeper)</td>
+  </tr>
+</table>
+
+<h2>① Meta Ads — funnel stage subtitles (secondary)</h2>
+<div class="grid">
+  <div class="pane dark">
+    <div class="tag">Dark · before = after (identical)</div>
+    <div class="card">
+      <div class="lbl">Bookings</div><div class="val">342</div>
+      <div class="sub" style="color:#A0A8B4">12.4% conv</div>
+    </div>
+    <div class="card">
+      <div class="lbl">Q Bookings</div><div class="val">198</div>
+      <div class="sub" style="color:#FF3B30">41% qual rate</div>
+      <div class="note">(below-target stays error-red — KEEP)</div>
+    </div>
+  </div>
+  <div class="pane light">
+    <div class="col2"><div class="before-after" style="color:var(--l-fg3)">before (hardcoded)</div><div class="before-after" style="color:var(--l-fg3)">after (token)</div></div>
+    <div class="card">
+      <div class="lbl">Bookings</div><div class="val">342</div>
+      <div class="col2">
+        <div class="sub" style="color:#A0A8B4">12.4% conv</div>
+        <div class="sub" style="color:#373E48">12.4% conv</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2>② Lead drawer — stage pills + progress stepper (secondary + green)</h2>
+<div class="grid">
+  <div class="pane dark">
+    <div class="tag">Dark · before = after (identical)</div>
+    <div>
+      <span class="stagepill" style="background:rgba(72,81,88,.2);color:#A0A8B4">Lead</span>
+      <span class="stagepill" style="background:rgba(59,174,114,.15);color:#3BAE72">Closed</span>
+    </div>
+    <div style="margin-top:14px">
+      <div class="step"><span class="dot" style="background:#A0A8B4;border-color:#A0A8B4"></span><span class="steplbl" style="color:#A0A8B4;font-weight:600">lead</span></div>
+      <div class="step"><span class="dot" style="background:transparent;border-color:#30363D"></span><span class="steplbl" style="color:rgba(255,255,255,.08)">qualified</span></div>
+    </div>
+  </div>
+  <div class="pane light">
+    <div class="col2"><div class="before-after" style="color:var(--l-fg3)">before (hardcoded)</div><div class="before-after" style="color:var(--l-fg3)">after (token)</div></div>
+    <div class="col2">
+      <div>
+        <span class="stagepill" style="background:rgba(72,81,88,.2);color:#A0A8B4">Lead</span>
+        <div class="step" style="margin-top:10px"><span class="dot" style="background:#A0A8B4;border-color:#A0A8B4"></span><span class="steplbl" style="color:#A0A8B4;font-weight:600">lead</span></div>
+        <span class="stagepill" style="background:rgba(59,174,114,.15);color:#3BAE72;margin-top:10px">Closed</span>
+      </div>
+      <div>
+        <span class="stagepill" style="background:rgba(72,81,88,.2);color:#373E48">Lead</span>
+        <div class="step" style="margin-top:10px"><span class="dot" style="background:#373E48;border-color:#373E48"></span><span class="steplbl" style="color:#373E48;font-weight:600">lead</span></div>
+        <span class="stagepill" style="background:rgba(31,154,94,.15);color:#1F9A5E;margin-top:10px">Closed</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2>③ Lead drawer — close (×) button hover</h2>
+<div class="grid">
+  <div class="pane dark">
+    <div class="tag">Dark · hover state migrated</div>
+    <span class="x" style="color:#A0A8B4;background:rgba(255,255,255,.04)">×</span>
+    <span class="note">hover-in → secondary (was identical in dark)</span>
+  </div>
+  <div class="pane light">
+    <div class="before-after" style="color:var(--l-fg3)">hover-in: before → after</div>
+    <span class="x" style="color:#A0A8B4">×</span>
+    <span class="x" style="color:#373E48;background:rgba(0,0,0,.04)">×</span>
+    <span class="note" style="color:var(--l-fg3)">×&nbsp;becomes visible/dark on hover in light</span>
+  </div>
+</div>
+
+<div class="flag">
+  <b>⚠ Flagged — NOT in this batch (faint-white-alpha, your call):</b>
+  <ul>
+    <li><b>Stepper future-steps</b> (<code>LeadDrawer:193</code>) + <b>× resting state</b> (<code>:390/:396</code>) use <code>rgba(255,255,255,.06–.08)</code> — intentionally near-invisible in <i>dark</i>, but that means <b>invisible in light too</b> (white-on-white). Fixing them changes the dark prominence, so it's a judgment call — left as-is. Want future-steps faint-but-visible in light? Separate decision.</li>
+  </ul>
+</div>
+
+<h2>Live-page check (after you OK the above)</h2>
+<p class="lede">Switch the app to <b>light mode</b> and glance at:</p>
+<ul>
+  <li><code>/marketing</code> → <b>Meta Ads</b> tab → the funnel column subtitles (conv %, CTR, show rate) + the summary tiles → readable dark-gray, not washed light-gray.</li>
+  <li>Any lead → <b>Lead drawer</b> → the LEAD/CLOSED stage pills + the vertical progress stepper.</li>
+  <li>Flip back to <b>dark</b> on both → confirm <b>nothing moved</b>.</li>
+</ul>
+<p class="note">Ship lane ready: isolated worktree off <code>origin/main 2791cb0d</code>, full ship-gate (no <code>--no-verify</code>). Say go and it lands.</p>
+
+</body>
+</html>
