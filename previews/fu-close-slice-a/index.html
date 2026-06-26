@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S3 Slice A — FU close capture (eyeball preview)</title>
+<style>
+  :root{
+    --hpf-bg:#0E0F12; --hpf-section:#15171C; --hpf-fg1:#F4F5F7; --hpf-fg3:#9097A3;
+    --hpf-border:#2A2D34; --brand-green:#2ED47A; --status-error:#FF3B30; --status-success:#4CAF50;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#0A0B0D;color:var(--hpf-fg1);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,sans-serif;padding:32px;}
+  h1{font-size:18px;margin:0 0 4px}
+  .sub{color:var(--hpf-fg3);font-size:13px;margin-bottom:28px;max-width:720px;line-height:1.5}
+  .grid{display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start}
+  .panel{flex:1;min-width:320px}
+  .panel h2{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--hpf-fg3);margin:0 0 12px}
+  /* FU kanban card */
+  .card{width:380px;background:var(--hpf-section);border:1px solid var(--hpf-border);border-left:3px solid #FB8C00;
+    border-radius:12px;padding:13px 14px}
+  .card .nm{font-weight:700;font-size:14px}
+  .card .meta{color:var(--hpf-fg3);font-size:11px;margin-top:2px}
+  .actions{display:flex;align-items:center;gap:6px;margin-top:12px;flex-wrap:wrap}
+  .btn{font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;border:none;cursor:pointer}
+  .btn.hot{background:rgba(239,83,80,.12);color:#FF3B30}
+  .btn.nurture{background:rgba(38,166,154,.12);color:#26A69A}
+  .btn.closed{background:color-mix(in srgb,var(--status-success) 22%,transparent);color:var(--brand-green);font-weight:700}
+  .btn.won{background:rgba(76,175,80,.12);color:#4CAF50}
+  .btn.dead{background:rgba(239,83,80,.08);color:#FF3B30}
+  .tag{display:inline-block;background:rgba(251,140,0,.12);color:#FB8C00;font-size:10px;font-weight:600;padding:1px 7px;border-radius:10px;margin-top:8px}
+  /* Modal */
+  .modal{width:380px;border-radius:14px;padding:20px;background:var(--hpf-section);
+    border:1px solid var(--hpf-border);box-shadow:0 12px 40px rgba(0,0,0,.5)}
+  .modal .title{font-size:15px;font-weight:700}
+  .modal .ctx{font-size:12px;color:var(--hpf-fg3);margin-top:2px;margin-bottom:16px}
+  label{display:block;font-size:11px;font-weight:600;color:var(--hpf-fg3);margin-bottom:4px}
+  input{width:100%;padding:9px 11px;border-radius:8px;margin-bottom:12px;background:var(--hpf-bg);
+    color:var(--hpf-fg1);border:1px solid var(--hpf-border);font-size:14px}
+  input.err{border-color:var(--status-error)}
+  .errmsg{font-size:11px;color:var(--status-error);margin-bottom:8px}
+  .row{display:flex;gap:8px;margin-top:8px}
+  .row button{flex:1;padding:9px 0;border-radius:8px;font-size:13px;cursor:pointer}
+  .cancel{background:transparent;color:var(--hpf-fg3);border:1px solid var(--hpf-border);font-weight:600}
+  .save{background:var(--brand-green);color:#0A0B0D;border:none;font-weight:700}
+  .save.disabled{background:var(--hpf-border);color:var(--hpf-fg3);border:none;font-weight:700;cursor:not-allowed}
+  .note{margin-top:36px;max-width:860px;color:var(--hpf-fg3);font-size:12.5px;line-height:1.6;border-top:1px solid var(--hpf-border);padding-top:18px}
+  .note b{color:var(--hpf-fg1)}
+  code{background:#15171C;border:1px solid var(--hpf-border);border-radius:4px;padding:1px 5px;font-size:12px}
+</style>
+</head>
+<body>
+  <h1>S3 Slice A — follow-up close capture</h1>
+  <div class="sub">HPFHQ-native. On <code>/closer-dashboard</code> only (prop-gated; the retiring <code>/closer/[name]</code> fallback is untouched). The "Closed 💰" button opens a mini cash + contracted capture and writes a real <code>closer_eod_entries</code> close row through the existing <code>/api/closer/outcome</code> path — no GHL, no two-box gate.</div>
+
+  <div class="grid">
+    <div class="panel">
+      <h2>1 · The FU kanban card (new button)</h2>
+      <div class="card">
+        <div class="nm">Nehal Tarazan</div>
+        <div class="meta">📞 follow-up · due Jul 1 · $5,000 contract / $1,250 in</div>
+        <span class="tag">🔥 FU — Immediate</span>
+        <div class="actions">
+          <button class="btn nurture">Nurture</button>
+          <button class="btn closed">Closed 💰</button>
+          <button class="btn won">Won</button>
+          <button class="btn dead">Dead</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>2 · The capture modal (valid)</h2>
+      <div class="modal">
+        <div class="title">Close follow-up 💰</div>
+        <div class="ctx">Nehal Tarazan · capture the deal value</div>
+        <label>Cash collected *</label>
+        <input value="1250">
+        <label>Contracted * <span style="font-weight:400">(total deal value — ≥ cash)</span></label>
+        <input value="5000">
+        <div class="row">
+          <button class="cancel">Cancel</button>
+          <button class="save">Save close</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>3 · F11 guard (contracted &lt; cash)</h2>
+      <div class="modal">
+        <div class="title">Close follow-up 💰</div>
+        <div class="ctx">Nehal Tarazan · capture the deal value</div>
+        <label>Cash collected *</label>
+        <input value="5000">
+        <label>Contracted * <span style="font-weight:400">(total deal value — ≥ cash)</span></label>
+        <input class="err" value="1250">
+        <div class="errmsg">Contracted must be ≥ cash collected (a deal can’t be worth less than what was paid).</div>
+        <div class="row">
+          <button class="cancel">Cancel</button>
+          <button class="save disabled">Save close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>What this changes:</b> a new green <b>Closed 💰</b> pill in the FU card action row (next to Won/Dead), and the modal above. Nothing else on the board moves. <b>Won</b> still works exactly as today (archive → <code>status=won</code>, no money); <b>Closed 💰</b> is the money-capture path (cash + contracted, F11-floored, writes the real close row + flips the card to won in one call). <b>Funnel:</b> a FU close does not count as a new scheduled call / show-rate (R1). <b>Gate:</b> built + ship-gate green (tsc 0, 1264 tests, build ✓); pushed only after you approve this look.
+  </div>
+</body>
+</html>
