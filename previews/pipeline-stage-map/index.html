@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pipeline Stage Map — diagram preview</title>
+<style>
+  :root {
+    --base:#0c0f14; --card:#161b22; --section:#1b212b; --border:#2a313c; --border-strong:#3a4350;
+    --fg1:#e6edf3; --fg2:#9aa6b2; --fg3:#6b7682; --green:#2ED47A;
+    --setter:#3B82F6; --dialer:#F59E0B; --closer:#8B5CF6;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--base); color:var(--fg1);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif; padding:32px 24px; }
+  .wrap { max-width:1280px; margin:0 auto; }
+  h1 { font-size:26px; font-weight:700; margin:0; }
+  .sub { color:var(--fg2); font-size:14px; line-height:1.6; margin:10px 0 0; max-width:880px; }
+  .legend { display:flex; gap:10px; flex-wrap:wrap; margin:20px 0 8px; }
+  .chip { display:flex; align-items:center; gap:8px; padding:7px 14px; border-radius:999px;
+    background:var(--card); border:1px solid var(--border); font-size:13px; font-weight:600; }
+  .chip svg { width:16px; height:16px; }
+  .badge-branch { display:inline-block; font-size:10px; font-weight:700; letter-spacing:.04em;
+    color:var(--fg3); border:1px dashed var(--border-strong); border-radius:5px; padding:1px 5px; margin-left:6px; vertical-align:middle; }
+
+  /* funnel */
+  .funnel { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-top:18px; align-items:start; }
+  .col { background:var(--card); border:1px solid var(--border); border-radius:12px; overflow:hidden; min-height:120px; }
+  .col-head { padding:14px 16px; background:var(--section); border-bottom:1px solid var(--border); position:relative; }
+  .rung { font-size:10px; font-weight:700; color:var(--fg3); letter-spacing:.08em; }
+  .col-head h2 { font-size:16px; font-weight:700; margin:4px 0 0; }
+  .col-head p { font-size:11.5px; color:var(--fg2); margin:6px 0 0; line-height:1.45; }
+  .col-head .arrow { position:absolute; right:-12px; top:50%; transform:translateY(-50%); z-index:2;
+    width:22px; height:22px; color:var(--border-strong); }
+  .cards { padding:10px; display:flex; flex-direction:column; gap:8px; }
+  .card { background:var(--section); border:1px solid var(--border); border-left-width:4px;
+    border-radius:8px; padding:9px 11px; }
+  .card.branch { border-style:dashed; background:transparent; }
+  .card .row1 { display:flex; align-items:center; gap:7px; }
+  .card .ico { width:14px; height:14px; flex:none; }
+  .card .lbl { font-size:13px; font-weight:650; }
+  .card .alias { font-size:10.5px; color:var(--fg3); margin-top:4px; line-height:1.4; }
+  .card .alias b { color:var(--fg2); font-weight:600; }
+  .note { margin-top:26px; padding:16px 20px; background:var(--section); border:1px solid var(--border);
+    border-radius:10px; color:var(--fg2); font-size:13px; line-height:1.65; }
+  .note b { color:var(--fg1); }
+  .draft { display:inline-block; margin-left:10px; font-size:11px; font-weight:700; color:#000; background:var(--green);
+    padding:2px 8px; border-radius:6px; vertical-align:middle; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Pipeline Stage Map <span class="draft">DIAGRAM DRAFT</span></h1>
+  <p class="sub">Every working sub-stage on the three sales boards, and the funnel milestone it counts as.
+    The <b>5 milestones</b> are the only thing HPFHQ counts; each board has its own sub-stages, and every
+    sub-stage rolls up to exactly one milestone. Duplicate labels (e.g. "Deposit Closed" / "Won" / "Closed")
+    are now consolidated to <b>one canonical sub-stage per board</b>. A
+    <span class="badge-branch">BRANCH</span> card is an off-ramp (cancelled / no-show / lost) — it records what
+    happened, it never moves a lead backwards.</p>
+
+  <div class="legend" id="legend"></div>
+  <div class="funnel" id="funnel"></div>
+
+  <div class="note">
+    <b>How "adding a stage" works.</b> Stages are defined in code (we keep control — no self-serve editor).
+    To add one, add it to the map declaring which of the five milestones it sits under. A guard checks every
+    live stage is mapped, so a stage can never exist without a milestone. This diagram is generated from that map.
+  </div>
+</div>
+
+<script>
+const ICONS = {
+  // Lucide: message-square (setter), phone (dialer), trophy (closer), arrow-right
+  setter: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+  dialer: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+  closer: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>',
+  arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>'
+};
+const BOARDS = {
+  setter: { label:'Setter', color:'var(--setter)' },
+  dialer: { label:'Dialer', color:'var(--dialer)' },
+  closer: { label:'Closer', color:'var(--closer)' },
+};
+const MILESTONES = [
+  { key:'lead',      name:'Lead',      def:'In the funnel — not yet judged worth a closer call.' },
+  { key:'qualified', name:'Qualified', def:'Worth a closer call (judged, or criteria-passed).' },
+  { key:'booked',    name:'Booked',    def:'A call is on the calendar.' },
+  { key:'showed',    name:'Showed',    def:'Attended the call.' },
+  { key:'closed',    name:'Closed',    def:'Won — contract signed + payment.' },
+];
+// Consolidated canonical sub-stages. aliases = the raw stage labels folded into this card.
+const STAGES = [
+  // ── SETTER ──
+  { board:'setter', m:'lead', lbl:'New' },
+  { board:'setter', m:'lead', lbl:'Warm' },
+  { board:'setter', m:'lead', lbl:'Hot' },
+  { board:'setter', m:'lead', lbl:'Outreach', aliases:['SMS','VM 1st Attempt','Voicemail'] },
+  { board:'setter', m:'lead', lbl:'DQ Review' },
+  { board:'setter', m:'lead', lbl:'Lost', branch:true, aliases:['Lost','Lost — No FU'] },
+  { board:'setter', m:'qualified', lbl:'Call Proposed' },
+  { board:'setter', m:'qualified', lbl:'Link Sent' },
+  { board:'setter', m:'qualified', lbl:'Qualified App' },
+  { board:'setter', m:'qualified', lbl:'Requalification' },
+  { board:'setter', m:'qualified', lbl:'Follow-up', aliases:['PCFU','LTFU','Follow Up','FU Immediate','FU Nurture'] },
+  { board:'setter', m:'booked', lbl:'Booked', aliases:['Call Booked','Booked'] },
+  { board:'setter', m:'booked', lbl:'Self-Booked', aliases:['Self-Booked','Self-Booked Confirmed','Booked After Dial'] },
+  { board:'setter', m:'booked', lbl:'Cancelled / No-Show', branch:true, aliases:['Cancel/No-Show','NS Cancelled','Self-Booked NS/Cancel'] },
+  { board:'setter', m:'closed', lbl:'Closed-Won', aliases:['Deposit Closed','Won','Closed'] },
+  // ── DIALER ──
+  { board:'dialer', m:'lead', lbl:'New' },
+  { board:'dialer', m:'lead', lbl:'No Answer' },
+  { board:'dialer', m:'lead', lbl:'DQ Review' },
+  { board:'dialer', m:'lead', lbl:'FU Scheduled' },
+  { board:'dialer', m:'lead', lbl:'Invalid Number', branch:true },
+  { board:'dialer', m:'lead', lbl:'Not Interested', branch:true, aliases:['Lost — No FU'] },
+  { board:'dialer', m:'booked', lbl:'Booked' },
+  { board:'dialer', m:'booked', lbl:'Cancel / No-Show', branch:true },
+  { board:'dialer', m:'showed', lbl:'No Close → FU' },
+  { board:'dialer', m:'closed', lbl:'Closed-Won', aliases:['Won'] },
+  // ── CLOSER ──
+  { board:'closer', m:'booked', lbl:'Cancelled', branch:true },
+  { board:'closer', m:'booked', lbl:'No-Show', branch:true },
+  { board:'closer', m:'showed', lbl:'Follow-up (Immediate)' },
+  { board:'closer', m:'showed', lbl:'Follow-up (Nurture)' },
+  { board:'closer', m:'showed', lbl:'Lost', branch:true },
+  { board:'closer', m:'closed', lbl:'Closed-Won', aliases:['Won'] },
+];
+
+const legend = document.getElementById('legend');
+for (const k of Object.keys(BOARDS)) {
+  const b = BOARDS[k];
+  const el = document.createElement('div');
+  el.className = 'chip';
+  el.innerHTML = `<span style="color:${b.color};display:flex">${ICONS[k]}</span>${b.label}`;
+  legend.appendChild(el);
+}
+
+const funnel = document.getElementById('funnel');
+MILESTONES.forEach((ms, i) => {
+  const col = document.createElement('div');
+  col.className = 'col';
+  const arrow = i < MILESTONES.length - 1 ? `<span class="arrow">${ICONS.arrow}</span>` : '';
+  const cards = STAGES.filter(s => s.m === ms.key)
+    .sort((a,b)=> Object.keys(BOARDS).indexOf(a.board) - Object.keys(BOARDS).indexOf(b.board))
+    .map(s => {
+      const c = BOARDS[s.board].color;
+      const alias = s.aliases ? `<div class="alias"><b>folds:</b> ${s.aliases.join(' · ')}</div>` : '';
+      const branch = s.branch ? '<span class="badge-branch">BRANCH</span>' : '';
+      return `<div class="card${s.branch?' branch':''}" style="border-left-color:${c}">
+        <div class="row1"><span class="ico" style="color:${c};display:flex">${ICONS[s.board]}</span>
+        <span class="lbl">${s.lbl}</span>${branch}</div>${alias}</div>`;
+    }).join('');
+  col.innerHTML = `<div class="col-head"><div class="rung">L${i+1} · MILESTONE</div>
+    <h2>${ms.name}</h2><p>${ms.def}</p>${arrow}</div><div class="cards">${cards}</div>`;
+  funnel.appendChild(col);
+});
+</script>
+</body>
+</html>
