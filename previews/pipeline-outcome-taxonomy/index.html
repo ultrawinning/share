@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Master Pipeline — Outcome Taxonomy (canon diagram)</title>
+<style>
+  :root {
+    --base:#0c0f14; --card:#161b22; --section:#1b212b; --border:#2a313c; --border-strong:#3a4350;
+    --fg1:#e6edf3; --fg2:#9aa6b2; --fg3:#6b7682; --green:#2ED47A;
+    /* board colors */
+    --setter:#3B82F6; --dialer:#F59E0B; --closer:#8B5CF6;
+    /* axis-2 state-class colors */
+    --st-active:#64748B; --st-transient:#FB923C; --st-recovery:#2DD4BF; --st-working:#38BDF8;
+    --st-holding:#FACC15; --st-lost:#F43F5E; --st-won:#2ED47A; --st-dnc:#B91C1C;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--base); color:var(--fg1);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif; padding:34px 24px 80px; }
+  .wrap { max-width:1380px; margin:0 auto; }
+  h1 { font-size:26px; font-weight:780; margin:0; letter-spacing:-.01em; }
+  .draft { display:inline-block; margin-left:10px; font-size:11px; font-weight:700; color:#000; background:var(--green);
+    padding:2px 8px; border-radius:6px; vertical-align:middle; }
+  .sub { color:var(--fg2); font-size:14px; line-height:1.65; margin:11px 0 0; max-width:980px; }
+  .sub b { color:var(--fg1); }
+  h2.sec { font-size:13px; font-weight:760; letter-spacing:.11em; text-transform:uppercase; color:var(--fg3);
+    margin:42px 0 4px; padding-bottom:9px; border-bottom:1px solid var(--border); }
+  h2.sec span { color:var(--fg1); }
+  .seclead { color:var(--fg2); font-size:13px; line-height:1.6; margin:12px 0 18px; max-width:1000px; }
+  .seclead b { color:var(--fg1); }
+
+  /* ── axis model strip ── */
+  .axes { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:18px; }
+  .axc { background:var(--section); border:1px solid var(--border); border-radius:11px; padding:14px 16px; border-left-width:4px; }
+  .axc .tag { font-size:10px; font-weight:760; letter-spacing:.08em; color:var(--fg3); }
+  .axc h3 { font-size:15px; margin:5px 0 6px; }
+  .axc p { font-size:12px; color:var(--fg2); line-height:1.5; margin:0; }
+  .axc code { background:#0c0f14; border:1px solid var(--border); border-radius:4px; padding:1px 5px; font-size:11px; color:var(--fg1); }
+
+  /* ── legend ── */
+  .legend { display:flex; gap:16px 20px; flex-wrap:wrap; margin:16px 0 4px; align-items:center; font-size:12px; color:var(--fg2); }
+  .legend .k { display:inline-flex; align-items:center; gap:7px; }
+  .dot { width:11px; height:11px; border-radius:3px; display:inline-block; }
+  .swatch { width:22px; height:0; border-top:3px solid; border-radius:2px; }
+  .swatch.dash { border-top-style:dashed; }
+
+  /* ── swimlane (panel 1) ── */
+  .scroll { overflow-x:auto; margin-top:14px; padding-bottom:6px; }
+  .grid { display:grid; grid-template-columns:150px repeat(5, minmax(178px,1fr)); gap:8px; min-width:1060px; }
+  .mhead { background:var(--section); border:1px solid var(--border); border-radius:10px; padding:11px 13px; position:relative; }
+  .mhead .rung { font-size:9.5px; font-weight:700; color:var(--fg3); letter-spacing:.09em; }
+  .mhead h3 { font-size:15px; font-weight:700; margin:3px 0 0; }
+  .mhead p { font-size:10.5px; color:var(--fg2); margin:5px 0 0; line-height:1.4; }
+  .corner { display:flex; align-items:flex-end; font-size:10px; color:var(--fg3); padding:0 4px 8px; font-weight:600; letter-spacing:.04em; }
+  .lane-label { border-radius:10px; padding:12px; display:flex; flex-direction:column; gap:6px; justify-content:center; color:#fff; font-weight:700; }
+  .lane-label .nm { display:flex; align-items:center; gap:8px; font-size:15px; }
+  .lane-label .nm svg { width:18px; height:18px; }
+  .lane-label .role { font-size:10.5px; font-weight:600; opacity:.85; }
+  .cell { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:8px; display:flex; flex-direction:column; gap:6px; min-height:54px; }
+  .cell.empty { background:transparent; border-style:dashed; border-color:var(--border); }
+  .scard { border:1px solid var(--border); border-left-width:4px; border-radius:7px; padding:7px 9px; background:var(--section); }
+  .scard.branch { border-style:dashed; background:transparent; }
+  .scard .lbl { font-size:12px; font-weight:650; }
+  .scard .alias { font-size:9.5px; color:var(--fg3); margin-top:3px; line-height:1.35; }
+  .scard .alias b { color:var(--fg2); font-weight:600; }
+  .bbadge { font-size:8.5px; font-weight:700; letter-spacing:.04em; color:var(--fg3); border:1px dashed var(--border-strong); border-radius:4px; padding:0 4px; margin-left:5px; vertical-align:middle; }
+
+  /* ── state machine (panel 2) ── */
+  .sm { margin-top:20px; }
+  .spine { display:flex; align-items:stretch; gap:0; flex-wrap:nowrap; overflow-x:auto; padding-bottom:6px; }
+  .srung { flex:1 1 0; min-width:150px; background:var(--section); border:1px solid var(--border-strong); border-radius:10px;
+    padding:11px 12px; position:relative; }
+  .srung .ax { font-size:9px; font-weight:700; letter-spacing:.07em; color:var(--fg3); }
+  .srung h4 { font-size:15px; margin:3px 0 3px; }
+  .srung p { font-size:10.5px; color:var(--fg2); line-height:1.4; margin:0; }
+  .srung.won { border-color:var(--st-won); background:linear-gradient(180deg,rgba(46,212,122,.12),rgba(46,212,122,.03)); }
+  .schev { flex:0 0 26px; display:flex; align-items:center; justify-content:center; color:var(--border-strong); }
+  .schev svg { width:20px; height:20px; }
+
+  .offramps { display:grid; grid-template-columns:repeat(12,1fr); gap:14px; margin-top:16px; }
+  .ramp { border:1px solid var(--border); border-radius:12px; background:var(--card); padding:0; overflow:hidden; }
+  .ramp .rh { padding:9px 13px; font-size:11px; font-weight:740; letter-spacing:.04em; display:flex; align-items:center; gap:8px;
+    border-bottom:1px solid var(--border); background:var(--section); }
+  .ramp .rh .from { font-size:9.5px; font-weight:700; color:var(--fg3); letter-spacing:.05em; margin-left:auto; }
+  .ramp .rb { padding:13px; display:flex; flex-direction:column; gap:10px; }
+  .ramp-booked { grid-column:span 4; }
+  .ramp-showed { grid-column:span 5; }
+  .ramp-pre { grid-column:span 3; }
+
+  .ostate { border:1px solid var(--border); border-left-width:5px; border-radius:8px; padding:8px 11px; background:var(--section); }
+  .ostate .nm { font-size:12.5px; font-weight:700; display:flex; align-items:center; gap:7px; }
+  .ostate .nm code { font-size:10.5px; font-weight:600; color:var(--fg2); background:#0c0f14; border:1px solid var(--border); padding:0 5px; border-radius:4px; }
+  .ostate .cls { margin-left:auto; font-size:8.5px; font-weight:760; letter-spacing:.05em; text-transform:uppercase; padding:1px 6px; border-radius:5px; }
+  .ostate .dsc { font-size:10.5px; color:var(--fg2); line-height:1.45; margin-top:5px; }
+  .flowrow { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .arr { display:inline-flex; align-items:center; gap:5px; font-size:10px; color:var(--fg3); font-weight:600; }
+  .arr svg { width:15px; height:15px; }
+  .chip { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:680; border:1px solid var(--border-strong);
+    border-radius:20px; padding:3px 10px; background:var(--section); }
+  .chip .dot { width:9px; height:9px; }
+  .exits { display:flex; gap:7px; flex-wrap:wrap; padding-left:4px; }
+  .resolvelbl { font-size:9.5px; color:var(--fg3); font-weight:700; letter-spacing:.04em; text-transform:uppercase; margin-bottom:2px; }
+
+  /* ── validity matrix (panel 3) ── */
+  table.vm { border-collapse:separate; border-spacing:0; width:100%; margin-top:16px; font-size:12px; min-width:760px; }
+  table.vm th, table.vm td { padding:8px 9px; text-align:center; border-bottom:1px solid var(--border); }
+  table.vm thead th { font-size:11px; color:var(--fg2); background:var(--section); position:sticky; top:0; }
+  table.vm th.row { text-align:left; font-weight:680; color:var(--fg1); white-space:nowrap; }
+  table.vm th.row code { font-size:11px; }
+  table.vm td .v { font-size:14px; }
+  table.vm td .n { font-size:9px; color:var(--fg3); display:block; margin-top:1px; }
+  table.vm tr.cls-head td { background:#0c0f14; font-size:9.5px; font-weight:760; letter-spacing:.06em; color:var(--fg3);
+    text-transform:uppercase; text-align:left; padding:6px 9px; }
+  .ok{color:var(--st-won);} .edge{color:var(--st-holding);} .bad{color:var(--st-lost);} .na{color:var(--fg3);}
+
+  .note { margin-top:22px; padding:15px 18px; background:var(--section); border:1px solid var(--border); border-radius:11px;
+    color:var(--fg2); font-size:13px; line-height:1.65; }
+  .note b { color:var(--fg1); }
+  .note.lost { border-left:4px solid var(--st-lost); }
+  .note.dnc { border-left:4px solid var(--st-dnc); margin-top:12px; }
+  .warn { color:var(--st-holding); font-weight:700; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Master Pipeline — Outcome Taxonomy <span class="draft">CANON DRAFT · 2026-06-27</span></h1>
+  <p class="sub">A lead lives on <b>two orthogonal axes</b> plus a board working layer. <b>AXIS-1</b> = how
+    far down the funnel it got (a monotonic 5-rung ladder — the only thing HPFHQ counts). <b>AXIS-2</b> =
+    what's happening / what went wrong off that highest rung (the disposition state machine). <b>AXIS-L2</b>
+    = each board's private sub-stages, every one nesting under one milestone. There is deliberately
+    <b>no "Lost" milestone</b> — a loss is a disposition recorded <i>at the rung the lead reached</i>.</p>
+
+  <!-- AXES STRIP -->
+  <div class="axes">
+    <div class="axc" style="border-left-color:var(--green)">
+      <div class="tag">AXIS-1 · MILESTONE</div><h3>How far did it get?</h3>
+      <p><code>leads.current_stage</code> — monotonic <code>lead → qualified → booked → showed → closed</code>.
+        Only advances; never holds a disposition. <b>The funnel HPFHQ counts.</b></p>
+    </div>
+    <div class="axc" style="border-left-color:var(--st-working)">
+      <div class="tag">AXIS-2 · DISPOSITION</div><h3>What's happening / what went wrong?</h3>
+      <p><code>leads.call_outcome</code> — the mutable state off the highest rung
+        (<code>NULL</code>=active). A state machine: active / transient / working / holding / terminal.</p>
+    </div>
+    <div class="axc" style="border-left-color:var(--closer)">
+      <div class="tag">AXIS-L2 · SUB-STAGE</div><h3>The board's working columns</h3>
+      <p><code>lead_pipeline.(owner_role, stage)</code> — unlimited per board; <b>every one rolls up
+        to exactly one milestone.</b> Never counted directly.</p>
+    </div>
+  </div>
+  <p class="sub" style="margin-top:13px;font-size:12.5px"><span class="warn">⚠ Saving invariant:</span>
+    all three axes are the <b>spine</b> — they drive boards + lifecycle and are <b>never</b> a
+    metric / comp / credit source. <b>DNC</b> (<code>do_not_contact</code>) is a 4th, orthogonal
+    compliance flag — a hard outbound block, not a pipeline position.</p>
+
+  <!-- ════ PANEL 1: SWIMLANE ════ -->
+  <h2 class="sec">1 · <span>The milestone funnel &amp; board sub-stages</span></h2>
+  <p class="seclead">The <b>5 master milestones</b> run across the top. Each board owns a <b>lane</b>;
+    its sub-stages sit under the milestone they map to. Read <b>down a column</b> for everything that
+    means e.g. "Booked"; read <b>across a lane</b> for one board's journey. <b>Dashed</b> cards are
+    outcome/branch sub-stages. <span class="warn">Italic folds marked "(proposed)"</span> are
+    consolidation proposals to ratify; <b>Booked vs Self-Booked stay separate</b> (comp/confirmation).</p>
+  <div class="legend">
+    <span class="k"><span class="swatch" style="border-color:var(--setter)"></span> Setter — DM / outreach</span>
+    <span class="k"><span class="swatch" style="border-color:var(--dialer)"></span> Dialer — outbound calls</span>
+    <span class="k"><span class="swatch" style="border-color:var(--closer)"></span> Closer — sales calls</span>
+    <span class="k"><span class="swatch dash" style="border-color:var(--fg3)"></span> Outcome / branch sub-stage</span>
+  </div>
+  <div class="scroll"><div class="grid" id="grid"></div></div>
+
+  <!-- ════ PANEL 2: STATE MACHINE ════ -->
+  <h2 class="sec">2 · <span>The AXIS-2 outcome state machine</span></h2>
+  <p class="seclead">The active <b>spine</b> runs left→right to <b>Closed-Won</b>. Off <b>booked</b> and
+    <b>showed</b> (and the pre-call rungs), the lead can take a <b>disposition</b> — colour-coded by
+    <b>state class</b>. <b>Transient</b> states must resolve (recover or die). The <b>No-Close</b>
+    decision point has three exits. <b>Terminal −</b> states feed the "Lost" umbrella.</p>
+  <div class="legend">
+    <span class="k"><span class="dot" style="background:var(--st-active)"></span> Active (NULL)</span>
+    <span class="k"><span class="dot" style="background:var(--st-transient)"></span> Transient</span>
+    <span class="k"><span class="dot" style="background:var(--st-recovery)"></span> Recovery</span>
+    <span class="k"><span class="dot" style="background:var(--st-working)"></span> Working</span>
+    <span class="k"><span class="dot" style="background:var(--st-holding)"></span> Holding / gap</span>
+    <span class="k"><span class="dot" style="background:var(--st-lost)"></span> Terminal − (Lost)</span>
+    <span class="k"><span class="dot" style="background:var(--st-won)"></span> Terminal + (Won)</span>
+    <span class="k"><span class="dot" style="background:var(--st-dnc)"></span> DNC (compliance)</span>
+  </div>
+
+  <div class="sm">
+    <div class="spine" id="spine"></div>
+    <div class="offramps">
+
+      <!-- pre-call losses -->
+      <div class="ramp ramp-pre">
+        <div class="rh"><span class="dot" style="background:var(--st-lost)"></span> Pre-call losses <span class="from">FROM lead / qualified</span></div>
+        <div class="rb">
+          <div class="ostate" style="border-left-color:var(--st-lost)">
+            <div class="nm">Pre-call DQ <code>pre_call_dq</code><span class="cls" style="background:rgba(244,63,94,.16);color:var(--st-lost)">Terminal −</span></div>
+            <div class="dsc">DQ'd before attending (Typeform / never showed). Triggers the <b>DQ audit</b>.</div>
+          </div>
+          <div class="ostate" style="border-left-color:var(--st-lost)">
+            <div class="nm">Ghosted / Not-Interested<span class="cls" style="background:rgba(244,63,94,.16);color:var(--st-lost)">Terminal −</span></div>
+            <div class="dsc">A setter-stage lead can go silent (<code>ghosted</code>) or say no (<code>not_interested</code>) before ever booking. Board form = <code>LOST</code>.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- booked transient -->
+      <div class="ramp ramp-booked">
+        <div class="rh"><span class="dot" style="background:var(--st-transient)"></span> Appointment transient <span class="from">FROM booked</span></div>
+        <div class="rb">
+          <div class="ostate" style="border-left-color:var(--st-transient)">
+            <div class="nm">Cancelled · No-Show <code>cancelled</code> <code>no_show</code><span class="cls" style="background:rgba(251,146,60,.16);color:var(--st-transient)">Transient</span></div>
+            <div class="dsc">A booked appt cancelled or not attended. <b>Must resolve</b> — never an end state.</div>
+          </div>
+          <div class="resolvelbl">↳ resolves to</div>
+          <div class="exits">
+            <span class="chip"><span class="dot" style="background:var(--st-recovery)"></span> Rebook → active <code style="font-size:10px;color:var(--fg3)">→ NULL</code></span>
+            <span class="chip"><span class="dot" style="background:var(--st-lost)"></span> Ghosted ✗</span>
+            <span class="chip"><span class="dot" style="background:var(--st-lost)"></span> Not-Interested ✗</span>
+          </div>
+          <div class="dsc" style="color:var(--fg3);font-size:9.5px">Live: a rebook clears <code>call_outcome</code> to NULL. The <code>rescheduled</code> value + history (<code>cancel_events</code> ledger) are <b>to-build</b>.</div>
+        </div>
+      </div>
+
+      <!-- showed: no-close decision point -->
+      <div class="ramp ramp-showed">
+        <div class="rh"><span class="dot" style="background:var(--st-holding)"></span> The No-Close decision point <span class="from">FROM showed</span></div>
+        <div class="rb">
+          <div class="dsc" style="margin:-2px 0 2px;color:var(--fg2)">A call happened, no sale. The SOP: <b>never let them off without a scheduled FU or an explicit "F no".</b> Three exits ↓</div>
+          <div class="ostate" style="border-left-color:var(--st-working)">
+            <div class="nm">Follow-up <code>follow_up</code><span class="cls" style="background:rgba(56,189,248,.16);color:var(--st-working)">Working</span></div>
+            <div class="dsc"><b>BAMFAM</b> — a specific FU is booked. Loops: Hot FU (FU1–6, 2wk) → Nurture FU (monthly, m2–12). The FU sub-stage carries the "where".</div>
+          </div>
+          <div class="ostate" style="border-left-color:var(--st-holding)">
+            <div class="nm">No-Close (gap) <code>no_close</code><span class="cls" style="background:rgba(250,204,21,.16);color:var(--st-holding)">Holding</span></div>
+            <div class="dsc">Showed, no sale, <b>no FU booked &amp; no explicit no</b> (a SOP gap — the "invisible loss"). Must be chased to a real exit.</div>
+          </div>
+          <div class="ostate" style="border-left-color:var(--st-lost)">
+            <div class="nm">Quick DQ <code>quick_dq</code><span class="cls" style="background:rgba(244,63,94,.16);color:var(--st-lost)">Terminal −</span></div>
+            <div class="dsc">On-call reversal of "worth a closer call". Counts as <b>attended</b> (show-rate) but drags close-rate. Triggers the <b>DQ audit</b>.</div>
+          </div>
+          <div class="resolvelbl">↳ follow-up loop resolves to</div>
+          <div class="exits">
+            <span class="chip"><span class="dot" style="background:var(--st-won)"></span> Closed-Won ✅</span>
+            <span class="chip"><span class="dot" style="background:var(--st-lost)"></span> Not-Interested ✗ <span style="color:var(--fg3);font-weight:600">("F no")</span></span>
+            <span class="chip"><span class="dot" style="background:var(--st-lost)"></span> Ghosted ✗ <span style="color:var(--fg3);font-weight:600">(silence ×3 FUs)</span></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- LOST umbrella -->
+    <div class="note lost"><b>The "Lost" umbrella</b> — a reporting group, <b>never a milestone</b>:
+      <code style="color:var(--st-lost)">ghosted</code> + <code style="color:var(--st-lost)">not_interested</code>
+      + <code style="color:var(--st-lost)">pre_call_dq</code> + <code style="color:var(--st-lost)">quick_dq</code> (+ DNC).
+      Recorded at the milestone the lead reached, so you can always ask "of the leads that <i>booked</i>,
+      how many did we lose and why." <b>Ghosted</b> (silence through 3 FUs) ≠ <b>Not-Interested</b> (a
+      spoken "F no") — they behave differently downstream. Both replace the retired generic
+      <code>dead</code> (0 live rows — unreachable by any writer).</div>
+
+    <!-- DNC -->
+    <div class="note dnc"><b>🔒 DNC — the compliance flag (orthogonal, NOT a disposition).</b> A hard
+      block on all outbound, basis = US TCPA Opt-Out Rule. <span class="warn">Live state:</span> the
+      store columns exist (<code>do_not_contact</code> / <code>sms_dnd</code>) but the <b>send-time gate
+      is not wired</b> (<code>checkSmsDnd</code> has zero callers) — a load-bearing build item.
+      Re-engagement: a DNC lead reaching back out raises a <b>leadership-cleared flagged review</b>
+      (logged reason), never an auto-reopen.</div>
+  </div>
+
+  <!-- ════ PANEL 3: VALIDITY MATRIX ════ -->
+  <h2 class="sec">3 · <span>The outcome-per-milestone validity matrix</span></h2>
+  <p class="seclead">Which disposition is valid at which milestone — grounded in the live DB census.
+    <span class="ok">✅</span> valid/expected · <span class="edge">⚠️</span> valid-edge or to-build ·
+    <span class="bad">✗</span> invalid (a writer producing it = a bug / drift) · <span class="na">—</span> n/a.
+    Cells marked <span class="bad">✗</span> with a live count are <b>drift to flag</b>.</p>
+  <div class="scroll"><table class="vm" id="vm"></table></div>
+  <p class="seclead" style="margin-top:12px"><b>Reading it:</b> the <code>closed</code> column is
+    <b>NULL only</b> — the 18 live <code>closed × disposition</code> rows are drift (a payment-webhook
+    close didn't clear the prior disposition) and are <span class="warn">currently unmonitored</span>
+    (the drift checker suppresses closed leads). Transients live at <code>booked</code>; <code>no_close</code>
+    /<code>quick_dq</code> require an attended call (<code>showed</code>); <code>pre_call_dq</code> is
+    pre-attendance; <code>not_interested</code>/<code>ghosted</code> can land anywhere a lead is lost
+    after engagement.</p>
+
+  <div class="note"><b>Adding a stage</b> = add a sub-stage to the map under one of the five milestones
+    (in code — no self-serve editor); a coverage guard asserts every live stage is mapped, so an
+    unmapped/half-defined sub-stage is impossible. The 5 milestones + the disposition enum are canon —
+    changing them is a deliberate, gated change. Full reference:
+    <code>docs/plans/2026-06-27-master-pipeline-outcome-taxonomy-canon.md</code>.</div>
+</div>
+
+<script>
+const ICONS = {
+  setter:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',
+  dialer:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+  closer:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>',
+  arrow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>'
+};
+const BOARDS = [
+  { key:'setter', label:'Setter', role:'DM / outreach', color:'var(--setter)' },
+  { key:'dialer', label:'Dialer', role:'outbound calls', color:'var(--dialer)' },
+  { key:'closer', label:'Closer', role:'sales calls',   color:'var(--closer)' },
+];
+const MILESTONES = [
+  { key:'lead',      name:'Lead',      def:'In the funnel — not yet worth a closer call.' },
+  { key:'qualified', name:'Qualified', def:'Worth a closer call (the setter/dialer judged it).' },
+  { key:'booked',    name:'Booked',    def:'An appointment with a closer exists.' },
+  { key:'showed',    name:'Showed',    def:'Attended the call (a taken call).' },
+  { key:'closed',    name:'Closed',    def:'Won — money received.' },
+];
+const STAGES = [
+  // SETTER
+  { b:'setter', m:'lead', lbl:'New Leads' },
+  { b:'setter', m:'lead', lbl:'Working', proposed:true, aliases:['WARM','HOT'] },
+  { b:'setter', m:'lead', lbl:'Outreach', proposed:true, aliases:['SMS','VM 1st','Voicemail'] },
+  { b:'setter', m:'lead', lbl:'DQ Review' },
+  { b:'setter', m:'lead', lbl:'Lost', branch:true, aliases:['LOST','LOST_NO_FU'] },
+  { b:'setter', m:'qualified', lbl:'Call Proposed' }, { b:'setter', m:'qualified', lbl:'Link Sent' },
+  { b:'setter', m:'qualified', lbl:'Qualified App' }, { b:'setter', m:'qualified', lbl:'Requalification' },
+  { b:'setter', m:'qualified', lbl:'Follow-up (Imm.)', proposed:true, aliases:['PCFU','FU_IMMEDIATE','FOLLOW_UP'] },
+  { b:'setter', m:'qualified', lbl:'Follow-up (Nurture)', proposed:true, aliases:['LTFU','FU_NURTURE'] },
+  { b:'setter', m:'booked', lbl:'Booked', aliases:['CALL_BOOKED','BOOKED','BOOKED_AFTER_DIAL'] },
+  { b:'setter', m:'booked', lbl:'Self-Booked', keep:true, aliases:['SELF_BOOKED'] },
+  { b:'setter', m:'booked', lbl:'Cancelled / No-Show', branch:true, aliases:['CANCEL_NO_SHOW','NS_CANCELLED','SB NS/Cancel'] },
+  { b:'setter', m:'closed', lbl:'Closed-Won', aliases:['DEPOSIT_CLOSED','WON','CLOSED'] },
+  // DIALER
+  { b:'dialer', m:'lead', lbl:'New' }, { b:'dialer', m:'lead', lbl:'Called, No Answer' }, { b:'dialer', m:'lead', lbl:'DQ Review' },
+  { b:'dialer', m:'lead', lbl:'FU Scheduled' }, { b:'dialer', m:'lead', lbl:'Invalid Number', branch:true },
+  { b:'dialer', m:'lead', lbl:'Not Interested', branch:true, aliases:['LOST_NO_FU'] },
+  { b:'dialer', m:'booked', lbl:'Call Booked' }, { b:'dialer', m:'booked', lbl:'Cancel / No-Show', branch:true },
+  { b:'dialer', m:'showed', lbl:'No Close → FU' },
+  { b:'dialer', m:'closed', lbl:'Closed-Won', aliases:['WON'] },
+  // CLOSER
+  { b:'closer', m:'booked', lbl:'Cancelled — FU', branch:true }, { b:'closer', m:'booked', lbl:'No-Show — FU', branch:true },
+  { b:'closer', m:'showed', lbl:'Follow-up (Imm.)' }, { b:'closer', m:'showed', lbl:'Follow-up (Nurture)' },
+  { b:'closer', m:'showed', lbl:'Lost — No FU', branch:true },
+  { b:'closer', m:'closed', lbl:'Won' },
+];
+
+const grid = document.getElementById('grid');
+grid.insertAdjacentHTML('beforeend', `<div class="corner">BOARD ↓ &nbsp; MILESTONE →</div>`);
+MILESTONES.forEach((ms,i)=>{
+  grid.insertAdjacentHTML('beforeend',
+    `<div class="mhead"><div class="rung">L${i} · MASTER MILESTONE</div><h3>${ms.name}</h3><p>${ms.def}</p></div>`);
+});
+BOARDS.forEach(b=>{
+  grid.insertAdjacentHTML('beforeend',
+    `<div class="lane-label" style="background:${b.color}"><span class="nm">${ICONS[b.key]}${b.label}</span><span class="role">${b.role}</span></div>`);
+  MILESTONES.forEach(ms=>{
+    const cards = STAGES.filter(s=>s.b===b.key && s.m===ms.key).map(s=>{
+      const folds = s.aliases ? `<div class="alias"><b>${s.proposed?'folds (proposed):':'folds:'}</b> ${s.aliases.join(' · ')}</div>`:'';
+      const badge = s.branch ? '<span class="bbadge">OUTCOME</span>' : (s.keep ? '<span class="bbadge">KEEP SEPARATE</span>' : '');
+      return `<div class="scard${s.branch?' branch':''}" style="border-left-color:${b.color}"><span class="lbl">${s.lbl}</span>${badge}${folds}</div>`;
+    }).join('');
+    grid.insertAdjacentHTML('beforeend', `<div class="cell${cards?'':' empty'}">${cards}</div>`);
+  });
+});
+
+// ── state-machine spine ──
+const spine = document.getElementById('spine');
+MILESTONES.forEach((ms,i)=>{
+  const won = ms.key==='closed';
+  spine.insertAdjacentHTML('beforeend',
+    `<div class="srung${won?' won':''}"><div class="ax">AXIS-1 · L${i}</div><h4>${won?'Closed-Won ✅':ms.name}</h4><p>${ms.def}</p></div>`);
+  if(i<MILESTONES.length-1) spine.insertAdjacentHTML('beforeend', `<div class="schev">${ICONS.arrow}</div>`);
+});
+
+// ── validity matrix ──
+const COLS = ['lead','qualified','booked','showed','closed'];
+const VM = [
+  { cls:'Active' },
+  { v:'NULL (active)', code:'', cells:['ok','ok','ok','ok','ok•only valid @ closed'] },
+  { cls:'Transient / recovery' },
+  { v:'cancelled', cells:['bad','bad','ok','edge•2nd appt','bad•2 live'] },
+  { v:'no_show',   cells:['bad','bad','ok','edge•2nd appt','bad•3 live'] },
+  { v:'rescheduled', cells:['bad','bad','ok','edge','bad•1 live'] },
+  { cls:'Working / holding' },
+  { v:'follow_up', cells:['bad','edge•to-build','bad','ok•BAMFAM','bad•12 live'] },
+  { v:'no_close',  cells:['bad','bad','bad','ok','bad'] },
+  { cls:'Terminal −' },
+  { v:'not_interested', isnew:true, cells:['ok','ok','ok','ok','bad'] },
+  { v:'ghosted', isnew:true, cells:['ok','ok','ok','ok','bad'] },
+  { v:'pre_call_dq', cells:['ok','ok','ok•7 live','bad•didn’t attend','bad'] },
+  { v:'quick_dq', cells:['bad','bad','bad','ok•20 live','bad'] },
+];
+const SYM = { ok:'✅', edge:'⚠️', bad:'✗', na:'—' };
+const vm = document.getElementById('vm');
+let head = '<thead><tr><th class="row">AXIS-2 disposition ↓ &nbsp;/&nbsp; milestone →</th>';
+COLS.forEach(c=>head+=`<th>${c}</th>`); head+='</tr></thead><tbody>';
+let body='';
+VM.forEach(r=>{
+  if(r.cls){ body+=`<tr class="cls-head"><td colspan="6">${r.cls}</td></tr>`; return; }
+  const tag = r.isnew ? ' <span style="font-size:9px;color:var(--st-lost);font-weight:700">NEW</span>' : '';
+  body+=`<tr><th class="row"><code>${r.v}</code>${tag}</th>`;
+  r.cells.forEach(c=>{
+    const [k,note] = c.split('•');
+    body+=`<td><span class="v ${k}">${SYM[k]}</span>${note?`<span class="n">${note}</span>`:''}</td>`;
+  });
+  body+='</tr>';
+});
+vm.innerHTML = head+body+'</tbody>';
+</script>
+</body>
+</html>
