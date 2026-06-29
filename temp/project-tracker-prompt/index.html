@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Project Tracker — Claude Code build prompt</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #171a21;
+    --panel-2: #1d212b;
+    --ink: #e8eaed;
+    --muted: #9aa3b2;
+    --line: #272c38;
+    --accent: #6ea8fe;
+    --accent-ink: #0b1220;
+    --ok: #4ade80;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 48px 22px 80px; }
+  header { margin-bottom: 28px; }
+  h1 { font-size: 26px; margin: 0 0 8px; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); margin: 0 0 4px; }
+  .how {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin: 22px 0;
+  }
+  .how h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 10px; }
+  .how ol { margin: 0; padding-left: 20px; }
+  .how li { margin: 4px 0; }
+  .how code { background: var(--panel-2); border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; font-size: 13px; }
+  .bar {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; margin: 8px 0 10px;
+  }
+  .bar .label { font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+  button.copy {
+    appearance: none; border: 0; cursor: pointer;
+    background: var(--accent); color: var(--accent-ink);
+    font-weight: 650; font-size: 14px;
+    padding: 9px 16px; border-radius: 9px;
+    transition: transform .05s ease, background .15s ease;
+  }
+  button.copy:hover { background: #88baff; }
+  button.copy:active { transform: translateY(1px); }
+  button.copy.done { background: var(--ok); }
+  pre {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 0;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font: 13.5px/1.65 "SF Mono", ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace;
+    color: #d6dae3;
+  }
+  footer { color: var(--muted); font-size: 13px; margin-top: 26px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Personal Project Tracker — build prompt</h1>
+    <p class="sub">A lightweight, self-owned project board with deadlines. You build it in <strong>Claude Code</strong>, then manage your projects by just talking to it.</p>
+  </header>
+
+  <div class="how">
+    <h2>How to use</h2>
+    <ol>
+      <li>Open Claude Code in a new empty folder.</li>
+      <li>Hit <strong>Copy prompt</strong> below and paste the whole thing in.</li>
+      <li>When it asks, say <code>start with step 1</code> and run each step as it ships.</li>
+      <li>Later, just tell it things like <code>add a project: launch newsletter, high priority, due mid-August</code> — it writes the files for you.</li>
+    </ol>
+  </div>
+
+  <div class="bar">
+    <span class="label">The prompt</span>
+    <button class="copy" id="copyBtn">Copy prompt</button>
+  </div>
+
+  <pre id="out"></pre>
+
+  <footer>Data lives as plain files on your machine, so it's yours to back up or sync to Notion later.</footer>
+</div>
+
+<script type="text/plain" id="src">
+# Build me a personal project tracker ("a Notion I actually own")
+
+I want a simple project/progress tracker I run locally and manage by talking to
+you (Claude Code), not by filling out forms. Think: a lightweight Notion board
+for my projects, with deadlines and a clear "what's next." Build it step by step
+and stop after each step so I can run it and see it working.
+
+I'm not a hardcore engineer — keep it simple, runnable, and well-commented.
+Recommended stack: Next.js (App Router) + TypeScript + Tailwind, with each
+project stored as its own JSON file. No database, no accounts, no cloud — it runs
+on my machine with `npm run dev`. If you think a simpler stack is clearly better
+for a beginner, suggest it before building.
+
+## The core idea (don't skip this)
+- **One file per project is the source of truth.** The dashboard is just a view
+  that reads those files. This keeps my data portable and future-proof.
+- **Every project has a one-line measurable goal**, written as:
+  `<verb> <thing> from <X> to <Y> by <date>`
+  (e.g. "Grow newsletter from 0 to 100 subscribers by 2026-08-15"). This forces
+  clarity and bakes the deadline right into the goal.
+- **I capture unknowns/blockers on purpose**, so I never lose the thread.
+- **A fresh read of any project file tells you what it is, where it stands, and
+  what's next** — no tribal knowledge.
+- **I add/update projects by chatting with you**, not by hand-editing JSON.
+
+## Data model — one JSON file per project in `data/projects/<id>.json`
+```json
+{
+  "id": "launch-newsletter",
+  "title": "Launch my newsletter",
+  "goal": "Grow newsletter from 0 to 100 subscribers by 2026-08-15",
+  "status": "active",                // idea | active | blocked | done
+  "priority": "high",                // low | medium | high
+  "deadline": "2026-08-15",          // YYYY-MM-DD, machine-readable
+  "milestones": [
+    { "label": "Pick a platform",    "done": true,  "due": "2026-07-05" },
+    { "label": "Design template",    "done": false, "due": "2026-07-20" },
+    { "label": "Write first issue",  "done": false, "due": "2026-08-10" }
+  ],
+  "blockedBy": "",                   // fill in if status === "blocked"
+  "notes": "Context, links, open questions, anything I want to remember.",
+  "tags": ["content", "side-project"],
+  "createdAt": "2026-06-29",
+  "updatedAt": "2026-06-29"
+}
+```
+- `goal` is the one-line measurable target (verb · from X to Y · by date).
+- `deadline` is the machine-readable date the board uses for sorting/highlighting.
+- Progress = milestones done ÷ total. Compute it; don't store it.
+
+## The dashboard (a single local web page)
+Reads every file in `data/projects/` and shows:
+1. **Board view** — columns by status: **Idea · Active · Blocked · Done**. One
+   card per project showing: title, priority chip, a progress bar, the deadline,
+   and the next unchecked milestone.
+2. **Deadline highlighting** — deadline within 7 days = amber, overdue = red,
+   done = muted. Make overdue impossible to miss.
+3. **"Coming up" panel** — every milestone/deadline due in the next 14 days,
+   sorted by date, overdue ones first.
+4. **A simple table/list view** I can sort by deadline or priority.
+Keep the design clean and calm — generous spacing, one accent color, readable.
+I should be able to click a milestone checkbox to mark it done (writes back to
+the file).
+
+## The part that makes this special: manage it by talking to you
+Create a `CLAUDE.md` in the repo root so that in future sessions I can just say
+things and you do the file work for me. It should teach you to handle:
+- **"Add a project: <rough description>"** → ask me at most 3 quick questions
+  (measurable goal? deadline? first 2-3 milestones?), then write a new
+  `data/projects/<id>.json` with sensible defaults. Help me phrase the goal in
+  the `<verb> from X to Y by <date>` shape; if I'm vague, suggest a target. Don't
+  interrogate me.
+- **"Mark <milestone> done"** / **"<project> is blocked by X"** /
+  **"move <project> to done"** → edit the right file and bump `updatedAt`.
+- **"What's due this week?" / "What's overdue?" / "What should I work on?"**
+  → read the files and answer directly (priority + deadline + next milestone).
+- Always keep `updatedAt` current and never break the JSON schema above.
+
+## Build order (stop after each step so I can run it)
+1. Scaffold the Next.js app + Tailwind. Add 2-3 example project files in
+   `data/projects/` so there's something to see. Get `npm run dev` working with a
+   page that just lists the project titles. **Stop and let me run it.**
+2. Build the **board view** with the cards (status columns, priority chip,
+   progress bar, deadline). **Stop.**
+3. Add **deadline highlighting** + the **"Coming up" panel**. **Stop.**
+4. Add the **clickable milestone checkboxes** that write back to the file. **Stop.**
+5. Write the **`CLAUDE.md`** so I can add/update projects by chatting. Show me 2-3
+   example phrases I can say. **Stop.**
+6. (Optional, only if I ask) A `scripts/sync-notion.mjs` that pushes each project
+   to a Notion database via the Notion API, so my board mirrors into Notion.
+
+## Constraints
+- Simple over clever. Comment anything non-obvious.
+- Plain files only — I want to be able to read and back up my data without the app.
+- A README with: how to run it, where my data lives, and the things I can say to
+  you to manage projects.
+
+Start with step 1.
+</script>
+
+<script>
+  (function () {
+    var src = document.getElementById('src').textContent.replace(/^\n/, '').replace(/\s+$/, '');
+    document.getElementById('out').textContent = src;
+    var btn = document.getElementById('copyBtn');
+    btn.addEventListener('click', function () {
+      navigator.clipboard.writeText(src).then(function () {
+        btn.textContent = 'Copied ✓';
+        btn.classList.add('done');
+        setTimeout(function () { btn.textContent = 'Copy prompt'; btn.classList.remove('done'); }, 1800);
+      });
+    });
+  })();
+</script>
+</body>
+</html>
