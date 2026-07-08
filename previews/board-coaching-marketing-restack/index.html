@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>/board — Coaching + Marketing restack (before / after)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  .board-root {
+    /* dark tokens (hpf-tokens-v2, verbatim from globals.css) */
+    --hpf-base:#15171C; --hpf-section:#1C1E24; --hpf-card:#252830;
+    --hpf-border:rgba(255,255,255,0.08); --hpf-border-strong:rgba(255,255,255,0.14); --hpf-separator:rgba(255,255,255,0.05);
+    --hpf-fg1:#F0F2F5; --hpf-fg2:#A0A8B4; --hpf-fg3:#8089A0;
+    --status-error:#FF3B30; --status-success:#3BAE72; --status-warn:#F5B400;
+    --dept-sales:#E53935; --dept-marketing:#FB8C00; --dept-fulfillment:#2E7D32; --success-green:#3BAE72;
+    --radius-md:10px; --radius-lg:12px; --radius-xl:14px;
+    --shadow-card: inset 0 1px 0 rgba(255,255,255,0.05), 0 1px 2px rgba(0,0,0,0.40);
+    --font-display:'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+    --font-body:'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-mono:ui-monospace,'SF Mono',Menlo,monospace;
+    --bg-grid: repeating-linear-gradient(0deg, rgba(255,255,255,0.022) 0 1px, transparent 1px 40px), repeating-linear-gradient(90deg, rgba(255,255,255,0.022) 0 1px, transparent 1px 40px);
+    --bg-radial-green: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(46,212,122,0.05), transparent 70%);
+    min-height:100vh; background-color:var(--hpf-base); background-image:var(--bg-radial-green), var(--bg-grid);
+    color:var(--hpf-fg1); font-family:var(--font-body); font-size:13px; -webkit-font-smoothing:antialiased;
+    padding: 26px clamp(16px,3vw,40px) 60px;
+  }
+  .board-root *, .board-root *::before, .board-root *::after { box-sizing:border-box; }
+  .wrap { max-width:1400px; margin:0 auto; }
+  .caption { color:var(--hpf-fg2); font-size:13px; line-height:1.5; margin:0 0 22px; max-width:900px; }
+  .caption b { color:var(--hpf-fg1); }
+  .tag { display:inline-block; font-family:var(--font-mono); font-size:11px; letter-spacing:.04em; text-transform:uppercase; color:var(--hpf-fg3); margin:26px 0 10px; }
+  .tag.now { color:var(--status-warn); } .tag.after { color:var(--status-success); }
+
+  /* ── board CSS subset (verbatim selectors from app/board/client.tsx) ── */
+  .row { display:grid; gap:12px; }
+  .row.split { grid-template-columns:1.6fr 1fr 1fr; }
+  .dept { background:var(--hpf-section); border:1px solid var(--hpf-border); border-radius:var(--radius-lg); padding:12px 14px 14px; display:flex; flex-direction:column; }
+  .dept-head { display:flex; align-items:center; gap:10px; margin-bottom:11px; }
+  .dept-head .name { font-size:11px; font-weight:700; letter-spacing:.13em; text-transform:uppercase; }
+  .dept-head .dot { width:9px; height:9px; border-radius:999px; }
+  .dept-head .lead { font-size:11px; color:var(--hpf-fg3); }
+  .dept-head .lead b { color:var(--hpf-fg1); font-weight:600; font-family:var(--font-display); }
+  .dept-head .team { margin-left:auto; display:flex; gap:16px; }
+  .dept-head .team .t { text-align:right; }
+  .dept-head .team .tv { font-family:var(--font-display); font-weight:700; font-size:16px; line-height:1; font-variant-numeric:tabular-nums; }
+  .dept-head .team .tl { font-size:9px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--hpf-fg3); margin-top:3px; }
+  .subhead { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--hpf-fg3); margin:4px 0 3px; }
+  .subhead.mt { margin-top:9px; }
+  .prow { display:flex; align-items:center; gap:9px; padding:7px 0; border-top:1px solid var(--hpf-separator); }
+  .prow.first { border-top:0; }
+  .prow .pn { font-family:var(--font-display); font-weight:600; font-size:12.5px; }
+  .prow .rstats { margin-left:auto; display:flex; gap:15px; }
+  .prow .rstats .rs { text-align:right; min-width:34px; }
+  .prow .rstats .rv { font-family:var(--font-display); font-weight:700; font-size:14px; line-height:1; font-variant-numeric:tabular-nums; }
+  .prow .rstats .rv .u { font-size:9px; color:var(--hpf-fg3); font-weight:600; }
+  .prow .rstats .rl { font-size:8px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; color:var(--hpf-fg3); margin-top:3px; }
+  .board-avatar { border-radius:999px; flex-shrink:0; background:var(--hpf-base); border:1px solid var(--hpf-border); display:grid; place-items:center; overflow:hidden; font-family:var(--font-display); font-weight:700; color:var(--hpf-fg2); width:24px; height:24px; font-size:9px; }
+
+  /* bigpair — BEFORE (horizontal, current live) */
+  .bigpair { display:flex; gap:18px; margin-bottom:4px; flex-wrap:wrap; }
+  .bigpair .bp .bv { font-family:var(--font-display); font-weight:700; font-size:26px; line-height:1; letter-spacing:-0.02em; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .bigpair .bp .bv .sub { font-size:12px; color:var(--hpf-fg3); font-weight:600; margin-left:4px; }
+  .bigpair .bp .bl { font-size:9px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--hpf-fg3); margin-top:5px; }
+
+  /* bigpair — AFTER (this change): vertical, hero 40px / sec 19px, red cancels */
+  .bigpair.col { flex-direction:column; flex-wrap:nowrap; gap:14px; flex:1; justify-content:space-between; margin-bottom:0; }
+  .bigpair .bp.hero .bv { font-size:40px; }
+  .bigpair .bp.sec .bv { font-size:19px; color:var(--hpf-fg2); }
+  .bigpair .bp .bv.danger { color:var(--status-error); }
+  .bigpair .bp .bv .cdot { display:inline-block; width:10px; height:10px; border-radius:999px; background:var(--status-error); margin-right:9px; vertical-align:middle; }
+  .bigpair .bp.hero .bv .sub { font-size:13px; }
+</style>
+</head>
+<body>
+<div class="board-root">
+  <div class="wrap">
+    <p class="caption">
+      <b>/board — Coaching + Marketing panels: before → after.</b> Live numbers where known
+      (Active clients <b>190</b>, Cancels <b>5</b> → red at the ≥3 threshold; retention shows
+      <b>“—”</b> until this month's outcomes resolve, then the running %). Marketing numbers are
+      representative. The Setters&nbsp;&amp;&nbsp;Dialers panel sets the row height — the point of the
+      restack is Coaching + Marketing now <b>fill that height</b> instead of sitting as three small
+      numbers across the top.
+    </p>
+
+    <div class="tag now">Before — current live (horizontal, 26px, no red)</div>
+    <div class="row split">
+      <!-- Setters & Dialers (height context) -->
+      <section class="dept">
+        <div class="dept-head">
+          <span class="dot" style="background:var(--dept-sales)"></span>
+          <span class="name" style="color:var(--dept-sales)">Setters &amp; Dialers</span>
+          <span class="lead">Lead <b>Riley</b></span>
+          <div class="team">
+            <div class="t"><div class="tv">34</div><div class="tl">Booked</div></div>
+            <div class="t"><div class="tv">61%</div><div class="tl">Show rate</div></div>
+          </div>
+        </div>
+        <div class="subhead">Setters</div>
+        <div class="prow first"><div class="board-avatar">AN</div><span class="pn">Angelica</span><div class="rstats"><div class="rs"><div class="rv">9</div><div class="rl">Booked</div></div><div class="rs"><div class="rv">22<span class="u">%</span></div><div class="rl">CPR</div></div><div class="rs"><div class="rv">41</div><div class="rl">Convos</div></div></div></div>
+        <div class="prow"><div class="board-avatar">SA</div><span class="pn">Sarah</span><div class="rstats"><div class="rs"><div class="rv">7</div><div class="rl">Booked</div></div><div class="rs"><div class="rv">18<span class="u">%</span></div><div class="rl">CPR</div></div><div class="rs"><div class="rv">38</div><div class="rl">Convos</div></div></div></div>
+        <div class="subhead mt">Dialers</div>
+        <div class="prow"><div class="board-avatar">AN</div><span class="pn">Angelica</span><div class="rstats"><div class="rs"><div class="rv">14</div><div class="rl">Booked</div></div><div class="rs"><div class="rv">2</div><div class="rl">Closed</div></div></div></div>
+        <div class="prow"><div class="board-avatar">RI</div><span class="pn">Riley</span><div class="rstats"><div class="rs"><div class="rv">4</div><div class="rl">Booked</div></div><div class="rs"><div class="rv">0</div><div class="rl">Closed</div></div></div></div>
+      </section>
+      <!-- Coaching BEFORE -->
+      <section class="dept">
+        <div class="dept-head"><span class="dot" style="background:var(--dept-fulfillment)"></span><span class="name" style="color:var(--dept-fulfillment)">Coaching</span></div>
+        <div class="bigpair">
+          <div class="bp"><div class="bv">190</div><div class="bl">Active clients</div></div>
+          <div class="bp"><div class="bv">&mdash;</div><div class="bl">Retention rate</div></div>
+          <div class="bp"><div class="bv">5</div><div class="bl">Cancels &middot; refunds</div></div>
+        </div>
+      </section>
+      <!-- Marketing BEFORE -->
+      <section class="dept">
+        <div class="dept-head"><span class="dot" style="background:var(--dept-marketing)"></span><span class="name" style="color:var(--dept-marketing)">Marketing</span></div>
+        <div class="bigpair">
+          <div class="bp"><div class="bv">4.8x<span class="sub">$1.2K cash</span></div><div class="bl">ROAS &middot; contracted</div></div>
+          <div class="bp"><div class="bv">$2.1K</div><div class="bl">Ad spend</div></div>
+          <div class="bp"><div class="bv">14</div><div class="bl">Calls booked</div></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="tag after">After — this change (vertical, 40px headlines, red cancels, fills height)</div>
+    <div class="row split">
+      <!-- Setters & Dialers (same height context) -->
+      <section class="dept">
+        <div class="dept-head">
+          <span class="dot" style="background:var(--dept-sales)"></span>
+          <span class="name" style="color:var(--dept-sales)">Setters &amp; Dialers</span>
+          <span class="lead">Lead <b>Riley</b></span>
+          <div class="team">
+            <div class="t"><div class="tv">34</div><div class="tl">Booked</div></div>
+            <div class="t"><div class="tv">61%</div><div class="tl">Show rate</div></div>
+          </div>
+        </div>
+        <div class="subhead">Setters</div>
+        <div class="prow first"><div class="board-avatar">AN</div><span class="pn">Angelica</span><div class="rstats"><div class="rs"><div class="rv">9</div><div class="rl">Booked</div></div><div class="rs"><div class="rv">22<span class="u">%</span></div><div class="rl">CPR</div></div><div class="rs"><div class="rv">41</div><div class="rl">Convos</div></div></div></div>
+        <div class="prow"><div class="board-avatar">SA</div><span class="pn">Sarah</span><div class="rstats"><div class="rs"><div class="rv">7</div><div class="rl">Booked</div></div><div class="rs"><div class="rv">18<span class="u">%</span></div><div class="rl">CPR</div></div><div class="rs"><div class="rv">38</div><div class="rl">Convos</div></div></div></div>
+        <div class="subhead mt">Dialers</div>
+        <div class="prow"><div class="board-avatar">AN</div><span class="pn">Angelica</span><div class="rstats"><div class="rs"><div class="rv">14</div><div class="rl">Booked</div></div><div class="rs"><div class="rv">2</div><div class="rl">Closed</div></div></div></div>
+        <div class="prow"><div class="board-avatar">RI</div><span class="pn">Riley</span><div class="rstats"><div class="rs"><div class="rv">4</div><div class="rl">Booked</div></div><div class="rs"><div class="rv">0</div><div class="rl">Closed</div></div></div></div>
+      </section>
+      <!-- Coaching AFTER -->
+      <section class="dept">
+        <div class="dept-head"><span class="dot" style="background:var(--dept-fulfillment)"></span><span class="name" style="color:var(--dept-fulfillment)">Coaching</span></div>
+        <div class="bigpair col">
+          <div class="bp hero"><div class="bv">&mdash;</div><div class="bl">Retention rate</div></div>
+          <div class="bp hero"><div class="bv danger"><span class="cdot"></span>5</div><div class="bl">Cancels &middot; refunds</div></div>
+          <div class="bp sec"><div class="bv">190</div><div class="bl">Active clients</div></div>
+        </div>
+      </section>
+      <!-- Marketing AFTER -->
+      <section class="dept">
+        <div class="dept-head"><span class="dot" style="background:var(--dept-marketing)"></span><span class="name" style="color:var(--dept-marketing)">Marketing</span></div>
+        <div class="bigpair col">
+          <div class="bp hero"><div class="bv">4.8x<span class="sub">$1.2K cash</span></div><div class="bl">ROAS &middot; contracted</div></div>
+          <div class="bp sec"><div class="bv">$2.1K</div><div class="bl">Ad spend</div></div>
+          <div class="bp sec"><div class="bv">14</div><div class="bl">Calls booked</div></div>
+        </div>
+      </section>
+    </div>
+
+    <p class="caption" style="margin-top:26px">
+      Retention shows a populated headline % (e.g. <b style="font-family:var(--font-display)">58%</b>)
+      once the month's outcomes resolve; “—” is only the empty-early-month state. Everything else is
+      pixel-identical to the live board CSS. Say the word and I commit + you push.
+    </p>
+  </div>
+</div>
+</body>
+</html>
