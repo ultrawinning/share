@@ -217,6 +217,27 @@
   .reuse span { font-family:var(--mono); font-size:11px; color:var(--ink-2); background:var(--panel); border:1px solid var(--line);
     padding:2px 8px; border-radius:6px; }
   @media (prefers-reduced-motion: no-preference){ .panel{ transition: opacity .18s ease; } }
+
+  /* site map */
+  .sitemap { display:grid; gap:12px; }
+  .smap-row { display:flex; gap:14px; align-items:flex-start; background:var(--panel); border:1px solid var(--line);
+    border-left:3px solid var(--sc,var(--accent)); border-radius:12px; padding:14px 16px; box-shadow:var(--shadow); }
+  .smap-badge { flex:none; font-family:var(--sans); font-size:10px; font-weight:700; letter-spacing:.09em; text-transform:uppercase;
+    color:var(--sc,var(--accent)); background:color-mix(in srgb, var(--sc,var(--accent)) 12%, transparent);
+    border:1px solid color-mix(in srgb, var(--sc,var(--accent)) 32%, transparent); border-radius:7px; padding:6px 9px; width:88px; text-align:center; margin-top:2px; }
+  .smap-body { flex:1; min-width:0; }
+  .smap-title { font-family:var(--sans); font-weight:600; font-size:15px; letter-spacing:-.01em; }
+  .smap-title .mono { font-size:12.5px; color:var(--ink-2); font-weight:500; }
+  .smap-sub { font-size:11.5px; color:var(--ink-3); margin-top:3px; }
+  .smap-tabs { display:flex; flex-wrap:wrap; gap:6px; margin-top:9px; }
+  .tp { font-family:var(--sans); font-size:12px; font-weight:600; padding:4px 11px; border-radius:7px; border:1px solid var(--line);
+    color:var(--ink-2); background:var(--panel-2); }
+  .tp.on { color:var(--accent); border-color:color-mix(in srgb,var(--accent) 35%, transparent); background:color-mix(in srgb,var(--accent) 10%, transparent); }
+  .tp.onb { color:var(--onb); border-color:var(--onb-line); background:var(--onb-bg); }
+  .tp.chk { color:var(--chk); border-color:var(--chk-line); background:var(--chk-bg); }
+  .tp.mgt { color:var(--mgt); border-color:var(--mgt-line); background:var(--mgt-bg); }
+  .smap-note { font-size:12px; color:var(--ink-3); margin-top:9px; }
+  .smap-flow { font-family:var(--mono); font-size:11px; color:var(--ink-3); padding:1px 0 1px 104px; }
 </style>
 
 <div class="wrap">
@@ -225,6 +246,52 @@
     <h1>One client, three stages — not one wall of everything</h1>
     <p class="lede">The coaching record holds <b>a lot</b> per client, and dumping it all in one panel is what makes it hard to use. This splits every client into the stage they're actually in — <b>Onboarding</b>, <b>Check-in</b>, <b>Management</b> — so a coach only sees what that moment needs. Same three stages drive the <b>drawer tabs</b> and the <b>columns on each table</b>. Nothing is rebuilt; the existing cards are re-grouped.</p>
   </header>
+
+  <!-- SITE MAP -->
+  <section>
+    <div class="sec-head"><span class="n">00</span><h2>The whole surface — one purpose per page</h2></div>
+    <p class="tv-note">Leadership <b>watches</b> · coaches <b>work</b> · the team page <b>navigates</b>. The 3-stage lens shows up only where coaching actually happens — the coach page and the drawer. Merges Roster + Retention, kills the doubled-up nav.</p>
+    <div class="sitemap">
+
+      <div class="smap-row" style="--sc:var(--accent)">
+        <div class="smap-badge">Watch</div>
+        <div class="smap-body">
+          <div class="smap-title">Leadership · <span class="mono">/coaching</span></div>
+          <div class="smap-tabs"><span class="tp on">Overview</span><span class="tp">Mastermind</span><span class="tp">Docs</span><span class="tp">Team →</span></div>
+          <div class="smap-note">Overview = full scoreboard (/sales-style) + full roster (outstanding tagged) + management. Not for coaching — no stage tabs. <span style="color:var(--crit)">Rules + Settings removed.</span></div>
+        </div>
+      </div>
+
+      <div class="smap-row" style="--sc:var(--chk)">
+        <div class="smap-badge" style="--sc:var(--chk)">Work · 3-stage</div>
+        <div class="smap-body">
+          <div class="smap-title">Coach · <span class="mono">/coach/ana · /john · /ryan</span></div>
+          <div class="smap-sub">client-count summary on top (total active…) — no team scoreboard</div>
+          <div class="smap-tabs"><span class="tp onb">Onboarding</span><span class="tp chk">Check-in</span><span class="tp mgt">Management</span></div>
+          <div class="smap-note">The 3 stage table views live here — same cut as the drawer.</div>
+        </div>
+      </div>
+      <div class="smap-flow">▾ click a client → drawer opens on their stage</div>
+
+      <div class="smap-row" style="--sc:var(--mgt)">
+        <div class="smap-badge" style="--sc:var(--mgt)">Detail</div>
+        <div class="smap-body">
+          <div class="smap-title">Client drawer <span class="smap-sub" style="display:inline">— the mockup below</span></div>
+          <div class="smap-tabs"><span class="tp onb">Onboarding</span><span class="tp chk">Check-in</span><span class="tp mgt">Management</span></div>
+          <div class="smap-note">Opens on the client's current stage. Universal — same drawer from any list.</div>
+        </div>
+      </div>
+
+      <div class="smap-row" style="--sc:var(--ink-3)">
+        <div class="smap-badge" style="--sc:var(--ink-3)">Navigate</div>
+        <div class="smap-body">
+          <div class="smap-title">Team launchpad · <span class="mono">/team/coaching · /team/sales</span></div>
+          <div class="smap-note">Coach / sales cards (photo avatars, <span class="mono">/board</span> style — not edge-color cards) + <b>ONE</b> resource strip (no sidebar, no duplicate tabs). Same template both, goals/delegation stripped. This is what <span class="mono">/board</span> links into.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
 
   <!-- STAGE MODEL -->
   <section>
