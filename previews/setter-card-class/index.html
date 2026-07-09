@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Setter card — email-less "different class" treatment</title>
+<style>
+  :root{
+    --base:#101216; --well:#16181d; --card:#1c1e24; --card-elev:#20232a;
+    --bd:rgba(255,255,255,0.07); --bd-strong:rgba(255,255,255,0.14);
+    --fg1:#f0f2f5; --fg2:#a0a8b4; --fg3:#5c6370;
+    --hot:#26a69a; --green:#4caf50; --amber:#ffc107; --blue:#42a5f5;
+    --font: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--base);color:var(--fg1);font-family:var(--font);
+    -webkit-font-smoothing:antialiased;line-height:1.4;padding:28px 22px 60px}
+  h1{font-size:20px;font-weight:700;margin:0 0 4px;letter-spacing:.01em}
+  .sub{color:var(--fg2);font-size:13px;max-width:820px;margin:0 0 4px}
+  .sub b{color:var(--fg1)}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin:16px 0 24px;font-size:12px;color:var(--fg2)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .swatch{width:34px;height:16px;border-radius:4px;border:1px solid var(--bd);display:inline-block}
+
+  .board{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+  .col{width:288px;background:var(--well);border:1px solid var(--bd);border-radius:14px;
+    padding:0 0 10px;flex:0 0 auto}
+  .col-label{font-size:12px;font-weight:700;color:var(--fg1);padding:12px 12px 2px;letter-spacing:.01em}
+  .col-note{font-size:11px;color:var(--fg3);padding:0 12px 8px;min-height:28px}
+  .col-head{display:flex;align-items:center;gap:8px;padding:8px 12px;border-top:1px solid var(--bd);
+    border-bottom:1px solid var(--bd);margin-bottom:8px}
+  .dot9{width:9px;height:9px;border-radius:50%;background:var(--hot);flex:0 0 auto}
+  .col-title{font-size:12.5px;font-weight:700;font-family:var(--font);cursor:help}
+  .count{margin-left:auto;font-size:11px;font-weight:600;background:rgba(255,255,255,.08);
+    color:var(--fg3);border-radius:20px;padding:2px 8px;font-variant-numeric:tabular-nums}
+  .cards{display:flex;flex-direction:column;gap:8px;padding:0 8px}
+
+  /* ── base card ── */
+  .card{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:9px 11px;
+    position:relative;transition:filter .15s,background .15s}
+  .grip{position:absolute;left:3px;top:50%;transform:translateY(-50%);color:var(--fg3);opacity:.5;
+    font-size:12px;letter-spacing:-2px;line-height:1}
+  .card.draggable{padding-left:18px;cursor:grab}
+  .row1{display:flex;align-items:center;gap:7px}
+  .qual{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
+  .q-green{background:var(--green)} .q-amber{background:var(--amber)} .q-grey{background:var(--fg3)}
+  .name{font-size:13px;font-weight:650;color:var(--fg1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .chev{margin-left:auto;color:var(--fg3);font-size:11px}
+  .row2{display:flex;align-items:center;gap:8px;margin-top:4px;font-size:11px;color:var(--fg3)}
+  .row2 .ig{color:var(--fg2)}
+  .chip{font-size:10px;font-weight:600;color:var(--hot);background:color-mix(in srgb,var(--hot) 15%,transparent);
+    border-radius:5px;padding:1px 6px;margin-left:auto}
+
+  /* Retire strip (dedupe) */
+  .retire-strip{display:flex;align-items:center;justify-content:space-between;gap:8px;
+    margin:-9px -11px 8px;padding:5px 10px;background:rgba(255,193,7,.08);
+    border-bottom:1px solid var(--bd);border-radius:10px 10px 0 0;font-size:10.5px;color:var(--fg2)}
+  .retire-strip.pl{margin-left:-18px;padding-left:18px}
+  .retire-btn{font-size:10.5px;color:var(--fg2);border:1px solid var(--bd-strong);border-radius:5px;
+    padding:1px 7px;background:none;cursor:pointer;white-space:nowrap}
+  .retire-btn:hover{background:rgba(255,255,255,.1)}
+
+  /* ══ TREATMENTS for the email-less class ══ */
+  /* current: badge only */
+  .badge{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--fg3);
+    border:1px dashed var(--bd-strong);border-radius:5px;padding:1px 5px}
+  .card.badge-current{opacity:.66}
+
+  /* A — desaturate */
+  .card.opt-a{filter:grayscale(.92) opacity(.62)}
+
+  /* B — grey background */
+  .card.opt-b{background:#26282d;border-color:rgba(255,255,255,.05);border-left:2px solid #3a3d44}
+  .card.opt-b .qual{background:var(--fg3)!important}
+  .card.opt-b .name{color:var(--fg2)}
+  .card.opt-b .chip{color:var(--fg3);background:rgba(255,255,255,.06)}
+
+  /* C — grey bg + desaturate + soft dashed edge + inline muted label */
+  .card.opt-c{background:#212226;border:1px dashed var(--bd-strong);filter:saturate(.55) opacity(.9)}
+  .card.opt-c .qual{background:var(--fg3)!important}
+  .card.opt-c .name{color:var(--fg2)}
+  .noemail-inline{font-size:9.5px;color:var(--fg3);margin-left:6px;font-style:italic;white-space:nowrap}
+
+  /* ── tooltip ── */
+  .tip{position:relative}
+  .tip .tip-c{visibility:hidden;opacity:0;position:absolute;bottom:calc(100% + 8px);left:50%;
+    transform:translateX(-50%);background:#2a2d34;border:1px solid var(--bd-strong);color:var(--fg1);
+    font-size:11.5px;font-weight:400;line-height:1.45;letter-spacing:.005em;text-transform:none;
+    padding:8px 10px;border-radius:8px;width:240px;z-index:30;box-shadow:0 10px 30px rgba(0,0,0,.5);
+    transition:opacity .12s;pointer-events:none;text-align:left}
+  .tip .tip-c::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);
+    border:6px solid transparent;border-top-color:#2a2d34}
+  .tip:hover .tip-c{visibility:visible;opacity:1}
+
+  .foot{margin-top:30px;font-size:12.5px;color:var(--fg2);max-width:820px}
+  .foot b{color:var(--fg1)}
+  kbd{background:#20232a;border:1px solid var(--bd);border-bottom-width:2px;border-radius:5px;
+    padding:1px 6px;font-family:var(--font);font-size:11px;color:var(--fg1)}
+  .hint{color:var(--fg3);font-size:11.5px;margin:2px 0 22px}
+</style>
+</head>
+<body>
+  <h1>Setter card — the email-less "different class" treatment</h1>
+  <p class="sub">Email-less DM leads (no email <b>by definition</b> — most ManyChat/IG DMs) are a
+    <b>totally different class</b> of card. You said a small badge gets lost in the noise → signal it
+    <b>whole-card</b>. Same HOT column below, 4 ways. <b>2 of the 5 cards are email-less</b> (rows 2 &amp; 4) — judge how fast they read as "different."</p>
+  <p class="hint">Hover the <b>column title</b>, the <b>email-less cards</b>, and the <b>Retire</b> chip — tooltips are live (those are approved, unchanged).</p>
+
+  <div class="legend">
+    <span><i class="swatch" style="background:#1c1e24"></i> normal lead card</span>
+    <span><i class="swatch" style="filter:grayscale(.92) opacity(.62);background:#1c1e24"></i> A · desaturate</span>
+    <span><i class="swatch" style="background:#26282d;border-left:2px solid #3a3d44"></i> B · grey background</span>
+    <span><i class="swatch" style="background:#212226;border-style:dashed"></i> C · grey + desat + dashed</span>
+  </div>
+
+  <div class="board" id="board"></div>
+
+  <p class="foot" id="foot"></p>
+
+<script>
+  // Five leads per column; index 1 and 3 are the email-less class.
+  const leads = [
+    {name:"Marcus Bell",       ig:"@marcus.bell",   t:"2h in HOT", q:"q-green", email:true},
+    {name:"@sara_lifts (DM)",  ig:"IG DM · no app", t:"18m in HOT",q:"q-amber", email:false, booked:false},
+    {name:"Priya Nair",        ig:"@priya.n",       t:"1h in HOT", q:"q-green", email:true},
+    {name:"@thegregkim (DM)",  ig:"IG DM · no app", t:"40m in HOT",q:"q-amber", email:false, booked:true},
+    {name:"Dan Whitfield",     ig:"@dwhitfit",      t:"3h in HOT", q:"q-green", email:true},
+  ];
+
+  const NOEMAIL_TIP = "Email-less DM lead — a placeholder we keep until this person books a call or an email comes in. It's not an error. It clears itself when they book (use Retire) or when it's archived.";
+  const RETIRE_TIP  = "This placeholder looks like it already booked the call shown here. Retire clears the duplicate so you don't work the same person twice. Safe and reversible — it just archives the placeholder, not the booked lead.";
+  const COL_TIP     = "Lead is responding. Active conversation. Your daily focus pool.";
+
+  const columns = [
+    {label:"Current — badge only", note:"A 'no email' pill + faint dim. You said: lost in the noise.", mode:"badge-current"},
+    {label:"Option A — Desaturate", note:"Whole card washed to grey + dimmed. Reads as 'inactive / placeholder'.", mode:"opt-a"},
+    {label:"Option B — Grey background", note:"Solid neutral grey fill + grey accent bar. Reads as 'a different material'.", mode:"opt-b"},
+    {label:"Option C — Grey + desat + dashed", note:"Grey fill, desaturated, dashed edge + tiny inline 'no email'. Most explicit.", mode:"opt-c"},
+  ];
+
+  function cardHTML(lead, mode){
+    const isNoEmail = !lead.email;
+    let cls = "card draggable";
+    let badge = "", inline = "", retire = "";
+    if(isNoEmail){
+      if(mode==="badge-current"){ cls += " badge-current"; badge = ' <span class="badge">no email</span>'; }
+      else cls += " " + mode;
+      if(mode==="opt-c") inline = ' <span class="noemail-inline">no email</span>';
+      if(lead.booked){
+        const pl = (mode==="badge-current"||true) ? " pl" : "";
+        retire = `<div class="retire-strip${pl}"><span>📅 Booked as <b style="color:var(--fg1)">Greg Kim</b></span>`
+               + `<span class="tip"><button class="retire-btn">Retire</button>`
+               + `<span class="tip-c">${RETIRE_TIP}</span></span></div>`;
+      }
+    }
+    // whole email-less card is the tooltip trigger (tooltips are fine, just no badge)
+    const openTip = isNoEmail ? '<span class="tip" style="display:block">' : '';
+    const tipC    = isNoEmail ? `<span class="tip-c">${NOEMAIL_TIP}</span>` : '';
+    const closeTip= isNoEmail ? '</span>' : '';
+    return `${openTip}<div class="${cls}">`
+      + `<span class="grip">⠿</span>`
+      + retire
+      + `<div class="row1"><span class="qual ${lead.q}"></span>`
+      + `<span class="name">${lead.name}</span>${badge}${inline}<span class="chev">▸</span></div>`
+      + `<div class="row2"><span class="ig">${lead.ig}</span><span>· ${lead.t}</span>`
+      + `<span class="chip">Hot</span></div>`
+      + `</div>${tipC}${closeTip}`;
+  }
+
+  const board = document.getElementById('board');
+  board.innerHTML = columns.map(col => `
+    <div class="col">
+      <div class="col-label">${col.label}</div>
+      <div class="col-note">${col.note}</div>
+      <div class="col-head">
+        <span class="dot9"></span>
+        <span class="tip"><span class="col-title">Hot</span><span class="tip-c">${COL_TIP}</span></span>
+        <span class="count">5</span>
+      </div>
+      <div class="cards">${leads.map(l=>cardHTML(l, col.mode)).join('')}</div>
+    </div>`).join('');
+
+  document.getElementById('foot').innerHTML =
+    "<b>Decision needed:</b> pick <kbd>A</kbd> desaturate, <kbd>B</kbd> grey background, or <kbd>C</kbd> combined — for the email-less card class. "
+    + "The badge is dropped either way. Tooltips, stage-aware empty states, and the drag grip (⠿, desktop only) stay as-is. "
+    + "Whatever you pick, I revise the code on PR #140 and re-verify.";
+</script>
+</body>
+</html>
