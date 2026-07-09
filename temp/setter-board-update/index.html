@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Setter Board — what's new (brief for setters)</title>
+<style>
+  :root{--bg:#0e1013;--card:#181b20;--line:rgba(255,255,255,.08);--fg:#E6E8EB;--fg2:#A7AEB8;--fg3:#6b7280;--amber:#FFC107;--green:#2ED47A;}
+  *{box-sizing:border-box;margin:0;}
+  body{background:var(--bg);color:var(--fg);font:16px/1.6 -apple-system,Inter,system-ui,sans-serif;padding:32px 18px;}
+  .wrap{max-width:760px;margin:0 auto;}
+  h1{font-size:26px;letter-spacing:-.02em;margin-bottom:6px;}
+  .sub{color:var(--fg2);margin-bottom:26px;}
+  h2{font-size:19px;margin:30px 0 10px;display:flex;align-items:center;gap:9px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:14px 0;}
+  p{margin:10px 0;color:var(--fg);}
+  .muted{color:var(--fg2);}
+  ul{margin:10px 0 10px 2px;padding-left:20px;} li{margin:7px 0;}
+  .pill{display:inline-block;font-size:11px;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:6px;border:1px dashed var(--line);color:var(--fg3);vertical-align:middle;}
+  .strip{background:rgba(255,193,7,.10);border:1px solid rgba(255,193,7,.25);border-radius:8px;padding:9px 12px;font-size:14px;color:var(--fg2);margin:8px 0;}
+  .btn{display:inline-block;font-size:13px;padding:3px 11px;border-radius:6px;border:1px solid var(--line);color:var(--fg);}
+  .do{border-left:3px solid var(--green);padding-left:14px;margin:8px 0;}
+  .dont{border-left:3px solid #EF5350;padding-left:14px;margin:8px 0;}
+  .steps{color:var(--fg2);font-size:14px;}
+  code{background:#22262c;padding:1px 6px;border-radius:5px;font-size:13px;}
+  .foot{margin-top:34px;color:var(--fg3);font-size:13px;border-top:1px solid var(--line);padding-top:14px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Setter Board — what's new</h1>
+  <div class="sub">A quick brief to walk the setters through. Two small additions + a refresher on the flow. Nothing you do day-to-day changes — this just makes the board clearer.</div>
+
+  <h2>🩶 1. "No email" leads now look dimmed</h2>
+  <div class="card">
+    <p>Some IG / ManyChat DM leads come in with <b>only a name and the ManyChat link — no email, no phone yet.</b> These are placeholders. They now show up <b>greyed out</b> with a small <span class="pill">no email</span> tag.</p>
+    <p class="muted">Nothing is wrong with them — they just haven't given us an email yet. Work them normally. The tag disappears the moment an email lands on the card (from the DM flow, a re-paste of the ManyChat link, or you adding it).</p>
+  </div>
+
+  <h2>♻️ 2. A "Retire" hint when a placeholder books</h2>
+  <div class="card">
+    <p>When one of those email-less placeholder leads <b>books a call</b>, the system notices and shows a yellow strip on the old placeholder card:</p>
+    <div class="strip">📅 Booked as <b>[Name]</b> — looks like this stub converted. <span class="btn">Retire</span></div>
+    <p>That means: "this placeholder looks like the same person who just booked." The <b>booked</b> lead is the real, live one to work. Click <b>Retire</b> to clear the old placeholder so the board stays clean and you don't work the same person twice.</p>
+    <p class="muted"><b>It's safe:</b> Retire isn't a disqualify — it doesn't count against your DQ numbers, and it's reversible if you ever retire the wrong one.</p>
+    <div class="do"><b>Do retire</b> when the name matches and you recognise it's the same person who booked.</div>
+    <div class="dont"><b>Don't retire</b> if you're unsure, or if you're still actively working that placeholder — just leave it. Only real look-alikes are ever flagged, but your judgement wins.</div>
+  </div>
+
+  <h2>🗂️ 3. Quick refresher — how the columns flow</h2>
+  <div class="card">
+    <p class="steps">Left → right is the lead's journey. Drag a card to move it:</p>
+    <ul class="steps">
+      <li><b>New Leads</b> — unclaimed. Grab one → drag to Warm or Hot to start working it.</li>
+      <li><b>Warm</b> — claimed, first outreach done, waiting for a reply.</li>
+      <li><b>Hot</b> — they're replying. Active conversation — your daily focus.</li>
+      <li><b>Call Proposed</b> — you've pitched the call, waiting on a yes/no.</li>
+      <li><b>Link Sent</b> — booking link sent. Nudge if they don't book in ~10–15 min.</li>
+      <li><b>Call Booked</b> — booked. The dialer takes it from here.</li>
+    </ul>
+    <p class="muted">The "no email" tag and the Retire hint (above) only ever appear in the working columns (Call Proposed / Link Sent) — where a lead is close to booking.</p>
+  </div>
+
+  <div class="foot">Questions → Emil. Shipped 9 Jul 2026.</div>
+</div>
+</body>
+</html>
