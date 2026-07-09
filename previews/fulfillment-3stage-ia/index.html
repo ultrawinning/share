@@ -236,8 +236,8 @@
         <p>Everything to run the first call on one screen — no hunting across tabs.</p>
         <div class="meta">
           <div><b>Holds</b> sales-call notes · consultation · what they paid · targets</div>
-          <div><b>Default when</b> started &lt; 30d ago &amp; not yet onboarded</div>
-          <div><b>List view</b> Onboarding queue on /coaching</div>
+          <div><b>Default until</b> "summary created" + "call done" both ✓</div>
+          <div><b>List view</b> Onboarding queue · 48h SLA</div>
         </div>
       </div>
       <div class="stage-card" style="--sc:var(--chk);--scb:var(--chk-bg);--scl:var(--chk-line)">
@@ -289,13 +289,14 @@
           <p class="panel-note"><span class="pill">First-call prep</span> everything to run call 1, one screen</p>
 
           <div class="chk-list card">
-            <div class="lbl">Onboarding progress</div>
+            <div class="lbl">Onboarding progress <span class="src">48h SLA</span></div>
             <div class="chk-row"><span class="chk-mark done">✓</span><span class="lab">Contract signed</span><span class="stat">Jul 5</span></div>
             <div class="chk-row"><span class="chk-mark done">✓</span><span class="lab">Active in Trainerize</span><span class="stat">Jul 6</span></div>
             <div class="chk-row"><span class="chk-mark done">✓</span><span class="lab">Consultation completed</span><span class="stat">Jul 6</span></div>
-            <div class="chk-row cur"><span class="chk-mark now">→</span><span class="lab">First call booked</span><span class="stat">Thu 4:00p</span></div>
-            <div class="chk-row"><span class="chk-mark todo">·</span><span class="lab">Onboarded</span><span class="stat">—</span></div>
+            <div class="chk-row cur"><span class="chk-mark now">→</span><span class="lab">Onboarding summary created</span><span class="stat">gate</span></div>
+            <div class="chk-row"><span class="chk-mark todo">·</span><span class="lab">Onboarding call done</span><span class="stat">gate</span></div>
           </div>
+          <p class="panel-note" style="margin:-4px 0 12px"><span style="color:var(--chk);font-weight:600">↳</span> both gates ✓ → this client defaults to the <b style="color:var(--chk)">Check-in</b> tab</p>
 
           <div class="flag"><span class="ic">!</span><div><b>Injuries / restrictions</b> — lower-back disc (L4/L5), left-knee meniscus. No overhead pressing, no deep squats. <span style="color:var(--ink-3)">from consultation</span></div></div>
 
@@ -303,7 +304,15 @@
             <div class="lbl">What they paid <span class="src">fanbasis · ghl contract</span></div>
             <div class="kv"><span class="k">Contract value</span><span class="v mono">$6,000</span></div>
             <div class="kv"><span class="k">Plan</span><span class="v">18-week 1:1 · paid in full</span></div>
+            <div class="kv"><span class="k">Method</span><span class="v">Apple Pay · <span style="color:var(--chk)">auto-renew ok</span></span></div>
             <div class="kv"><span class="k">Payment</span><span class="v mono" style="color:var(--chk)">cleared Jul 5</span></div>
+          </div>
+
+          <div class="card">
+            <div class="lbl">Onboarding summary <span class="src">auto-draft → coach finalizes → client</span></div>
+            <div class="kv"><span class="k">Benchmark goal</span><span class="v">Reach 180–185 lb + a sustainable lifting habit by Nov 9</span></div>
+            <div class="kv"><span class="k">Status</span><span class="v" style="color:var(--onb)">draft ready — coach to finalize + send</span></div>
+            <p class="panel-note" style="margin:8px 0 0"><span style="color:var(--ink-3)">↳ finalizing this = the "summary created" gate; it sets the benchmark goal the coach measures against.</span></p>
           </div>
 
           <div class="card">
@@ -328,15 +337,17 @@
           <p class="panel-note"><span class="pill">Coaching loop</span> run today's check-in</p>
 
           <div class="card">
-            <div class="lbl">Touch cadence <span class="src">every 4 days</span></div>
+            <div class="lbl">Check-in cadence <span class="src">every 3 days · tier-colored</span></div>
             <div class="touch">
               <div class="big">2<span style="font-size:14px;color:var(--ink-3)">d</span></div>
               <div>
-                <div class="lite">since last contact · <span style="color:var(--chk);font-weight:600">on track</span></div>
-                <div class="lite">next touch due <b>in 2 days</b> (Fri)</div>
+                <div class="lite">since checked · <span style="color:var(--chk);font-weight:600">green tier · on track</span></div>
+                <div class="lite">due for a check <b>in 1 day</b></div>
               </div>
+              <button class="btn" style="margin-left:auto">✓ Check</button>
             </div>
-            <div class="bar"><i style="width:50%"></i></div>
+            <div class="bar"><i style="width:66%"></i></div>
+            <p class="panel-note" style="margin:10px 0 0"><span style="color:var(--ink-3)">↳ "✓ Check" just means "looked, they're fine" — the don't-forget-anyone sweep. Only who's DUE surfaces, not all 50.</span></p>
           </div>
 
           <div class="card">
@@ -375,17 +386,22 @@
           </div>
 
           <div class="card">
-            <div class="lbl">Retention</div>
-            <div class="ask"><span class="ai" style="color:var(--mgt);background:var(--mgt-bg);border-color:var(--mgt-line)">↻</span><div class="at">60-day outcome</div><span class="as">not due yet</span></div>
-            <div class="ask"><span class="ai">✓</span><div class="at">Renewed (paid) mark</div><span class="as">—</span></div>
-            <div class="kv" style="margin-top:8px"><span class="k">Notes</span><span class="v" style="color:var(--ink-2)">—</span></div>
+            <div class="lbl">60-day outcome <span class="src">retention_outcome</span></div>
+            <div class="kv"><span class="v" style="min-width:auto;color:var(--ink-2);font-size:12px">Not asked · Continuing · Declined · No response · <b style="color:var(--mgt)">Deferred ⟳</b></span></div>
+            <div class="ask" style="margin-top:8px"><span class="ai" style="color:var(--mgt);background:var(--mgt-bg);border-color:var(--mgt-line)">⟳</span><div class="at"><b style="color:var(--mgt)">Deferred</b> — "renew, revisit in 4 wks"</div><span class="as open">revisit Aug 6</span></div>
+            <p class="panel-note" style="margin:8px 0 0"><span style="color:var(--ink-3)">↳ NEW state — not a decline, not a continue. Auto-resurfaces in the retention queue on the revisit date. (Distinct from the 2-wk-grace auto-decline.)</span></p>
+          </div>
+          <div class="card">
+            <div class="lbl">Renewed (paid) mark <span class="src">retained_at · rate numerator</span></div>
+            <div class="ask"><span class="ai">✓</span><div class="at">Renewed (paid)</div><span class="as">—</span></div>
           </div>
 
           <div class="card">
             <div class="lbl">Accountability asks <span class="src">never auto-cleared</span></div>
             <div class="ask"><span class="ai">☆</span><div class="at">Testimonial</div><span class="as">not asked</span></div>
             <div class="ask"><span class="ai">◎</span><div class="at">NPS</div><span class="as">not sent</span></div>
-            <div class="ask"><span class="ai">$</span><div class="at">Re-sign</div><span class="as open">opens ~wk 14</span></div>
+            <div class="ask"><span class="ai">$</span><div class="at">Re-sign <span style="color:var(--ink-3);font-size:11px">· Apple Pay → auto-renew ok</span></div><span class="as open">opens ~wk 14</span></div>
+            <p class="panel-note" style="margin:8px 0 0"><span style="color:var(--crit)">⚠</span> <span style="color:var(--ink-3)">Google Pay clients can't auto-renew → flagged "manual re-sign only" so the coach takes the right path.</span></p>
           </div>
 
           <div class="card">
@@ -404,6 +420,24 @@
   <section>
     <div class="sec-head"><span class="n">03</span><h2>Same stages, stage-shaped tables</h2></div>
     <p class="tv-note">Each surface already exists — this just makes its <b>columns</b> match the stage that surface is for. A client shows on the list for whatever stage they're in.</p>
+
+    <div class="card" style="background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:22px">
+      <div class="lbl" style="margin-bottom:10px">Nav tidy-up — kill the doubled-up rows</div>
+      <div style="display:grid;gap:10px">
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <span class="chip r" style="flex:none">Today</span>
+          <span class="mono" style="font-size:12px;color:var(--ink-2)">Overview · Docs · Retention · Rules · Settings</span>
+          <span style="color:var(--ink-3);font-size:11px">＋ a 2nd button row →</span>
+          <span class="mono" style="font-size:12px;color:var(--ink-3)">[ Roster ] [ Mastermind ] [ Leadership ]</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <span class="chip g" style="flex:none">After</span>
+          <span class="mono" style="font-size:12px;color:var(--ink)">Overview · <b style="color:var(--onb)">Onboarding</b> · <b style="color:var(--chk)">Check-in</b> · <b style="color:var(--mgt)">Retention</b> · Mastermind</span>
+          <span style="color:var(--ink-3);font-size:11px">(Docs/Rules/Settings → overflow)</span>
+        </div>
+      </div>
+      <p class="panel-note" style="margin:12px 0 0"><span style="color:var(--ink-3)">Roster → the Check-in list · Retention → Management · Onboarding is new. One line, all real tabs.</span></p>
+    </div>
 
     <!-- onboarding table -->
     <div class="tv" style="--sc:var(--onb);--scb:var(--onb-bg);--scl:var(--onb-line)">
