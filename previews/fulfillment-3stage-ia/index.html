@@ -1,0 +1,504 @@
+<title>Fulfillment · 3-Stage Client IA</title>
+<style>
+  :root {
+    --bg: #f6f7f7;
+    --panel: #ffffff;
+    --panel-2: #fbfcfc;
+    --ink: #16201c;
+    --ink-2: #4a5852;
+    --ink-3: #7c8a84;
+    --line: #e4e8e6;
+    --line-2: #eef1f0;
+    --accent: #1f6f52;            /* structural interactive — muted forest */
+    --focus: #2ED47A;             /* HPF green — focus/logo family only */
+    /* stage semantics — the information layer */
+    --onb: #c77f18;   --onb-bg: #fbf1df;   --onb-line:#efd9ad;
+    --chk: #1f8f5c;   --chk-bg: #e4f4ea;   --chk-line:#bfe4cc;
+    --mgt: #6c5bd4;   --mgt-bg: #ece9fb;   --mgt-line:#d3ccf3;
+    --crit: #c4453b;  --crit-bg:#f8e5e3;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
+    --sans: "Space Grotesk", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --body: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --radius: 12px;
+    --shadow: 0 1px 2px rgba(16,32,24,.04), 0 8px 30px rgba(16,32,24,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0d1110; --panel: #151b18; --panel-2: #111613;
+      --ink: #e9efeb; --ink-2: #a7b4ad; --ink-3: #6f7d76;
+      --line: #232b27; --line-2: #1c231f;
+      --accent: #57c68f;
+      --onb:#e3a94b; --onb-bg:#2a2013; --onb-line:#4a3a1d;
+      --chk:#4fce8f; --chk-bg:#12271b; --chk-line:#23492f;
+      --mgt:#a394f2; --mgt-bg:#1e1a33; --mgt-line:#352d5a;
+      --crit:#e8837a; --crit-bg:#301a18;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 34px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="light"] {
+    --bg:#f6f7f7; --panel:#fff; --panel-2:#fbfcfc; --ink:#16201c; --ink-2:#4a5852; --ink-3:#7c8a84;
+    --line:#e4e8e6; --line-2:#eef1f0; --accent:#1f6f52;
+    --onb:#c77f18; --onb-bg:#fbf1df; --onb-line:#efd9ad;
+    --chk:#1f8f5c; --chk-bg:#e4f4ea; --chk-line:#bfe4cc;
+    --mgt:#6c5bd4; --mgt-bg:#ece9fb; --mgt-line:#d3ccf3;
+    --crit:#c4453b; --crit-bg:#f8e5e3;
+    --shadow:0 1px 2px rgba(16,32,24,.04),0 8px 30px rgba(16,32,24,.06);
+  }
+  :root[data-theme="dark"] {
+    --bg:#0d1110; --panel:#151b18; --panel-2:#111613; --ink:#e9efeb; --ink-2:#a7b4ad; --ink-3:#6f7d76;
+    --line:#232b27; --line-2:#1c231f; --accent:#57c68f;
+    --onb:#e3a94b; --onb-bg:#2a2013; --onb-line:#4a3a1d;
+    --chk:#4fce8f; --chk-bg:#12271b; --chk-line:#23492f;
+    --mgt:#a394f2; --mgt-bg:#1e1a33; --mgt-line:#352d5a;
+    --crit:#e8837a; --crit-bg:#301a18;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 34px rgba(0,0,0,.4);
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body);
+    line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 40px 24px 80px; }
+  h1,h2,h3 { font-family: var(--sans); font-weight: 600; letter-spacing: -.02em; text-wrap: balance; margin: 0; }
+  .eyebrow { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--ink-3); }
+  .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+  /* header */
+  header.hd { margin-bottom: 36px; }
+  header.hd h1 { font-size: clamp(28px, 4vw, 40px); margin: 10px 0 12px; }
+  header.hd p { color: var(--ink-2); max-width: 68ch; font-size: 16px; margin: 0; }
+  .lede b { color: var(--ink); font-weight: 600; }
+
+  section { margin-top: 44px; }
+  .sec-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+  .sec-head h2 { font-size: 20px; }
+  .sec-head .n { font-family: var(--mono); font-size: 12px; color: var(--ink-3); }
+
+  /* stage model strip */
+  .stages { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 780px){ .stages { grid-template-columns: 1fr; } }
+  .stage-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 18px 18px 16px; box-shadow: var(--shadow); border-left: 3px solid var(--sc); position: relative; }
+  .stage-card .tag { display:inline-flex; align-items:center; gap:7px; font-family:var(--sans); font-weight:600;
+    font-size: 13px; color: var(--sc); background: var(--scb); border:1px solid var(--scl);
+    padding: 3px 10px; border-radius: 999px; letter-spacing: .01em; }
+  .stage-card .dot { width:7px; height:7px; border-radius:50%; background: var(--sc); }
+  .stage-card h3 { font-size: 15px; margin: 12px 0 6px; }
+  .stage-card p { margin: 0 0 12px; color: var(--ink-2); font-size: 13.5px; }
+  .stage-card .meta { border-top: 1px dashed var(--line); padding-top: 10px; display: grid; gap: 6px; }
+  .stage-card .meta div { font-size: 12px; color: var(--ink-3); display:flex; gap:8px; }
+  .stage-card .meta b { color: var(--ink-2); font-weight: 600; font-family: var(--sans); min-width: 74px; }
+
+  /* the drawer mock */
+  .drawer-frame { display:grid; grid-template-columns: 1fr; gap: 0; }
+  .drawer { background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow); overflow: hidden; max-width: 560px; margin-inline: auto; width: 100%; }
+  .dw-top { padding: 18px 20px 0; border-bottom: 1px solid var(--line-2); }
+  .dw-idrow { display:flex; align-items:flex-start; justify-content: space-between; gap: 12px; }
+  .dw-name { font-family: var(--sans); font-weight: 600; font-size: 19px; letter-spacing:-.01em; }
+  .dw-sub { color: var(--ink-3); font-size: 12.5px; margin-top: 2px; }
+  .dw-sub .mono { color: var(--ink-2); }
+  .stage-badge { font-family: var(--sans); font-size: 11px; font-weight: 600; letter-spacing:.03em;
+    padding: 4px 9px 3px; border-radius: 7px; color: var(--sc); background: var(--scb); border:1px solid var(--scl);
+    white-space: nowrap; text-transform: uppercase; }
+  .stage-badge small { display:block; font-size: 9px; letter-spacing:.1em; color: var(--ink-3); font-weight:600; }
+  /* tab bar */
+  .tabs { display:flex; gap: 2px; margin-top: 16px; }
+  .tab { appearance:none; border:0; background: transparent; cursor: pointer; font-family: var(--sans);
+    font-weight: 600; font-size: 13px; color: var(--ink-3); padding: 10px 14px 12px; position: relative;
+    display:flex; align-items:center; gap: 7px; border-radius: 8px 8px 0 0; }
+  .tab .tdot { width:6px; height:6px; border-radius:50%; background: currentColor; opacity:.5; }
+  .tab[aria-selected="true"] { color: var(--tc); }
+  .tab[aria-selected="true"] .tdot { opacity: 1; background: var(--tc); }
+  .tab[aria-selected="true"]::after { content:""; position:absolute; left:8px; right:8px; bottom:-1px; height:2.5px;
+    background: var(--tc); border-radius: 3px; }
+  .tab:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .tab:hover:not([aria-selected="true"]) { color: var(--ink-2); }
+
+  .dw-body { padding: 18px 20px 22px; border-left: 3px solid var(--sc); }
+  .panel-note { font-size: 11.5px; color: var(--ink-3); margin: 0 0 14px; display:flex; align-items:center; gap:7px; }
+  .panel-note .pill { font-family:var(--sans); font-weight:600; color: var(--sc); background:var(--scb);
+    border:1px solid var(--scl); padding: 2px 8px; border-radius:999px; font-size: 10.5px; letter-spacing:.03em; }
+
+  .card { background: var(--panel-2); border: 1px solid var(--line-2); border-radius: 10px; padding: 13px 14px;
+    margin-bottom: 10px; }
+  .card:last-child { margin-bottom: 0; }
+  .card .lbl { font-family: var(--sans); font-size: 10.5px; font-weight:600; letter-spacing:.1em; text-transform:uppercase;
+    color: var(--ink-3); margin-bottom: 7px; display:flex; align-items:center; justify-content:space-between; }
+  .card .lbl .src { font-weight: 500; letter-spacing:.02em; text-transform:none; color: var(--ink-3); font-family:var(--mono); font-size:10px; }
+  .kv { display:flex; gap: 8px; font-size: 13px; margin: 3px 0; }
+  .kv .k { color: var(--ink-3); min-width: 116px; }
+  .kv .v { color: var(--ink); font-weight: 500; }
+  .kv .v.mono { font-family: var(--mono); }
+
+  .flag { background: var(--crit-bg); border: 1px solid color-mix(in srgb, var(--crit) 30%, transparent);
+    border-radius: 8px; padding: 9px 11px; font-size: 12.5px; color: var(--ink); margin-bottom: 8px; display:flex; gap:9px; }
+  .flag b { color: var(--crit); }
+  .flag .ic { color: var(--crit); font-weight: 700; }
+
+  /* checklist */
+  .chk-list { display: grid; gap: 7px; }
+  .chk-row { display:flex; align-items:center; gap: 10px; font-size: 13px; }
+  .chk-mark { width: 18px; height: 18px; border-radius: 6px; display:grid; place-items:center; font-size: 11px;
+    font-weight:700; flex: none; }
+  .chk-mark.done { background: var(--chk-bg); color: var(--chk); border:1px solid var(--chk-line); }
+  .chk-mark.now  { background: var(--onb-bg); color: var(--onb); border:1px solid var(--onb-line); }
+  .chk-mark.todo { background: transparent; color: var(--ink-3); border:1px dashed var(--line); }
+  .chk-row .stat { margin-left:auto; font-family:var(--mono); font-size: 11px; color: var(--ink-3); }
+  .chk-row.cur .lab { font-weight: 600; }
+
+  /* metric chips */
+  .metrics { display:grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+  @media (max-width:520px){ .metrics{ grid-template-columns: repeat(2,1fr);} }
+  .metric { background: var(--panel); border:1px solid var(--line-2); border-radius: 9px; padding: 9px 10px; }
+  .metric .mk { font-size: 10px; letter-spacing:.06em; text-transform:uppercase; color: var(--ink-3); font-family:var(--sans); font-weight:600; }
+  .metric .mv { font-family: var(--mono); font-size: 17px; font-weight:600; margin-top: 3px; letter-spacing:-.01em; }
+  .metric .md { font-size: 10.5px; color: var(--chk); font-family:var(--mono); margin-top:1px; }
+  .metric .md.dn { color: var(--crit); }
+
+  .touch { display:flex; align-items:center; gap: 12px; }
+  .touch .big { font-family:var(--mono); font-size: 26px; font-weight:600; letter-spacing:-.02em; }
+  .touch .lite { font-size: 12px; color: var(--ink-2); }
+  .touch .warn { color: var(--crit); font-weight:600; }
+  .bar { height: 6px; border-radius:4px; background: var(--line); overflow:hidden; margin-top:9px; }
+  .bar > i { display:block; height:100%; border-radius:4px; background: var(--sc); }
+
+  .ask { display:flex; align-items:center; gap:10px; font-size: 13px; padding: 8px 0; border-bottom:1px solid var(--line-2); }
+  .ask:last-child{ border-bottom:0; }
+  .ask .ai { width:22px; height:22px; border-radius:6px; background: var(--scb); color: var(--sc); display:grid; place-items:center;
+    font-size:12px; flex:none; border:1px solid var(--scl); }
+  .ask .at { flex:1; }
+  .ask .as { font-family:var(--mono); font-size:11px; color: var(--ink-3); }
+  .ask .as.open { color: var(--onb); }
+
+  .btn-row { display:flex; gap:8px; margin-top: 14px; flex-wrap: wrap; }
+  .btn { font-family:var(--sans); font-weight:600; font-size: 12.5px; padding: 8px 14px; border-radius: 8px;
+    border:1px solid var(--sc); color: var(--sc); background: var(--scb); cursor: pointer; }
+  .btn.ghost { background: transparent; color: var(--ink-2); border-color: var(--line); }
+
+  .hint { text-align:center; font-size: 12px; color: var(--ink-3); margin-top: 14px; }
+  .hint kbd { font-family: var(--mono); background: var(--panel); border:1px solid var(--line); border-bottom-width:2px;
+    border-radius: 5px; padding: 1px 6px; font-size: 11px; color: var(--ink-2); }
+
+  /* tables */
+  .tv-note { color: var(--ink-2); font-size: 13.5px; max-width: 70ch; margin: 0 0 16px; }
+  .tv { background: var(--panel); border:1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow);
+    overflow: hidden; margin-bottom: 20px; }
+  .tv-head { display:flex; align-items:center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--line-2);
+    border-left: 3px solid var(--sc); }
+  .tv-head .badge { font-family:var(--sans); font-size:11px; font-weight:600; letter-spacing:.03em; text-transform:uppercase;
+    color: var(--sc); background: var(--scb); border:1px solid var(--scl); padding: 3px 9px; border-radius:6px; }
+  .tv-head .where { font-size: 12px; color: var(--ink-3); font-family: var(--mono); margin-left:auto; }
+  .tv-head .ttl { font-family:var(--sans); font-weight:600; font-size: 14px; }
+  .scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; min-width: 560px; }
+  th { text-align: left; font-family: var(--sans); font-weight:600; font-size: 10.5px; letter-spacing:.06em;
+    text-transform: uppercase; color: var(--ink-3); padding: 9px 14px; border-bottom: 1px solid var(--line-2); white-space:nowrap; }
+  td { padding: 11px 14px; border-bottom: 1px solid var(--line-2); color: var(--ink); white-space: nowrap; }
+  tr:last-child td { border-bottom: 0; }
+  td.mono, th.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .cell-name { font-weight: 600; font-family: var(--sans); }
+  .cell-sub { color: var(--ink-3); font-size: 11px; }
+  .tick { color: var(--chk); font-weight:700; }
+  .cross { color: var(--ink-3); }
+  .warncell { color: var(--crit); font-weight:600; }
+  .chip { display:inline-block; font-size:10.5px; font-family:var(--sans); font-weight:600; padding:2px 8px; border-radius:999px;
+    border:1px solid var(--line); color: var(--ink-2); }
+  .chip.r { color:var(--crit); background:var(--crit-bg); border-color: color-mix(in srgb,var(--crit) 30%, transparent); }
+  .chip.a { color:var(--onb); background:var(--onb-bg); border-color:var(--onb-line); }
+  .chip.g { color:var(--chk); background:var(--chk-bg); border-color:var(--chk-line); }
+  .chip.v { color:var(--mgt); background:var(--mgt-bg); border-color:var(--mgt-line); }
+
+  footer { margin-top: 56px; border-top:1px solid var(--line); padding-top: 20px; color: var(--ink-3); font-size: 12.5px; }
+  footer b { color: var(--ink-2); font-family:var(--sans); }
+  .foot-grid { display:grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin-top: 12px; }
+  @media (max-width:780px){ .foot-grid{ grid-template-columns:1fr; } }
+  .reuse { display:flex; flex-wrap:wrap; gap:6px; margin-top: 8px; }
+  .reuse span { font-family:var(--mono); font-size:11px; color:var(--ink-2); background:var(--panel); border:1px solid var(--line);
+    padding:2px 8px; border-radius:6px; }
+  @media (prefers-reduced-motion: no-preference){ .panel{ transition: opacity .18s ease; } }
+</style>
+
+<div class="wrap">
+  <header class="hd">
+    <div class="eyebrow">HPFHQ · Fulfillment · information architecture</div>
+    <h1>One client, three stages — not one wall of everything</h1>
+    <p class="lede">The coaching record holds <b>a lot</b> per client, and dumping it all in one panel is what makes it hard to use. This splits every client into the stage they're actually in — <b>Onboarding</b>, <b>Check-in</b>, <b>Management</b> — so a coach only sees what that moment needs. Same three stages drive the <b>drawer tabs</b> and the <b>columns on each table</b>. Nothing is rebuilt; the existing cards are re-grouped.</p>
+  </header>
+
+  <!-- STAGE MODEL -->
+  <section>
+    <div class="sec-head"><span class="n">01</span><h2>The three stages</h2></div>
+    <div class="stages">
+      <div class="stage-card" style="--sc:var(--onb);--scb:var(--onb-bg);--scl:var(--onb-line)">
+        <span class="tag"><span class="dot"></span>Onboarding</span>
+        <h3>Get them ready for call&nbsp;1</h3>
+        <p>Everything to run the first call on one screen — no hunting across tabs.</p>
+        <div class="meta">
+          <div><b>Holds</b> sales-call notes · consultation · what they paid · targets</div>
+          <div><b>Default when</b> started &lt; 30d ago &amp; not yet onboarded</div>
+          <div><b>List view</b> Onboarding queue on /coaching</div>
+        </div>
+      </div>
+      <div class="stage-card" style="--sc:var(--chk);--scb:var(--chk-bg);--scl:var(--chk-line)">
+        <span class="tag"><span class="dot"></span>Check-in</span>
+        <h3>The every-few-days loop</h3>
+        <p>The steady coaching rhythm — who's due a touch, and the numbers to run it.</p>
+        <div class="meta">
+          <div><b>Holds</b> touch-due timer · weights · workouts · short sales summary</div>
+          <div><b>Default when</b> active &amp; past onboarding (most clients)</div>
+          <div><b>List view</b> /coach workstation &amp; roster</div>
+        </div>
+      </div>
+      <div class="stage-card" style="--sc:var(--mgt);--scb:var(--mgt-bg);--scl:var(--mgt-line)">
+        <span class="tag"><span class="dot"></span>Management</span>
+        <h3>The retention stack</h3>
+        <p>Keeping and closing the loop — the periodic + exit layer.</p>
+        <div class="meta">
+          <div><b>Holds</b> start/end · retention · NPS · testimonial · re-sign</div>
+          <div><b>Default when</b> day-60 window or an open ask</div>
+          <div><b>List view</b> /coaching/retention</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DRAWER -->
+  <section>
+    <div class="sec-head"><span class="n">02</span><h2>The client panel — three tabs, opens on the current stage</h2></div>
+    <div class="drawer-frame">
+      <div class="drawer" id="drawer">
+        <div class="dw-top">
+          <div class="dw-idrow">
+            <div>
+              <div class="dw-name">Marcus Bell</div>
+              <div class="dw-sub">Coach John · <span class="mono">18-wk</span> · started <span class="mono">Jul 6</span> · <span class="mono">day 3</span></div>
+            </div>
+            <div class="stage-badge" id="stageBadge" style="--sc:var(--onb);--scb:var(--onb-bg);--scl:var(--onb-line)">
+              <small>current stage</small>Onboarding</div>
+          </div>
+          <div class="tabs" role="tablist" aria-label="Client stage">
+            <button class="tab" role="tab" aria-selected="true"  data-stage="onb" id="t-onb" style="--tc:var(--onb)"><span class="tdot"></span>Onboarding</button>
+            <button class="tab" role="tab" aria-selected="false" data-stage="chk" id="t-chk" style="--tc:var(--chk)"><span class="tdot"></span>Check-in</button>
+            <button class="tab" role="tab" aria-selected="false" data-stage="mgt" id="t-mgt" style="--tc:var(--mgt)"><span class="tdot"></span>Management</button>
+          </div>
+        </div>
+
+        <!-- ONBOARDING PANEL -->
+        <div class="dw-body panel" id="p-onb" style="--sc:var(--onb);--scb:var(--onb-bg);--scl:var(--onb-line)" role="tabpanel" aria-labelledby="t-onb">
+          <p class="panel-note"><span class="pill">First-call prep</span> everything to run call 1, one screen</p>
+
+          <div class="chk-list card">
+            <div class="lbl">Onboarding progress</div>
+            <div class="chk-row"><span class="chk-mark done">✓</span><span class="lab">Contract signed</span><span class="stat">Jul 5</span></div>
+            <div class="chk-row"><span class="chk-mark done">✓</span><span class="lab">Active in Trainerize</span><span class="stat">Jul 6</span></div>
+            <div class="chk-row"><span class="chk-mark done">✓</span><span class="lab">Consultation completed</span><span class="stat">Jul 6</span></div>
+            <div class="chk-row cur"><span class="chk-mark now">→</span><span class="lab">First call booked</span><span class="stat">Thu 4:00p</span></div>
+            <div class="chk-row"><span class="chk-mark todo">·</span><span class="lab">Onboarded</span><span class="stat">—</span></div>
+          </div>
+
+          <div class="flag"><span class="ic">!</span><div><b>Injuries / restrictions</b> — lower-back disc (L4/L5), left-knee meniscus. No overhead pressing, no deep squats. <span style="color:var(--ink-3)">from consultation</span></div></div>
+
+          <div class="card">
+            <div class="lbl">What they paid <span class="src">fanbasis · ghl contract</span></div>
+            <div class="kv"><span class="k">Contract value</span><span class="v mono">$6,000</span></div>
+            <div class="kv"><span class="k">Plan</span><span class="v">18-week 1:1 · paid in full</span></div>
+            <div class="kv"><span class="k">Payment</span><span class="v mono" style="color:var(--chk)">cleared Jul 5</span></div>
+          </div>
+
+          <div class="card">
+            <div class="lbl">Sales-call notes — full <span class="src">client profile · fathom</span></div>
+            <div class="kv"><span class="k">Why now</span><span class="v">Turning 40, wants to be strong for his kids; tried 3 programs, none stuck.</span></div>
+            <div class="kv"><span class="k">Goal</span><span class="v">Lose ~25 lb, build a sustainable lifting habit.</span></div>
+            <div class="kv"><span class="k">Watch-outs</span><span class="v">Travels 1 wk/month; past all-or-nothing pattern.</span></div>
+            <div class="kv"><span class="k">Promised</span><span class="v">Weekly check-ins, form reviews, a back-safe program.</span></div>
+          </div>
+
+          <div class="card">
+            <div class="lbl">Targets set at onboarding <span class="src">lean gains calc</span></div>
+            <div class="kv"><span class="k">Calories</span><span class="v mono">2,550 kcal</span></div>
+            <div class="kv"><span class="k">Protein</span><span class="v mono">200 g</span></div>
+            <div class="kv"><span class="k">Locked by</span><span class="v">John · <span class="mono">auto→edited</span></span></div>
+          </div>
+          <div class="btn-row"><button class="btn">Open first-call brief</button><button class="btn ghost">Copy consultation link</button></div>
+        </div>
+
+        <!-- CHECK-IN PANEL -->
+        <div class="dw-body panel" id="p-chk" hidden style="--sc:var(--chk);--scb:var(--chk-bg);--scl:var(--chk-line)" role="tabpanel" aria-labelledby="t-chk">
+          <p class="panel-note"><span class="pill">Coaching loop</span> run today's check-in</p>
+
+          <div class="card">
+            <div class="lbl">Touch cadence <span class="src">every 4 days</span></div>
+            <div class="touch">
+              <div class="big">2<span style="font-size:14px;color:var(--ink-3)">d</span></div>
+              <div>
+                <div class="lite">since last contact · <span style="color:var(--chk);font-weight:600">on track</span></div>
+                <div class="lite">next touch due <b>in 2 days</b> (Fri)</div>
+              </div>
+            </div>
+            <div class="bar"><i style="width:50%"></i></div>
+          </div>
+
+          <div class="card">
+            <div class="lbl">This week's numbers <span class="src">trainerize sync · 6h ago</span></div>
+            <div class="metrics">
+              <div class="metric"><div class="mk">Weight</div><div class="mv">195</div><div class="md">−3 lb</div></div>
+              <div class="metric"><div class="mk">Waist</div><div class="mv">36.5</div><div class="md">−0.5"</div></div>
+              <div class="metric"><div class="mk">Workouts</div><div class="mv">4/5</div><div class="md">on plan</div></div>
+              <div class="metric"><div class="mk">Nutrition</div><div class="mv">85%</div><div class="md dn">−7%</div></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="lbl">Sales-call summary — short <span class="src">condensed</span></div>
+            <div class="kv"><span class="v" style="min-width:auto">Wants strength for his kids &amp; ~25 lb down. Travels 1 wk/mo — protect that week. Back-safe lifting only.</span></div>
+          </div>
+
+          <div class="card">
+            <div class="lbl">Last call <span class="src">jul 5 · 22 min</span></div>
+            <div class="kv"><span class="k">Notes</span><span class="v">Nailed week 1. Struggling to hit protein on travel days — gave 3 grab-and-go options.</span></div>
+          </div>
+
+          <div class="flag" style="background:var(--mgt-bg);border-color:var(--mgt-line)"><span class="ic" style="color:var(--mgt)">◷</span><div><b style="color:var(--mgt)">Retention reminder</b> — day-60 check-in window opens in <b>5 weeks</b> (Sep 4). Nothing to do yet.</div></div>
+          <div class="btn-row"><button class="btn">Draft check-in message</button><button class="btn ghost">Add call note</button></div>
+        </div>
+
+        <!-- MANAGEMENT PANEL -->
+        <div class="dw-body panel" id="p-mgt" hidden style="--sc:var(--mgt);--scb:var(--mgt-bg);--scl:var(--mgt-line)" role="tabpanel" aria-labelledby="t-mgt">
+          <p class="panel-note"><span class="pill">Retention stack</span> keep &amp; close the loop</p>
+
+          <div class="card">
+            <div class="lbl">Program window</div>
+            <div class="kv"><span class="k">Start</span><span class="v mono">Jul 6, 2026</span></div>
+            <div class="kv"><span class="k">Ends</span><span class="v mono">Nov 9, 2026</span></div>
+            <div class="kv"><span class="k">Day-60 review</span><span class="v mono">Sep 4 <span style="color:var(--ink-3)">(in 8 wks)</span></span></div>
+          </div>
+
+          <div class="card">
+            <div class="lbl">Retention</div>
+            <div class="ask"><span class="ai" style="color:var(--mgt);background:var(--mgt-bg);border-color:var(--mgt-line)">↻</span><div class="at">60-day outcome</div><span class="as">not due yet</span></div>
+            <div class="ask"><span class="ai">✓</span><div class="at">Renewed (paid) mark</div><span class="as">—</span></div>
+            <div class="kv" style="margin-top:8px"><span class="k">Notes</span><span class="v" style="color:var(--ink-2)">—</span></div>
+          </div>
+
+          <div class="card">
+            <div class="lbl">Accountability asks <span class="src">never auto-cleared</span></div>
+            <div class="ask"><span class="ai">☆</span><div class="at">Testimonial</div><span class="as">not asked</span></div>
+            <div class="ask"><span class="ai">◎</span><div class="at">NPS</div><span class="as">not sent</span></div>
+            <div class="ask"><span class="ai">$</span><div class="at">Re-sign</div><span class="as open">opens ~wk 14</span></div>
+          </div>
+
+          <div class="card">
+            <div class="lbl">Lifecycle</div>
+            <div class="kv"><span class="k">Status</span><span class="v"><span class="chip g">Active</span></span></div>
+            <div class="kv"><span class="k">Source</span><span class="v mono">trainerize · auto</span></div>
+          </div>
+          <div class="btn-row"><button class="btn">Mark retained</button><button class="btn ghost">Request testimonial</button><button class="btn ghost">Deactivate</button></div>
+        </div>
+      </div>
+      <p class="hint">Click the tabs — the panel is the same client, filtered to that stage. It opens on <kbd>Onboarding</kbd> because Marcus is 3 days in.</p>
+    </div>
+  </section>
+
+  <!-- TABLE VIEWS -->
+  <section>
+    <div class="sec-head"><span class="n">03</span><h2>Same stages, stage-shaped tables</h2></div>
+    <p class="tv-note">Each surface already exists — this just makes its <b>columns</b> match the stage that surface is for. A client shows on the list for whatever stage they're in.</p>
+
+    <!-- onboarding table -->
+    <div class="tv" style="--sc:var(--onb);--scb:var(--onb-bg);--scl:var(--onb-line)">
+      <div class="tv-head"><span class="badge">Onboarding</span><span class="ttl">Onboarding queue</span><span class="where">/coaching</span></div>
+      <div class="scroll"><table>
+        <thead><tr><th>Client</th><th>Coach</th><th>Signed</th><th>TZ</th><th>Consult</th><th>Targets</th><th>First call</th></tr></thead>
+        <tbody>
+          <tr><td><div class="cell-name">Marcus Bell</div><div class="cell-sub">day 3</div></td><td>John</td><td class="mono">Jul 5</td><td class="tick">✓</td><td class="tick">✓</td><td class="tick">✓</td><td class="mono warncell">Thu 4:00p</td></tr>
+          <tr><td><div class="cell-name">Priya Nair</div><div class="cell-sub">day 1</div></td><td>Ana</td><td class="mono">Jul 8</td><td class="tick">✓</td><td class="cross">·</td><td class="cross">·</td><td class="mono">unbooked</td></tr>
+          <tr><td><div class="cell-name">Devon &amp; Kate Ross</div><div class="cell-sub">couple · day 2</div></td><td>John</td><td class="mono">Jul 7</td><td class="tick">✓</td><td class="chip a">1 of 2</td><td class="cross">·</td><td class="mono">Fri 11:00a</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <!-- check-in table -->
+    <div class="tv" style="--sc:var(--chk);--scb:var(--chk-bg);--scl:var(--chk-line)">
+      <div class="tv-head"><span class="badge">Check-in</span><span class="ttl">Coach workstation &amp; roster</span><span class="where">/coach · /coaching/roster</span></div>
+      <div class="scroll"><table>
+        <thead><tr><th>Client</th><th>Touch</th><th>Weight</th><th>Workouts</th><th>Nutrition</th><th>Next call</th><th>Watch</th></tr></thead>
+        <tbody>
+          <tr><td><div class="cell-name">Sara Whitfield</div><div class="cell-sub">wk 9</div></td><td class="mono warncell">6d overdue</td><td class="mono">−1.2 lb</td><td class="mono">2/5</td><td class="mono">61%</td><td class="mono">unbooked</td><td><span class="chip r">Ghosting</span></td></tr>
+          <tr><td><div class="cell-name">Marcus Bell</div><div class="cell-sub">wk 1</div></td><td class="mono">due in 2d</td><td class="mono">−3 lb</td><td class="mono">4/5</td><td class="mono">85%</td><td class="mono">Fri</td><td><span class="chip g">On track</span></td></tr>
+          <tr><td><div class="cell-name">Leon Alvarez</div><div class="cell-sub">wk 22</div></td><td class="mono">1d ago</td><td class="mono">−0.4 lb</td><td class="mono">5/5</td><td class="mono">94%</td><td class="mono">Mon</td><td><span class="chip a">Plateau</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <!-- management table -->
+    <div class="tv" style="--sc:var(--mgt);--scb:var(--mgt-bg);--scl:var(--mgt-line)">
+      <div class="tv-head"><span class="badge">Management</span><span class="ttl">Retention huddle</span><span class="where">/coaching/retention</span></div>
+      <div class="scroll"><table>
+        <thead><tr><th>Client</th><th>Start</th><th>Ends</th><th>Day-60</th><th>Outcome</th><th>NPS</th><th>Testimonial</th><th>Re-sign</th></tr></thead>
+        <tbody>
+          <tr><td><div class="cell-name">Grace Kim</div><div class="cell-sub">wk 8</div></td><td class="mono">May 12</td><td class="mono">Sep 14</td><td class="mono warncell">due now</td><td><span class="chip a">pending</span></td><td class="mono">—</td><td class="cross">·</td><td class="cross">·</td></tr>
+          <tr><td><div class="cell-name">Tom Becker</div><div class="cell-sub">wk 17</div></td><td class="mono">Mar 9</td><td class="mono">Jul 13</td><td class="tick">held</td><td><span class="chip g">continuing</span></td><td class="mono">9</td><td class="tick">✓</td><td class="chip v">opens</td></tr>
+          <tr><td><div class="cell-name">Nadia Osei</div><div class="cell-sub">wk 26</div></td><td class="mono">Jan 6</td><td class="mono">May 11</td><td class="tick">held</td><td><span class="chip g">renewed</span></td><td class="mono">10</td><td class="tick">✓</td><td class="chip g">re-signed</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <footer>
+    <b>How this gets built — re-group, don't rebuild.</b>
+    <div class="foot-grid">
+      <div>
+        <div class="eyebrow" style="color:var(--onb)">Onboarding tab reuses</div>
+        <div class="reuse"><span>ConsultationCard</span><span>CalorieTargetCard</span><span>ContractRow</span><span>coaching_breakdown</span></div>
+      </div>
+      <div>
+        <div class="eyebrow" style="color:var(--chk)">Check-in tab reuses</div>
+        <div class="reuse"><span>engagement-state</span><span>metrics</span><span>CallNotes</span><span>AI check-in draft</span></div>
+      </div>
+      <div>
+        <div class="eyebrow" style="color:var(--mgt)">Management tab reuses</div>
+        <div class="reuse"><span>retained mark</span><span>retention_outcome</span><span>NPS</span><span>testimonial</span><span>lifecycle</span></div>
+      </div>
+    </div>
+    <p style="margin-top:16px">New build is small: a <b>deriveClientStage()</b> classifier, the <b>3-tab drawer shell</b>, the <b>touch-cadence timer</b>, a <b>short vs full sales summary</b> split, and stage-column sets per table. Mock data — not live. HPFHQ · 2026-07-09.</p>
+  </footer>
+</div>
+
+<script>
+  (function () {
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+    var badge = document.getElementById('stageBadge');
+    var labels = { onb: 'Onboarding', chk: 'Check-in', mgt: 'Management' };
+    var vars = {
+      onb: ['var(--onb)','var(--onb-bg)','var(--onb-line)'],
+      chk: ['var(--chk)','var(--chk-bg)','var(--chk-line)'],
+      mgt: ['var(--mgt)','var(--mgt-bg)','var(--mgt-line)']
+    };
+    function select(stage) {
+      tabs.forEach(function (t) {
+        var on = t.dataset.stage === stage;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      ['onb','chk','mgt'].forEach(function (s) {
+        document.getElementById('p-' + s).hidden = (s !== stage);
+      });
+      var v = vars[stage];
+      badge.style.setProperty('--sc', v[0]);
+      badge.style.setProperty('--scb', v[1]);
+      badge.style.setProperty('--scl', v[2]);
+      badge.childNodes[1].nodeValue = labels[stage];
+    }
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () { select(t.dataset.stage); });
+      t.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          var dir = e.key === 'ArrowRight' ? 1 : -1;
+          var next = (i + dir + tabs.length) % tabs.length;
+          tabs[next].focus(); select(tabs[next].dataset.stage);
+        }
+      });
+    });
+  })();
+</script>
