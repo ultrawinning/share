@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HPF Onboarding Hub — preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --hpf-base:#15171C; --hpf-card:#252830; --hpf-fg1:#F0F2F5; --hpf-fg2:#A0A8B4; --hpf-fg3:#8089A0;
+  --hpf-border:rgba(255,255,255,0.08); --hpf-border-strong:rgba(255,255,255,0.14);
+  --hpf-green:#3BAE72; --brand-green:#2ED47A; --success-green-deep:#2A8F5A; --status-warning:#d9a441;
+  --on-accent:#15171C; --ease-out:cubic-bezier(0.22,1,0.36,1);
+  --font-display:'Space Grotesk',system-ui,sans-serif; --font-body:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0}
+.preview-flag{position:fixed;top:0;left:0;right:0;z-index:9;text-align:center;font-family:var(--font-body);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--hpf-fg3);background:rgba(0,0,0,.35);padding:6px;border-bottom:1px solid var(--hpf-border)}
+.ob-page{min-height:100vh;position:relative;overflow-x:hidden;background:var(--hpf-base);padding:64px 20px 72px;font-family:var(--font-body)}
+.ob-backdrop{position:fixed;inset:0;z-index:0;pointer-events:none;display:grid;place-items:start end}
+.ob-backdrop svg{width:min(56vw,680px);height:auto;transform:translateY(-6%)}
+.ob-shell{position:relative;z-index:1;width:100%;max-width:600px;margin:0 auto}
+.ob-head{text-align:center;margin-bottom:34px}
+.ob-mark{width:48px;height:48px;border-radius:14px;margin:0 auto 18px;display:grid;place-items:center;background:linear-gradient(160deg,var(--brand-green),var(--success-green-deep));box-shadow:0 0 0 1px rgba(46,212,122,.4),0 6px 18px -4px rgba(46,212,122,.45),0 1px 0 rgba(255,255,255,.4) inset}
+.ob-mark svg{width:27px;height:27px}
+.ob-kicker{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--hpf-green);margin:0 0 8px}
+.ob-title{font-family:var(--font-display);font-size:29px;font-weight:600;letter-spacing:-.02em;color:var(--hpf-fg1);margin:0 0 12px;line-height:1.1}
+.ob-lead{font-size:14.5px;color:var(--hpf-fg2);line-height:1.6;margin:0 auto 24px;max-width:460px}
+.ob-progress{height:6px;border-radius:99px;background:var(--hpf-border);overflow:hidden;max-width:320px;margin:0 auto 8px}
+.ob-progress-bar{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--hpf-green),var(--brand-green));box-shadow:0 0 10px rgba(46,212,122,.5)}
+.ob-progress-label{font-size:12px;font-weight:600;color:var(--hpf-fg3);margin:0;letter-spacing:.02em}
+.ob-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.ob-card{position:relative;display:flex;gap:16px;padding:20px 22px;border-radius:18px;background:var(--hpf-card);border:1px solid var(--hpf-border-strong);box-shadow:0 1px 0 rgba(255,255,255,.04) inset,0 18px 44px -28px rgba(0,0,0,.7)}
+.ob-card.is-done{opacity:.62}
+.ob-check{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--hpf-base);border:1px solid var(--hpf-border-strong);color:var(--hpf-fg2);margin-top:2px}
+.ob-card.is-done .ob-check{background:var(--hpf-green);border-color:var(--hpf-green);color:var(--on-accent);box-shadow:0 0 0 1px var(--hpf-green),0 4px 12px -3px rgba(46,212,122,.5)}
+.ob-check svg{width:16px;height:16px}
+.ob-num{font-family:var(--font-display);font-size:14px;font-weight:600}
+.ob-card-body{flex:1;min-width:0}
+.ob-card-title{display:flex;align-items:center;gap:9px;font-family:var(--font-display);font-size:16px;font-weight:600;letter-spacing:-.01em;color:var(--hpf-fg1);margin:0 0 6px}
+.ob-card-tag{flex:none;width:24px;height:24px;border-radius:7px;display:grid;place-items:center;background:var(--hpf-base);border:1px solid var(--hpf-border);color:var(--hpf-fg3)}
+.ob-card-tag svg{width:14px;height:14px}
+.ob-card-text{font-size:14px;color:var(--hpf-fg2);line-height:1.55;margin:0}
+.ob-video{position:relative;margin-top:14px;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:radial-gradient(120% 120% at 30% 20%,rgba(46,212,122,.14),transparent 60%),linear-gradient(160deg,#14181d,#0b0e12);border:1px solid var(--hpf-border-strong);display:grid;place-items:center}
+.ob-play{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;color:#fff;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.22);padding-left:3px}
+.ob-play svg{width:22px;height:22px}
+.ob-dur{position:absolute;bottom:10px;right:10px;font-size:11px;font-weight:600;color:#fff;background:rgba(0,0,0,.55);padding:3px 8px;border-radius:6px}
+.ob-note{margin:12px 0 0;padding:10px 13px;border-radius:10px;font-size:12.5px;line-height:1.5;color:var(--hpf-fg2);background:color-mix(in oklab,var(--status-warning) 12%,transparent);border:1px solid color-mix(in oklab,var(--status-warning) 30%,transparent)}
+.ob-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
+.ob-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 15px;border-radius:10px;font-size:13px;font-weight:600;text-decoration:none;background:rgba(255,255,255,.04);border:1px solid var(--hpf-border-strong);color:var(--hpf-fg1)}
+.ob-btn svg{width:15px;height:15px}
+.ob-btn-primary{background:var(--hpf-green);border-color:var(--hpf-green);color:var(--on-accent)}
+.ob-btn-ghost{background:transparent;border-color:transparent;color:var(--hpf-fg3);margin-left:auto}
+.ob-foot{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:30px;font-size:12.5px;color:var(--hpf-fg3)}
+.ob-dot{width:6px;height:6px;border-radius:50%;background:var(--hpf-green);box-shadow:0 0 8px var(--hpf-green)}
+@media (max-width:520px){.ob-card{padding:18px 16px;gap:13px}.ob-title{font-size:25px}}
+</style>
+</head>
+<body>
+<div class="preview-flag">Preview · onboarding hub · sample client — the real page is token-gated per client</div>
+<div class="ob-page">
+  <div class="ob-backdrop" aria-hidden="true">
+    <svg viewBox="0 0 100 70" fill="none"><path d="M2 64 L30 24 L36 32 L48 14 L70 64 Z" fill="rgba(240,242,245,0.05)"/><path d="M48 30 L64 64 L33 64 Z" fill="rgba(46,212,122,0.08)"/></svg>
+  </div>
+  <main class="ob-shell">
+    <header class="ob-head">
+      <span class="ob-mark"><svg viewBox="0 0 32 32" fill="none"><path d="M16 4 L28 27 L19.5 27 L16 19.5 L12.5 27 L4 27 Z" fill="#04130b"/><path d="M16 12 L23 27 L9 27 Z" fill="#ffffff"/></svg></span>
+      <p class="ob-kicker">High Performance Founder</p>
+      <h1 class="ob-title">Welcome, Alex.</h1>
+      <p class="ob-lead">Everything to get you started is right here — work through it in order, and come back any time. Once it&rsquo;s done, you&rsquo;re ready for your onboarding call with Ana.</p>
+      <div class="ob-progress"><div class="ob-progress-bar" style="width:29%"></div></div>
+      <p class="ob-progress-label">2 of 7 done</p>
+    </header>
+    <ol class="ob-steps">
+
+      <li class="ob-card is-done"><span class="ob-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span>
+        <div class="ob-card-body"><h2 class="ob-card-title"><span class="ob-card-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 6.5h11v11h-11z"/><path d="M3 9v6M21 9v6M9 3h6M9 21h6"/></svg></span>Get into Trainerize</h2>
+        <p class="ob-card-text">You&rsquo;ll get a separate invite to Trainerize, our training app. Accept it and log in — that&rsquo;s your home base for workouts, tracking, and messaging your coach. Didn&rsquo;t get it? Tap below and we&rsquo;ll resend.</p>
+        <div class="ob-actions"><a class="ob-btn" href="#">Resend my Trainerize invite</a></div></div></li>
+
+      <li class="ob-card is-done"><span class="ob-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span>
+        <div class="ob-card-body"><h2 class="ob-card-title"><span class="ob-card-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5h6M9 9h6M9 13h4"/><rect x="4" y="3" width="16" height="18" rx="2"/></svg></span>Complete your consultation form</h2>
+        <p class="ob-card-text">This is how your coach gets to know you and tailors your plan from day one. It takes a few minutes — don&rsquo;t skip it.</p>
+        <div class="ob-actions"><a class="ob-btn ob-btn-primary" href="#">Open your consultation form <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M7 7h10v10"/></svg></a></div></div></li>
+
+      <li class="ob-card"><span class="ob-check"><span class="ob-num">3</span></span>
+        <div class="ob-card-body"><h2 class="ob-card-title"><span class="ob-card-tag"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>Watch: Welcome to the program</h2>
+        <p class="ob-card-text">Start here. What you&rsquo;ve joined, how it works, and what the next 90 days look like.</p>
+        <div class="ob-video"><span class="ob-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span class="ob-dur">4:47</span></div>
+        <div class="ob-actions"><button class="ob-btn ob-btn-ghost">Mark done</button></div></div></li>
+
+      <li class="ob-card"><span class="ob-check"><span class="ob-num">4</span></span>
+        <div class="ob-card-body"><h2 class="ob-card-title"><span class="ob-card-tag"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>Watch: Your 4 daily non-negotiables</h2>
+        <p class="ob-card-text">The daily habits that drive everything else. Watch this before your first full day.</p>
+        <div class="ob-video"><span class="ob-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span class="ob-dur">3:25</span></div>
+        <div class="ob-actions"><button class="ob-btn ob-btn-ghost">Mark done</button></div></div></li>
+
+      <li class="ob-card"><span class="ob-check"><span class="ob-num">5</span></span>
+        <div class="ob-card-body"><h2 class="ob-card-title"><span class="ob-card-tag"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>Watch: Start the 14-day detox</h2>
+        <p class="ob-card-text">Your first phase — how to run the 14-day green-face detox.</p>
+        <div class="ob-video"><span class="ob-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span class="ob-dur">3:09</span></div>
+        <p class="ob-note">Vegetarian, vegan, or focused on building muscle? Skip the detox and wait for your coach&rsquo;s guidance on your onboarding call.</p>
+        <div class="ob-actions"><button class="ob-btn ob-btn-ghost">Mark done</button></div></div></li>
+
+      <li class="ob-card"><span class="ob-check"><span class="ob-num">6</span></span>
+        <div class="ob-card-body"><h2 class="ob-card-title"><span class="ob-card-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>Connect MyFitnessPal</h2>
+        <p class="ob-card-text">We track food in MyFitnessPal — it syncs straight into Trainerize. Here&rsquo;s the quick guide to link it.</p>
+        <div class="ob-actions"><a class="ob-btn" href="#">Open the guide <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/></svg></a><button class="ob-btn ob-btn-ghost">Mark done</button></div></div></li>
+
+      <li class="ob-card"><span class="ob-check"><span class="ob-num">7</span></span>
+        <div class="ob-card-body"><h2 class="ob-card-title"><span class="ob-card-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0M16 6a3 3 0 0 1 0 6M21 20a5 5 0 0 0-4-5"/></svg></span>Join the Dan Go Fitness community</h2>
+        <p class="ob-card-text">You&rsquo;ve been added automatically — introduce yourself, and find every coaching-call recording in here.</p>
+        <div class="ob-actions"><a class="ob-btn" href="#">Open the community <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/></svg></a><button class="ob-btn ob-btn-ghost">Mark done</button></div></div></li>
+
+      <li class="ob-card"><span class="ob-check"><span class="ob-num">8</span></span>
+        <div class="ob-card-body"><h2 class="ob-card-title"><span class="ob-card-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg></span>Book your onboarding call</h2>
+        <p class="ob-card-text">Once you&rsquo;ve done the above, book your kickoff call with your coach. Your training and meal plans are built right after this call.</p>
+        <div class="ob-actions"><a class="ob-btn ob-btn-primary" href="#">Book your onboarding call <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg></a></div></div></li>
+
+    </ol>
+    <footer class="ob-foot"><span class="ob-dot"></span> Questions or stuck on a step? Just reply to your welcome email.</footer>
+  </main>
+</div>
+</body>
+</html>
