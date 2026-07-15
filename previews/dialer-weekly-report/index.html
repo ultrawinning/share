@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dialer Weekly Report — Meta Leads · Riley</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0D10; --panel:#12151A; --panel-2:#161A20; --line:#232830; --line-soft:#1B2027;
+    --ink:#E8ECF1; --ink-2:#AEB6C2; --ink-3:#727C8A;
+    --accent:#2ED47A;            /* HPF brand green — used ONLY as the rail/logo accent */
+    --closed:#12B981; --booked-me:#4C8DFF; --booked-self:#F5A524; --fu:#9B7BFF; --dq:#FF5C7A; --none:#5A6472;
+    --closed-bg:rgba(18,185,129,.12); --booked-me-bg:rgba(76,141,255,.13); --booked-self-bg:rgba(245,165,36,.13);
+    --fu-bg:rgba(155,123,255,.13); --dq-bg:rgba(255,92,122,.12); --none-bg:rgba(90,100,114,.12);
+    --shadow:0 1px 0 rgba(255,255,255,.02), 0 8px 30px rgba(0,0,0,.35);
+  }
+  :root[data-theme="light"]{
+    --bg:#F6F7F9; --panel:#FFFFFF; --panel-2:#FBFCFD; --line:#E4E8ED; --line-soft:#EDF0F3;
+    --ink:#141A22; --ink-2:#4B5563; --ink-3:#8A94A2;
+    --closed:#0E9E6E; --booked-me:#2f6fe0; --booked-self:#C9820A; --fu:#7C5CFF; --dq:#E23A5E; --none:#8892A0;
+    --closed-bg:rgba(14,158,110,.10); --booked-me-bg:rgba(47,111,224,.10); --booked-self-bg:rgba(201,130,10,.12);
+    --fu-bg:rgba(124,92,255,.10); --dq-bg:rgba(226,58,94,.09); --none-bg:rgba(136,146,160,.12);
+    --shadow:0 1px 2px rgba(16,24,40,.04), 0 8px 24px rgba(16,24,40,.06);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;
+    -webkit-font-smoothing:antialiased;font-size:15px;line-height:1.5}
+  .wrap{max-width:940px;margin:0 auto;padding:0 20px 80px}
+
+  /* ── Top bar ── */
+  .topbar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 86%,transparent);
+    backdrop-filter:saturate(140%) blur(10px);border-bottom:1px solid var(--line);margin:0 -20px 0;padding:14px 20px}
+  .topbar-inner{max-width:940px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .brandrail{width:3px;height:34px;border-radius:3px;background:var(--accent);box-shadow:0 0 12px rgba(46,212,122,.5)}
+  h1{font-family:'Space Grotesk',Inter,sans-serif;font-size:16px;font-weight:600;margin:0;letter-spacing:-.01em}
+  .sub{color:var(--ink-3);font-size:12.5px;margin-top:2px}
+  .spacer{flex:1}
+  .src{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--ink-2);
+    background:var(--panel-2);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-weight:500}
+  .src .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+  .btn{font:inherit;font-size:12.5px;font-weight:600;color:var(--ink);background:var(--panel-2);
+    border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer;display:inline-flex;gap:7px;align-items:center}
+  .btn:hover{border-color:var(--ink-3)}
+  .btn.primary{background:var(--accent);color:#04140B;border-color:transparent}
+  .theme-toggle{width:34px;height:34px;justify-content:center;padding:0}
+
+  /* ── Summary tiles ── */
+  .tiles{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin:22px 0 8px}
+  .tile{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 12px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .tile::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--tc,var(--none))}
+  .tile .n{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;letter-spacing:-.02em;line-height:1}
+  .tile .l{font-size:10.5px;color:var(--ink-3);margin-top:6px;text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+  @media(max-width:760px){.tiles{grid-template-columns:repeat(3,1fr)}}
+
+  .metaline{display:flex;gap:16px;flex-wrap:wrap;align-items:center;color:var(--ink-3);font-size:12px;margin:14px 2px 2px}
+  .metaline b{color:var(--ink-2);font-weight:600}
+
+  /* ── Legend ── */
+  .legend{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 6px}
+  .lg{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-2);
+    background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:5px 11px}
+  .swatch{width:9px;height:9px;border-radius:3px}
+
+  /* ── Day sections ── */
+  .day{margin-top:26px}
+  .day-h{display:flex;align-items:center;gap:12px;position:sticky;top:64px;z-index:10;
+    background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(6px);padding:8px 2px;border-bottom:1px solid var(--line-soft)}
+  .day-h h2{font-family:'Space Grotesk',Inter,sans-serif;font-size:14px;font-weight:600;margin:0;letter-spacing:.01em}
+  .day-h .count{font-size:11px;color:var(--ink-3);font-family:'JetBrains Mono',monospace}
+  .day-h .mini{display:flex;gap:5px;margin-left:auto}
+  .pip{width:7px;height:7px;border-radius:2px;opacity:.9}
+
+  .rows{margin-top:4px}
+  .row{display:grid;grid-template-columns:200px 128px auto;gap:12px;align-items:start;
+    padding:11px 14px;border-bottom:1px solid var(--line-soft);border-left:3px solid var(--rc,var(--none));
+    background:linear-gradient(90deg,color-mix(in srgb,var(--rc,var(--none)) 5%,transparent),transparent 40%)}
+  .row:hover{background:var(--panel-2)}
+  .nm{font-weight:600;font-size:13.5px;letter-spacing:-.01em}
+  .who{display:inline-flex;flex-direction:column;gap:5px}
+  .badge{align-self:flex-start;font-size:10.5px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;
+    padding:3px 8px;border-radius:6px;color:var(--rc);background:var(--rc-bg);white-space:nowrap}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+  .chip{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--ink-3);
+    border:1px solid var(--line);border-radius:5px;padding:1.5px 6px;white-space:nowrap}
+  .note{font-size:13px;color:var(--ink-2);line-height:1.45}
+  .note .flag{color:var(--dq);font-weight:600}
+  @media(max-width:680px){.row{grid-template-columns:1fr;gap:6px}.who{flex-direction:row;align-items:center;gap:8px}}
+
+  .foot{margin-top:40px;padding:16px 18px;background:var(--panel);border:1px solid var(--line);border-radius:12px;color:var(--ink-2);font-size:12.5px;line-height:1.6}
+  .foot b{color:var(--ink)}
+  .kbd{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--panel-2);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--ink-2)}
+  .banner{margin:18px 0 0;padding:11px 14px;border:1px dashed var(--line);border-radius:10px;color:var(--ink-3);font-size:12px;background:var(--panel-2)}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brandrail"></div>
+      <div>
+        <h1>Meta Leads — Weekly Report</h1>
+        <div class="sub">Riley · Dialer Workstation · week of June 1–7, 2026</div>
+      </div>
+      <div class="spacer"></div>
+      <span class="src"><span class="dot"></span>Generated from the dialer board</span>
+      <button class="btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy for Slack</button>
+      <button class="btn primary"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg>Export</button>
+      <button class="btn theme-toggle" id="tt" title="Toggle theme">◐</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="tiles">
+      <div class="tile" style="--tc:var(--none)"><div class="n">51</div><div class="l">Leads worked</div></div>
+      <div class="tile" style="--tc:var(--closed)"><div class="n" style="color:var(--closed)">2</div><div class="l">Closed</div></div>
+      <div class="tile" style="--tc:var(--booked-me)"><div class="n" style="color:var(--booked-me)">1</div><div class="l">Booked · me</div></div>
+      <div class="tile" style="--tc:var(--booked-self)"><div class="n" style="color:var(--booked-self)">2</div><div class="l">Booked · self</div></div>
+      <div class="tile" style="--tc:var(--fu)"><div class="n" style="color:var(--fu)">3</div><div class="l">FU scheduled</div></div>
+      <div class="tile" style="--tc:var(--dq)"><div class="n" style="color:var(--dq)">4</div><div class="l">DQ'd</div></div>
+      <div class="tile" style="--tc:var(--none)"><div class="n" style="color:var(--ink-2)">39</div><div class="l">No response</div></div>
+    </div>
+
+    <div class="metaline">
+      <span><b>131</b> dials placed</span>
+      <span><b>2.6</b> avg attempts / lead</span>
+      <span><b>9</b> conversations</span>
+      <span><b>4%</b> book rate</span>
+      <span style="color:var(--ink-3)">every number below rolls up from the cards Riley already moves on the board</span>
+    </div>
+
+    <div class="legend">
+      <span class="lg"><span class="swatch" style="background:var(--closed)"></span>Closed</span>
+      <span class="lg"><span class="swatch" style="background:var(--booked-me)"></span>Booked by me</span>
+      <span class="lg"><span class="swatch" style="background:var(--booked-self)"></span>Booked by themselves</span>
+      <span class="lg"><span class="swatch" style="background:var(--fu)"></span>Follow-up scheduled</span>
+      <span class="lg"><span class="swatch" style="background:var(--dq)"></span>Disqualified</span>
+      <span class="lg"><span class="swatch" style="background:var(--none)"></span>No response</span>
+    </div>
+
+    <div class="banner">↳ This is the same content Riley hand-writes in Word — the four color codes are preserved — but grouped, tallied, and generated straight from the board. Sample below: <b>June 1–7</b> from his June doc.</div>
+
+    <!-- JUNE 1 -->
+    <section class="day">
+      <div class="day-h"><h2>June 1</h2><span class="count">17 leads</span>
+        <div class="mini"><span class="pip" style="background:var(--booked-me)"></span><span class="pip" style="background:var(--fu)"></span><span class="pip" style="background:var(--dq)"></span><span class="pip" style="background:var(--none)"></span></div></div>
+      <div class="rows">
+        <div class="row" style="--rc:var(--booked-me);--rc-bg:var(--booked-me-bg)"><div class="nm">Debbie Petry Killen</div><div class="who"><span class="badge">Booked · me</span><div class="chips"><span class="chip">not closed</span></div></div><div class="note">Booked the call — didn't close, finances.</div></div>
+        <div class="row" style="--rc:var(--fu);--rc-bg:var(--fu-bg)"><div class="nm">Pamela Woodside</div><div class="who"><span class="badge">Follow-up</span><div class="chips"><span class="chip">reached Jun 10</span></div></div><div class="note">Reached her June 10. FU planned June 15.</div></div>
+        <div class="row" style="--rc:var(--dq);--rc-bg:var(--dq-bg)"><div class="nm">Selwyn Zacharie</div><div class="who"><span class="badge">DQ'd</span><div class="chips"><span class="chip">finances</span></div></div><div class="note">Had a talk — DQ'd on finances.</div></div>
+        <div class="row" style="--rc:var(--none);--rc-bg:var(--none-bg)"><div class="nm">Bob O'Neal</div><div class="who"><span class="badge">No response</span><div class="chips"><span class="chip">📞 1 · 6-min call</span></div></div><div class="note">Interested but driving; planned FU, then ghosted and texted <span class="flag">'Stop'</span>.</div></div>
+        <div class="row" style="--rc:var(--none);--rc-bg:var(--none-bg)"><div class="nm">K Haq</div><div class="who"><span class="badge">No response</span><div class="chips"><span class="chip">📞 1</span><span class="chip">VM + text</span></div></div><div class="note">No response. <span class="flag">Not his real name</span> — email says Ayub.</div></div>
+        <div class="row" style="--rc:var(--none);--rc-bg:var(--none-bg)"><div class="nm">Arnold Temple</div><div class="who"><span class="badge">No response</span><div class="chips"><span class="chip">📞 3</span><span class="chip">VM + text</span></div></div><div class="note">Called three times, VM + text. No response.</div></div>
+        <div class="row" style="--rc:var(--none);--rc-bg:var(--none-bg)"><div class="nm">Charles Frank</div><div class="who"><span class="badge">No response</span><div class="chips"><span class="chip">📞 2</span><span class="chip">VM + text</span></div></div><div class="note">Called twice, VM + text. No response.</div></div>
+        <div class="row" style="--rc:var(--none);--rc-bg:var(--none-bg)"><div class="nm">Jennifer Sahl · Laura Parenti · Jaime Bonilla · Philip Moll · Maureen Donoghue · Forrestal Gray · Louis Guaschino · Kaveri Sharma · Harris Nirdh · Madhavi Pasupulati</div><div class="who"><span class="badge">No response</span><div class="chips"><span class="chip">📞 1 each</span><span class="chip">VM + text</span></div></div><div class="note">10 leads — called once, VM + text, no response. <span style="color:var(--ink-3)">(collapsed — expand on the real view)</span></div></div>
+      </div>
+    </section>
+
+    <!-- JUNE 2 -->
+    <section class="day">
+      <div class="day-h"><h2>June 2</h2><span class="count">8 leads</span>
+        <div class="mini"><span class="pip" style="background:var(--none)"></span></div></div>
+      <div class="rows">
+        <div class="row" style="--rc:var(--none);--rc-bg:var(--none-bg)"><div class="nm">Tee Maxx</div><div class="who"><span class="badge">No response</span><div class="chips"><span class="chip">📞 2</span></div></div><div class="note">Only an automated business auto-reply — tried twice, same response.</div></div>
+        <div class="row" style="--rc:var(--none);--rc-bg:var(--none-bg)"><div class="nm">Tyrone Graham</div><div class="who"><span class="badge">No response</span><div class="chips"><span class="chip">📞 2</span><span class="chip">re-engaged</span></div></div><div class="note">Re-engaged; called twice, VM + text. No response.</div></div>
+        <div class="row" style="--rc:var(--none);--rc-bg:var(--none-bg)"><div class="nm">Tasha Gilbert · Rebecca Haning Nesloney · Katherine Jennings Connell · Kendra M. Castelow · Nancy · Andrea Morales</div><div class="who"><span class="badge">No response</span><div class="chips"><span class="chip">VM + text</span></div></div><div class="note">6 leads — called, no response.</div></div>
+      </div>
+    </section>
+
+    <!-- JUNE 3 -->
+    <section class="day">
+      <div class="day-h"><h2>June 3</h2><span class="count">12 leads</span>
+        <div class="mini"><span class="pip" style="background:var(--dq)"></span><span class="pip" style="background:var(--none)"></span></div></div>
+      <div class="rows">
+        <div class="row" style="--rc:var(--dq);--rc-bg:var(--dq-bg)"><div class="nm">Gilbert Zaragoza</div><div class="who"><span class="badge">DQ'd</span><div class="chips"><span class="chip">no finances</span></div></div><div class="note">Didn't know who Dan is, no finances — not interested.</div></div>
+        <div class="row" style="--rc:var(--dq);--rc-bg:var(--dq-bg)"><div class="nm">Angelica Santiago</div><div class="who"><span class="badge">DQ'd</span><div class="chips"><span class="chip">📞 2 · answered</span></div></div><div class="note">Answered 2nd call, wanted a FU — then said she wasn't interested anymore.</div></div>
+        <div class="row" style="--rc:var(--none);--rc-bg:var(--none-bg)"><div class="nm">Gary Smith</div><div class="who"><span class="badge">No response</span><div class="chips"><span class="chip">📞 2</span></div></div><div class="note">Replied to 2nd text, then ghosted again.</div></div>
+        <div class="row" style="--rc:var(--none);--rc-bg:var(--none-bg)"><div class="nm">Kent Ott · Benjamin Willis · Bobby Dyas · Patricia · Brenda Lee Brown · Bruce Kriner · David Hegerfeld · Christopher Waller · Vinscent Price</div><div class="who"><span class="badge">No response</span><div class="chips"><span class="chip">VM + text</span></div></div><div class="note">9 leads — called, no response.</div></div>
+      </div>
+    </section>
+
+    <!-- JUNE 4 -->
+    <section class="day">
+      <div class="day-h"><h2>June 4</h2><span class="count">2 leads</span>
+        <div class="mini"><span class="pip" style="background:var(--none)"></span></div></div>
+      <div class="rows">
+        <div class="row" style="--rc:var(--none);--rc-bg:var(--none-bg)"><div class="nm">Jason Smoot · Lori Romo</div><div class="who"><span class="badge">No response</span><div class="chips"><span class="chip">VM + text</span></div></div><div class="note">Called, no response (Lori 3×).</div></div>
+      </div>
+    </section>
+
+    <!-- JUNE 5 -->
+    <section class="day">
+      <div class="day-h"><h2>June 5</h2><span class="count">4 leads</span>
+        <div class="mini"><span class="pip" style="background:var(--closed)"></span><span class="pip" style="background:var(--fu)"></span><span class="pip" style="background:var(--none)"></span></div></div>
+      <div class="rows">
+        <div class="row" style="--rc:var(--closed);--rc-bg:var(--closed-bg)"><div class="nm">Dan Douglass</div><div class="who"><span class="badge">Closed · PIF</span><div class="chips"><span class="chip">paid in full</span></div></div><div class="note">CLOSED — paid in full.</div></div>
+        <div class="row" style="--rc:var(--fu);--rc-bg:var(--fu-bg)"><div class="nm">Fatima A. Khan</div><div class="who"><span class="badge">Follow-up</span><div class="chips"><span class="chip">answered</span></div></div><div class="note">Answered; FU dropped off the list mid-week — re-scheduling tomorrow.</div></div>
+        <div class="row" style="--rc:var(--none);--rc-bg:var(--none-bg)"><div class="nm">Scott Belanger · Briyitt Jurado</div><div class="who"><span class="badge">No response</span><div class="chips"><span class="chip">VM + text</span></div></div><div class="note">Called, no response.</div></div>
+      </div>
+    </section>
+
+    <!-- JUNE 6 -->
+    <section class="day">
+      <div class="day-h"><h2>June 6</h2><span class="count">4 leads</span>
+        <div class="mini"><span class="pip" style="background:var(--closed)"></span><span class="pip" style="background:var(--booked-self)"></span><span class="pip" style="background:var(--none)"></span></div></div>
+      <div class="rows">
+        <div class="row" style="--rc:var(--closed);--rc-bg:var(--closed-bg)"><div class="nm">Karthik Murali</div><div class="who"><span class="badge">Closed · plan</span><div class="chips"><span class="chip">payment plan</span></div></div><div class="note">CLOSED on a payment plan.</div></div>
+        <div class="row" style="--rc:var(--booked-self);--rc-bg:var(--booked-self-bg)"><div class="nm">Diana Bernardo</div><div class="who"><span class="badge">Booked · self</span><div class="chips"><span class="chip">no-show</span></div></div><div class="note">Booked herself in — didn't respond, no-showed.</div></div>
+        <div class="row" style="--rc:var(--none);--rc-bg:var(--none-bg)"><div class="nm">Sonia Sethi · Uma</div><div class="who"><span class="badge">No response</span><div class="chips"><span class="chip">📞 3 each</span></div></div><div class="note">Called 3×, VM + text. No response.</div></div>
+      </div>
+    </section>
+
+    <!-- JUNE 7 -->
+    <section class="day">
+      <div class="day-h"><h2>June 7</h2><span class="count">4 leads</span>
+        <div class="mini"><span class="pip" style="background:var(--booked-self)"></span><span class="pip" style="background:var(--fu)"></span><span class="pip" style="background:var(--none)"></span></div></div>
+      <div class="rows">
+        <div class="row" style="--rc:var(--booked-self);--rc-bg:var(--booked-self-bg)"><div class="nm">Pooneh Paydar</div><div class="who"><span class="badge">Booked · self</span><div class="chips"><span class="chip">DQ'd by Joel</span></div></div><div class="note">Booked herself; a teacher — DQ'd by Joel on the call.</div></div>
+        <div class="row" style="--rc:var(--fu);--rc-bg:var(--fu-bg)"><div class="nm">Chantal · Level Up Wellness</div><div class="who"><span class="badge">Follow-up</span><div class="chips"><span class="chip">📞 3</span></div></div><div class="note">Interested but zero time (wedding) — revisit end of summer.</div></div>
+        <div class="row" style="--rc:var(--none);--rc-bg:var(--none-bg)"><div class="nm">Alex Raffio</div><div class="who"><span class="badge">No response</span><div class="chips"><span class="chip">📞 4+</span></div></div><div class="note">Answered between calls, planned FU, ghosted again.</div></div>
+        <div class="row" style="--rc:var(--none);--rc-bg:var(--none-bg)"><div class="nm">Taylor</div><div class="who"><span class="badge">No response</span><div class="chips"><span class="chip">📞 3</span></div></div><div class="note">Called 3×, VM + text. No response.</div></div>
+      </div>
+    </section>
+
+    <div class="foot">
+      <b>How this replaces the Word doc.</b> Every row here already exists on Riley's dialer board — he moves 615 cards and logs dial counts on 90% of them. Three fields aren't captured today and are the only reason the doc survives: the <b>disposition reason</b> (2.5% of archived cards tagged), the <b>note / story</b> (11% of cards), and there is <b>no report view at all</b> — so he rebuilds it by hand.<br><br>
+      <b>The build, in order.</b> ① This report view — read-only, generated from board data, one <span class="kbd">Copy for Slack</span> / <span class="kbd">Export</span>. ② A one-line inline disposition control on each lead (outcome + note in a single keystroke, no card to open) so the story lands on the board as fast as typing a line — which then <em>fills this report automatically</em>. Report first: it's the reason to leave Word.
+    </div>
+  </div>
+
+<script>
+  const tt=document.getElementById('tt');
+  tt.addEventListener('click',()=>{const r=document.documentElement;r.dataset.theme=r.dataset.theme==='dark'?'light':'dark';});
+</script>
+</body>
+</html>
